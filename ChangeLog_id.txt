@@ -1,9 +1,10 @@
 ﻿## SEJARAH
 
-- v.6.0.2 (2026-XX-YY)
+- v.6.0.2 (2026-07-03)
     - Terjemahan bahasa Polandia (Polandia) yang lebih baik (terima kasih, Fresta).
     - Memperbaiki tindakan ID_BASE10 dan ID_BASE16 pada "List of Resource IDs".
     - Mengubah nama "List of Resource IDs" menjadi "Resource IDs".
+    - Memperbaiki UI/UX "Resource IDs".
 - v.6.0.1 (2026-06-01)
     - Daftar ID Sumber Daya yang Dioptimalkan.
     - Terjemahan bahasa Ukraina (Ukraina) telah ditambahkan.
