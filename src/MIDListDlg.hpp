@@ -301,9 +301,18 @@ public:
 		auto nIDTYPE_ = g_db.IDTypeFromResType(entry->m_type);
 		if (!entry->m_name.is_str())
 		{
-			text1 = g_db.GetNameOfIDTypeValue(nIDTYPE_, entry->m_name.m_id);
-			if (text1.empty() || g_settings.bHideID)
+			if (g_settings.bHideID)
+			{
 				text1 = FormatByBase(entry->m_name.m_id);
+			}
+			else
+			{
+				text1 = g_db.GetNameOfIDTypeValue(nIDTYPE_, entry->m_name.m_id);
+				if (text1.empty() && entry->m_type.m_id == (WORD)PtrToUlong(RT_DLGINIT))
+					text1 = g_db.GetNameOfIDTypeValue(IDTYPE_DIALOG, entry->m_name.m_id);
+				if (text1.empty())
+					text1 = FormatByBase(entry->m_name.m_id);
+			}
 			text3 = FormatByBase(entry->m_name.m_id);
 		}
 		else
