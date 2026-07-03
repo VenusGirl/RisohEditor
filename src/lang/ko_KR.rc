@@ -1601,7 +1601,7 @@ STRINGTABLE
     IDS_JPEGRESBINFILTER, "JPEG 이미지 (*.jpg;*.jpeg;*.jpe;*.jfif)|*.jpg;*.jpeg;*.jpe;*.jfif|바이너리 리소스 (*.res)|*.res|바이너리 파일 (*.bin)|*.bin|모든 파일 (*.*)|*.*|"
     IDS_GIFRESBINFILTER, "GIF 이미지 (*.gif)|*.gif|바이너리 리소스 (*.res)|*.res|바이너리 파일 (*.bin)|*.bin|모든 파일 (*.*)|*.*|"
     IDS_TIFFRESBINFILTER, "TIFF 이미지 (*.tif;*.tiff)|*.tif;*.tiff|바이너리 리소스 (*.res)|*.res|바이너리 파일 (*.bin)|*.bin|모든 파일 (*.*)|*.*|"
-    IDS_AVIRESBINFILTER, "AVI 영화 (*.avi)|*.avi|바이너리 리소스 (*.res)|*.res|바이너리 파일 (*.bin)|*.bin|All Files (*.*)|*.*|"
+    IDS_AVIRESBINFILTER, "AVI 영화 (*.avi)|*.avi|바이너리 리소스 (*.res)|*.res|바이너리 파일 (*.bin)|*.bin|모든 파일 (*.*)|*.*|"
     IDS_WAVERESBINFILTER, "WAVE 사운드 (*.wav)|*.wav|바이너리 리소스 (*.res)|*.res|바이너리 파일 (*.bin)|*.bin|모든 파일 (*.*)|*.*|"
     IDS_COMMENT_SEP, "//////////////////////////////////////////////////////////////////////////////\r\n"
     IDS_NEWLINE, "\r\n"
