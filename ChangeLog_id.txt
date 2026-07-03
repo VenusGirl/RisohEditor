@@ -1,7 +1,7 @@
 ﻿## SEJARAH
 
 - v.6.0.3 (2026-XX-YY)
-    - Minor Localization.
+    - Finalizing the localization.
     - Fixed minor "Resource IDs"' bug.
     - Correctly handling quoted resource names.
 - v.6.0.2 (2026-07-03)
