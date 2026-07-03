@@ -1675,7 +1675,7 @@ STRINGTABLE
     IDS_ICON_ID, "Icon ID"
     IDS_ANICURSOR_ID, "AniCursor ID"
     IDS_ANIICON_ID, "AniIcon ID"
-    IDS_HTML_ID, "Html ID"
+    IDS_HTML_ID, "HTML ID"
     IDS_HELP_ID, "Help ID"
     IDS_COMMAND_ID, "Command ID"
     IDS_CONTROL_ID, "Control ID"
