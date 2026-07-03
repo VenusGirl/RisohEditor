@@ -294,8 +294,11 @@ public:
 		if (!entry || entry->m_et != ET_LANG)
 			return;
 
-		if (entry->m_type == RT_ICON || entry->m_type == RT_CURSOR || entry->m_type == RT_STRING)
+		if (entry->m_type == RT_ICON || entry->m_type == RT_CURSOR ||
+			entry->m_type == RT_STRING || entry->m_type == RT_FONTDIR)
+		{
 			return;
+		}
 
 		MString text1, text3;
 		auto nIDTYPE_ = g_db.IDTypeFromResType(entry->m_type);
