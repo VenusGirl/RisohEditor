@@ -1388,7 +1388,7 @@ FILESUBTYPE     0x0
             VALUE "CompanyName", "카타야마 히로후미 MZ\0"
             VALUE "FileDescription", "RisohEditor\0"
             VALUE "FileVersion", "6.0.3\0"
-            VALUE "LegalCopyright", "저작권 (C) 2017-2026 카타야마 히로후미 MZ. 모든 권리 보유.\0"
+            VALUE "LegalCopyright", "© 2017-2026 카타야마 히로후미 MZ. 모든 권리 보유.\0"
             VALUE "ProductName", "RisohEditor\0"
             VALUE "ProductVersion", "6.0.3\0"
         }
