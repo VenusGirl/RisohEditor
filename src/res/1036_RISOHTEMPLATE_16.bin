@@ -9,11 +9,11 @@ FILESUBTYPE     VFT2_UNKNOWN
     {
         BLOCK "040C04E4"
         {
-            VALUE "CompanyName", "My Company\0"
-            VALUE "FileDescription", "My Application\0"
+            VALUE "CompanyName", "Mon Entreprise\0"
+            VALUE "FileDescription", "Ma Candidature\0"
             VALUE "FileVersion", "0.0\0"
-            VALUE "LegalCopyright", "Copyright (C) 2026 My Company\0"
-            VALUE "ProductName", "My Application\0"
+            VALUE "LegalCopyright", "Copyright (C) 2026 Mon Entreprise\0"
+            VALUE "ProductName", "Ma Candidature\0"
             VALUE "ProductVersion", "0.0\0"
         }
     }
