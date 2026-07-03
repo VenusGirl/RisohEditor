@@ -1,5 +1,7 @@
 ﻿## HISTORIA
 
+- v.6.0.3 (2026-XX-YY)
+    - Minor Localization.
 - v.6.0.2 (2026-07-03)
     - Traducción mejorada al polaco (Polonia) (gracias, Fresta).
     - Se corrigieron las acciones ID_BASE10 e ID_BASE16 de la «Lista de ID de recursos».
