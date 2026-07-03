@@ -18,33 +18,6 @@
 #include "MIdOrString.hpp"
 #include "RisohSettings.hpp"
 
-//////////////////////////////////////////////////////////////////////////////
-
-enum IDTYPE_
-{
-	IDTYPE_UNKNOWN      = 0,  // Unknown.ID
-	IDTYPE_CURSOR       = 1,  // Cursor.ID
-	IDTYPE_BITMAP       = 2,  // Bitmap.ID
-	IDTYPE_MENU         = 3,  // Menu.ID
-	IDTYPE_DIALOG       = 4,  // Dialog.ID
-	IDTYPE_STRING       = 5,  // String.ID
-	IDTYPE_ACCEL        = 6,  // Accel.ID
-	IDTYPE_ICON         = 7,  // Icon.ID
-	IDTYPE_ANICURSOR    = 8,  // AniCursor.ID
-	IDTYPE_ANIICON      = 9,  // AniIcon.ID
-	IDTYPE_HTML         = 10, // Html.ID
-	IDTYPE_HELP         = 11, // Help.ID
-	IDTYPE_COMMAND      = 12, // Command.ID
-	IDTYPE_CONTROL      = 13, // Control.ID
-	IDTYPE_RESOURCE     = 14, // Resource.ID
-	IDTYPE_MESSAGE      = 15, // Message.ID
-	IDTYPE_WINDOW       = 16, // Window.ID
-	IDTYPE_NEWCOMMAND   = 17, // New.Command.ID
-	IDTYPE_PROMPT       = 18, // Prompt.ID
-	IDTYPE_RCDATA       = 19, // RCData.ID
-	IDTYPE_MSGTABLE     = 20, // MsgTable.ID
-};
-
 class ConstantsDB
 {
 public:

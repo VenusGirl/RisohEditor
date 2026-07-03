@@ -6,12 +6,16 @@
 
 #pragma once
 
+#include <unordered_map>
 #include "resource.h"
 #include "MWindowBase.hpp"
 #include "ConstantsDB.hpp"
 #include "Res.hpp"
 #include "RisohSettings.hpp"
 #include "Common.hpp"
+
+extern std::unordered_map<INT, MStringW> *g_pmapIDTypeToLocalized;
+extern std::unordered_map<MStringW, INT> *g_pmapLocalizedToIDType;
 
 //////////////////////////////////////////////////////////////////////////////
 
@@ -30,14 +34,13 @@ public:
 	BOOL OnInitDialog(HWND hwnd, HWND hwndFocus, LPARAM lParam)
 	{
 		ConstantsDB::TableType table;
-		table = g_db.GetTable(L"RESOURCE.ID.TYPE");
 
 		const INT IDTYPE_default = IDTYPE_COMMAND;
 
 		INT i = 0;
-		for (auto& table_entry : table)
+		for (auto& pair : (*g_pmapIDTypeToLocalized))
 		{
-			INT k = (INT)SendDlgItemMessage(hwnd, cmb1, CB_ADDSTRING, 0, (LPARAM)table_entry.name.c_str());
+			INT k = (INT)SendDlgItemMessage(hwnd, cmb1, CB_ADDSTRING, 0, (LPARAM)pair.second.c_str());
 			if (k == IDTYPE_default)
 			{
 				m_bChanging = TRUE;
@@ -181,7 +184,7 @@ public:
 					{
 						if (pair.second == prefix)
 						{
-							nIDTYPE_ = INT(g_db.GetValue(L"RESOURCE.ID.TYPE", pair.first));
+							nIDTYPE_ = UnMapIDType(pair.first);
 							break;
 						}
 					}

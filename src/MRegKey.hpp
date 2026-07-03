@@ -3,7 +3,7 @@
 ////////////////////////////////////////////////////////////////////////////
 
 #ifndef MZC4_MREGKEY_HPP_
-#define MZC4_MREGKEY_HPP_       10   /* Version 10 */
+#define MZC4_MREGKEY_HPP_       11   /* Version 11 */
 
 #ifndef HKCR
 	#define HKCR    HKEY_CLASSES_ROOT
@@ -507,8 +507,6 @@ MRegKey::QuerySz(LPCTSTR pszValueName, LPTSTR pszValue, DWORD cchValue)
 		DWORD dwType;
 		LONG result = RegQueryValueEx(pszValueName, NULL, &dwType,
 									  NULL, NULL);
-		assert(result == ERROR_SUCCESS);
-		assert(dwType == REG_SZ);
 	#endif
 	DWORD cbData = cchValue * sizeof(TCHAR);
 	return RegQueryValueEx(pszValueName, NULL, NULL,

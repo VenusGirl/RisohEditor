@@ -81,7 +81,7 @@ public:
 	{
 		for (INT i = IDTYPE_UNKNOWN; i <= IDTYPE_MSGTABLE; ++i)
 		{
-			MStringW str = g_db.GetName(L"RESOURCE.ID.TYPE", i);
+			MStringW str = MapIDType(IDTYPE_(i));
 			m_map1[i] = str;
 			m_map2[str] = i;
 		}
@@ -213,7 +213,7 @@ public:
 		MString text1 = MAnsiToText(CP_ACP, first.c_str()).c_str();
 		MString text2 = GetAssoc(text1);
 		MString text3 = MAnsiToText(CP_ACP, second.c_str()).c_str();
-		if (text2.empty() || text2 == L"Resource.ID" || text2 == L"Unknown.ID")
+		if (text2.empty() || text2 == MapIDType(IDTYPE_RESOURCE) || text2 == MapIDType(IDTYPE_UNKNOWN))
 		{
 			if (entry)
 			{
@@ -245,8 +245,8 @@ public:
 			}
 		}
 		if (text2.empty())
-			text2 = L"Unknown.ID";
-		if (text2 == L"Resource.ID")
+			text2 = MapIDType(IDTYPE_UNKNOWN);
+		if (text2 == MapIDType(IDTYPE_RESOURCE))
 			return;
 
 		if (text3[0] != TEXT('"') && text3[0] != TEXT('L'))

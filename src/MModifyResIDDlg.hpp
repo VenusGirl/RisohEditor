@@ -96,7 +96,7 @@ public:
 				{
 					if (text.find(table_entry.name) == 0)
 					{
-						text = g_db.GetName(L"RESOURCE.ID.TYPE", i);
+						text = MapIDType(IDTYPE_(i));
 						SetDlgItemText(hwnd, edt2, text.c_str());
 						i = -1;
 						break;

@@ -16,6 +16,69 @@
 
 LPWSTR g_pszLogFile = NULL;
 
+std::unordered_map<INT, MStringW> *g_pmapIDTypeToLocalized = NULL;
+std::unordered_map<MStringW, INT> *g_pmapLocalizedToIDType = NULL;
+
+void InitIDTypeMaps()
+{
+	g_pmapIDTypeToLocalized = new std::unordered_map<INT, MStringW>();
+	g_pmapLocalizedToIDType = new std::unordered_map<MStringW, INT>();
+
+	MStringW str;
+
+#define MAP(ids) do { \
+	str = LoadStringDx(ids); \
+	(*g_pmapIDTypeToLocalized)[ids - IDS_UNKNOWN_ID] = str; \
+	(*g_pmapLocalizedToIDType)[str] = ids - IDS_UNKNOWN_ID; \
+} while (0)
+	MAP(IDS_UNKNOWN_ID);
+	MAP(IDS_CURSOR_ID);
+	MAP(IDS_BITMAP_ID);
+	MAP(IDS_MENU_ID);
+	MAP(IDS_DIALOG_ID);
+	MAP(IDS_STRING_ID);
+	MAP(IDS_ACCEL_ID);
+	MAP(IDS_ICON_ID);
+	MAP(IDS_ANICURSOR_ID);
+	MAP(IDS_ANIICON_ID);
+	MAP(IDS_HTML_ID);
+	MAP(IDS_HELP_ID);
+	MAP(IDS_COMMAND_ID);
+	MAP(IDS_CONTROL_ID);
+	MAP(IDS_RESOURCE_ID);
+	MAP(IDS_MESSAGE_ID);
+	MAP(IDS_WINDOW_ID);
+	MAP(IDS_NEWCOMMAND_ID);
+	MAP(IDS_PROMPT_ID);
+	MAP(IDS_RCDATA_ID);
+	MAP(IDS_MSGTABLE_ID);
+#undef MAP
+}
+
+void UnloadIDTypeMaps()
+{
+	delete g_pmapIDTypeToLocalized;
+	g_pmapIDTypeToLocalized = NULL;
+	delete g_pmapLocalizedToIDType;
+	g_pmapLocalizedToIDType = NULL;
+}
+
+MStringW MapIDType(IDTYPE_ nIDType)
+{
+	auto it = (*g_pmapIDTypeToLocalized).find(nIDType);
+	if (it != (*g_pmapIDTypeToLocalized).end())
+		return it->second;
+	return (*g_pmapIDTypeToLocalized)[0];
+}
+
+IDTYPE_ UnMapIDType(const MStringW& str)
+{
+	auto it = (*g_pmapLocalizedToIDType).find(str);
+	if (it != (*g_pmapLocalizedToIDType).end())
+		return (IDTYPE_)it->second;
+	return IDTYPE_UNKNOWN;
+}
+
 //////////////////////////////////////////////////////////////////////////////
 // constants
 
@@ -6473,10 +6536,10 @@ void MMainWnd::DoIDStat(UINT anValues[5])
 
 	INT anNext[count];
 	MString prefixes[count];
-	prefixes[0] = g_settings.assoc_map[L"Resource.ID"];
-	prefixes[1] = g_settings.assoc_map[L"Command.ID"];
-	prefixes[2] = g_settings.assoc_map[L"New.Command.ID"];
-	prefixes[3] = g_settings.assoc_map[L"Control.ID"];
+	prefixes[0] = g_settings.assoc_map[MapIDType(IDTYPE_RESOURCE)];
+	prefixes[1] = g_settings.assoc_map[MapIDType(IDTYPE_COMMAND)];
+	prefixes[2] = g_settings.assoc_map[MapIDType(IDTYPE_NEWCOMMAND)];
+	prefixes[3] = g_settings.assoc_map[MapIDType(IDTYPE_CONTROL)];
 
 	for (size_t i = 0; i < count; ++i)
 	{
@@ -9510,7 +9573,7 @@ std::vector<INT> GetPrefixIndexes(const MString& prefix)
 	{
 		if (prefix == pair.second && !pair.second.empty())
 		{
-			auto nIDTYPE_ = IDTYPE_(g_db.GetValue(L"RESOURCE.ID.TYPE", pair.first));
+			auto nIDTYPE_ = UnMapIDType(pair.first);
 			ret.push_back(nIDTYPE_);
 		}
 	}
@@ -11443,7 +11506,7 @@ void MMainWnd::SelectString(void)
 // do ID jump now!
 void MMainWnd::OnIDJumpBang2(HWND hwnd, const MString& name, MString& strType)
 {
-	if (strType == L"Unknown.ID")
+	if (strType == MapIDType(IDTYPE_UNKNOWN))
 		return;     // ignore Unknown.ID jump
 
 	// revert the resource type string
@@ -12033,7 +12096,11 @@ wWinMain(HINSTANCE   hInstance,
 
 	HRESULT hrOleInit = OleInitialize(NULL);
 
+    InitIDTypeMaps();
+
 	INT ret = RisohEditor_Main(hInstance, hPrevInstance, lpCmdLine, nCmdShow);
+
+    UnloadIDTypeMaps();
 
 	if (bWowFsDisabled)
 		RevertWow64FsRedirection(OldValue);

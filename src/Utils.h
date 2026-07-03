@@ -10,6 +10,7 @@
 #include <string>
 #include <vector>
 #include <windows.h>
+#include <unordered_map>
 
 void ReplaceFullWithHalf(wchar_t* pszText);
 void ReplaceFullWithHalf(std::wstring& strText);

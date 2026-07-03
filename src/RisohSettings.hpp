@@ -11,6 +11,31 @@
 #include <vector>
 #include <map>
 
+enum IDTYPE_
+{
+	IDTYPE_UNKNOWN      = 0,  // Unknown.ID
+	IDTYPE_CURSOR       = 1,  // Cursor.ID
+	IDTYPE_BITMAP       = 2,  // Bitmap.ID
+	IDTYPE_MENU         = 3,  // Menu.ID
+	IDTYPE_DIALOG       = 4,  // Dialog.ID
+	IDTYPE_STRING       = 5,  // String.ID
+	IDTYPE_ACCEL        = 6,  // Accel.ID
+	IDTYPE_ICON         = 7,  // Icon.ID
+	IDTYPE_ANICURSOR    = 8,  // AniCursor.ID
+	IDTYPE_ANIICON      = 9,  // AniIcon.ID
+	IDTYPE_HTML         = 10, // Html.ID
+	IDTYPE_HELP         = 11, // Help.ID
+	IDTYPE_COMMAND      = 12, // Command.ID
+	IDTYPE_CONTROL      = 13, // Control.ID
+	IDTYPE_RESOURCE     = 14, // Resource.ID
+	IDTYPE_MESSAGE      = 15, // Message.ID
+	IDTYPE_WINDOW       = 16, // Window.ID
+	IDTYPE_NEWCOMMAND   = 17, // New.Command.ID
+	IDTYPE_PROMPT       = 18, // Prompt.ID
+	IDTYPE_RCDATA       = 19, // RCData.ID
+	IDTYPE_MSGTABLE     = 20, // MsgTable.ID
+};
+
 //////////////////////////////////////////////////////////////////////////////
 
 #define MAX_MRU     5       // the number of most recently used (MRU) files
@@ -22,6 +47,9 @@ typedef std::map<MString, MString>      macro_map_type;     // macros type
 typedef std::map<MString, MString>      encoding_map_type;  // text resource encoding
 typedef std::vector<MString>            include_dirs_type;  // includes type
 typedef std::vector<MString>            captions_type;      // captions type
+
+MStringW MapIDType(IDTYPE_ nIDType);
+IDTYPE_ UnMapIDType(const MStringW& str);
 
 //////////////////////////////////////////////////////////////////////////////
 
@@ -167,27 +195,27 @@ struct RisohSettings
 
 	void ResetAssoc()
 	{
-		assoc_map[L"Cursor.ID"] = L"IDC_";
-		assoc_map[L"Bitmap.ID"] = L"IDB_";
-		assoc_map[L"Menu.ID"] = L"IDR_";
-		assoc_map[L"Dialog.ID"] = L"IDD_";
-		assoc_map[L"String.ID"] = L"IDS_";
-		assoc_map[L"Accel.ID"] = L"IDR_";
-		assoc_map[L"Icon.ID"] = L"IDI_";
-		assoc_map[L"AniCursor.ID"] = L"IDR_";
-		assoc_map[L"AniIcon.ID"] = L"IDR_";
-		assoc_map[L"Html.ID"] = L"IDR_";
-		assoc_map[L"Help.ID"] = L"HID_";
-		assoc_map[L"Command.ID"] = L"IDM_";
-		assoc_map[L"Control.ID"] = L"IDC_";
-		assoc_map[L"Resource.ID"] = L"IDR_";
-		assoc_map[L"Message.ID"] = L"MSGID_";
-		assoc_map[L"Window.ID"] = L"IDW_";
-		assoc_map[L"New.Command.ID"] = L"ID_";
-		assoc_map[L"Prompt.ID"] = L"IDP_";
-		assoc_map[L"RCData.ID"] = L"IDR_";
-		assoc_map[L"MsgTable.ID"] = L"IDR_";
-		assoc_map[L"Unknown.ID"].clear();
+		assoc_map[MapIDType(IDTYPE_CURSOR)] = L"IDC_";
+		assoc_map[MapIDType(IDTYPE_BITMAP)] = L"IDB_";
+		assoc_map[MapIDType(IDTYPE_MENU)] = L"IDR_";
+		assoc_map[MapIDType(IDTYPE_DIALOG)] = L"IDD_";
+		assoc_map[MapIDType(IDTYPE_STRING)] = L"IDS_";
+		assoc_map[MapIDType(IDTYPE_ACCEL)] = L"IDR_";
+		assoc_map[MapIDType(IDTYPE_ICON)] = L"IDI_";
+		assoc_map[MapIDType(IDTYPE_ANICURSOR)] = L"IDR_";
+		assoc_map[MapIDType(IDTYPE_ANIICON)] = L"IDR_";
+		assoc_map[MapIDType(IDTYPE_HTML)] = L"IDR_";
+		assoc_map[MapIDType(IDTYPE_HELP)] = L"HID_";
+		assoc_map[MapIDType(IDTYPE_COMMAND)] = L"IDM_";
+		assoc_map[MapIDType(IDTYPE_CONTROL)] = L"IDC_";
+		assoc_map[MapIDType(IDTYPE_RESOURCE)] = L"IDR_";
+		assoc_map[MapIDType(IDTYPE_MESSAGE)] = L"MSGID_";
+		assoc_map[MapIDType(IDTYPE_WINDOW)] = L"IDW_";
+		assoc_map[MapIDType(IDTYPE_NEWCOMMAND)] = L"ID_";
+		assoc_map[MapIDType(IDTYPE_PROMPT)] = L"IDP_";
+		assoc_map[MapIDType(IDTYPE_RCDATA)] = L"IDR_";
+		assoc_map[MapIDType(IDTYPE_MSGTABLE)] = L"IDR_";
+		assoc_map[MapIDType(IDTYPE_UNKNOWN)].clear();
 	}
 
 	void ResetMacros()

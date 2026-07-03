@@ -128,21 +128,12 @@ void MMainWnd::SetDefaultSettings(HWND hwnd)
 		DeleteDC(hDC);
 	}
 
-	auto table1 = g_db.GetTable(L"RESOURCE.ID.TYPE");
 	auto table2 = g_db.GetTable(L"RESOURCE.ID.PREFIX");
-	assert(table1.size() == table2.size());
 
 	g_settings.assoc_map.clear();
-	if (table1.size() && table1.size() == table2.size())
+	for (size_t i = 0; i < table2.size(); ++i)
 	{
-		for (size_t i = 0; i < table1.size(); ++i)
-		{
-			g_settings.assoc_map.insert(std::make_pair(table1[i].name, table2[i].name));
-		}
-	}
-	else
-	{
-		g_settings.ResetAssoc();
+		g_settings.assoc_map.insert(std::make_pair(MapIDType(IDTYPE_(i)), table2[i].name));
 	}
 
 	g_settings.id_map.clear();
@@ -424,19 +415,15 @@ BOOL MMainWnd::LoadSettings(HWND hwnd)
 		g_settings.strPrevVersion = szText;
 	}
 
-	// update association if version > 3.8
-	if (!g_settings.strPrevVersion.empty() && g_settings.strPrevVersion > L"3.8")
+	TCHAR szName[MAX_PATH];
+	for (auto& pair : *g_pmapIDTypeToLocalized)
 	{
-		TCHAR szName[MAX_PATH];
-		for (auto& pair : g_settings.assoc_map)
+		if (keyRisoh.QuerySz(pair.second.c_str(), szName, _countof(szName)) == ERROR_SUCCESS)
 		{
-			if (keyRisoh.QuerySz(pair.first.c_str(), szName, _countof(szName)) == ERROR_SUCCESS)
-			{
-				pair.second = szName;
-			}
+            g_settings.assoc_map[pair.second] = szName;
 		}
-		UpdatePrefixDB(hwnd);
 	}
+	UpdatePrefixDB(hwnd);
 
 	keyRisoh.QueryDword(TEXT("bSepFilesByLang"), (DWORD&)g_settings.bSepFilesByLang);
 	g_settings.bStoreToResFolder = TRUE;

@@ -1832,54 +1832,54 @@ void Res_ReplaceResTypeString(MString& str, bool bRevert)
 	if (bRevert)
 	{
 		// revert
-		if (str == L"Icon.ID")
+		if (str == MapIDType(IDTYPE_ICON))
 			str = L"RT_GROUP_ICON";
-		else if (str == L"Cursor.ID")
+		else if (str == MapIDType(IDTYPE_CURSOR))
 			str = L"RT_GROUP_CURSOR";
-		else if (str == L"Accel.ID")
+		else if (str == MapIDType(IDTYPE_ACCEL))
 			str = L"RT_ACCELERATOR";
-		else if (str == L"AniCursor.ID")
+		else if (str == MapIDType(IDTYPE_ANICURSOR))
 			str = L"RT_ANICURSOR";
-		else if (str == L"AniIcon.ID")
+		else if (str == MapIDType(IDTYPE_ANIICON))
 			str = L"RT_ANIICON";
-		else if (str == L"Dialog.ID")
+		else if (str == MapIDType(IDTYPE_DIALOG))
 			str = L"RT_DIALOG";
-		else if (str == L"Menu.ID")
+		else if (str == MapIDType(IDTYPE_MENU))
 			str = L"RT_MENU";
-		else if (str == L"Bitmap.ID")
+		else if (str == MapIDType(IDTYPE_BITMAP))
 			str = L"RT_BITMAP";
-		else if (str == L"RCData.ID")
+		else if (str == MapIDType(IDTYPE_RCDATA))
 			str = L"RT_RCDATA";
-		else if (str == L"Html.ID")
+		else if (str == MapIDType(IDTYPE_HTML))
 			str = L"RT_HTML";
-		else if (str == L"MsgTable.ID")
+		else if (str == MapIDType(IDTYPE_MSGTABLE))
 			str = L"RT_MESSAGETABLE";
 	}
 	else
 	{
 		// convert
 		if (str == L"RT_GROUP_CURSOR")
-			str = L"Cursor.ID";
+			str = MapIDType(IDTYPE_CURSOR);
 		else if (str == L"RT_GROUP_ICON")
-			str = L"Icon.ID";
+			str = MapIDType(IDTYPE_ICON);
 		else if (str == L"RT_ACCELERATOR")
-			str = L"Accel.ID";
+			str = MapIDType(IDTYPE_ACCEL);
 		else if (str == L"RT_ANICURSOR")
-			str = L"AniCursor.ID";
+			str = MapIDType(IDTYPE_ANICURSOR);
 		else if (str == L"RT_ANIICON")
-			str = L"AniIcon.ID";
+			str = MapIDType(IDTYPE_ANIICON);
 		else if (str == L"RT_DIALOG")
-			str = L"Dialog.ID";
+			str = MapIDType(IDTYPE_DIALOG);
 		else if (str == L"RT_MENU")
-			str = L"Menu.ID";
+			str = MapIDType(IDTYPE_MENU);
 		else if (str == L"RT_BITMAP")
-			str = L"Bitmap.ID";
+			str = MapIDType(IDTYPE_BITMAP);
 		else if (str == L"RT_RCDATA")
-			str = L"RCData.ID";
+			str = MapIDType(IDTYPE_RCDATA);
 		else if (str == L"RT_HTML")
-			str = L"Html.ID";
+			str = MapIDType(IDTYPE_HTML);
 		else if (str == L"RT_MESSAGETABLE")
-			str = L"MsgTable.ID";
+			str = MapIDType(IDTYPE_MSGTABLE);
 	}
 }
 
@@ -1907,7 +1907,7 @@ MIdOrString ResourceTypeFromIDType(INT nIDTYPE_)
 MString GetAssoc(const MString& name)
 {
 	if (name == L"IDC_STATIC")
-		return L"Control.ID";
+		return MapIDType(IDTYPE_CONTROL);
 
 	MString ret;
 	MString prefix = name.substr(0, name.find(L'_') + 1);
@@ -1979,12 +1979,12 @@ MString GetAssoc(const MString& name)
 
 			if (ret.empty())
 			{
-				ret = g_db.GetName(L"RESOURCE.ID.TYPE", nIDTYPE_);
+				ret = MapIDType(nIDTYPE_);
 			}
 			else
 			{
 				ret += TEXT("/");
-				ret += g_db.GetName(L"RESOURCE.ID.TYPE", nIDTYPE_);
+				ret += MapIDType(nIDTYPE_);
 			}
 		}
 	}
