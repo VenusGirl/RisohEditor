@@ -147,6 +147,14 @@ public:
 		if (text.empty())
 			return;
 
+		if (text == TEXT("\"\""))
+		{
+			text = L"0";
+			value = 0;
+			numeric = true;
+			return;
+		}
+
 		if (text[0] == TEXT('"') || text[0] == TEXT('L'))
 			return;
 
@@ -291,7 +299,7 @@ public:
 
 		MString text1, text3;
 		auto nIDTYPE_ = g_db.IDTypeFromResType(entry->m_type);
-		if (entry->m_name.m_id)
+		if (!entry->m_name.is_str())
 		{
 			text1 = g_db.GetNameOfIDTypeValue(nIDTYPE_, entry->m_name.m_id);
 			if (text1.empty() || g_settings.bHideID)

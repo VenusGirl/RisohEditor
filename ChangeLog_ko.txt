@@ -3,6 +3,7 @@
 
 - v.6.0.3 (2026-XX-YY)
     - Minor Localization.
+    - Fixed minor "Resource IDs"' bug.
 - v.6.0.2 (2026-07-03)
     - 폴란드어 번역이 개선되었습니다 (Fresta님 감사합니다).
     - "리소스 ID 목록"의 ID_BASE10 및 ID_BASE16 작업이 수정되었습니다.
