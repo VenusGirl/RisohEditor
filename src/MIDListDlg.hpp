@@ -311,7 +311,7 @@ public:
 			else
 			{
 				text1 = g_db.GetNameOfIDTypeValue(nIDTYPE_, entry->m_name.m_id);
-				if (text1.empty() && entry->m_type.m_id == (WORD)PtrToUlong(RT_DLGINIT))
+				if (text1.empty() && entry->m_type == RT_DLGINIT)
 					text1 = g_db.GetNameOfIDTypeValue(IDTYPE_DIALOG, entry->m_name.m_id);
 				if (text1.empty())
 					text1 = FormatByBase(entry->m_name.m_id);
