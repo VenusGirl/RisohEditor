@@ -3,6 +3,7 @@
 - v.6.0.3 (2026-XX-YY)
     - Minor Localization.
     - Fixed minor "Resource IDs"' bug.
+    - Correctly handling quoted resource names.
 - v. 6.0.2 (03.07.2026)
     - Migliorata traduzione in polacco (Polonia) (grazie, Fresta).
     - Corette azioni "Elenco ID risorse" ID_BASE10 e ID_BASE16.
