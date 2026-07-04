@@ -59,7 +59,7 @@ MStringW AccelRes::Dump(const MIdOrString &id_or_str) const
 {
 	MStringW ret;
 
-	if (id_or_str.m_id == 0)
+	if (id_or_str.is_str())
 	{
 		ret += id_or_str.str();
 	}
