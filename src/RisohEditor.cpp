@@ -11957,6 +11957,9 @@ PCSTR MMainWnd::GetWordHelp(const MStringW& str)
 	if (str == L"VERSIONINFO")
 		return "https://learn.microsoft.com/en-us/windows/win32/menurc/versioninfo-resource";
 
+	if (str == L"MESSAGETABLEDX")
+		return "https://github.com/katahiromz/RisohEditor/blob/master/mcdx/MESSAGETABLEDX.md";
+
 	ConstantsDB::ValueType value;
 	BOOL bOK = g_db.GetValueOfName(str.c_str(), value);
 	if (bOK)
