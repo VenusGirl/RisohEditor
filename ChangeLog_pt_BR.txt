@@ -6,8 +6,8 @@
     - Tratamento correto de nomes de recursos entre aspas. 
     - Melhoria na extração (dumping) de RT_VERSION. 
     - Adicionado "winres.h".
-    - Added "Item Help" feature.
-    - Omitting string table commas.
+    - Adicionado o recurso "Ajuda do Item". 
+    - Omissão de vírgulas na tabela de strings.
 - v.6.0.2 (2026-07-03)
     - Tradução aprimorada para polonês (Polônia) (obrigado, Fresta).
     - Corrigidas as ações ID_BASE10 e ID_BASE16 de "List of Resource IDs".

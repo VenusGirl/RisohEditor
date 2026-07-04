@@ -6,8 +6,8 @@
     - Corretta gestione nomi risorse tra virgolette.
     - Migliorato il dump di RT_VERSION. 
     - Aggiunto "winres.h".
-    - Added "Item Help" feature.
-    - Omitting string table commas.
+    - Aggiunta la funzione "Aiuto oggetto". 
+    - Omesse le virgole nella tabella delle stringhe.
 - v. 6.0.2 (03.07.2026)
     - Migliorata traduzione in polacco (Polonia) (grazie, Fresta).
     - Corrette azioni "Elenco ID risorse" ID_BASE10 e ID_BASE16.

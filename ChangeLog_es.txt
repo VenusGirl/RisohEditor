@@ -6,8 +6,8 @@
     - Gestión correcta de nombres de recursos entre comillas. 
     - Mejora en el volcado de RT_VERSION. 
     - Se ha añadido "winres.h".
-    - Added "Item Help" feature.
-    - Omitting string table commas.
+    - Se añadió la función de "Ayuda del objeto". 
+    - Se omiten las comas en la tabla de cadenas.
 - v.6.0.2 (2026-07-03)
     - Traducción mejorada al polaco (Polonia) (gracias, Fresta).
     - Se corrigieron las acciones ID_BASE10 e ID_BASE16 de la «Lista de ID de recursos».
