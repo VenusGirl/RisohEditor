@@ -193,7 +193,7 @@ IDR_POPUPMENUS MENU
         MENUITEM SEPARATOR
         MENUITEM "&Sil\tDel", ID_DELETERES
         MENUITEM SEPARATOR
-        MENUITEM "���ڂ̃w���v(&I)...", ID_TREEITEMHELP
+        MENUITEM "Öğe &Yardımı...\tF1", ID_TREEITEMHELP
     }
     POPUP "Açılır Pencere #1"
     {

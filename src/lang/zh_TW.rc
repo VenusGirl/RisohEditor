@@ -194,7 +194,7 @@ IDR_POPUPMENUS MENU
         MENUITEM SEPARATOR
         MENUITEM "刪除(&D)\tDel", ID_DELETERES
         MENUITEM SEPARATOR
-        MENUITEM "關於此項目的幫助(&I)...", ID_TREEITEMHELP
+        MENUITEM "關於此項目的幫助(&I)...\tF1", ID_TREEITEMHELP
     }
     POPUP "Popup #1"
     {

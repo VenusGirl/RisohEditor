@@ -192,7 +192,7 @@ IDR_POPUPMENUS MENU
         MENUITEM SEPARATOR
         MENUITEM "&Supprimer\tDel", ID_DELETERES
         MENUITEM SEPARATOR
-        MENUITEM "Aide &sur l'article...", ID_TREEITEMHELP
+        MENUITEM "Aide &sur l'article...\tF1", ID_TREEITEMHELP
     }
     POPUP "Apparaitre #1"
     {
