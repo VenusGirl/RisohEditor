@@ -2,11 +2,11 @@
 // 업데이트 내역
 
 - v.6.0.3 (2026-XX-YY)
-    - Finalizing the localization.
-    - Fixed minor "Resource IDs"' bug.
-    - Correctly handling quoted resource names.
-    - Improved RT_VERSION dumping.
-    - Added "winres.h".
+    - 현지화 작업 마무리. 
+    - 사소한 "Resource ID" 관련 버그 수정. 
+    - 따옴표로 감싼 리소스 이름 처리 방식 수정. 
+    - RT_VERSION 덤프 기능 개선. 
+    - "winres.h" 추가.
 - v.6.0.2 (2026-07-03)
     - 폴란드어 번역이 개선되었습니다 (Fresta님 감사합니다).
     - "리소스 ID 목록"의 ID_BASE10 및 ID_BASE16 작업이 수정되었습니다.

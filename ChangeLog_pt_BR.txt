@@ -1,11 +1,11 @@
 ﻿## HISTÓRICO
 
 - v.6.0.3 (2026-XX-YY)
-    - Finalizing the localization.
-    - Fixed minor "Resource IDs"' bug.
-    - Correctly handling quoted resource names.
-    - Improved RT_VERSION dumping.
-    - Added "winres.h".
+    - Finalizando a localização. 
+    - Corrigido um pequeno bug relacionado a "Resource IDs". 
+    - Tratamento correto de nomes de recursos entre aspas. 
+    - Melhoria na extração (dumping) de RT_VERSION. 
+    - Adicionado "winres.h".
 - v.6.0.2 (2026-07-03)
     - Tradução aprimorada para polonês (Polônia) (obrigado, Fresta).
     - Corrigidas as ações ID_BASE10 e ID_BASE16 de "List of Resource IDs".

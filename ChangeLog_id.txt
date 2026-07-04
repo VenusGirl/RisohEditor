@@ -1,11 +1,11 @@
 ﻿## SEJARAH
 
 - v.6.0.3 (2026-XX-YY)
-    - Finalizing the localization.
-    - Fixed minor "Resource IDs"' bug.
-    - Correctly handling quoted resource names.
-    - Improved RT_VERSION dumping.
-    - Added "winres.h".
+    - Menyelesaikan lokalisasi. 
+    - Memperbaiki bug kecil terkait "Resource ID". 
+    - Menangani nama sumber daya (resource names) yang diapit tanda kutip dengan benar. 
+    - Meningkatkan proses *dumping* RT_VERSION. 
+    - Menambahkan "winres.h".
 - v.6.0.2 (2026-07-03)
     - Terjemahan bahasa Polandia (Polandia) yang lebih baik (terima kasih, Fresta).
     - Memperbaiki tindakan ID_BASE10 dan ID_BASE16 pada "List of Resource IDs".
