@@ -11959,6 +11959,19 @@ PCSTR MMainWnd::GetWordHelp(const MStringW& str)
 
 	if (str == L"MESSAGETABLEDX")
 		return "https://github.com/katahiromz/RisohEditor/blob/master/mcdx/MESSAGETABLEDX.md";
+	if (str == L"VIRTKEY" || str == L"ASCII" || str == L"NOINVERT" || str == L"ALT" || str == L"SHIFT")
+		return "https://learn.microsoft.com/en-us/windows/win32/menurc/accelerators-resource";
+	if (str == L"SEPARATOR" || str == L"GRAYED" || str == L"CHECKED" || str == L"INACTIVE" ||
+		str == L"MENUBARBREAK" || str == L"MENUBREAK")
+	{
+		return "https://learn.microsoft.com/en-us/windows/win32/menurc/menuitem-statement";
+	}
+	if (str == L"FILEVERSION" || str == L"PRODUCTVERSION" || str == L"FILEFLAGSMASK" ||
+		str == L"FILEFLAGS" || str == L"FILEOS" || str == L"FILETYPE" ||
+		str == L"FILESUBTYPE")
+	{
+		return "https://learn.microsoft.com/en-us/windows/win32/menurc/versioninfo-resource";
+	}
 
 	ConstantsDB::ValueType value;
 	BOOL bOK = g_db.GetValueOfName(str.c_str(), value);
