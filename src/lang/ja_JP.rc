@@ -1388,7 +1388,7 @@ FILETYPE        VFT_APP
             VALUE "CompanyName", "片山博文MZ"
             VALUE "FileDescription", "リソーエディタ"
             VALUE "FileVersion", "6.0.3"
-            VALUE "LegalCopyright", "© 2017-2026 片山博文MZ. All rights reserved."
+            VALUE "LegalCopyright", "(C) 2017-2026 片山博文MZ. All rights reserved."
             VALUE "ProductName", "RisohEditor"
             VALUE "ProductVersion", "6.0.3"
         }
