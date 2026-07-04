@@ -11872,6 +11872,7 @@ static BOOL DoMsgCtrlA(MSG *pMsg)
 
 PCSTR MMainWnd::GetWordHelp(const MStringW& str)
 {
+	auto entry = g_res.get_entry();
 	if (str.empty())
 		return NULL;
 	if (str == L"ACCELERATORS")
@@ -11895,7 +11896,12 @@ PCSTR MMainWnd::GetWordHelp(const MStringW& str)
 	if (str == L"COMBOBOX")
 		return "https://learn.microsoft.com/en-us/windows/win32/menurc/combobox-control";
 	if (str == L"CONTROL")
-		return "https://learn.microsoft.com/en-us/windows/win32/menurc/control-control";
+	{
+		if (entry && entry->m_type == RT_DIALOG)
+			return "https://learn.microsoft.com/en-us/windows/win32/menurc/control-control";
+		if (entry && entry->m_type == RT_ACCELERATOR)
+			return "https://learn.microsoft.com/en-us/windows/win32/menurc/accelerators-resource";
+	}
 	if (str == L"CTEXT")
 		return "https://learn.microsoft.com/en-us/windows/win32/menurc/ctext-control";
 	if (str == L"CURSOR")
@@ -11959,13 +11965,16 @@ PCSTR MMainWnd::GetWordHelp(const MStringW& str)
 
 	if (str == L"MESSAGETABLEDX")
 		return "https://github.com/katahiromz/RisohEditor/blob/master/mcdx/MESSAGETABLEDX.md";
+
 	if (str == L"VIRTKEY" || str == L"ASCII" || str == L"NOINVERT" || str == L"ALT" || str == L"SHIFT")
 		return "https://learn.microsoft.com/en-us/windows/win32/menurc/accelerators-resource";
+
 	if (str == L"SEPARATOR" || str == L"GRAYED" || str == L"CHECKED" || str == L"INACTIVE" ||
 		str == L"MENUBARBREAK" || str == L"MENUBREAK")
 	{
 		return "https://learn.microsoft.com/en-us/windows/win32/menurc/menuitem-statement";
 	}
+
 	if (str == L"FILEVERSION" || str == L"PRODUCTVERSION" || str == L"FILEFLAGSMASK" ||
 		str == L"FILEFLAGS" || str == L"FILEOS" || str == L"FILETYPE" ||
 		str == L"FILESUBTYPE" || str == L"BLOCK" || str == L"VALUE")
