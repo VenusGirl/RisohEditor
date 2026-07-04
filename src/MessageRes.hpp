@@ -263,7 +263,11 @@ public:
 		}
 		else if (tableId.m_id != 1)
 		{
-			ret += mstr_dec_word(tableId.m_id);
+			auto name = g_db.GetNameOfResID(IDTYPE_MSGTABLE, tableId.m_id);
+			if (name.size())
+				ret += name;
+			else
+				ret += mstr_dec_word(tableId.m_id);
 			ret += WIDE(" ");
 		}
 		ret += WIDE("MESSAGETABLEDX\r\n");
