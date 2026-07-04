@@ -8550,6 +8550,8 @@ PCWSTR MMainWnd::GetTreeItemHelp(EntryBase *entry)
 		return L"https://learn.microsoft.com/en-us/windows/win32/menurc/stringtable-resource";
 	if (entry->m_type == RT_FONT)
 		return L"https://learn.microsoft.com/en-us/windows/win32/menurc/font-resource";
+	if (entry->m_type == RT_FONTDIR)
+		return L"https://learn.microsoft.com/en-us/windows/win32/menurc/resource-types";
 	if (entry->m_type == RT_ACCELERATOR)
 		return L"https://learn.microsoft.com/en-us/windows/win32/menurc/accelerators-resource";
 	if (entry->m_type == RT_RCDATA)
