@@ -147,10 +147,14 @@ void ReplaceFullWithHalf(MStringW& strText)
 
 BOOL IsFileWritable(LPCWSTR pszFileName)
 {
-	HANDLE hFile = CreateFileW(pszFileName, GENERIC_WRITE, 0, NULL,
-							   OPEN_EXISTING, 0, NULL);
+	HANDLE hFile = CreateFileW(pszFileName, GENERIC_WRITE,
+	                           FILE_SHARE_READ | FILE_SHARE_WRITE | FILE_SHARE_DELETE,
+	                           NULL, OPEN_EXISTING, 0, NULL);
+	if (hFile == INVALID_HANDLE_VALUE)
+		return FALSE;
+
 	CloseHandle(hFile);
-	return hFile != INVALID_HANDLE_VALUE;
+	return TRUE;
 }
 
 // Wait before file operation for virus checker
@@ -2836,7 +2840,9 @@ BOOL CheckLangComboBox(HWND hCmb3, LANGID& lang, LANG_TYPE type)
 	MStringW strLang = MWindowBase::GetWindowText(hCmb3);
 
 	// get the language ID from texts
-	lang = LangFromText(&strLang[0]);
+	WCHAR szPath[MAX_PATH];
+	StringCchCopyW(szPath, _countof(szPath), strLang.c_str());
+	lang = LangFromText(szPath);
 	if ((type != LANG_TYPE_1 || IsValidUILang(lang)) && lang != BAD_LANG)
 		return TRUE;	// success
 
@@ -3328,7 +3334,7 @@ MStringW GetRisohTemplate(const MIdOrString& type, const MIdOrString& name, LANG
 	const BYTE *pb = (const BYTE *)LockResource(hGlobal);
 
 	// ignore the BOM if any
-	if (memcmp(pb, "\xEF\xBB\xBF", 3) == 0)
+	if (cb >= 3 && pb && memcmp(pb, "\xEF\xBB\xBF", 3) == 0)
 	{
 		pb += 3;
 		cb -= 3;
