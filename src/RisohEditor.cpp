@@ -11968,7 +11968,7 @@ PCSTR MMainWnd::GetWordHelp(const MStringW& str)
 	}
 	if (str == L"FILEVERSION" || str == L"PRODUCTVERSION" || str == L"FILEFLAGSMASK" ||
 		str == L"FILEFLAGS" || str == L"FILEOS" || str == L"FILETYPE" ||
-		str == L"FILESUBTYPE")
+		str == L"FILESUBTYPE" || str == L"BLOCK" || str == L"VALUE")
 	{
 		return "https://learn.microsoft.com/en-us/windows/win32/menurc/versioninfo-resource";
 	}
