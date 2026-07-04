@@ -48,6 +48,8 @@ void AccelRes::Update()
 
 std::vector<BYTE> AccelRes::data() const
 {
+	if (m_entries.empty())
+		return std::vector<BYTE>();
 	size_t size = m_entries.size() * sizeof(entry_type);
 	const BYTE *pb = (const BYTE *)&m_entries[0];
 	return std::vector<BYTE>(pb, pb + size);
