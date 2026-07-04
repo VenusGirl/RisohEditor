@@ -9,6 +9,8 @@
 #undef min
 #undef max
 #include <algorithm>
+#include <cerrno>
+#include <cstdlib>
 
 enum LANG_TYPE
 {
@@ -112,6 +114,31 @@ inline MStringW GetListViewItemText(HWND hwndListView, INT iItem, INT iSubItem)
 		}
 	}
 	return str;
+}
+
+// Validate a string as a 32-bit signed or unsigned integer (for Help IDs).
+// Accepts signed range [-2147483648, 2147483647] and unsigned range [0, 4294967295].
+// Stores the two's-complement DWORD in *pValue if non-NULL and returns true on success.
+inline bool IsValidHelpIDText(const WCHAR *str, DWORD *pValue = NULL)
+{
+	if (!str || !*str) return false;
+
+	WCHAR *endp;
+	errno = 0;
+	LONGLONG val = wcstoll(str, &endp, 0);
+
+	if (errno == ERANGE) return false;
+	if (endp == str) return false; // No digits parsed
+
+	// Skip trailing whitespace; reject any other trailing chars
+	while (*endp == L' ' || *endp == L'\t') ++endp;
+	if (*endp) return false;
+
+	// Valid range: signed [-2147483648, 2147483647] or unsigned [0, 4294967295]
+	if (val < -2147483648LL || val > 4294967295LL) return false;
+
+	if (pValue) *pValue = (DWORD)val;
+	return true;
 }
 
 BOOL CheckCommand(MString strCommand);
