@@ -201,7 +201,7 @@ struct EntryBase
 	// get the resource type label
 	MStringW get_type_label() const
 	{
-		if (!m_type.m_id)
+		if (m_type.is_str())
 			return m_type.m_str;    // string name type
 
 		// it was integer name type
