@@ -194,6 +194,8 @@ IDR_POPUPMENUS MENU
         MENUITEM "테스트(&T)", ID_TEST
         MENUITEM SEPARATOR
         MENUITEM "삭제(&D)\tDel", ID_DELETERES
+        MENUITEM SEPARATOR
+        MENUITEM "항목 도움말(&I)...", ID_TREEITEMHELP
     }
     POPUP "Popup #1"
     {

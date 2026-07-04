@@ -6,6 +6,8 @@
     - Menangani nama sumber daya (resource names) yang diapit tanda kutip dengan benar. 
     - Meningkatkan proses *dumping* RT_VERSION. 
     - Menambahkan "winres.h".
+    - Added "Item Help" feature.
+    - Omitting string table commas.
 - v.6.0.2 (2026-07-03)
     - Terjemahan bahasa Polandia (Polandia) yang lebih baik (terima kasih, Fresta).
     - Memperbaiki tindakan ID_BASE10 dan ID_BASE16 pada "List of Resource IDs".

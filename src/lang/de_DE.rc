@@ -191,6 +191,8 @@ IDR_POPUPMENUS MENU
         MENUITEM "&Test machen", ID_TEST
         MENUITEM SEPARATOR
         MENUITEM "&Löschen\tDel", ID_DELETERES
+        MENUITEM SEPARATOR
+        MENUITEM "Art&ikelhilfe...", ID_TREEITEMHELP
     }
     POPUP "Pop-up #1"
     {

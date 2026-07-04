@@ -195,6 +195,8 @@ IDR_POPUPMENUS MENU
         MENUITEM "テストする(&T)", ID_TEST
         MENUITEM SEPARATOR
         MENUITEM "削除(&D)\tDel", ID_DELETERES
+        MENUITEM SEPARATOR
+        MENUITEM "項目のヘルプ(&I)...", ID_TREEITEMHELP
     }
     POPUP "ポップアップ #1"
     {

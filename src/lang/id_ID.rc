@@ -194,6 +194,8 @@ IDR_POPUPMENUS MENU
         MENUITEM "Lakukan &Tes", ID_TEST
         MENUITEM SEPARATOR
         MENUITEM "Ha&pus\tDel", ID_DELETERES
+        MENUITEM SEPARATOR
+        MENUITEM "Bantuan &Item...", ID_TREEITEMHELP
     }
     POPUP "Popup #1"
     {

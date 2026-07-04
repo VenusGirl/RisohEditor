@@ -3359,6 +3359,10 @@ void MMainWnd::OnContextMenu(HWND hwnd, HWND hwndContext, UINT xPos, UINT yPos)
 	if (hMenu == NULL || hSubMenu == NULL)
 		return;
 
+	EntryBase *entry = g_res.get_entry();
+	if (!entry || !GetTreeItemHelp(entry))
+		::EnableMenuItem(hSubMenu, ID_TREEITEMHELP, MF_GRAYED);
+
 	// convert the client coordinates to the screen coordinates
 	ClientToScreen(hwndContext, &pt);
 
@@ -8530,6 +8534,65 @@ void MMainWnd::OnEditLabel(HWND hwnd)
 	TreeView_EditLabel(m_hwndTV, hItem);
 }
 
+PCWSTR MMainWnd::GetTreeItemHelp(EntryBase *entry)
+{
+	if (entry->m_type == RT_CURSOR)
+		return L"https://learn.microsoft.com/en-us/windows/win32/menurc/resource-types";
+	if (entry->m_type == RT_BITMAP)
+		return L"https://learn.microsoft.com/en-us/windows/win32/menurc/bitmap-resource";
+	if (entry->m_type == RT_ICON)
+		return L"https://learn.microsoft.com/en-us/windows/win32/menurc/resource-types";
+	if (entry->m_type == RT_MENU)
+		return L"https://learn.microsoft.com/en-us/windows/win32/menurc/menu-resource";
+	if (entry->m_type == RT_DIALOG)
+		return L"https://learn.microsoft.com/en-us/windows/win32/menurc/dialog-resource";
+	if (entry->m_type == RT_STRING)
+		return L"https://learn.microsoft.com/en-us/windows/win32/menurc/stringtable-resource";
+	if (entry->m_type == RT_FONT)
+		return L"https://learn.microsoft.com/en-us/windows/win32/menurc/font-resource";
+	if (entry->m_type == RT_ACCELERATOR)
+		return L"https://learn.microsoft.com/en-us/windows/win32/menurc/accelerators-resource";
+	if (entry->m_type == RT_RCDATA)
+		return L"https://learn.microsoft.com/en-us/windows/win32/menurc/rcdata-resource";
+	if (entry->m_type == RT_MESSAGETABLE)
+		return L"https://learn.microsoft.com/en-us/windows/win32/menurc/messagetable-resource";
+	if (entry->m_type == RT_GROUP_CURSOR)
+		return L"https://learn.microsoft.com/en-us/windows/win32/menurc/cursor-resource";
+	if (entry->m_type == RT_GROUP_ICON)
+		return L"https://learn.microsoft.com/en-us/windows/win32/menurc/icon-resource";
+	if (entry->m_type == RT_VERSION)
+		return L"https://learn.microsoft.com/en-us/windows/win32/menurc/versioninfo-resource";
+	if (entry->m_type == RT_DLGINCLUDE)
+		return L"https://learn.microsoft.com/en-us/windows/win32/menurc/resource-types";
+	if (entry->m_type == RT_PLUGPLAY)
+		return L"https://learn.microsoft.com/en-us/windows/win32/menurc/resource-types";
+	if (entry->m_type == RT_VXD)
+		return L"https://learn.microsoft.com/en-us/windows/win32/menurc/resource-types";
+	if (entry->m_type == RT_ANICURSOR)
+		return L"https://learn.microsoft.com/en-us/windows/win32/menurc/resource-types";
+	if (entry->m_type == RT_ANIICON)
+		return L"https://learn.microsoft.com/en-us/windows/win32/menurc/resource-types";
+	if (entry->m_type == RT_HTML)
+		return L"https://learn.microsoft.com/en-us/windows/win32/menurc/html-resource";
+	if (entry->m_type == RT_MANIFEST)
+		return L"https://learn.microsoft.com/en-us/windows/win32/menurc/resource-types";
+	if (entry->m_type == RT_DLGINIT)
+		return L"https://learn.microsoft.com/en-us/cpp/mfc/tn024-mfc-defined-messages-and-resources?view=msvc-170#rt_dlginit-resource-format";
+	return NULL;
+}
+
+void MMainWnd::OnTreeItemHelp(HWND hwnd)
+{
+	HTREEITEM hItem = TreeView_GetSelection(m_hwndTV);
+	EntryBase *entry = g_res.get_entry();
+	if (!entry)
+		return;
+
+	PCWSTR pszHelp = GetTreeItemHelp(entry);
+	if (pszHelp)
+		ShellExecuteW(hwnd, NULL, pszHelp, NULL, NULL, SW_SHOWNORMAL);
+}
+
 // the predefined macro dialog
 void MMainWnd::OnPredefMacros(HWND hwnd)
 {
@@ -9495,6 +9558,9 @@ void MMainWnd::OnCommand(HWND hwnd, int id, HWND hwndCtl, UINT codeNotify)
 		break;
 	case ID_OPENREADMEPL:
 		OnOpenLocalFile(hwnd, L"README_pl.txt");
+		break;
+	case ID_TREEITEMHELP:
+		OnTreeItemHelp(hwnd);
 		break;
 	default:
 		bUpdateStatus = FALSE;

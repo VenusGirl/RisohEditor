@@ -191,6 +191,8 @@ IDR_POPUPMENUS MENU
         MENUITEM "效果测试(&T)", ID_TEST
         MENUITEM SEPARATOR
         MENUITEM "删除(&D)\tDel", ID_DELETERES
+        MENUITEM SEPARATOR
+        MENUITEM "关于此项目的帮助(&I)...", ID_TREEITEMHELP
     }
     POPUP "Popup #1"
     {

@@ -485,6 +485,7 @@ protected:
 	void OnDialogFontSubst(HWND hwnd);
 	void OnHelp(HWND hwnd);
 	void OnNextPane(HWND hwnd, BOOL bNext);
+	void OnTreeItemHelp(HWND hwnd);
 
 	// find/replace
 	void OnFind(HWND hwnd);
@@ -505,6 +506,7 @@ protected:
 	std::wstring ParseVersionFile(LPCWSTR pszFile, std::wstring& url) const;
 	void OnInternalTest(HWND hwnd);
 	void OnGoToLine(HWND hwnd);
+	PCWSTR GetTreeItemHelp(EntryBase *entry);
 };
 
 extern MMainWnd *s_pMainWnd;

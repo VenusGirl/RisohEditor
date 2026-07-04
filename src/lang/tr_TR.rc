@@ -192,6 +192,8 @@ IDR_POPUPMENUS MENU
         MENUITEM "&Test Yap", ID_TEST
         MENUITEM SEPARATOR
         MENUITEM "&Sil\tDel", ID_DELETERES
+        MENUITEM SEPARATOR
+        MENUITEM "€–Ú‚Ìƒwƒ‹ƒv(&I)...", ID_TREEITEMHELP
     }
     POPUP "AÃ§Ä±lÄ±r Pencere #1"
     {

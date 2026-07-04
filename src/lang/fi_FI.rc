@@ -191,6 +191,8 @@ IDR_POPUPMENUS MENU
         MENUITEM "&Testaa", ID_TEST
         MENUITEM SEPARATOR
         MENUITEM "&Poista\tDel", ID_DELETERES
+        MENUITEM SEPARATOR
+        MENUITEM "&Esineapu...", ID_TREEITEMHELP
     }
     POPUP "Popup #1"
     {

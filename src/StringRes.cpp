@@ -119,7 +119,7 @@ StringRes::Dump()
 			ret += g_db.GetNameOfResID(IDTYPE_STRING, IDTYPE_PROMPT, pair.first);
 		}
 
-		ret += L", \"";
+		ret += L" \"";
 		ret += mstr_escape_with_wrap(pair.second);
 		ret += L"\"\r\n";
 	}
