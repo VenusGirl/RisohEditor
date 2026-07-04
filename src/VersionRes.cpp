@@ -165,39 +165,78 @@ VersionRes::Dump(const MIdOrString& name) const
 		LOWORD(m_fixed.dwProductVersionLS));
 	ret += line;
 
+	// FILEOS
 	dwValue = m_fixed.dwFileOS;
-	str = g_db.DumpValue(L"VOS_", dwValue);
-	StringCchPrintfW(line, _countof(line), L"FILEOS          %s\r\n", str.c_str());
+	if (g_settings.bHideID)
+	{
+		StringCchPrintfW(line, _countof(line), L"FILEOS          0x%lX\r\n", dwValue);
+	}
+	else
+	{
+		str = g_db.DumpValue(L"VOS_", dwValue);
+		StringCchPrintfW(line, _countof(line), L"FILEOS          %s\r\n", str.c_str());
+	}
 	ret += line;
 
+	// FILETYPE
 	dwValue = m_fixed.dwFileType;
-	str = g_db.DumpValue(L"VFT_", dwValue);
-	StringCchPrintfW(line, _countof(line), L"FILETYPE        %s\r\n", str.c_str());
+	if (g_settings.bHideID)
+	{
+		StringCchPrintfW(line, _countof(line), L"FILETYPE        0x%lX\r\n", dwValue);
+	}
+	else
+	{
+		str = g_db.DumpValue(L"VFT_", dwValue);
+		StringCchPrintfW(line, _countof(line), L"FILETYPE        %s\r\n", str.c_str());
+	}
 	ret += line;
 
+	// FILESUBTYPE
 	dwValue = m_fixed.dwFileSubtype;
 	if (dwValue)
 	{
-		if (m_fixed.dwFileType == VFT_DRV)
-			str = g_db.DumpValue(L"VFT2_DRV_", dwValue);
-		else if (m_fixed.dwFileType == VFT_FONT)
-			str = g_db.DumpValue(L"VFT2_FONT_", dwValue);
+		if (g_settings.bHideID)
+		{
+			StringCchPrintfW(line, _countof(line), L"FILESUBTYPE     0x%lX\r\n", dwValue);
+		}
 		else
-			str = g_db.DumpValue(L"VFT2_others", dwValue);
-		StringCchPrintfW(line, _countof(line), L"FILESUBTYPE     %s\r\n", str.c_str());
+		{
+			if (m_fixed.dwFileType == VFT_DRV)
+				str = g_db.DumpValue(L"VFT2_DRV_", dwValue);
+			else if (m_fixed.dwFileType == VFT_FONT)
+				str = g_db.DumpValue(L"VFT2_FONT_", dwValue);
+			else
+				str = g_db.DumpValue(L"VFT2_others", dwValue);
+			StringCchPrintfW(line, _countof(line), L"FILESUBTYPE     %s\r\n", str.c_str());
+		}
 		ret += line;
 	}
 
+	// FILEFLAGSMASK, FILEFLAGS
 	if (m_fixed.dwFileFlagsMask | m_fixed.dwFileFlags)
 	{
 		dwValue = m_fixed.dwFileFlagsMask;
-		str = g_db.DumpBitFieldOrZero(L"VS_FF_", dwValue);
-		StringCchPrintfW(line, _countof(line), L"FILEFLAGSMASK   %s\r\n", str.c_str());
+		if (g_settings.bHideID)
+		{
+			StringCchPrintfW(line, _countof(line), L"FILEFLAGSMASK   0x%lX\r\n", dwValue);
+		}
+		else
+		{
+			str = g_db.DumpBitFieldOrZero(L"VS_FF_", dwValue);
+			StringCchPrintfW(line, _countof(line), L"FILEFLAGSMASK   %s\r\n", str.c_str());
+		}
 		ret += line;
 
 		dwValue = m_fixed.dwFileFlags;
-		str = g_db.DumpBitFieldOrZero(L"VS_FF_", dwValue);
-		StringCchPrintfW(line, _countof(line), L"FILEFLAGS       %s\r\n", str.c_str());
+		if (g_settings.bHideID)
+		{
+			StringCchPrintfW(line, _countof(line), L"FILEFLAGS       0x%lX\r\n", dwValue);
+		}
+		else
+		{
+			str = g_db.DumpBitFieldOrZero(L"VS_FF_", dwValue);
+			StringCchPrintfW(line, _countof(line), L"FILEFLAGS       %s\r\n", str.c_str());
+		}
 		ret += line;
 	}
 
