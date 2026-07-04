@@ -8595,7 +8595,7 @@ PCSTR MMainWnd::GetTreeItemHelp(EntryBase *entry)
 	if (entry->m_type == L"WAVE")
 		return "https://en.wikipedia.org/wiki/WAV";
 	if (entry->m_type == L"MP3")
-		return "https://simple.wikipedia.org/wiki/MP3";
+		return "https://en.wikipedia.org/wiki/MP3";
 	if (entry->m_type == L"AVI")
 		return "https://en.wikipedia.org/wiki/Audio_Video_Interleave";
 	if (entry->m_type == L"TYPELIB")
