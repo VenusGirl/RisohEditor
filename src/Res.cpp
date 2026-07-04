@@ -17,6 +17,10 @@ struct AutoDeleteFileW
 	{
 		::DeleteFileW(m_file.c_str());
 	}
+	// No copying
+	AutoDeleteFileW(const AutoDeleteFileW&) = delete;
+	void operator=(const AutoDeleteFileW&) = delete;
+	AutoDeleteFileW(AutoDeleteFileW&&) = delete;
 };
 
 BOOL
