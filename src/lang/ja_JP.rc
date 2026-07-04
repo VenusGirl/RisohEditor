@@ -924,7 +924,7 @@ FONT 12, "MS UI Gothic"
 {
     ICON IDI_MAIN, -1, 5, 5, 0, 0
     LTEXT "...", stc1, 30, 5, 140, 50
-    CTEXT "https://katahiromz.web.fc2.com", stc2, 5, 60, 165, 12, SS_CENTERIMAGE | SS_NOTIFY | NOT WS_GROUP
+    CTEXT "https://katahiromz.fc2.page/risoheditor/", stc2, 5, 60, 165, 12, SS_CENTERIMAGE | SS_NOTIFY | NOT WS_GROUP
     CONTROL "...", edt1, "EDIT", ES_READONLY | ES_AUTOHSCROLL | ES_AUTOVSCROLL | ES_MULTILINE | WS_BORDER | WS_VSCROLL | WS_HSCROLL, 5, 75, 165, 50
     DEFPUSHBUTTON "OK", IDOK, 55, 130, 60, 14
 }
