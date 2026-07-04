@@ -6,7 +6,7 @@
     - Tratamento correto de nomes de recursos entre aspas. 
     - Melhoria na extração (dumping) de RT_VERSION. 
     - Adicionado "winres.h".
-    - Adicionado o recurso "Ajuda do Item". 
+    - Adicionado o recurso "Ajuda do Item" à visualização em árvore.
     - Omissão de vírgulas na tabela de strings.
 - v.6.0.2 (2026-07-03)
     - Tradução aprimorada para polonês (Polônia) (obrigado, Fresta).

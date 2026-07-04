@@ -6,7 +6,7 @@
     - Correctly handling quoted resource names.
     - Improved RT_VERSION dumping.
     - Added "winres.h".
-    - Added "Item Help" feature.
+    - Added "Item Help" feature on TreeView.
     - Omitting string table commas.
 - v.6.0.2 (2026-07-03)
     - Improved Polish (Poland) translation (thanks, Fresta).
