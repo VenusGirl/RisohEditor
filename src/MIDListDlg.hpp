@@ -313,6 +313,8 @@ public:
 				text1 = g_db.GetNameOfIDTypeValue(nIDTYPE_, entry->m_name.m_id);
 				if (text1.empty() && entry->m_type == RT_DLGINIT)
 					text1 = g_db.GetNameOfIDTypeValue(IDTYPE_DIALOG, entry->m_name.m_id);
+				if (text1.empty() && entry->m_type == RT_TOOLBAR)
+					text1 = g_db.GetNameOfIDTypeValue(IDTYPE_BITMAP, entry->m_name.m_id);
 				if (text1.empty())
 					text1 = FormatByBase(entry->m_name.m_id);
 			}
