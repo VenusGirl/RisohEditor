@@ -1477,8 +1477,8 @@ BOOL EntrySet::copy_group_icon(EntryBase *entry, const MIdOrString& new_name, LA
 
 	// get the pointers of old and new entries
 	auto data = entry->m_data;
-	auto old_entries = (GRPCURSORDIRENTRY *)&(*entry)[sizeof(dir)];
-	auto new_entries = (GRPCURSORDIRENTRY *)&data[sizeof(dir)];
+	auto old_entries = (GRPICONDIRENTRY*)&(*entry)[sizeof(dir)];
+	auto new_entries = (GRPICONDIRENTRY*)&data[sizeof(dir)];
 
 	for (UINT i = 0; i < dir.idCount; ++i)
 	{
