@@ -9,6 +9,7 @@
     - Added "Item Help" feature on TreeView.
     - Omitting string table commas.
     - Supported context help (F1).
+    - Always using uppercase for resource ID strings.
 - v.6.0.2 (2026-07-03)
     - Improved Polish (Poland) translation (thanks, Fresta).
     - Fixed "List of Resource IDs" ID_BASE10 and ID_BASE16 actions.

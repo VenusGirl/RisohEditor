@@ -9,6 +9,7 @@
     - Adicionado o recurso "Ajuda do Item" à visualização em árvore.
     - Omissão de vírgulas na tabela de strings.
     - Suporte a ajuda sensível ao contexto (F1).
+    - Sempre utilize letras maiúsculas para strings de ID de recurso.
 - v.6.0.2 (2026-07-03)
     - Tradução aprimorada para polonês (Polônia) (obrigado, Fresta).
     - Corrigidas as ações ID_BASE10 e ID_BASE16 de "List of Resource IDs".

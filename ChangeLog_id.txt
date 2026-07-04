@@ -9,6 +9,7 @@
     - Menambahkan fitur "Bantuan Item" pada treeview.
     - Menghilangkan tanda koma pada tabel string.
     - Supporto per la guida contestuale (F1).
+    - Selalu gunakan huruf kapital untuk string ID sumber daya.
 - v.6.0.2 (2026-07-03)
     - Terjemahan bahasa Polandia (Polandia) yang lebih baik (terima kasih, Fresta).
     - Memperbaiki tindakan ID_BASE10 dan ID_BASE16 pada "List of Resource IDs".

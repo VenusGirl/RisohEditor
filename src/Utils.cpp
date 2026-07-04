@@ -2071,6 +2071,9 @@ void InitResNameComboBox(HWND hCmb, const MIdOrString& id, IDTYPE_ nIDTYPE_)
 		table = g_db.GetTableByPrefix(L"RESOURCE.ID", prefix);
 		for (auto& table_entry : table)
 		{
+			INT iItem = ComboBox_FindStringExact(hCmb, -1, table_entry.name.c_str());
+			if (iItem != CB_ERR)
+				continue;
 			// add a resource ID to combobox
 			INT i = ComboBox_AddString(hCmb, table_entry.name.c_str());
 			if (table_entry.value == id2.m_id)   // matched
@@ -2095,6 +2098,9 @@ void InitResNameComboBox(HWND hCmb, const MIdOrString& id, IDTYPE_ nIDTYPE_)
 		table = g_db.GetTableByPrefix(L"RESOURCE.ID", prefix);
 		for (auto& table_entry : table)
 		{
+			INT iItem = ComboBox_FindStringExact(hCmb, -1, table_entry.name.c_str());
+			if (iItem != CB_ERR)
+				continue;
 			// add the resource name to combobox
 			INT i = ComboBox_AddString(hCmb, table_entry.name.c_str());
 			if (table_entry.value == id2.m_id)   // matched
@@ -2102,6 +2108,20 @@ void InitResNameComboBox(HWND hCmb, const MIdOrString& id, IDTYPE_ nIDTYPE_)
 				ComboBox_SetCurSel(hCmb, i);	// selected
 				SetWindowTextW(hCmb, table_entry.name.c_str());  // set the text
 			}
+		}
+	}
+
+	MIdOrString rt = ResourceTypeFromIDType(nIDTYPE_);
+	if (!rt.is_null())
+	{
+		EntrySet found;
+		g_res.search(found, ET_LANG, rt, BAD_NAME, BAD_LANG);
+		for (auto e : found)
+		{
+			INT i = ComboBox_FindStringExact(hCmb, -1, e->m_name.c_str());
+			if (i != CB_ERR)
+				continue;
+			ComboBox_AddString(hCmb, e->m_name.c_str());
 		}
 	}
 }
@@ -2951,6 +2971,10 @@ BOOL CheckNameComboBox(HWND hCmb2, MIdOrString& name)
 
 	// trim
 	mstr_trim(str);
+
+	// Use uppercase
+	if (str.size())
+		CharUpperW(&str[0]);
 
 	if (str.empty()) // an empty string
 	{

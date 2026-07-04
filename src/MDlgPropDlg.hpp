@@ -192,14 +192,7 @@ public:
 
 		SetDlgItemInt(hwnd, edt5, m_dialog_res.m_point_size, TRUE);
 
-		MString strMenu;
-		if (m_dialog_res.m_menu.empty())
-			;
-		else if (m_dialog_res.m_menu.is_int())
-			strMenu = g_db.GetNameOfResID(IDTYPE_MENU, m_dialog_res.m_menu.m_id);
-		else
-			strMenu = m_dialog_res.m_menu.str();
-		SetDlgItemTextW(hwnd, cmb6, strMenu.c_str());
+		InitResNameComboBox(GetDlgItem(hwnd, cmb6), m_dialog_res.m_menu, IDTYPE_MENU);
 		SubclassChildDx(m_cmb6, cmb6);
 
 		InitTables(TEXT("DIALOG"));
