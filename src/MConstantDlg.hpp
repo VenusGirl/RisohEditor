@@ -22,13 +22,11 @@ class MConstantDlg : public MDialogBase
 {
 public:
 	MComboBoxAutoComplete m_cmb1;
+	MStringW m_str;
 
-	MConstantDlg() : MDialogBase(IDD_CONSTANT)
+	MConstantDlg(PCWSTR text = L"") : MDialogBase(IDD_CONSTANT)
 	{
-	}
-
-	virtual ~MConstantDlg()
-	{
+		m_str = text;
 	}
 
 	BOOL OnInitDialog(HWND hwnd, HWND hwndFocus, LPARAM lParam)
@@ -36,6 +34,12 @@ public:
 		HWND hCmb1 = GetDlgItem(hwnd, cmb1);
 		InitConstantComboBox(hCmb1);
 		SubclassChildDx(m_cmb1, cmb1);
+
+		if (m_str.size())
+		{
+			ComboBox_SetText(m_cmb1, m_str.c_str());
+			m_cmb1.OnEditChange();
+		}
 
 		CenterWindowDx();
 		return TRUE;

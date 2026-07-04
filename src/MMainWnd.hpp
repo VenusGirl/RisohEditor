@@ -507,6 +507,8 @@ protected:
 	void OnInternalTest(HWND hwnd);
 	void OnGoToLine(HWND hwnd);
 	PCSTR GetTreeItemHelp(EntryBase *entry);
+	void DoWordHelp(const MStringW& str);
+	PCSTR GetWordHelp(const MStringW& str);
 };
 
 extern MMainWnd *s_pMainWnd;

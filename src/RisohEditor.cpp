@@ -11870,6 +11870,112 @@ static BOOL DoMsgCtrlA(MSG *pMsg)
 	return FALSE;
 }
 
+PCSTR MMainWnd::GetWordHelp(const MStringW& str)
+{
+	if (str.empty())
+		return NULL;
+	if (str == L"ACCELERATORS")
+		return "https://learn.microsoft.com/en-us/windows/win32/menurc/accelerators-resource";
+	if (str == L"AUTO3STATE")
+		return "https://learn.microsoft.com/en-us/windows/win32/menurc/auto3state-control";
+	if (str == L"AUTOCHECKBOX")
+		return "https://learn.microsoft.com/en-us/windows/win32/menurc/autocheckbox-control";
+	if (str == L"AUTORADIOBUTTON")
+		return "https://learn.microsoft.com/en-us/windows/win32/menurc/autoradiobutton-control";
+	if (str == L"BITMAP")
+		return "https://learn.microsoft.com/en-us/windows/win32/menurc/bitmap-resource";
+	if (str == L"CAPTION")
+		return "https://learn.microsoft.com/en-us/windows/win32/menurc/caption-statement";
+	if (str == L"CHARACTERISTICS")
+		return "https://learn.microsoft.com/en-us/windows/win32/menurc/characteristics-statement";
+	if (str == L"CHECKBOX")
+		return "https://learn.microsoft.com/en-us/windows/win32/menurc/checkbox-control";
+	if (str == L"CLASS")
+		return "https://learn.microsoft.com/en-us/windows/win32/menurc/class-statement";
+	if (str == L"COMBOBOX")
+		return "https://learn.microsoft.com/en-us/windows/win32/menurc/combobox-control";
+	if (str == L"CONTROL")
+		return "https://learn.microsoft.com/en-us/windows/win32/menurc/control-control";
+	if (str == L"CTEXT")
+		return "https://learn.microsoft.com/en-us/windows/win32/menurc/ctext-control";
+	if (str == L"CURSOR")
+		return "https://learn.microsoft.com/en-us/windows/win32/menurc/cursor-resource";
+	if (str == L"DEFPUSHBUTTON")
+		return "https://learn.microsoft.com/en-us/windows/win32/menurc/defpushbutton-control";
+	if (str == L"DIALOG")
+		return "https://learn.microsoft.com/en-us/windows/win32/menurc/dialog-resource";
+	if (str == L"DIALOGEX")
+		return "https://learn.microsoft.com/en-us/windows/win32/menurc/dialogex-resource";
+	if (str == L"EDITTEXT")
+		return "https://learn.microsoft.com/en-us/windows/win32/menurc/edittext-control";
+	if (str == L"EXSTYLE")
+		return "https://learn.microsoft.com/en-us/windows/win32/menurc/exstyle-statement";
+	if (str == L"FONT")
+		return "https://learn.microsoft.com/en-us/windows/win32/menurc/font-statement";
+	if (str == L"GROUPBOX")
+		return "https://learn.microsoft.com/en-us/windows/win32/menurc/groupbox-control";
+	if (str == L"HTML")
+		return "https://learn.microsoft.com/en-us/windows/win32/menurc/html-resource";
+	if (str == L"ICON")
+		return "https://learn.microsoft.com/en-us/windows/win32/menurc/icon-control";
+	if (str == L"LANGUAGE")
+		return "https://learn.microsoft.com/en-us/windows/win32/menurc/language-statement";
+	if (str == L"LISTBOX")
+		return "https://learn.microsoft.com/en-us/windows/win32/menurc/listbox-control";
+	if (str == L"LTEXT")
+		return "https://learn.microsoft.com/en-us/windows/win32/menurc/ltext-control";
+	if (str == L"MENU")
+		return "https://learn.microsoft.com/en-us/windows/win32/menurc/menu-resource";
+	if (str == L"MENUEX")
+		return "https://learn.microsoft.com/en-us/windows/win32/menurc/menuex-resource";
+	if (str == L"MENUITEM")
+		return "https://learn.microsoft.com/en-us/windows/win32/menurc/menuitem-statement";
+	if (str == L"MESSAGETABLE")
+		return "https://learn.microsoft.com/en-us/windows/win32/menurc/messagetable-resource";
+	if (str == L"POPUP")
+		return "https://learn.microsoft.com/en-us/windows/win32/menurc/popup-resource";
+	if (str == L"PUSHBOX")
+		return "https://learn.microsoft.com/en-us/windows/win32/menurc/pushbox-control";
+	if (str == L"PUSHBUTTON")
+		return "https://learn.microsoft.com/en-us/windows/win32/menurc/pushbutton-control";
+	if (str == L"RADIOBUTTON")
+		return "https://learn.microsoft.com/en-us/windows/win32/menurc/radiobutton-control";
+	if (str == L"RCDATA")
+		return "https://learn.microsoft.com/en-us/windows/win32/menurc/rcdata-resource";
+	if (str == L"RTEXT")
+		return "https://learn.microsoft.com/en-us/windows/win32/menurc/rtext-control";
+	if (str == L"SCROLLBAR")
+		return "https://learn.microsoft.com/en-us/windows/win32/menurc/scrollbar-control";
+	if (str == L"STATE3")
+		return "https://learn.microsoft.com/en-us/windows/win32/menurc/state3-control";
+	if (str == L"STRINGTABLE")
+		return "https://learn.microsoft.com/en-us/windows/win32/menurc/stringtable-resource";
+	if (str == L"STYLE")
+		return "https://learn.microsoft.com/en-us/windows/win32/menurc/style-statement";
+	if (str == L"VERSION")
+		return "https://learn.microsoft.com/en-us/windows/win32/menurc/version-statement";
+	if (str == L"VERSIONINFO")
+		return "https://learn.microsoft.com/en-us/windows/win32/menurc/versioninfo-resource";
+
+	ConstantsDB::ValueType value;
+	BOOL bOK = g_db.GetValueOfName(str.c_str(), value);
+	if (bOK)
+	{
+		MConstantDlg dialog(str.c_str());
+		dialog.DialogBoxDx(m_hwnd);
+		return NULL;
+	}
+
+	return NULL;
+}
+
+void MMainWnd::DoWordHelp(const MStringW& str)
+{
+	PCSTR pszHelp = GetWordHelp(str);
+	if (pszHelp)
+		ShellExecuteA(m_hwnd, NULL, pszHelp, NULL, NULL, SW_SHOWNORMAL);
+}
+
 // do the window messages
 void MMainWnd::DoMsg(MSG& msg)
 {
@@ -11914,6 +12020,35 @@ void MMainWnd::DoMsg(MSG& msg)
 			return;
 		if (::IsDialogMessage(m_id_list_dlg, &msg))
 			return;
+	}
+	if (msg.message == WM_KEYDOWN && msg.wParam == VK_F1 &&
+		GetKeyState(VK_CONTROL) >= 0 && GetKeyState(VK_SHIFT) >= 0 &&
+		GetKeyState(VK_MENU) >= 0)
+	{
+		if (::GetFocus() == m_hCodeEditor)
+		{
+			MStringW str = GetWindowText(m_hCodeEditor);
+			DWORD ichStart, ichEnd;
+			::SendMessage(m_hCodeEditor, EM_GETSEL, (WPARAM)&ichStart, (LPARAM)&ichEnd);
+			while (0 < ichStart && (mchr_is_alnum(str[ichStart - 1]) || str[ichStart - 1] == L'_'))
+				--ichStart;
+			while (ichEnd + 1 < str.size() && (mchr_is_alnum(str[ichEnd]) || str[ichEnd] == L'_'))
+				++ichEnd;
+			MStringW strSelected = str.substr(ichStart, ichEnd - ichStart);
+			if (strSelected.size())
+			{
+				SendMessageW(m_hCodeEditor, EM_SETSEL, ichStart, ichEnd);
+				DoWordHelp(strSelected);
+			}
+		}
+		else if (::GetFocus() == m_hwndTV)
+		{
+			::PostMessageW(g_hMainWnd, WM_COMMAND, ID_TREEITEMHELP, 0);
+		}
+		else
+		{
+			::PostMessageW(g_hMainWnd, WM_COMMAND, ID_HELP, 0);
+		}
 	}
 
 	// close the find/replace dialog if any

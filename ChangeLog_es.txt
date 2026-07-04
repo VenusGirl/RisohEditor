@@ -8,6 +8,7 @@
     - Se ha añadido "winres.h".
     - Se añadió la función de "Ayuda del elemento" a la vista de árbol.
     - Se omiten las comas en la tabla de cadenas.
+    - Compatibilidad con ayuda contextual (F1).
 - v.6.0.2 (2026-07-03)
     - Traducción mejorada al polaco (Polonia) (gracias, Fresta).
     - Se corrigieron las acciones ID_BASE10 e ID_BASE16 de la «Lista de ID de recursos».
