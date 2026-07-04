@@ -88,6 +88,8 @@ VersionRes::DumpValue(WORD wType, const Var& value, int depth) const
 		{
 			const WCHAR *pch = reinterpret_cast<const WCHAR *>(&value.value[0]);
 			MStringW str(pch, value.value.size() / 2);
+			if (str.size() && str[str.size() - 1] == 0)
+				str.resize(str.size() - 1);
 			ret += L", ";
 			ret += mstr_quote_with_wrap(str);
 		}
@@ -140,8 +142,9 @@ VersionRes::DumpBlock(const Var& var, int depth) const
 MStringW
 VersionRes::Dump(const MIdOrString& name) const
 {
-	MStringW ret;
+	MStringW ret, str;
 	WCHAR line[MAX_PATH];
+	DWORD dwValue;
 
 	ret += name.str();
 	ret += L" VERSIONINFO\r\n";
@@ -162,14 +165,41 @@ VersionRes::Dump(const MIdOrString& name) const
 		LOWORD(m_fixed.dwProductVersionLS));
 	ret += line;
 
-	StringCchPrintfW(line, _countof(line), L"FILEOS          0x%04lX\r\n", m_fixed.dwFileOS);
+	dwValue = m_fixed.dwFileOS;
+	str = g_db.DumpValue(L"VOS_", dwValue);
+	StringCchPrintfW(line, _countof(line), L"FILEOS          %s\r\n", str.c_str());
 	ret += line;
 
-	StringCchPrintfW(line, _countof(line), L"FILETYPE        0x%X\r\n", m_fixed.dwFileType);
+	dwValue = m_fixed.dwFileType;
+	str = g_db.DumpValue(L"VFT_", dwValue);
+	StringCchPrintfW(line, _countof(line), L"FILETYPE        %s\r\n", str.c_str());
 	ret += line;
 
-	StringCchPrintfW(line, _countof(line), L"FILESUBTYPE     0x%X\r\n", m_fixed.dwFileSubtype);
-	ret += line;
+	dwValue = m_fixed.dwFileSubtype;
+	if (dwValue)
+	{
+		if (m_fixed.dwFileType == VFT_DRV)
+			str = g_db.DumpValue(L"VFT2_DRV_", dwValue);
+		else if (m_fixed.dwFileType == VFT_FONT)
+			str = g_db.DumpValue(L"VFT2_FONT_", dwValue);
+		else
+			str = g_db.DumpValue(L"VFT2_others", dwValue);
+		StringCchPrintfW(line, _countof(line), L"FILESUBTYPE     %s\r\n", str.c_str());
+		ret += line;
+	}
+
+	if (m_fixed.dwFileFlagsMask | m_fixed.dwFileFlags)
+	{
+		dwValue = m_fixed.dwFileFlagsMask;
+		str = g_db.DumpBitFieldOrZero(L"VS_FF_", dwValue);
+		StringCchPrintfW(line, _countof(line), L"FILEFLAGSMASK   %s\r\n", str.c_str());
+		ret += line;
+
+		dwValue = m_fixed.dwFileFlags;
+		str = g_db.DumpBitFieldOrZero(L"VS_FF_", dwValue);
+		StringCchPrintfW(line, _countof(line), L"FILEFLAGS       %s\r\n", str.c_str());
+		ret += line;
+	}
 
 	if (g_settings.bUseBeginEnd)
 		ret += L"BEGIN\r\n";
