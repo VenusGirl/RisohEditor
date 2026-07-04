@@ -6,7 +6,7 @@
     - Gestión correcta de nombres de recursos entre comillas. 
     - Mejora en el volcado de RT_VERSION. 
     - Se ha añadido "winres.h".
-    - Se añadió la función de "Ayuda del elemento" al TreeView.
+    - Se añadió la función de "Ayuda del elemento" a la vista de árbol.
     - Se omiten las comas en la tabla de cadenas.
 - v.6.0.2 (2026-07-03)
     - Traducción mejorada al polaco (Polonia) (gracias, Fresta).
