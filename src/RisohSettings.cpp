@@ -379,14 +379,14 @@ BOOL MMainWnd::LoadSettings(HWND hwnd)
 	if (g_settings.nRadTop == CW_USEDEFAULT)
 		g_settings.nRadLeft = CW_USEDEFAULT;
 
-	DWORD i, dwCount;
+	DWORD dwCount;
 	TCHAR szFormat[MAX_PATH], szFile[MAX_PATH];
 
 	// load the recently used files
 	keyRisoh.QueryDword(TEXT("FileCount"), dwCount);
 	if (dwCount > MAX_MRU)
 		dwCount = MAX_MRU;
-	for (i = 0; i < dwCount; ++i)
+	for (DWORD i = 0; i < dwCount; ++i)
 	{
 		StringCchPrintf(szFormat, _countof(szFormat), TEXT("File%lu"), i);
 		if (keyRisoh.QuerySz(szFormat, szFile, _countof(szFile)) == ERROR_SUCCESS)
