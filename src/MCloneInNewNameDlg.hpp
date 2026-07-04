@@ -76,7 +76,7 @@ public:
 		// for Names
 		HWND hCmb2 = GetDlgItem(hwnd, cmb2);
 		MIdOrString name;
-		if (!CheckNameComboBox(hCmb2, name))
+		if (!CheckNameComboBox(hCmb2, type, name))
 			return;
 
 		if (m_name == name)

@@ -73,7 +73,7 @@ BOOL CheckLangComboBox(HWND hCmb3, LANGID& lang, LANG_TYPE type);
 BOOL CheckLangComboBox(HWND hCmb3, LANGID& lang);
 MStringW TextFromLang(LANGID lang);
 BOOL CheckTypeComboBox(HWND hCmb1, MIdOrString& type);
-BOOL CheckNameComboBox(HWND hCmb2, MIdOrString& name);
+BOOL CheckNameComboBox(HWND hCmb2, const MIdOrString& type, MIdOrString& name);
 BOOL Edt1_CheckFile(HWND hEdt1, MStringW& file);
 MStringW GetKeyID(UINT wId);
 void Cmb1_InitVirtualKeys(HWND hCmb1);

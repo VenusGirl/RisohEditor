@@ -145,7 +145,7 @@ inline bool IsValidHelpIDText(const WCHAR *str, DWORD *pValue = NULL)
 BOOL CheckCommand(MString strCommand);
 BOOL CheckLangComboBox(HWND hCmb3, LANGID& lang);
 BOOL CheckLangComboBox(HWND hCmb3, LANGID& lang, LANG_TYPE type);
-BOOL CheckNameComboBox(HWND hCmb2, MIdOrString& name);
+BOOL CheckNameComboBox(HWND hCmb2, const MIdOrString& type, MIdOrString& name);
 BOOL CheckTypeComboBox(HWND hCmb1, MIdOrString& type);
 BOOL Cmb1_CheckKey(HWND hwnd, HWND hCmb1, BOOL bVirtKey, std::wstring& str);
 BOOL Edt1_CheckFile(HWND hEdt1, std::wstring& file);

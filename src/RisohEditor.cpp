@@ -10146,8 +10146,18 @@ TreeViewCompare(LPARAM lParam1, LPARAM lParam2, LPARAM lParamSort)
 }
 
 // change the name of the resource entries
-void MMainWnd::DoRenameEntry(LPWSTR pszText, EntryBase *entry, const MIdOrString& old_name, const MIdOrString& new_name)
+void MMainWnd::DoRenameEntry(LPWSTR pszText, EntryBase *entry, MIdOrString& old_name, MIdOrString& new_name)
 {
+	if (!entry)
+		return;
+
+	if (entry->m_type == L"RISOHTEMPLATE")
+	{
+		WORD wID = WORD(g_db.GetValue(L"RESOURCE", new_name.c_str()));
+		if (wID != 0)
+			new_name = wID;
+	}
+
 	// search the old named language entries
 	EntrySet found;
 	g_res.search(found, ET_LANG, entry->m_type, old_name);

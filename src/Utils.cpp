@@ -3047,7 +3047,7 @@ BOOL CheckTypeComboBox(HWND hCmb1, MIdOrString& type)
 }
 
 // verify the resource name combobox
-BOOL CheckNameComboBox(HWND hCmb2, MIdOrString& name)
+BOOL CheckNameComboBox(HWND hCmb2, const MIdOrString& type, MIdOrString& name)
 {
 	// get the combobox text
 	MStringW str = MWindowBase::GetWindowText(hCmb2);
@@ -3061,6 +3061,13 @@ BOOL CheckNameComboBox(HWND hCmb2, MIdOrString& name)
 	// Use uppercase
 	if (str.size())
 		CharUpperW(&str[0]);
+
+	if (type == L"RISOHTEMPLATE")
+	{
+		WORD wID = WORD(g_db.GetValue(L"RESOURCE", str.c_str()));
+		if (wID != 0)
+			str = std::to_wstring(wID);
+	}
 
 	if (str.empty()) // an empty string
 	{

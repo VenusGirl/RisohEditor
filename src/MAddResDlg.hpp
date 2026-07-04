@@ -151,8 +151,8 @@ public:
 		// check the name combobox cmb2
 		HWND hCmb2 = GetDlgItem(hwnd, cmb2);
 		MIdOrString name;
-		if (!Res_HasNoName(type) && !CheckNameComboBox(hCmb2, name))
-			return;     // failure
+		if (!Res_HasNoName(type) && !CheckNameComboBox(hCmb2, type, name))
+			return; // failure
 
 		// check the language combobox cmb3
 		HWND hCmb3 = GetDlgItem(hwnd, cmb3);
