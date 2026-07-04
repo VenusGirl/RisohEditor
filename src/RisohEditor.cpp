@@ -8534,74 +8534,74 @@ void MMainWnd::OnEditLabel(HWND hwnd)
 	TreeView_EditLabel(m_hwndTV, hItem);
 }
 
-PCWSTR MMainWnd::GetTreeItemHelp(EntryBase *entry)
+PCSTR MMainWnd::GetTreeItemHelp(EntryBase *entry)
 {
 	if (entry->m_type == RT_CURSOR)
-		return L"https://learn.microsoft.com/en-us/windows/win32/menurc/resource-types";
+		return "https://learn.microsoft.com/en-us/windows/win32/menurc/resource-types";
 	if (entry->m_type == RT_BITMAP)
-		return L"https://learn.microsoft.com/en-us/windows/win32/menurc/bitmap-resource";
+		return "https://learn.microsoft.com/en-us/windows/win32/menurc/bitmap-resource";
 	if (entry->m_type == RT_ICON)
-		return L"https://learn.microsoft.com/en-us/windows/win32/menurc/resource-types";
+		return "https://learn.microsoft.com/en-us/windows/win32/menurc/resource-types";
 	if (entry->m_type == RT_MENU)
-		return L"https://learn.microsoft.com/en-us/windows/win32/menurc/menu-resource";
+		return "https://learn.microsoft.com/en-us/windows/win32/menurc/menu-resource";
 	if (entry->m_type == RT_DIALOG)
-		return L"https://learn.microsoft.com/en-us/windows/win32/menurc/dialog-resource";
+		return "https://learn.microsoft.com/en-us/windows/win32/menurc/dialog-resource";
 	if (entry->m_type == RT_STRING)
-		return L"https://learn.microsoft.com/en-us/windows/win32/menurc/stringtable-resource";
+		return "https://learn.microsoft.com/en-us/windows/win32/menurc/stringtable-resource";
 	if (entry->m_type == RT_FONT)
-		return L"https://learn.microsoft.com/en-us/windows/win32/menurc/font-resource";
+		return "https://learn.microsoft.com/en-us/windows/win32/menurc/font-resource";
 	if (entry->m_type == RT_FONTDIR)
-		return L"https://learn.microsoft.com/en-us/windows/win32/menurc/resource-types";
+		return "https://learn.microsoft.com/en-us/windows/win32/menurc/resource-types";
 	if (entry->m_type == RT_ACCELERATOR)
-		return L"https://learn.microsoft.com/en-us/windows/win32/menurc/accelerators-resource";
+		return "https://learn.microsoft.com/en-us/windows/win32/menurc/accelerators-resource";
 	if (entry->m_type == RT_RCDATA)
-		return L"https://learn.microsoft.com/en-us/windows/win32/menurc/rcdata-resource";
+		return "https://learn.microsoft.com/en-us/windows/win32/menurc/rcdata-resource";
 	if (entry->m_type == RT_MESSAGETABLE)
-		return L"https://learn.microsoft.com/en-us/windows/win32/menurc/messagetable-resource";
+		return "https://learn.microsoft.com/en-us/windows/win32/menurc/messagetable-resource";
 	if (entry->m_type == RT_GROUP_CURSOR)
-		return L"https://learn.microsoft.com/en-us/windows/win32/menurc/cursor-resource";
+		return "https://learn.microsoft.com/en-us/windows/win32/menurc/cursor-resource";
 	if (entry->m_type == RT_GROUP_ICON)
-		return L"https://learn.microsoft.com/en-us/windows/win32/menurc/icon-resource";
+		return "https://learn.microsoft.com/en-us/windows/win32/menurc/icon-resource";
 	if (entry->m_type == RT_VERSION)
-		return L"https://learn.microsoft.com/en-us/windows/win32/menurc/versioninfo-resource";
+		return "https://learn.microsoft.com/en-us/windows/win32/menurc/versioninfo-resource";
 	if (entry->m_type == RT_DLGINCLUDE)
-		return L"https://learn.microsoft.com/en-us/windows/win32/menurc/resource-types";
+		return "https://learn.microsoft.com/en-us/windows/win32/menurc/resource-types";
 	if (entry->m_type == RT_PLUGPLAY)
-		return L"https://learn.microsoft.com/en-us/windows/win32/menurc/resource-types";
+		return "https://learn.microsoft.com/en-us/windows/win32/menurc/resource-types";
 	if (entry->m_type == RT_VXD)
-		return L"https://learn.microsoft.com/en-us/windows/win32/menurc/resource-types";
+		return "https://learn.microsoft.com/en-us/windows/win32/menurc/resource-types";
 	if (entry->m_type == RT_ANICURSOR)
-		return L"https://learn.microsoft.com/en-us/windows/win32/menurc/resource-types";
+		return "https://learn.microsoft.com/en-us/windows/win32/menurc/resource-types";
 	if (entry->m_type == RT_ANIICON)
-		return L"https://learn.microsoft.com/en-us/windows/win32/menurc/resource-types";
+		return "https://learn.microsoft.com/en-us/windows/win32/menurc/resource-types";
 	if (entry->m_type == RT_HTML)
-		return L"https://learn.microsoft.com/en-us/windows/win32/menurc/html-resource";
+		return "https://learn.microsoft.com/en-us/windows/win32/menurc/html-resource";
 	if (entry->m_type == RT_MANIFEST)
-		return L"https://learn.microsoft.com/en-us/windows/win32/menurc/resource-types";
+		return "https://learn.microsoft.com/en-us/windows/win32/menurc/resource-types";
 	if (entry->m_type == RT_DLGINIT)
-		return L"https://learn.microsoft.com/en-us/cpp/mfc/tn024-mfc-defined-messages-and-resources?view=msvc-170#rt_dlginit-resource-format";
+		return "https://learn.microsoft.com/en-us/cpp/mfc/tn024-mfc-defined-messages-and-resources?view=msvc-170#rt_dlginit-resource-format";
 	if (entry->m_type == L"PNG")
-		return L"https://en.wikipedia.org/wiki/PNG";
+		return "https://en.wikipedia.org/wiki/PNG";
 	if (entry->m_type == L"GIF")
-		return L"https://en.wikipedia.org/wiki/GIF";
+		return "https://en.wikipedia.org/wiki/GIF";
 	if (entry->m_type == L"JPEG" || entry->m_type == L"JPG")
-		return L"https://en.wikipedia.org/wiki/JPEG";
+		return "https://en.wikipedia.org/wiki/JPEG";
 	if (entry->m_type == L"TIFF" || entry->m_type == L"TIF")
-		return L"https://en.wikipedia.org/wiki/TIFF";
+		return "https://en.wikipedia.org/wiki/TIFF";
 	if (entry->m_type == L"EMF" || entry->m_type == L"ENHMETAFILE" || entry->m_type == L"ENHMETAPICT")
-		return L"https://en.wikipedia.org/wiki/Windows_Metafile#EMF";
+		return "https://en.wikipedia.org/wiki/Windows_Metafile#EMF";
 	if (entry->m_type == L"WMF")
-		return L"https://en.wikipedia.org/wiki/Windows_Metafile";
+		return "https://en.wikipedia.org/wiki/Windows_Metafile";
 	if (entry->m_type == L"WAVE")
-		return L"https://en.wikipedia.org/wiki/WAV";
+		return "https://en.wikipedia.org/wiki/WAV";
 	if (entry->m_type == L"MP3")
-		return L"https://simple.wikipedia.org/wiki/MP3";
+		return "https://simple.wikipedia.org/wiki/MP3";
 	if (entry->m_type == L"AVI")
-		return L"https://en.wikipedia.org/wiki/Audio_Video_Interleave";
+		return "https://en.wikipedia.org/wiki/Audio_Video_Interleave";
 	if (entry->m_type == L"TYPELIB")
-		return L"https://learn.microsoft.com/en-us/previous-versions/windows/desktop/automat/contents-of-a-type-library";
+		return "https://learn.microsoft.com/en-us/previous-versions/windows/desktop/automat/contents-of-a-type-library";
 	if (entry->m_type == L"TEXTINCLUDE")
-		return L"https://learn.microsoft.com/en-us/cpp/mfc/tn035-using-multiple-resource-files-and-header-files-with-visual-cpp#_mfcnotes_tn035_set_includes";
+		return "https://learn.microsoft.com/en-us/cpp/mfc/tn035-using-multiple-resource-files-and-header-files-with-visual-cpp#_mfcnotes_tn035_set_includes";
 	return NULL;
 }
 
@@ -8612,9 +8612,9 @@ void MMainWnd::OnTreeItemHelp(HWND hwnd)
 	if (!entry)
 		return;
 
-	PCWSTR pszHelp = GetTreeItemHelp(entry);
+	PCSTR pszHelp = GetTreeItemHelp(entry);
 	if (pszHelp)
-		ShellExecuteW(hwnd, NULL, pszHelp, NULL, NULL, SW_SHOWNORMAL);
+		ShellExecuteA(hwnd, NULL, pszHelp, NULL, NULL, SW_SHOWNORMAL);
 }
 
 // the predefined macro dialog
