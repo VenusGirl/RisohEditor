@@ -282,9 +282,7 @@ public:
 		MString strClass = GetDlgItemText(cmb2);
 		mstr_trim(strClass);
 		if (strClass[0] == TEXT('"'))
-		{
 			mstr_unquote(strClass);
-		}
 
 		MString strHelp = GetDlgItemText(cmb3);
 		ReplaceFullWithHalf(strHelp);
@@ -305,9 +303,9 @@ public:
 		mstr_trim(strMenu);
 		MIdOrString menu(strMenu.c_str());
 		if (menu.is_str() && g_db.HasResID(menu.c_str()))
-		{
 			menu = (WORD)g_db.GetResIDValue(menu.c_str());
-		}
+		if (menu.is_str())
+			CharUpperW(&menu.m_str[0]);
 
 		MString strStyle = GetDlgItemText(edt6);
 		ReplaceFullWithHalf(strStyle);
