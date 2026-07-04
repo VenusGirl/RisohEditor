@@ -3,18 +3,17 @@ FILEVERSION     0, 0, 0, 0
 PRODUCTVERSION  0, 0, 0, 0
 FILEOS          VOS_NT_WINDOWS32
 FILETYPE        VFT_APP
-FILESUBTYPE     VFT2_UNKNOWN
 {
     BLOCK "StringFileInfo"
     {
         BLOCK "042204E3"
         {
-            VALUE "CompanyName", "Моя компанія\0"
-            VALUE "FileDescription", "Моя заявка\0"
-            VALUE "FileVersion", "0.0\0"
-            VALUE "LegalCopyright", "Copyright (C) 2026 Моя компанія\0"
-            VALUE "ProductName", "Моя заявка\0"
-            VALUE "ProductVersion", "0.0\0"
+            VALUE "CompanyName", "Моя компанія"
+            VALUE "FileDescription", "Моя заявка"
+            VALUE "FileVersion", "0.0"
+            VALUE "LegalCopyright", "Copyright (C) 2026 Моя компанія"
+            VALUE "ProductName", "Моя заявка"
+            VALUE "ProductVersion", "0.0"
         }
     }
     BLOCK "VarFileInfo"
