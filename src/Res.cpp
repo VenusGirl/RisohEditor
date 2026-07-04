@@ -466,11 +466,11 @@ void EntrySet::delete_entry(EntryBase *entry)
 		{
 			on_delete_group_cursor(entry);
 		}
-		if (entry->m_type == RT_GROUP_ICON)
+		else if (entry->m_type == RT_GROUP_ICON)
 		{
 			on_delete_group_icon(entry);
 		}
-		if (entry->m_type == RT_DIALOG)
+		else if (entry->m_type == RT_DIALOG)
 		{
 			on_delete_dialog(entry);
 		}
@@ -1307,7 +1307,7 @@ EntrySet::on_insert_after(HTREEITEM hParent, EntryBase *entry, HTREEITEM hInsert
 	insert_struct.item.stateMask = 0;
 
 	entry->m_strLabel = get_label(entry);
-	insert_struct.item.pszText = &entry->m_strLabel[0];
+	insert_struct.item.pszText = const_cast<LPWSTR>(entry->m_strLabel.c_str());
 
 	insert_struct.item.lParam = (LPARAM)entry;
 	if (entry->m_et == ET_TYPE || entry->m_et == ET_NAME)
