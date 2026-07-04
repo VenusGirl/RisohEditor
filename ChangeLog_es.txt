@@ -10,6 +10,7 @@
     - Se omiten las comas en la tabla de cadenas.
     - Compatibilidad con ayuda contextual (F1).
     - Utilice siempre mayúsculas para las cadenas de ID de recurso.
+    - Se ha evitado la división por cero del analizador de macros.
 - v.6.0.2 (2026-07-03)
     - Traducción mejorada al polaco (Polonia) (gracias, Fresta).
     - Se corrigieron las acciones ID_BASE10 e ID_BASE16 de la «Lista de ID de recursos».
