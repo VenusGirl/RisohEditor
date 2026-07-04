@@ -212,9 +212,9 @@ VersionRes::Dump(const MIdOrString& name) const
 		ret += line;
 	}
 
-	// FILEFLAGSMASK, FILEFLAGS
 	if (m_fixed.dwFileFlagsMask | m_fixed.dwFileFlags)
 	{
+		// FILEFLAGSMASK
 		dwValue = m_fixed.dwFileFlagsMask;
 		if (g_settings.bHideID)
 		{
@@ -227,6 +227,7 @@ VersionRes::Dump(const MIdOrString& name) const
 		}
 		ret += line;
 
+		// FILEFLAGS
 		dwValue = m_fixed.dwFileFlags;
 		if (g_settings.bHideID)
 		{
