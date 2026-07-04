@@ -1,6 +1,7 @@
 // ToolbarTest.cpp --- A usage example of RT_TOOLBAR
 // Author: katahiromz
-// License: GPL3+
+// License: GPL-3 or later
+// See also: https://github.com/katahiromz/RisohEditor/blob/master/src/Toolbar.h
 #include <windows.h>
 #include <windowsx.h>
 #include <commctrl.h>
