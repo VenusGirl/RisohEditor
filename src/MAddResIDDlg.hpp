@@ -35,24 +35,25 @@ public:
 
 	BOOL OnInitDialog(HWND hwnd, HWND hwndFocus, LPARAM lParam)
 	{
-		ConstantsDB::TableType table;
-
 		const INT IDTYPE_default = IDTYPE_COMMAND;
 
-		INT i = 0;
-		for (auto& pair : (*g_pmapIDTypeToLocalized))
+		for (INT i = IDTYPE_UNKNOWN; i <= IDTYPE_MSGTABLE; ++i)
 		{
-			INT k = (INT)SendDlgItemMessage(hwnd, cmb1, CB_ADDSTRING, 0, (LPARAM)pair.second.c_str());
-			if (k == IDTYPE_default)
-			{
-				m_bChanging = TRUE;
-				SendDlgItemMessage(hwnd, cmb1, CB_SETCURSEL, k, 0);
-				m_bChanging = FALSE;
-			}
-			++i;
+			MStringW text;
+			auto it = g_pmapIDTypeToLocalized->find(i);
+			if (it != g_pmapIDTypeToLocalized->end())
+				text = it->second;
+			else
+				text = MapIDType(IDTYPE_(i));
+
+			SendDlgItemMessage(hwnd, cmb1, CB_ADDSTRING, 0, (LPARAM)text.c_str());
 		}
 
-		table = g_db.GetTable(L"RESOURCE.ID.PREFIX");
+		m_bChanging = TRUE;
+		SendDlgItemMessage(hwnd, cmb1, CB_SETCURSEL, IDTYPE_default, 0);
+		m_bChanging = FALSE;
+
+		ConstantsDB::TableType table = g_db.GetTable(L"RESOURCE.ID.PREFIX");
 		m_bChanging = TRUE;
 		SetDlgItemTextW(hwnd, edt1, table[IDTYPE_default].name.c_str());
 		m_bChanging = FALSE;

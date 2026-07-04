@@ -46,6 +46,8 @@ public:
 			SendDlgItemMessage(hwnd, scr1, UDM_SETRANGE32, SHRT_MIN, USHRT_MAX);
 		}
 
+		UpdateText(hwnd);
+
 		CenterWindowDx();
 		return TRUE;
 	}
@@ -104,6 +106,24 @@ public:
 		EndDialog(IDOK);
 	}
 
+	void UpdateText(HWND hwnd)
+	{
+		MString name = GetDlgItemText(hwnd, edt1);
+		mstr_trim(name);
+
+		MString prefix = name.substr(0, name.find(L'_') + 1);
+
+		std::vector<INT> indexes = GetPrefixIndexes(prefix);
+		if (indexes.size() == 1)
+		{
+			SetDlgItemText(hwnd, edt2, MapIDType(IDTYPE_(indexes[0])).c_str());
+		}
+		else
+		{
+			SetDlgItemText(hwnd, edt2, NULL);
+		}
+	}
+
 	void OnCommand(HWND hwnd, int id, HWND hwndCtl, UINT codeNotify)
 	{
 		switch (id)
@@ -117,27 +137,7 @@ public:
 		case edt1:
 			if (codeNotify == EN_CHANGE)
 			{
-				MString text = GetDlgItemText(hwnd, edt1);
-
-				ConstantsDB::TableType table;
-				table = g_db.GetTable(L"RESOURCE.ID.PREFIX");
-
-				INT i = 0;
-				for (auto& table_entry : table)
-				{
-					if (text.find(table_entry.name) == 0)
-					{
-						text = MapIDType(IDTYPE_(i));
-						SetDlgItemText(hwnd, edt2, text.c_str());
-						i = -1;
-						break;
-					}
-					++i;
-				}
-				if (i != -1)
-				{
-					SetDlgItemText(hwnd, edt2, NULL);
-				}
+				UpdateText(hwnd);
 			}
 			break;
 		}

@@ -725,7 +725,6 @@ public:
 			}
 			break;
 		case ID_DELETERESID:
-			for (;;)
 			{
 				iItem = ListView_GetNextItem(m_hLst1, -1, LVNI_ALL | LVNI_SELECTED);
 				if (iItem == -1)
@@ -733,6 +732,9 @@ public:
 
 				ListView_GetItemText(m_hLst1, iItem, 0, szText, _countof(szText));
 				MString str1 = szText;
+				if (str1.size() && mchr_is_digit(str1[0]))
+					break;
+
 				MStringA astr1 = MTextToAnsi(CP_ACP, szText).c_str();
 				ListView_GetItemText(m_hLst1, iItem, 2, szText, _countof(szText));
 
@@ -753,10 +755,9 @@ public:
 					MStringA astr2 = MTextToAnsi(CP_ACP, szText).c_str();
 					g_settings.removed_ids.insert(std::make_pair(astr1, astr2));
 				}
-
-				ListView_DeleteItem(m_hLst1, iItem);
 			}
 			UpdateItems();
+			OnCmb1(m_hwnd);
 			SendMessage(m_hMainWnd, WM_COMMAND, ID_UPDATEID, 0);
 			UpdateResHIfAsk();
 			break;
