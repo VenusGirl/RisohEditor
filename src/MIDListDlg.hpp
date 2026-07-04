@@ -669,7 +669,8 @@ public:
 			str1 = szText;
 			ListView_GetItemText(m_hLst1, iItem, 2, szText, _countof(szText));
 			str2 = szText;
-			if (szText[0] != TEXT('L') && szText[0] != TEXT('"'))
+			if (str1.size() && !mchr_is_digit(str1[0]) &&
+				str2.size() && str2[0] != TEXT('L') && str2[0] != TEXT('"'))
 			{
 				// Detect whether this row is a Help ID (wider 32-bit range)
 				TCHAR szType[MAX_PATH];

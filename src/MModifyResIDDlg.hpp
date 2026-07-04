@@ -55,7 +55,7 @@ public:
 		MString str1 = GetDlgItemText(hwnd, edt1);
 		ReplaceFullWithHalf(str1);
 		mstr_trim(str1);
-		if (str1.empty())
+		if (str1.empty() || mchr_is_digit(str1[0]))
 		{
 			HWND hEdt1 = GetDlgItem(hwnd, edt1);
 			Edit_SetSel(hEdt1, 0, -1);
@@ -63,6 +63,7 @@ public:
 			ErrorBoxDx(IDS_ENTERTEXT);
 			return;
 		}
+		CharUpperW(&str1[0]);
 		m_str1 = std::move(str1);
 
 		MString str3 = GetDlgItemText(hwnd, edt3);
