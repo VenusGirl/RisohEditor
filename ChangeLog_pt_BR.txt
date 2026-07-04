@@ -5,6 +5,7 @@
     - Fixed minor "Resource IDs"' bug.
     - Correctly handling quoted resource names.
     - Improved RT_VERSION dumping.
+    - Added "winres.h".
 - v.6.0.2 (2026-07-03)
     - Tradução aprimorada para polonês (Polônia) (obrigado, Fresta).
     - Corrigidas as ações ID_BASE10 e ID_BASE16 de "List of Resource IDs".
