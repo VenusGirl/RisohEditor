@@ -2,7 +2,7 @@
 
 - v.6.0.3 (2026-XX-YY)
     - Finalización de la localización. 
-    - Corregido un error menor en los "Resource IDs". 
+    - Corregido un error menor en los «Lista de ID de recursos».
     - Gestión correcta de nombres de recursos entre comillas. 
     - Mejora en el volcado de RT_VERSION. 
     - Se ha añadido "winres.h".
