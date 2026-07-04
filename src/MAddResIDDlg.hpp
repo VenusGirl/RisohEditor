@@ -181,12 +181,18 @@ public:
 				INT k = INT(SendMessage(hCmb1, CB_GETCURSEL, 0, 0));
 				if (k != -1)
 				{
-					ConstantsDB::TableType table;
-					table = g_db.GetTable(L"RESOURCE.ID.PREFIX");
+					ConstantsDB::TableType table = g_db.GetTable(L"RESOURCE.ID.PREFIX");
 
 					m_bChanging = TRUE;
 					SetDlgItemText(hwnd, edt1, table[k].name.c_str());
 					m_bChanging = FALSE;
+
+					MString strType = GetComboBoxLBText(hCmb1, k);
+					BOOL bIsHelp = (UnMapIDType(strType) == IDTYPE_HELP);
+					if (bIsHelp)
+						SendDlgItemMessage(hwnd, scr1, UDM_SETRANGE32, (WPARAM)INT_MIN, (LPARAM)UINT_MAX);
+					else
+						SendDlgItemMessage(hwnd, scr1, UDM_SETRANGE32, SHRT_MIN, USHRT_MAX);
 				}
 			}
 			break;
