@@ -1,6 +1,7 @@
 ﻿## HISTÓRICO
 
 - v.6.0.3 (2026-XX-YY)
+    - Permitido o uso de números inteiros de 32 bits (com ou sem sinal) para o ID de Ajuda na caixa de diálogo "IDs de Recurso".
     - Finalizando a localização. 
     - Corrigido um pequeno bug relacionado a "Resource IDs". 
     - Tratamento correto de nomes de recursos entre aspas. 

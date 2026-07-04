@@ -11,6 +11,7 @@
 #include <algorithm>
 #include <cerrno>
 #include <cstdlib>
+#include <climits>
 
 enum LANG_TYPE
 {
@@ -135,7 +136,7 @@ inline bool IsValidHelpIDText(const WCHAR *str, DWORD *pValue = NULL)
 	if (*endp) return false;
 
 	// Valid range: signed [-2147483648, 2147483647] or unsigned [0, 4294967295]
-	if (val < -2147483648LL || val > 4294967295LL) return false;
+	if (val < LONG_MIN || val > ULONG_MAX) return false;
 
 	if (pValue) *pValue = (DWORD)val;
 	return true;

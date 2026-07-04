@@ -98,6 +98,8 @@ public:
 			DWORD dw;
 			if (str2.empty() || !IsValidHelpIDText(str2.c_str(), &dw))
 			{
+				dw = ULONG_MAX;
+				SetDlgItemInt(hwnd, edt2, dw, FALSE);
 				HWND hEdt2 = GetDlgItem(hwnd, edt2);
 				Edit_SetSel(hEdt2, 0, -1);
 				SetFocus(hEdt2);

@@ -75,6 +75,8 @@ public:
 			DWORD dw;
 			if (str3.empty() || !IsValidHelpIDText(str3.c_str(), &dw))
 			{
+				dw = ULONG_MAX;
+				SetDlgItemInt(hwnd, edt3, dw, FALSE);
 				HWND hEdt3 = GetDlgItem(hwnd, edt3);
 				Edit_SetSel(hEdt3, 0, -1);
 				SetFocus(hEdt3);
