@@ -148,6 +148,7 @@ void InitLangComboBox(HWND hCmb3, LANGID langid, BOOL bUILanguage);
 void InitLangListView(HWND hLst1, LPCTSTR pszText);
 void InitMessageComboBox(HWND hCmb, const MString& strString);
 void InitResNameComboBox(HWND hCmb, const MIdOrString& id, IDTYPE_ nIDTYPE_);
+void InitResNameComboBoxDword(HWND hCmb, const DWORD& id, IDTYPE_ nIDTYPE_);
 void InitResNameComboBox(HWND hCmb, const MIdOrString& id, INT nIDTYPE_1, INT nIDTYPE_2);
 void InitResTypeComboBox(HWND hCmb1, const MIdOrString& type);
 void InitStringComboBox(HWND hCmb, const MString& strString);

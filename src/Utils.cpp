@@ -2127,6 +2127,86 @@ void InitResNameComboBox(HWND hCmb, const MIdOrString& id, IDTYPE_ nIDTYPE_)
 }
 
 // initialize the resource name combobox
+void InitResNameComboBoxDword(HWND hCmb, const DWORD& id, IDTYPE_ nIDTYPE_)
+{
+	InitComboBoxPlaceholder(hCmb, IDS_INTEGERORIDENTIFIER);
+
+	// set the text of the ID
+	SetWindowTextW(hCmb, mstr_hex(id).c_str());
+
+	if (g_settings.bHideID)
+		return;	 // don't use macro IDs
+
+	INT k = -1;	 // not matched yet
+	MStringW prefix;
+	if (nIDTYPE_ != IDTYPE_UNKNOWN)
+	{
+		// get the prefix from an IDTYPE_ value
+		auto table = g_db.GetTable(L"RESOURCE.ID.PREFIX");
+		prefix = table[nIDTYPE_].name;
+		if (prefix.empty())
+			return;	 // unable to get
+
+		// get the resource IDs by the prefix
+		table = g_db.GetTableByPrefix(L"RESOURCE.ID", prefix);
+		for (auto& table_entry : table)
+		{
+			INT iItem = ComboBox_FindStringExact(hCmb, -1, table_entry.name.c_str());
+			if (iItem != CB_ERR)
+				continue;
+			// add a resource ID to combobox
+			INT i = ComboBox_AddString(hCmb, table_entry.name.c_str());
+			if (table_entry.value == id)   // matched
+			{
+				k = i;  // matched index is k
+				ComboBox_SetCurSel(hCmb, i);	// select its
+				SetWindowTextW(hCmb, table_entry.name.c_str()); // set the text
+			}
+		}
+	}
+
+	if (k == -1 &&
+		nIDTYPE_ != IDTYPE_RESOURCE && g_db.IsEntityIDType(nIDTYPE_))
+	{
+		// not found
+
+		// get the prefix of Resource.ID
+		auto table = g_db.GetTable(L"RESOURCE.ID.PREFIX");
+		prefix = table[IDTYPE_RESOURCE].name;
+
+		// get the resource IDs by the prefix
+		table = g_db.GetTableByPrefix(L"RESOURCE.ID", prefix);
+		for (auto& table_entry : table)
+		{
+			INT iItem = ComboBox_FindStringExact(hCmb, -1, table_entry.name.c_str());
+			if (iItem != CB_ERR)
+				continue;
+			// add the resource name to combobox
+			INT i = ComboBox_AddString(hCmb, table_entry.name.c_str());
+			if (table_entry.value == id)   // matched
+			{
+				ComboBox_SetCurSel(hCmb, i);	// selected
+				SetWindowTextW(hCmb, table_entry.name.c_str());  // set the text
+			}
+		}
+	}
+
+	MIdOrString rt = ResourceTypeFromIDType(nIDTYPE_);
+	if (!rt.is_null())
+	{
+		EntrySet found;
+		g_res.search(found, ET_LANG, rt, BAD_NAME, BAD_LANG);
+		for (auto e : found)
+		{
+			INT i = ComboBox_FindStringExact(hCmb, -1, e->m_name.c_str());
+			if (i != CB_ERR)
+				continue;
+			ComboBox_AddString(hCmb, e->m_name.c_str());
+		}
+	}
+}
+
+// initialize the resource name combobox
 void InitResNameComboBox(HWND hCmb, const MIdOrString& id, IDTYPE_ nIDTYPE_1, IDTYPE_ nIDTYPE_2)
 {
 	MIdOrString id2 = id;

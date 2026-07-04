@@ -184,7 +184,7 @@ public:
 
 		MStringW strHelp = g_db.GetNameOfResID(IDTYPE_HELP, m_dialog_res.m_help_id);
 		SetDlgItemText(hwnd, cmb3, strHelp.c_str());
-		InitResNameComboBox(GetDlgItem(hwnd, cmb3), L"", IDTYPE_HELP);
+		InitResNameComboBoxDword(GetDlgItem(hwnd, cmb3), m_dialog_res.m_help_id, IDTYPE_HELP);
 		SubclassChildDx(m_cmb3, cmb3);
 
 		SetDlgItemTextW(hwnd, cmb4, m_dialog_res.type_face().c_str_or_empty());

@@ -57,6 +57,7 @@ MIdOrString ResourceTypeFromIDType(INT nIDTYPE_);
 MString GetAssoc(const MString& name);
 void InitComboBoxPlaceholder(HWND hCmb, UINT nStringID);
 void InitResTypeComboBox(HWND hCmb1, const MIdOrString& type);	
+void InitResNameComboBoxDword(HWND hCmb, const DWORD& id, IDTYPE_ nIDTYPE_);
 void InitResNameComboBox(HWND hCmb, const MIdOrString& id, IDTYPE_ nIDTYPE_);
 void InitResNameComboBox(HWND hCmb, const MIdOrString& id, IDTYPE_ nIDTYPE_1, IDTYPE_ nIDTYPE_2);
 BOOL CheckCommand(MString strCommand);
