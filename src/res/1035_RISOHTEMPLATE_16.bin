@@ -11,7 +11,7 @@ FILETYPE        VFT_APP
             VALUE "CompanyName", "Yritykseni"
             VALUE "FileDescription", "Hakemukseni"
             VALUE "FileVersion", "0.0"
-            VALUE "LegalCopyright", "Copyright (C) 2026 Yritykseni"
+            VALUE "LegalCopyright", "Copyright © 2026 Yritykseni"
             VALUE "ProductName", "Hakemukseni"
             VALUE "ProductVersion", "0.0"
         }

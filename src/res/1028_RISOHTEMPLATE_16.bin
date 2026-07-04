@@ -11,7 +11,7 @@ FILETYPE        VFT_APP
             VALUE "CompanyName", "我的公司"
             VALUE "FileDescription", "我的軟體"
             VALUE "FileVersion", "0.0"
-            VALUE "LegalCopyright", "Copyright (C) 2026 我的公司"
+            VALUE "LegalCopyright", "Copyright © 2026 我的公司"
             VALUE "ProductName", "我的軟體"
             VALUE "ProductVersion", "0.0"
         }

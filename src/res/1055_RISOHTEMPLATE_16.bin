@@ -11,7 +11,7 @@ FILETYPE        VFT_APP
             VALUE "CompanyName", "Şirketim"
             VALUE "FileDescription", "Başvurum"
             VALUE "FileVersion", "0.0"
-            VALUE "LegalCopyright", "Copyright (C) 2026 Şirketim"
+            VALUE "LegalCopyright", "Copyright © 2026 Şirketim"
             VALUE "ProductName", "Başvurum"
             VALUE "ProductVersion", "0.0"
         }

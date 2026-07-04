@@ -11,7 +11,7 @@ FILETYPE        VFT_APP
             VALUE "CompanyName", "Mein Unternehmen"
             VALUE "FileDescription", "Meine Bewerbung"
             VALUE "FileVersion", "0.0"
-            VALUE "LegalCopyright", "Copyright (C) 2026 Mein Unternehmen"
+            VALUE "LegalCopyright", "Copyright © 2026 Mein Unternehmen"
             VALUE "ProductName", "Meine Bewerbung"
             VALUE "ProductVersion", "0.0"
         }

@@ -11,7 +11,7 @@ FILETYPE        VFT_APP
             VALUE "CompanyName", "우리 회사"
             VALUE "FileDescription", "내 지원서"
             VALUE "FileVersion", "0.0"
-            VALUE "LegalCopyright", "Copyright (C) 2026 우리 회사"
+            VALUE "LegalCopyright", "Copyright © 2026 우리 회사"
             VALUE "ProductName", "내 지원서"
             VALUE "ProductVersion", "0.0"
         }
