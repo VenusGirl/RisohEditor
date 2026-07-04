@@ -11995,8 +11995,7 @@ PCSTR MMainWnd::GetWordHelp(const MStringW& str)
 	}
 
 	ConstantsDB::ValueType value;
-	BOOL bOK = g_db.GetValueOfName(str.c_str(), value);
-	if (bOK)
+	if (g_db.GetValueOfName(str.c_str(), value) || g_db.GetResIDValue(str.c_str()))
 	{
 		MConstantDlg dialog(str.c_str());
 		dialog.DialogBoxDx(m_hwnd);
