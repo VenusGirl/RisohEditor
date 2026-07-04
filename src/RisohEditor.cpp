@@ -12041,7 +12041,7 @@ void MMainWnd::DoMsg(MSG& msg)
 		GetKeyState(VK_CONTROL) >= 0 && GetKeyState(VK_SHIFT) >= 0 &&
 		GetKeyState(VK_MENU) >= 0)
 	{
-		if (::GetFocus() == m_hCodeEditor)
+		if (::GetFocus() == m_hCodeEditor && GetWindowTextLengthW(m_hCodeEditor) > 0)
 		{
 			MStringW str = GetWindowText(m_hCodeEditor);
 			DWORD ichStart, ichEnd;
@@ -12057,7 +12057,7 @@ void MMainWnd::DoMsg(MSG& msg)
 				DoWordHelp(strSelected);
 			}
 		}
-		else if (::GetFocus() == m_hwndTV)
+		else if (::GetFocus() == m_hwndTV && g_res.get_entry())
 		{
 			::PostMessageW(g_hMainWnd, WM_COMMAND, ID_TREEITEMHELP, 0);
 		}
