@@ -670,7 +670,7 @@ public:
 		return ret;
 	}
 
-	StringType DumpValue(CategoryType category, ValueType value) const
+	StringType DumpValue(CategoryType category, ValueType value, bool is_hex = false) const
 	{
 		::CharUpperW(&category[0]);
 
@@ -687,6 +687,9 @@ public:
 				}
 			}
 		}
+
+		if (is_hex)
+			return mstr_hex(value);
 
 		return mstr_dec(value);
 	}

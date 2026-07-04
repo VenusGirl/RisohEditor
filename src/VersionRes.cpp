@@ -173,7 +173,7 @@ VersionRes::Dump(const MIdOrString& name) const
 	}
 	else
 	{
-		str = g_db.DumpValue(L"VOS_", dwValue);
+		str = g_db.DumpValue(L"VOS_", dwValue, true);
 		StringCchPrintfW(line, _countof(line), L"FILEOS          %s\r\n", str.c_str());
 	}
 	ret += line;
@@ -186,7 +186,7 @@ VersionRes::Dump(const MIdOrString& name) const
 	}
 	else
 	{
-		str = g_db.DumpValue(L"VFT_", dwValue);
+		str = g_db.DumpValue(L"VFT_", dwValue, true);
 		StringCchPrintfW(line, _countof(line), L"FILETYPE        %s\r\n", str.c_str());
 	}
 	ret += line;
@@ -202,11 +202,11 @@ VersionRes::Dump(const MIdOrString& name) const
 		else
 		{
 			if (m_fixed.dwFileType == VFT_DRV)
-				str = g_db.DumpValue(L"VFT2_DRV_", dwValue);
+				str = g_db.DumpValue(L"VFT2_DRV_", dwValue, true);
 			else if (m_fixed.dwFileType == VFT_FONT)
-				str = g_db.DumpValue(L"VFT2_FONT_", dwValue);
+				str = g_db.DumpValue(L"VFT2_FONT_", dwValue, true);
 			else
-				str = g_db.DumpValue(L"VFT2_others", dwValue);
+				str = g_db.DumpValue(L"VFT2_others", dwValue, true);
 			StringCchPrintfW(line, _countof(line), L"FILESUBTYPE     %s\r\n", str.c_str());
 		}
 		ret += line;
