@@ -68,6 +68,12 @@ MStringW EntryBase::get_name_label() const
 	if (m_type == RT_TOOLBAR)
 		nIDTYPE_ = IDTYPE_BITMAP;
 
+	if (m_type == L"RISOHTEMPLATE")
+	{
+		EntryBase entry(ET_LANG, m_name, BAD_NAME, BAD_LANG);
+		return entry.get_type_label();
+	}
+
 	// get the label from an IDTYPE_ value
 	MStringW label = g_db.GetNameOfResID(nIDTYPE_, id);
 	if (label.empty() || m_type == RT_STRING)
