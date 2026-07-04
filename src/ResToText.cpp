@@ -194,12 +194,6 @@ ResToText::GetEntryFileName(const EntryBase& entry)
 			ret += DumpEscapedName(entry.m_name);
 			ret += L".manifest";
 		}
-		else if (wType == (WORD)(UINT_PTR)RT_FONT)
-		{
-			ret += L"Font_";
-			ret += DumpEscapedName(entry.m_name);
-			ret += L".fon";
-		}
 		else
 		{
 			ret += entry.m_type.str();
@@ -1086,7 +1080,6 @@ MString ResToText::DoTypeLib(const EntryBase& entry)
 
 	if (m_bHumanReadable)
 	{
-		MString str;
 		SendMessageW(m_hwnd, MYWM_TLB_B2T, (WPARAM)&str, (LPARAM)&entry);
 		if (str.size())
 		{
@@ -1114,7 +1107,6 @@ MString ResToText::DoRCData(const EntryBase& entry)
 
 	if (m_bHumanReadable && entry.is_delphi_dfm())
 	{
-		MString str;
 		SendMessageW(m_hwnd, MYWM_DELPHI_DFM_B2T, (WPARAM)&str, (LPARAM)&entry);
 		if (str.size())
 		{
