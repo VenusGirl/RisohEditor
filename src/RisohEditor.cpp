@@ -8578,6 +8578,28 @@ PCWSTR MMainWnd::GetTreeItemHelp(EntryBase *entry)
 		return L"https://learn.microsoft.com/en-us/windows/win32/menurc/resource-types";
 	if (entry->m_type == RT_DLGINIT)
 		return L"https://learn.microsoft.com/en-us/cpp/mfc/tn024-mfc-defined-messages-and-resources?view=msvc-170#rt_dlginit-resource-format";
+	if (entry->m_type == L"PNG")
+		return L"https://en.wikipedia.org/wiki/PNG";
+	if (entry->m_type == L"GIF")
+		return L"https://en.wikipedia.org/wiki/GIF";
+	if (entry->m_type == L"JPEG" || entry->m_type == L"JPG")
+		return L"https://en.wikipedia.org/wiki/JPEG";
+	if (entry->m_type == L"TIFF" || entry->m_type == L"TIF")
+		return L"https://en.wikipedia.org/wiki/TIFF";
+	if (entry->m_type == L"EMF" || entry->m_type == L"ENHMETAFILE" || entry->m_type == L"ENHMETAPICT")
+		return L"https://en.wikipedia.org/wiki/Windows_Metafile#EMF";
+	if (entry->m_type == L"WMF")
+		return L"https://en.wikipedia.org/wiki/Windows_Metafile";
+	if (entry->m_type == L"WAVE")
+		return L"https://en.wikipedia.org/wiki/WAV";
+	if (entry->m_type == L"MP3")
+		return L"https://simple.wikipedia.org/wiki/MP3";
+	if (entry->m_type == L"AVI")
+		return L"https://en.wikipedia.org/wiki/Audio_Video_Interleave";
+	if (entry->m_type == L"TYPELIB")
+		return L"https://learn.microsoft.com/en-us/previous-versions/windows/desktop/automat/contents-of-a-type-library";
+	if (entry->m_type == L"TEXTINCLUDE")
+		return L"https://learn.microsoft.com/en-us/cpp/mfc/tn035-using-multiple-resource-files-and-header-files-with-visual-cpp#_mfcnotes_tn035_set_includes";
 	return NULL;
 }
 
