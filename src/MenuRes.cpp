@@ -406,7 +406,7 @@ MenuRes::Dump(const MIdOrString& name) const
 
 	string_type ret;
 
-	if (name.m_id == 0)
+	if (name.is_str())
 	{
 		ret += name.str();
 	}
@@ -496,7 +496,7 @@ MenuRes::DumpEx(const MIdOrString& name) const
 {
 	string_type ret;
 
-	if (name.m_id == 0)
+	if (name.is_str())
 	{
 		ret += name.str();
 	}
