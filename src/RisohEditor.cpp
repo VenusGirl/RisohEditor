@@ -8580,6 +8580,8 @@ PCSTR MMainWnd::GetTreeItemHelp(EntryBase *entry)
 		return "https://learn.microsoft.com/en-us/windows/win32/menurc/resource-types";
 	if (entry->m_type == RT_DLGINIT)
 		return "https://learn.microsoft.com/en-us/cpp/mfc/tn024-mfc-defined-messages-and-resources?view=msvc-170#rt_dlginit-resource-format";
+	if (entry->m_type == RT_TOOLBAR)
+		return "https://github.com/katahiromz/RisohEditor/blob/master/win32-samples/ToolbarTest/ToolbarTest.cpp";
 	if (entry->m_type == L"PNG")
 		return "https://en.wikipedia.org/wiki/PNG";
 	if (entry->m_type == L"GIF")
