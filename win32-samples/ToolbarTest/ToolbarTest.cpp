@@ -48,7 +48,7 @@ BOOL OnInitDialog(HWND hwnd, HWND hwndFocus, LPARAM lParam)
     LoadToolbarResource(g_hwndTB, g_hInstance, MAKEINTRESOURCE(IDB_TOOLBAR), CommandIdToImageIndex,
                         CommandIdToText);
     //LoadToolbarResource(g_hwndTB, g_hInstance, MAKEINTRESOURCE(IDB_TOOLBAR),
-    //                    CommandIdToImageIndex, NULL);
+    //                    CommandIdToImageIndex, NULL); // No text
 
     PostMessage(hwnd, WM_SIZE, 0, 0);
 
