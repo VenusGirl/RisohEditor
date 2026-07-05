@@ -27,6 +27,9 @@ bool IconFile::LoadFromStream(const MByteStreamEx& stream)
 
 	for (int i = 0; i < m_dir.idCount; i++)
 	{
+		if (m_entries[i].dwImageOffset > stream.size())
+			return false;
+
 		stream.pos(m_entries[i].dwImageOffset);
 		if (stream.remainder() < m_entries[i].dwBytesInRes)
 		{
@@ -64,6 +67,8 @@ bool IconFile::SaveToStream(MByteStreamEx& stream)
 
 	for (DWORD i = 0; i < nCount; ++i)
 	{
+		if (GetImageSize(i) == 0)
+			return false;
 		if (!stream.WriteData(GetImagePtr(i), GetImageSize(i)))
 			return false;
 	}
@@ -80,11 +85,13 @@ IconFile::GetIconGroup(int nBaseID) const
 
 	memcpy(&group[0], &m_dir, sizeof(ICONDIR));
 
+	static const BYTE s_pngSignature[8] = { 0x89, 'P', 'N', 'G', '\r', '\n', 0x1A, '\n' };
+
 	int offset = sizeof(ICONDIR);
 	for (int i = 0; i < GetImageCount(); i++)
 	{
 		if (GetImageSize(i) > 25 &&
-			memcmp(GetImagePtr(i), "\x89PNG", 4) == 0)
+			memcmp(GetImagePtr(i), s_pngSignature, sizeof(s_pngSignature)) == 0)
 		{
 			ResourceEntryType grpEntry;
 			grpEntry.bWidth = (BYTE)_byteswap_ulong(*(uint32_t*)&GetImagePtr(i)[16]);
@@ -110,10 +117,14 @@ IconFile::GetIconGroup(int nBaseID) const
 		BITMAPCOREHEADER    bmch;
 		BITMAPINFOHEADER    bmih;
 
+		if (GetImageSize(i) < sizeof(bmch))
+			continue;
 		memcpy(&bmch, GetImagePtr(i), sizeof(bmch));
 		bool bCoreOnly = (bmch.bcSize == sizeof(bmch));
 		if (!bCoreOnly)
 		{
+			if (GetImageSize(i) < sizeof(bmih))
+				continue;
 			memcpy(&bmih, GetImagePtr(i), sizeof(bmih));
 		}
 
@@ -177,6 +188,9 @@ bool CursorFile::LoadFromStream(const MByteStreamEx& stream)
 
 	for (int i = 0; i < m_dir.idCount; i++)
 	{
+		if (m_entries[i].dwImageOffset > stream.size())
+			return false;
+
 		stream.pos(m_entries[i].dwImageOffset);
 		if (stream.remainder() < m_entries[i].dwBytesInRes)
 		{
@@ -225,6 +239,8 @@ bool CursorFile::SaveToStream(MByteStreamEx& stream)
 
 	for (DWORD i = 0; i < nCount; ++i)
 	{
+		if (GetImageSize(i) < sizeof(LOCALHEADER))
+			return false;
 		LPBYTE pb = GetImagePtr(i) + sizeof(LOCALHEADER);
 		DWORD size = GetImageSize(i) - sizeof(LOCALHEADER);
 		if (!stream.WriteData(pb, size))
@@ -249,12 +265,16 @@ CursorFile::GetCursorGroup(int nBaseID) const
 		LOCALHEADER         local;
 
 		const BYTE *pb = GetImagePtr(i);
+		if (GetImageSize(i) < sizeof(local) + sizeof(bmch))
+			continue;
 		memcpy(&local, pb, sizeof(local));
 		memcpy(&bmch, pb + sizeof(local), sizeof(bmch));
 
 		bool bCoreOnly = (bmch.bcSize == sizeof(bmch));
 		if (!bCoreOnly)
 		{
+			if (GetImageSize(i) < sizeof(local) + sizeof(bmih))
+				continue;
 			memcpy(&bmih, pb + sizeof(local), sizeof(bmih));
 		}
 

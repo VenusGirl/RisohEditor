@@ -132,13 +132,15 @@ public:
 		return m_images[index];
 	}
 
-	BYTE *GetImagePtr(int index)
+	PBYTE GetImagePtr(int index)
 	{
-		return &(GetImage(index)[0]);
+		DataType& image = GetImage(index);
+		return image.empty() ? nullptr : &image[0];
 	}
 	const BYTE *GetImagePtr(int index) const
 	{
-		return &(GetImage(index)[0]);
+		const DataType& image = GetImage(index);
+		return image.empty() ? nullptr : &image[0];
 	}
 
 	DWORD GetImageSize(int index) const
@@ -230,13 +232,15 @@ public:
 		return m_images[index];
 	}
 
-	BYTE *GetImagePtr(int index)
+	PBYTE GetImagePtr(int index)
 	{
-		return &(GetImage(index)[0]);
+		DataType& image = GetImage(index);
+		return image.empty() ? nullptr : &image[0];
 	}
 	const BYTE *GetImagePtr(int index) const
 	{
-		return &(GetImage(index)[0]);
+		const DataType& image = GetImage(index);
+		return image.empty() ? nullptr : &image[0];
 	}
 
 	DWORD GetImageSize(int index) const
