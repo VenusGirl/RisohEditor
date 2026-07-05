@@ -1,3 +1,6 @@
+// DialogBox.cpp
+// Author: katahiromz
+// License: CC0
 #include <windows.h>
 #include <windowsx.h>
 #include <commctrl.h>
