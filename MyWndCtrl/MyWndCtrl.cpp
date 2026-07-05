@@ -1,4 +1,6 @@
-// MyWndCtrl --- private window class
+// MyWndCtrl --- private window class library
+// Author: katahiromz
+// License: GPL-3 or later
 //////////////////////////////////////////////////////////////////////////////
 
 #define NO_STRSAFE
@@ -42,11 +44,13 @@ public:
         wcx.hCursor = LoadCursor(NULL, IDC_CROSS);
     }
 
+	// WM_CREATE
     BOOL OnCreate(HWND hwnd, LPCREATESTRUCT lpCreateStruct)
     {
         return TRUE;
     }
 
+	// WM_PAINT
     void OnPaint(HWND hwnd)
     {
         PAINTSTRUCT ps;
