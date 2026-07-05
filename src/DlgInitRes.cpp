@@ -5,7 +5,9 @@
 // License: GPL-3 or later
 
 #include "DlgInitRes.hpp"
-#include "ConstantsDB.hpp"
+#ifndef NO_CONSTANTS_DB
+	#include "ConstantsDB.hpp"
+#endif
 
 bool DlgInitRes::LoadFromStream(const MByteStreamEx& stream)
 {
@@ -62,7 +64,11 @@ MStringW DlgInitRes::Dump(const MIdOrString& id_or_str) const
 	}
 	else
 	{
+#ifndef NO_CONSTANTS_DB
 		ret += g_db.GetNameOfResID(IDTYPE_DIALOG, id_or_str.m_id);
+#else
+		ret += mstr_dec_short(id_or_str.m_id);
+#endif
 	}
 
 	ret += L" 240\r\n";
@@ -84,7 +90,11 @@ MStringW DlgInitRes::Dump(const MIdOrString& id_or_str) const
 	for (auto& entry : m_entries)
 	{
 		ret += L"    ";
+#ifndef NO_CONSTANTS_DB
 		ret += g_db.GetCtrlOrCmdName(entry.wCtrl);
+#else
+		ret += mstr_dec_short(entry.wCtrl);
+#endif
 		ret += L", ";
 
 // Win16 messages
