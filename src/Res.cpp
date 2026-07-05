@@ -866,14 +866,25 @@ BOOL EntrySet::extract_icon(const EntryBase& i_entry, const wchar_t *file_name) 
 {
 	// get the BITMAP info
 	BITMAP bm;
+	ZeroMemory(&bm, sizeof(bm));
 	if (!PackedDIB_GetInfo(&i_entry[0], i_entry.size(), bm))
 	{
 		MBitmapDx bitmap;
-		bitmap.CreateFromMemory(&i_entry[0], i_entry.size());
+		if (!bitmap.CreateFromMemory(&i_entry[0], i_entry.size()))
+		{
+			assert(0);
+			return FALSE;
+		}
 
 		LONG cx, cy;
 		HBITMAP hbm = bitmap.GetHBITMAP32(cx, cy);
-		GetObject(hbm, sizeof(bm), &bm);
+		if (!hbm || !GetObject(hbm, sizeof(bm), &bm))
+		{
+			assert(0);
+			if (hbm)
+				DeleteObject(hbm);
+			return FALSE;
+		}
 		DeleteObject(hbm);
 	}
 
