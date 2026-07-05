@@ -984,7 +984,7 @@ FONT 9, "MS Shell Dlg"
     CTEXT "Источник", stc1, 15, 55, 80, 25, SS_CENTERIMAGE | NOT WS_GROUP
     CTEXT "Двоичный", stc2, 100, 55, 85, 25, SS_CENTERIMAGE | NOT WS_GROUP
     PUSHBUTTON "&Перезагрузить", psh3, 5, 90, 50, 14
-	DEFPUSHBUTTON "OK", IDOK, 65, 90, 60, 14
+    DEFPUSHBUTTON "OK", IDOK, 65, 90, 60, 14
     PUSHBUTTON "Отмена", IDCANCEL, 130, 90, 60, 14
 }
 
@@ -1075,7 +1075,7 @@ FONT 9, "MS Shell Dlg"
     LTEXT "При экспорте RC-файла создаются относящиеся к нему другие файлы. Выберите следующие опции:", -1, 35, 5, 210, 29
     AUTOCHECKBOX "Использовать &таблицу сообщений Microsoft", chx8, 5, 40, 240, 14
     AUTOCHECKBOX "Разделять файлы ресурсов по &языку", chx1, 5, 60, 240, 14
-    AUTOCHECKBOX "Используйте ключевые &слова BEGIN/END", chx2, 5, 80, 240, 14
+    AUTOCHECKBOX "Использовать ключевые &слова BEGIN/END", chx2, 5, 80, 240, 14
     AUTOCHECKBOX "Язык выбирается макросом LANGUAGE_*", chx3, 5, 100, 240, 14
     AUTOCHECKBOX "Создать &копию", chx4, 5, 120, 110, 14
     RTEXT "Суффикс:", -1, 120, 122, 75, 12
@@ -1084,7 +1084,7 @@ FONT 9, "MS Shell Dlg"
     AUTOCHECKBOX "&Оборачивать manifest в #ifndef MSVC ... #endif", chx6, 5, 160, 240, 14
     RTEXT "Кодовая &страница:", -1, 7, 181, 78, 14
     COMBOBOX cmb2, 95, 180, 155, 300, CBS_HASSTRINGS | CBS_AUTOHSCROLL | CBS_DROPDOWN | WS_VSCROLL | WS_TABSTOP
-    AUTOCHECKBOX "Byte Order Mark (BOM)", chx9, 5, 200, 100, 15
+    AUTOCHECKBOX "Метка порядка байтов (BOM)", chx9, 5, 200, 100, 15
     DEFPUSHBUTTON "OK", IDOK, 120, 205, 60, 14
     PUSHBUTTON "Отмена", IDCANCEL, 185, 205, 60, 14
 }
@@ -1176,7 +1176,7 @@ FONT 9, "MS Shell Dlg"
     LTEXT "При сохранении RC-файла создаются относящиеся к нему другие файлы. Выберите следующие опции:", -1, 35, 5, 210, 29
     AUTOCHECKBOX "Использовать &таблицу сообщений Microsoft", chx8, 5, 40, 240, 14
     AUTOCHECKBOX "Разделять файлы ресурсов по &языку", chx1, 5, 60, 240, 14
-    AUTOCHECKBOX "Используйте ключевые &слова BEGIN/END", chx2, 5, 80, 240, 14
+    AUTOCHECKBOX "Использовать ключевые &слова BEGIN/END", chx2, 5, 80, 240, 14
     AUTOCHECKBOX "Язык выбирается макросом LANGUAGE_*", chx3, 5, 100, 240, 14
     AUTOCHECKBOX "Создать &копию", chx4, 5, 120, 110, 14
     RTEXT "Суффикс:", -1, 120, 122, 75, 12
@@ -1185,7 +1185,7 @@ FONT 9, "MS Shell Dlg"
     AUTOCHECKBOX "&Оборачивать manifest в #ifndef MSVC ... #endif", chx6, 5, 160, 240, 14
     RTEXT "Кодовая &страница:", -1, 7, 181, 78, 14
     COMBOBOX cmb2, 95, 180, 155, 300, CBS_HASSTRINGS | CBS_AUTOHSCROLL | CBS_DROPDOWN | WS_VSCROLL | WS_TABSTOP
-    AUTOCHECKBOX "Byte Order Mark (BOM)", chx9, 5, 200, 100, 15
+    AUTOCHECKBOX "Метка порядка байтов (BOM)", chx9, 5, 200, 100, 15
     DEFPUSHBUTTON "OK", IDOK, 120, 205, 60, 14
     PUSHBUTTON "Отмена", IDCANCEL, 185, 205, 60, 14
 }
@@ -1624,8 +1624,8 @@ STRINGTABLE
     IDS_DFMFILTER, "Файл DFM (*.dfm)|*.dfm|Текстовые файлы (*.txt)|*.txt|Все файлы (*.*)|*.*|"
     IDS_CANTEXTRACTDFM, "Невозможно извлечь данные DFM."
     IDS_EXTRACTDFM, "Извлечь данные DFM"
-    IDS_ENTERNONZERONAME, "Введите не пустое имя ресурса."
-    IDS_ENTERNONZEROTYPE, "Введите не пустой тип ресурса."
+    IDS_ENTERNONZERONAME, "Введите непустое имя ресурса."
+    IDS_ENTERNONZEROTYPE, "Введите непустой тип ресурса."
     IDS_HOMEPAGE, "https://katahiromz.web.fc2.com/re/ru/"
     IDS_FILESAVED, "Файл успешно сохранён."
     IDS_RECOMPILEOK, "Перекомпиляция успешно выполнена."
@@ -1655,12 +1655,12 @@ STRINGTABLE
     IDS_EXTRACTTLB, "Извлечь данные TYPELIB"
     IDS_CANTEXTRACTTLB, "Невозможно извлечь данные TYPELIB."
     IDS_TLBRESBINFILTER, "Данные TYPELIB (*.tlb)|*.tlb|Двоичные ресурсы (*.res)|*.res|Текстовые файлы (*.txt)|*.txt|Файлы MIDL (*.idl)|*.idl|Все файлы (*.*)|*.*|"
-    IDS_USAGE, "Usage: RisohEditor [options | ""file""]\n\nOptions:\n--help  Show this message.\n--version  Show version info.\n--load ""your-file.rc""  Load the file (without GUI)\n--save ""your-file.res""  Save the file (without GUI)\n--log-file ""log-file.txt""  Specify the log file.\n--load-options OPTIONS  Set load options.\n--save-options OPTIONS  Set save options.\n\nLoad options: (no-load-res-h)\nSave options: (idc-static)(compress)(sep-lang)(no-res-folder)(lang-macro)(less-comments)(wrap-manifest)(begin-end)(utf-16)(bom)(backup)(ms-msgtbl)"
+    IDS_USAGE, "Синтаксис: RisohEditor [опции | ""файл""]\n\nОпции:\n--help  Показать это окно.\n--version  Показать сведения о версии.\n--load ""your-file.rc""  Загрузить файл (без GUI)\n--save ""your-file.res""  Сохранить файл (без GUI)\n--log-file ""log-file.txt""  Указать файл-отчёт.\n--load-options ОПЦИИ  Задать опции загрузки.\n--save-options ОПЦИИ  Задать опции сохранения.\n\nОпции загрузки: (no-load-res-h)\nОпции сохранения: (idc-static)(compress)(sep-lang)(no-res-folder)(lang-macro)(less-comments)(wrap-manifest)(begin-end)(utf-16)(bom)(backup)(ms-msgtbl)"
     IDS_NOSELECTION, "Нет выбора."
     IDS_TRANSLATORS, "[Translators]\r\nEnglish: Katayama Hirofumi MZ\r\nFinnish: Veikko Muurikainen\r\nIndonesian: Mas Ahmad Muhammad\r\nItalian: R.B.\r\nJapanese: Katayama Hirofumi MZ\r\nKorean: VenusGirl (비너스걸)\r\nPolish: Piotr Hetnarowicz\r\nPortuguese (Brazil): JNylson\r\nPortuguese (Portugal): Luis Neves\r\nRussian: Dmitry Yerokhin\r\nSimplified Chinese: 林鸿湘\r\nSpanish: Cristobal Prieto\r\nTurkish: OnurGVNGL\r\nUkrainian (Ukraine): Volodymyr Paliy"
     IDS_EXPORTFILTER, "RC-файлы (*.rc;*.rc2)|*.rc;*.rc2|Двоичные ресурсы (*.res)|*.res|"
     IDS_GENERATEDFROMTEXTINCLUDE, "// Сгенерировано из TEXTINCLUDE %u\r\n"
-    IDS_TEXTINCLUDEREADONLY, "Этот файл защищен от записи TEXTINCLUDE 1.\r\n\r\nВы все еще хотите записать в файл?"
+    IDS_TEXTINCLUDEREADONLY, "Этот файл защищён от записи TEXTINCLUDE 1.\r\n\r\nВсё равно записать?"
     IDS_INCLUDETEXTINCLUDE3, "TEXTINCLUDE 3 содержит элементы ресурсов, которые нельзя редактировать.\r\n\r\nХотите включить элементы в TEXTINCLUDE 3 как редактируемые элементы и сбросить TEXTINCLUDE 3?"
     IDS_MP3RESBINFILTER, "Аудиофайлы MP3 (*.mp3)|*.mp3|Двоичные ресурсы (*.res)|*.res|Двоичные файлы (*.bin)|*.bin|Все файлы (*.*)|*.*|"
     IDS_MP3SOUND, "(Аудиофайлы MP3)\r\n"
