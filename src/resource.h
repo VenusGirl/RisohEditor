@@ -561,6 +561,7 @@
 #define ID_OPENHISTORYUK                    285
 #define ID_OPENREADMEPL                     286
 #define ID_TREEITEMHELP                     287
+#define ID_OPENREADMERU                     288
 
 #define MSGID_HELLO                         101
 #define MSGID_SAMPLE                        102
@@ -571,7 +572,7 @@
     #ifndef APSTUDIO_READONLY_SYMBOLS
         #define _APS_NO_MFC                 1
         #define _APS_NEXT_RESOURCE_VALUE    111
-        #define _APS_NEXT_COMMAND_VALUE     288
+        #define _APS_NEXT_COMMAND_VALUE     289
         #define _APS_NEXT_CONTROL_VALUE     1002
         #define _APS_NEXT_SYMED_VALUE       300
     #endif

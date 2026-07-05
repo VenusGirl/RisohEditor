@@ -9320,6 +9320,9 @@ void MMainWnd::OnCommand(HWND hwnd, int id, HWND hwndCtl, UINT codeNotify)
 	case ID_OPENREADMEES:
 		OnOpenLocalFile(hwnd, L"README_es.txt");
 		break;
+	case ID_OPENREADMERU:
+		OnOpenLocalFile(hwnd, L"README_ru.txt");
+		break;
 	case ID_LOADWCLIB:
 		OnLoadWCLib(hwnd);
 		break;
