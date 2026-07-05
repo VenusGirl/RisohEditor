@@ -5,7 +5,9 @@
 // License: GPL-3 or later
 
 #include "DialogRes.hpp"
-#include "ConstantsDB.hpp"
+#ifndef NO_CONSTANTS_DB
+	#include "ConstantsDB.hpp"
+#endif
 #include "RisohSettings.hpp"
 #include <shlwapi.h>
 #include <unordered_set>
@@ -57,6 +59,7 @@ bool IDToPredefClass(WORD w, MStringW& name)
 
 void FixClassName(MStringW& cls)
 {
+#ifndef NO_CONSTANTS_DB
 	ConstantsDB::TableType table = g_db.GetTable(L"CONTROL.CLASSES");
 	for (auto& table_entry : table)
 	{
@@ -66,6 +69,7 @@ void FixClassName(MStringW& cls)
 			break;
 		}
 	}
+#endif
 }
 
 //////////////////////////////////////////////////////////////////////////////
@@ -338,7 +342,11 @@ MStringW DialogItem::DumpControl(MStringW& cls) const
 
 	if (IsStaticIcon())
 	{
+#ifndef NO_CONSTANTS_DB
 		ret += g_db.GetNameOfResID(IDTYPE_ICON, m_title.m_id);
+#else
+		ret += mstr_dec_short(m_title.m_id);
+#endif
 	}
 	else
 	{
@@ -346,7 +354,11 @@ MStringW DialogItem::DumpControl(MStringW& cls) const
 	}
 
 	ret += L", ";
+#ifndef NO_CONSTANTS_DB
 	ret += g_db.GetNameOfResID(IDTYPE_CONTROL, m_id);
+#else
+	ret += mstr_dec_short(m_id);
+#endif
 	ret += L", ";
 	if (m_class.is_int())
 	{
@@ -366,7 +378,11 @@ MStringW DialogItem::DumpControl(MStringW& cls) const
 	{
 		DWORD value = m_style;
 		DWORD def_value = WS_CHILD | WS_VISIBLE;
+#ifndef NO_CONSTANTS_DB
 		ret += g_db.DumpBitFieldOrZero(cls.c_str(), L"STYLE", value, def_value);
+#else
+		ret += mstr_hex(value);
+#endif
 	}
 
 	ret += L", ";
@@ -381,12 +397,20 @@ MStringW DialogItem::DumpControl(MStringW& cls) const
 	{
 		ret += L", ";
 		DWORD value = m_ex_style;
+#ifndef NO_CONSTANTS_DB
 		ret += g_db.DumpBitFieldOrZero(L"EXSTYLE", L"", value);
+#else
+		ret += mstr_hex(value);
+#endif
 	}
 	if (m_help_id)
 	{
 		ret += L", ";
+#ifndef NO_CONSTANTS_DB
 		ret += g_db.GetNameOfResID(IDTYPE_HELP, m_help_id);
+#else
+		ret += mstr_hex(m_help_id);
+#endif
 	}
 	if (m_extra.size() && m_extra.size() % 2 == 0)
 	{
@@ -422,7 +446,11 @@ DialogItem::_do_CONTROL(bool bNeedsText,
 	{
 		if (IsStaticIcon())
 		{
+#ifndef NO_CONSTANTS_DB
 			ret += g_db.GetNameOfResID(IDTYPE_ICON, m_title.m_id);
+#else
+			ret += mstr_dec_short(m_title.m_id);
+#endif
 		}
 		else
 		{
@@ -431,7 +459,11 @@ DialogItem::_do_CONTROL(bool bNeedsText,
 		ret += L", ";
 	}
 
+#ifndef NO_CONSTANTS_DB
 	ret += g_db.GetNameOfResID(IDTYPE_CONTROL, m_id);
+#else
+	ret += mstr_dec_short(m_id);
+#endif
 	ret += L", ";
 	ret += mstr_dec_short((SHORT)m_pt.x);
 	ret += L", ";
@@ -454,7 +486,11 @@ DialogItem::_do_CONTROL(bool bNeedsText,
 			value |= BS_PUSHBOX;
 		}
 		// NOTE: RC won't add WS_TABSTOP. Microsoft document said a lie.
+#ifndef NO_CONSTANTS_DB
 		std::wstring str = g_db.DumpBitFieldOrZero(cls.c_str(), L"STYLE", value, DefStyle);
+#else
+		std::wstring str = mstr_hex(value);
+#endif
 		ret += str;
 		if (ctrl == L"AUTORADIOBUTTON" && str.find(L"WS_TABSTOP") == std::wstring::npos)
 		{
@@ -479,12 +515,20 @@ DialogItem::_do_CONTROL(bool bNeedsText,
 	{
 		ret += L", ";
 		DWORD value = m_ex_style;
+#ifndef NO_CONSTANTS_DB
 		ret += g_db.DumpBitFieldOrZero(L"EXSTYLE", L"", value);
+#else
+		ret += mstr_hex(value);
+#endif
 	}
 	if (m_help_id)
 	{
 		ret += L", ";
+#ifndef NO_CONSTANTS_DB
 		ret += g_db.GetNameOfResID(IDTYPE_HELP, m_help_id);
+#else
+		ret += mstr_hex(m_help_id);
+#endif
 	}
 	if (m_extra.size() && m_extra.size() % 2 == 0)
 	{
@@ -834,7 +878,11 @@ MStringW DialogRes::Dump(const MIdOrString& id_or_str, bool bAlwaysControl)
 	}
 	else
 	{
+#ifndef NO_CONSTANTS_DB
 		ret += g_db.GetNameOfResID(IDTYPE_DIALOG, id_or_str.m_id);
+#else
+		ret += mstr_dec_short(id_or_str.m_id);
+#endif
 	}
 
 	if (IsExtended())
@@ -858,7 +906,11 @@ MStringW DialogRes::Dump(const MIdOrString& id_or_str, bool bAlwaysControl)
 	if (IsExtended() && m_help_id)
 	{
 		ret += L", ";
+#ifndef NO_CONSTANTS_DB
 		ret += g_db.GetNameOfResID(IDTYPE_HELP, m_help_id);
+#else
+		ret += mstr_hex(m_help_id);
+#endif
 	}
 	ret += L"\r\n";
 
@@ -893,19 +945,35 @@ MStringW DialogRes::Dump(const MIdOrString& id_or_str, bool bAlwaysControl)
 		MStringW str;
 		if ((value & WS_CAPTION) == WS_CAPTION)
 		{
+#ifndef NO_CONSTANTS_DB
 			str = g_db.DumpBitField(L"DIALOG", L"PARENT.STYLE", value);
+#else
+			str = mstr_hex(value);
+#endif
 		}
 		else if ((value & WS_CAPTION) == WS_BORDER)
 		{
+#ifndef NO_CONSTANTS_DB
 			str = g_db.DumpBitField(L"DIALOG", L"PARENT.STYLE", value, WS_DLGFRAME);
+#else
+			str = mstr_hex(value);
+#endif
 		}
 		else if ((value & WS_CAPTION) == WS_DLGFRAME)
 		{
+#ifndef NO_CONSTANTS_DB
 			str = g_db.DumpBitField(L"DIALOG", L"PARENT.STYLE", value, WS_BORDER);
+#else
+			str = mstr_hex(value);
+#endif
 		}
 		else
 		{
+#ifndef NO_CONSTANTS_DB
 			str = g_db.DumpBitField(L"DIALOG", L"PARENT.STYLE", value, WS_CAPTION);
+#else
+			str = mstr_hex(value);
+#endif
 		}
 		if (value)
 		{
@@ -927,7 +995,11 @@ MStringW DialogRes::Dump(const MIdOrString& id_or_str, bool bAlwaysControl)
 	if (m_ex_style)
 	{
 		DWORD value = m_ex_style;
+#ifndef NO_CONSTANTS_DB
 		MStringW str = g_db.DumpBitField(L"EXSTYLE", L"", value);
+#else
+		MStringW str = mstr_hex(value);
+#endif
 		if (value)
 		{
 			if (!str.empty())
