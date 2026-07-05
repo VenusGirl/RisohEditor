@@ -22,10 +22,10 @@ IDR_MAINMENU MENU
         MENUITEM "&Importuj...\tCtrl+I", ID_IMPORT
         MENUITEM "&Eksportuj...\tCtrl+P", ID_EXPORT
         MENUITEM SEPARATOR
-        MENUITEM "Przeładuj &resource.h...\tCtrl+R", ID_LOADRESH
-        MENUITEM "Zapisz re&source.h...", ID_UPDATERESHBANG
-        MENUITEM "Zasób resource.h Modyfikacja...", ID_ADVICERESH
-        MENUITEM "&Wypakuj resource.h", ID_UNLOADRESH
+        MENUITEM "Przeładuj &zasób.h...\tCtrl+R", ID_LOADRESH
+        MENUITEM "Zapisz z&asób.h...", ID_UPDATERESHBANG
+        MENUITEM "Zasób porad.h modyfikacji...", ID_ADVICERESH
+        MENUITEM "&Wypakuj zasób.h", ID_UNLOADRESH
         MENUITEM SEPARATOR
         MENUITEM "Załaduj &Window Class Library...", ID_LOADWCLIB
         MENUITEM SEPARATOR
@@ -47,7 +47,7 @@ IDR_MAINMENU MENU
             MENUITEM "Dodaj &Bitmapę...", ID_ADDBITMAP
             MENUITEM "Dodaj &Okno dialogowe...", ID_ADDDIALOG
             MENUITEM "Dodaj &Menu...", ID_ADDMENU
-            MENUITEM "Dodaj Łań&cuch...", ID_ADDSTRINGTABLE
+            MENUITEM "Dodaj C&iąg...", ID_ADDSTRINGTABLE
             MENUITEM "Dodaj &Tablicę komunikatów...", ID_ADDMESSAGETABLE
             MENUITEM "Dodaj &HTML...", ID_ADDHTML
             MENUITEM "Dodaj &Skróty klawiaturowe...", ID_ADDACCEL
@@ -112,7 +112,7 @@ IDR_MAINMENU MENU
         MENUITEM "Roz&wiń wszystko\tCtrl+K", ID_EXPAND_ALL
         MENUITEM "&Zwiń wszystko\tCtrl+L", ID_COLLAPSE_ALL
         MENUITEM SEPARATOR
-        MENUITEM "&Identyfikatory zasobów", ID_IDLIST
+        MENUITEM "Lista &ID Zasobów", ID_IDLIST
         MENUITEM "Lista &języków...", ID_SHOWLANGS
         MENUITEM SEPARATOR
         MENUITEM "Zawsze &CONTROL statement", ID_ALWAYSCONTROL
@@ -247,8 +247,8 @@ IDR_POPUPMENUS MENU
         MENUITEM SEPARATOR
         MENUITEM "&Usuń ID\tDel", ID_DELETERESID
         MENUITEM SEPARATOR
-        MENUITEM "Liczby dziesię&tne", ID_BASE10
-        MENUITEM "Liczby szesnastkowe &HEX", ID_BASE16
+        MENUITEM "Liczby dziesię&tne (Dec)", ID_BASE10
+        MENUITEM "Liczby &szesnastkowe (Hex)", ID_BASE16
         MENUITEM SEPARATOR
         MENUITEM "&Przeładuj", ID_LOADRESH
     }
@@ -772,7 +772,7 @@ FONT 9, "MS Shell Dlg"
 }
 
 IDD_MODIFYASSOC DIALOG 0, 0, 165, 68
-CAPTION "Modyfikowanie skojarzeń ID"
+CAPTION "ID modyfikowanie skojarzeń"
 STYLE DS_MODALFRAME | WS_POPUPWINDOW | WS_CAPTION
 FONT 9, "MS Shell Dlg"
 {
@@ -785,7 +785,7 @@ FONT 9, "MS Shell Dlg"
 }
 
 IDD_IDLIST DIALOG 0, 0, 200, 300
-CAPTION "Identyfikatory zasobów"
+CAPTION "Lista ID zasobów"
 STYLE WS_OVERLAPPEDWINDOW
 EXSTYLE WS_EX_TOOLWINDOW
 FONT 9, "MS Shell Dlg"
@@ -814,7 +814,7 @@ FONT 9, "MS Shell Dlg"
     PUSHBUTTON "&Czcionki...", psh4, 5, 185, 200, 14
     PUSHBUTTON "Predefiniowane &makra...", psh1, 5, 205, 93, 14
     PUSHBUTTON "Ustaw &katalogi...", psh2, 107, 205, 98, 14
-    RTEXT "Nazwy elementów &sterujących OLE:", -1, 5, 227, 80, 12
+    RTEXT "Nazwa &kontrolek OLE:", -1, 5, 227, 80, 12
     COMBOBOX cmb1, 90, 225, 75, 300, CBS_HASSTRINGS | CBS_AUTOHSCROLL | CBS_DROPDOWN | WS_VSCROLL | WS_TABSTOP
     AUTOCHECKBOX "Utwórz kopię &zapasową", chx10, 5, 245, 75, 15
     RTEXT "Sufiks kopii zapasowej:", -1, 90, 245, 60, 15
@@ -1032,7 +1032,7 @@ FONT 9, "MS Shell Dlg"
 }
 
 IDD_CTRLDATA DIALOG 0, 0, 190, 130
-CAPTION "Edytuj dane kontrolne"
+CAPTION "Edytowanie danych kontrolnych"
 STYLE DS_MODALFRAME | WS_POPUPWINDOW | WS_CAPTION
 FONT 9, "MS Shell Dlg"
 {
@@ -1077,7 +1077,7 @@ FONT 9, "MS Shell Dlg"
     AUTOCHECKBOX "Użyj Microsoft MESSAGE&TABLE", chx8, 5, 40, 240, 14
     AUTOCHECKBOX "Oddziel pliki zasobów wg &języka", chx1, 5, 60, 240, 14
     AUTOCHECKBOX "Użyj słów kluczowych POCZĄTEK/KONIEC", chx2, 5, 80, 240, 14
-    AUTOCHECKBOX "Wybierz język za pomocą makra LANGUAGE_*", chx3, 5, 100, 240, 14
+    AUTOCHECKBOX "Wybierz język makra LANGUAGE_*", chx3, 5, 100, 240, 14
     AUTOCHECKBOX "Utwórz &kopię", chx4, 5, 120, 110, 14
     RTEXT "sufiksu kopii zapasowej:", -1, 120, 122, 75, 12
     COMBOBOX cmb1, 200, 120, 45, 300, CBS_HASSTRINGS | CBS_AUTOHSCROLL | CBS_DROPDOWN | WS_VSCROLL | WS_TABSTOP
@@ -1178,7 +1178,7 @@ FONT 9, "MS Shell Dlg"
     AUTOCHECKBOX "Użyj Microsoft MESSAGE&TABLE", chx8, 5, 40, 240, 14
     AUTOCHECKBOX "Oddziel pliki zasobów według &języka", chx1, 5, 60, 240, 14
     AUTOCHECKBOX "Użyj słów kluczowych B&EGIN/END POCZĄTEK/KONIEC", chx2, 5, 80, 240, 14
-    AUTOCHECKBOX "Wybierz język za pomocą makra LANGUAGE_*", chx3, 5, 100, 240, 14
+    AUTOCHECKBOX "Wybierz język makra LANGUAGE_*", chx3, 5, 100, 240, 14
     AUTOCHECKBOX "Utwórz &kopię", chx4, 5, 120, 110, 14
     RTEXT "sufiksu kopii zapasowej:", -1, 120, 122, 75, 12
     COMBOBOX cmb1, 200, 120, 45, 300, CBS_HASSTRINGS | CBS_AUTOHSCROLL | CBS_DROPDOWN | WS_VSCROLL | WS_TABSTOP
@@ -1302,7 +1302,7 @@ FONT 9, "MS Shell Dlg"
 }
 
 IDD_COPYTOMULTILANG DIALOG 0, 0, 200, 195
-CAPTION "Skopiuj do wielu języków"
+CAPTION "Kopiowanie do wielu języków"
 STYLE DS_MODALFRAME | WS_POPUPWINDOW | WS_CAPTION
 FONT 9, "MS Shell Dlg"
 {
@@ -1551,7 +1551,7 @@ STRINGTABLE
     IDS_LANGUAGE, "Język"
     IDS_INTVALUE, "Wartość całkowita"
     IDS_PARENTWND, "Test Okna Nadrzędnego"
-    IDS_CHOOSE_OLE_CLSID, "Choose OLE CLSID"
+    IDS_CHOOSE_OLE_CLSID, "Wybierz OLE CLSID"
     IDS_CONTROL, "Control"
     IDS_MESSAGE, "Message"
     IDS_STRING, "String"
@@ -1606,7 +1606,7 @@ STRINGTABLE
     IDS_COMMENT_SEP, "//////////////////////////////////////////////////////////////////////////////\r\n"
     IDS_NEWLINE, "\r\n"
     IDS_NOTICE, "// Ten plik jest automatycznie generowany przez RisohEditor 6.0.4.\r\n"
-    IDS_DAGGER, "// † <-- Ten sztylet (dagger), pomaga w wykrywaniu UTF-8.\r\n"
+    IDS_DAGGER, "// † <-- Ten dagger, pomaga w wykrywaniu UTF-8.\r\n"
     IDS_IMPORTFILTER, "Pliki importowane |*.rc;*.res;*.dfm;*.html;*.htm;*.manifest;*.ico;*.cur;*.ani;*.wav;*.mp3;*.bmp;*.dib;*.png;*.gif;*.jpg;*.jpeg;*.jpe;*.jfif;*.tif;*.tiff;*.avi;*.wmf;*.emf;*.tlb|Pliki RC (*.rc;*.rc2)|*.rc;*.rc2|Zasoby binarne (*.res)|*.res|Pliki obrazów|*.bmp;*.dib;*.png;*.gif;*.jpg;*.jpeg;*.jpe;*.jfif;*.tif;*.tiff;*.wmf;*.emf|Pliki kursorów (*.cur;*.ani)|*.cur;*.ani|Pliki ikon (*.ico)|*.ico|Pliki dźwiękowe WAVE (*.wav)|*.wav|Dźwięk typu MP3 (*.mp3)|*.mp3|Pliki HTML (*.html;*.htm)|*.html;*.htm|Pliki Manifest (*.manifest)|*.manifest|Pliki Delphi DFM (*.dfm)|*.dfm|Pliki TYPELIB (*.tlb)|*.tlb|Wszystkie pliki (*.*)|*.*|"
     IDS_CANTWRITEBYLOCK, "Nie można zapisać pliku, ponieważ następujący plik jest zablokowany.\r\n\r\n%s"
     IDS_ANSI, "ANSI"
