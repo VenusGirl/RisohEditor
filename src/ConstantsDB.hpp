@@ -356,6 +356,8 @@ public:
 			else
 				return L"-1";
 		}
+		if (g_settings.bHideID)
+			return mstr_dec_dword(value);
 		StringType str;
 		str = GetNameOfIDTypeValue(IDTYPE_COMMAND, value);
 		if (str.size())
