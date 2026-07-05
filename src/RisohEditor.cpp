@@ -12012,6 +12012,35 @@ void MMainWnd::DoWordHelp(const MStringW& str)
 		ShellExecuteA(m_hwnd, NULL, pszHelp, NULL, NULL, SW_SHOWNORMAL);
 }
 
+void MMainWnd::DoHelp()
+{
+	if (::GetFocus() == m_hCodeEditor && GetWindowTextLengthW(m_hCodeEditor) > 0)
+	{
+		MStringW str = GetWindowText(m_hCodeEditor);
+		DWORD ichStart, ichEnd;
+		::SendMessage(m_hCodeEditor, EM_GETSEL, (WPARAM)&ichStart, (LPARAM)&ichEnd);
+		ichStart = ichEnd = (ichStart + ichEnd) / 2;
+		while (0 < ichStart && (mchr_is_alnum(str[ichStart - 1]) || str[ichStart - 1] == L'_'))
+			--ichStart;
+		while (ichEnd + 1 < str.size() && (mchr_is_alnum(str[ichEnd]) || str[ichEnd] == L'_'))
+			++ichEnd;
+		MStringW strSelected = str.substr(ichStart, ichEnd - ichStart);
+		if (strSelected.size())
+		{
+			SendMessageW(m_hCodeEditor, EM_SETSEL, ichStart, ichEnd);
+			DoWordHelp(strSelected);
+		}
+	}
+	else if (::GetFocus() == m_hwndTV && g_res.get_entry())
+	{
+		::PostMessageW(g_hMainWnd, WM_COMMAND, ID_TREEITEMHELP, 0);
+	}
+	else
+	{
+		::PostMessageW(g_hMainWnd, WM_COMMAND, ID_HELP, 0);
+	}
+}
+
 // do the window messages
 void MMainWnd::DoMsg(MSG& msg)
 {
@@ -12043,6 +12072,7 @@ void MMainWnd::DoMsg(MSG& msg)
 		if (::TranslateAccelerator(m_rad_window, m_hAccel, &msg))
 			return;
 	}
+
 	if (IsWindow(m_rad_window.m_rad_dialog))
 	{
 		if (::TranslateAccelerator(m_rad_window.m_rad_dialog, m_hAccel, &msg))
@@ -12050,6 +12080,7 @@ void MMainWnd::DoMsg(MSG& msg)
 		if (::IsDialogMessage(m_rad_window.m_rad_dialog, &msg))
 			return;
 	}
+
 	if (IsWindow(m_id_list_dlg))
 	{
 		if (::TranslateAccelerator(m_id_list_dlg, m_hAccel, &msg))
@@ -12057,34 +12088,13 @@ void MMainWnd::DoMsg(MSG& msg)
 		if (::IsDialogMessage(m_id_list_dlg, &msg))
 			return;
 	}
+
+	// F1
 	if (msg.message == WM_KEYDOWN && msg.wParam == VK_F1 &&
 		GetKeyState(VK_CONTROL) >= 0 && GetKeyState(VK_SHIFT) >= 0 &&
 		GetKeyState(VK_MENU) >= 0)
 	{
-		if (::GetFocus() == m_hCodeEditor && GetWindowTextLengthW(m_hCodeEditor) > 0)
-		{
-			MStringW str = GetWindowText(m_hCodeEditor);
-			DWORD ichStart, ichEnd;
-			::SendMessage(m_hCodeEditor, EM_GETSEL, (WPARAM)&ichStart, (LPARAM)&ichEnd);
-			while (0 < ichStart && (mchr_is_alnum(str[ichStart - 1]) || str[ichStart - 1] == L'_'))
-				--ichStart;
-			while (ichEnd + 1 < str.size() && (mchr_is_alnum(str[ichEnd]) || str[ichEnd] == L'_'))
-				++ichEnd;
-			MStringW strSelected = str.substr(ichStart, ichEnd - ichStart);
-			if (strSelected.size())
-			{
-				SendMessageW(m_hCodeEditor, EM_SETSEL, ichStart, ichEnd);
-				DoWordHelp(strSelected);
-			}
-		}
-		else if (::GetFocus() == m_hwndTV && g_res.get_entry())
-		{
-			::PostMessageW(g_hMainWnd, WM_COMMAND, ID_TREEITEMHELP, 0);
-		}
-		else
-		{
-			::PostMessageW(g_hMainWnd, WM_COMMAND, ID_HELP, 0);
-		}
+		DoHelp();
 	}
 
 	// close the find/replace dialog if any

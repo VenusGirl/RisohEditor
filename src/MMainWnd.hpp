@@ -501,6 +501,7 @@ protected:
 	void UpdateNames(BOOL bModified = TRUE);
 	void UpdateEntryName(EntryBase *e, LPWSTR pszText = NULL);
 	void UpdateEntryLang(EntryBase *e, LPWSTR pszText = NULL);
+	void DoHelp();
 
 	std::wstring GetRisohEditorVersion() const;
 	std::wstring ParseVersionFile(LPCWSTR pszFile, std::wstring& url) const;
