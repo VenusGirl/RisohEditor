@@ -9,12 +9,13 @@
 #include "MByteStreamEx.hpp"
 #include <strsafe.h>
 #include <gdiplus.h>
+#include <cassert>
 
 #define WIDTHBYTES(i) (((i) + 31) / 32 * 4)
 
 //////////////////////////////////////////////////////////////////////////////
 
-inline INT GetEncoderClsid(const WCHAR *format, CLSID *pClsid)
+INT GetEncoderClsid(const WCHAR *format, CLSID *pClsid)
 {
 	UINT nCount = 0, cbItem = 0;
 
@@ -170,13 +171,17 @@ PackedDIB_CreateBitmap(const void *pPackedDIB, DWORD dwSize)
 	LPBYTE pb = (LPBYTE)pPackedDIB + Offset;
 	dwSize -= Offset;
 
-	BITMAPINFO bi = *(const BITMAPINFO *)pPackedDIB;
-	//BITMAPINFOHEADER *pbmih = &bi.bmiHeader;
+	// NOTE: BITMAPINFO only has room for a single RGBQUAD in bmiColors.
+	// Copying into a local BITMAPINFO truncates the color table for
+	// 1/4/8-bpp DIBs, which corrupts the resulting bitmap's palette.
+	// Use the original buffer directly instead, since it already
+	// contains the full color table.
+	LPBITMAPINFO pbi = (LPBITMAPINFO)pPackedDIB;
 	LPVOID pBits;
 
 	HBITMAP hbm;
 	HDC hDC = CreateCompatibleDC(NULL);
-	hbm = CreateDIBSection(hDC, &bi, DIB_RGB_COLORS, &pBits, NULL, 0);
+	hbm = CreateDIBSection(hDC, pbi, DIB_RGB_COLORS, &pBits, NULL, 0);
 	DeleteDC(hDC);
 
 	if (hbm)
@@ -207,6 +212,8 @@ PackedDIB_CreateIcon(const void *pPackedDIB, DWORD dwSize, BITMAP& bm, BOOL bIco
 	//int xHotSpot = 0, yHotSpot = 0;
 	if (!bIcon)
 	{
+		if (dwSize < 2 * sizeof(WORD))
+			return NULL;
 		//xHotSpot = ((LPWORD)pb)[0];
 		//yHotSpot = ((LPWORD)pb)[1];
 		pb += 2 * sizeof(WORD);
@@ -301,16 +308,19 @@ PackedDIB_Extract(LPCWSTR FileName, const void *ptr, size_t siz, BOOL WritePNG)
 	{
 		BOOL ret = FALSE;
 		HBITMAP hbm = PackedDIB_CreateBitmap(ptr, DWORD(siz));
+		if (hbm == NULL)
+			return FALSE;
+
 		Gdiplus::Bitmap *pBitmap = Gdiplus::Bitmap::FromHBITMAP(hbm, NULL);
-		if (pBitmap)
+		if (pBitmap && pBitmap->GetLastStatus() == Gdiplus::Ok)
 		{
 			CLSID cls;
 			if (GetEncoderClsid(L"image/png", &cls) != -1)
 			{
 				ret = pBitmap->Save(FileName, &cls, NULL) == Gdiplus::Ok;
 			}
-			delete pBitmap;
 		}
+		delete pBitmap;
 		DeleteObject(hbm);
 		return ret;
 	}
