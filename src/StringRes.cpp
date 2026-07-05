@@ -5,7 +5,9 @@
 // License: GPL-3 or later
 
 #include "StringRes.hpp"
-#include "ConstantsDB.hpp"
+#ifndef NO_CONSTANTS_DB
+	#include "ConstantsDB.hpp"
+#endif
 
 bool
 StringRes::LoadFromStream(const MByteStreamEx& stream, WORD wName)
@@ -77,7 +79,11 @@ StringRes::Dump(WORD wName)
 		}
 		else
 		{
+#ifndef NO_CONSTANTS_DB
 			ret += g_db.GetNameOfResID(IDTYPE_STRING, IDTYPE_PROMPT, i);
+#else
+			ret += mstr_dec_short(i);
+#endif
 		}
 
 		ret += L", \"";
@@ -116,7 +122,11 @@ StringRes::Dump()
 		}
 		else
 		{
+#ifndef NO_CONSTANTS_DB
 			ret += g_db.GetNameOfResID(IDTYPE_STRING, IDTYPE_PROMPT, pair.first);
+#else
+			ret += mstr_dec_short(pair.first);
+#endif
 		}
 
 		ret += L" \"";
