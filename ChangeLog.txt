@@ -1,5 +1,6 @@
 ﻿## HISTORY (ChangeLog)
 
+- v.6.0.4 (2026-XX-YY)
 - v.6.0.3 (2026-07-05)
     - Allowed signed/unsigned 32-bit integer for Help ID in "Resource IDs" dialog.
     - Finalizing the localization.

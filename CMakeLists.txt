@@ -15,7 +15,7 @@ endif()
 enable_testing()
 
 # project name, version, and languages
-project(RisohEditor VERSION 6.0.3 LANGUAGES CXX RC)
+project(RisohEditor VERSION 6.0.4 LANGUAGES CXX RC)
 
 # set output directory (build/)
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/build)

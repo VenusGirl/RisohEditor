@@ -1,5 +1,6 @@
 ﻿## SEJARAH
 
+- v.6.0.4 (2026-XX-YY)
 - v.6.0.3 (2026-07-05)
     - Mengizinkan penggunaan integer 32-bit bertanda (*signed*) maupun tidak bertanda (*unsigned*) untuk Help ID di dalam dialog "Resource IDs".
     - Menyelesaikan lokalisasi. 
