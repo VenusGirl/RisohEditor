@@ -7,9 +7,9 @@
 #include "VersionRes.hpp"
 #ifndef NO_CONSTANTS_DB
 	#include "ConstantsDB.hpp"
-	#define NO_DB 1
-#else
 	#define NO_DB 0
+#else
+	#define NO_DB 1
 #endif
 
 bool VersionRes::VarsFromStream(Vars& vars, const MByteStreamEx& stream)
