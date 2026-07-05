@@ -3058,7 +3058,7 @@ BOOL CheckNameComboBox(HWND hCmb2, const MIdOrString& type, MIdOrString& name)
 	// trim
 	mstr_trim(str);
 
-	// Use uppercase
+	// Make it Uppercase
 	if (str.size())
 		CharUpperW(&str[0]);
 

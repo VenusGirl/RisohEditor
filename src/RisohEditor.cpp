@@ -9632,6 +9632,7 @@ MIdOrString GetNameFromText(const WCHAR *pszText)
 	// pszText --> szText
 	WCHAR szText[MAX_PATH];
 	StringCchCopyW(szText, _countof(szText), pszText);
+	mstr_trim(szText, L" \t　");
 
 	// replace the fullwidth characters with halfwidth characters
 	ReplaceFullWithHalf(szText);
@@ -9658,8 +9659,23 @@ MIdOrString GetNameFromText(const WCHAR *pszText)
 			return WORD(mstr_parse_int(&str[i + 1]));
 		}
 
+		// A resource ID?
+		if (g_db.HasResID(str))
+			return (WORD)g_db.GetResIDValue(str);
+
+		// Make it Uppercase
+		if (str.size())
+			CharUpperW(&str[0]);
+
+		// Retry
+		if (g_db.HasResID(str))
+			return (WORD)g_db.GetResIDValue(str);
+
+		if (str[0] == L'"') // Quoted?
+			mstr_unquote(str); // Unquote
+
 		// string
-		return MIdOrString(szText);
+		return MIdOrString(str.c_str());
 	}
 }
 
