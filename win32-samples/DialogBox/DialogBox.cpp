@@ -6,12 +6,14 @@
 #include <commctrl.h>
 #include "resource.h"
 
+// WM_INITDIALOG
 BOOL OnInitDialog(HWND hwnd, HWND hwndFocus, LPARAM lParam)
 {
     SetDlgItemText(hwnd, stc1, TEXT("Hello, Win32 dialog!"));
     return TRUE;
 }
 
+// WM_COMMAND
 void OnCommand(HWND hwnd, int id, HWND hwndCtl, UINT codeNotify)
 {
     switch (id)
