@@ -1,3 +1,6 @@
+// MainWnd.cpp --- A Windows application
+// Author: katahiromz
+// License: CC0
 #include <windows.h>
 #include <windowsx.h>
 #include <commctrl.h>
@@ -12,6 +15,7 @@ HWND g_hButton = NULL;
 #define CX_BUTTON 100
 #define CY_BUTTON 24
 
+// WM_CREATE
 BOOL OnCreate(HWND hwnd, LPCREATESTRUCT lpCreateStruct)
 {
     g_hMainWnd = hwnd;
@@ -35,6 +39,7 @@ BOOL OnCreate(HWND hwnd, LPCREATESTRUCT lpCreateStruct)
     return TRUE;
 }
 
+// WM_PAINT
 void OnPaint(HWND hwnd)
 {
     RECT rc;
@@ -56,6 +61,7 @@ void OnPaint(HWND hwnd)
     }
 }
 
+// WM_COMMAND
 void OnCommand(HWND hwnd, int id, HWND hwndCtl, UINT codeNotify)
 {
     switch (id)
@@ -68,6 +74,7 @@ void OnCommand(HWND hwnd, int id, HWND hwndCtl, UINT codeNotify)
     }
 }
 
+// WM_DESTROY
 void OnDestroy(HWND hwnd)
 {
     DestroyWindow(g_hButton);
@@ -76,6 +83,7 @@ void OnDestroy(HWND hwnd)
     PostQuitMessage(EXIT_SUCCESS);
 }
 
+// WM_SIZE
 void OnSize(HWND hwnd, UINT state, int cx, int cy)
 {
     if (!g_hButton)

@@ -2,7 +2,7 @@
 ##############################################################################
 
 # CMake minimum version
-cmake_minimum_required(VERSION 3.5)
+cmake_minimum_required(VERSION 3.10)
 
 # project name and languages
 project(MainWnd CXX RC)
@@ -30,8 +30,6 @@ elseif (MSVC)
         string(REPLACE "/MD" "/MT" ${CompilerFlags} "${${CompilerFlags}}")
     endforeach()
 endif()
-
-##############################################################################
 
 # MainWnd.exe
 add_executable(MainWnd WIN32 MainWnd.cpp MainWnd_res.rc)
