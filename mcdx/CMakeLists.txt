@@ -4,9 +4,8 @@
 # CMake minimum version
 cmake_minimum_required(VERSION 3.10)
 
-# Enable C/C++
-ENABLE_LANGUAGE(C)
-ENABLE_LANGUAGE(CXX)
+# project name and languages
+project(mcdx C RC)
 
 # support C++11
 macro(use_cxx11)

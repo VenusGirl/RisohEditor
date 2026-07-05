@@ -1,9 +1,6 @@
-// mcdx.cpp --- Message Compiler by katahiromz
-//////////////////////////////////////////////////////////////////////////////
-// RisohEditor --- Another free Win32 resource editor
-// Copyright (C) 2022-2026 Katayama Hirofumi MZ <katayama.hirofumi.mz@gmail.com>
+// mcdx.cpp --- Original message compiler by katahiromz
+// Author: katahiromz
 // License: GPL-3 or later
-
 #define NO_CONSTANTS_DB
 #define NO_STRSAFE
 
