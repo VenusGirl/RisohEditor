@@ -3,7 +3,7 @@
 //////////////////////////////////////////////////////////////////////////////
 
 #ifndef MZC4_MWINDOWBASE_HPP_
-#define MZC4_MWINDOWBASE_HPP_    172     /* Version 172 */
+#define MZC4_MWINDOWBASE_HPP_    173     /* Version 173 */
 
 class MWindowBase;
 class MDialogBase;
@@ -1553,10 +1553,21 @@ MDialogBase::CreateDialogIndirectDx(HWND hwndOwner, const VOID *ptr)
 		m_hwndOwner = hwndOwner;
 	}
 	m_bModal = FALSE;
-	HWND hwnd = ::CreateDialogIndirectParam(::GetModuleHandle(NULL),
-		reinterpret_cast<const DLGTEMPLATE *>(ptr),
-		m_hwndOwner, MDialogBase::DialogProc,
-		reinterpret_cast<LPARAM>(this));
+	HWND hwnd = NULL;
+#ifdef _MSC_VER
+	__try {
+#endif
+		hwnd = ::CreateDialogIndirectParam(::GetModuleHandle(NULL),
+			reinterpret_cast<const DLGTEMPLATE *>(ptr),
+			m_hwndOwner, MDialogBase::DialogProc,
+			reinterpret_cast<LPARAM>(this));
+#ifdef _MSC_VER
+	}
+	__except (EXCEPTION_EXECUTE_HANDLER) {
+		assert(0);
+		hwnd = NULL;
+	}
+#endif
 	if (hwnd == NULL)
 	{
 		Detach();
