@@ -5,7 +5,12 @@
 // License: GPL-3 or later
 
 #include "VersionRes.hpp"
-#include "ConstantsDB.hpp"
+#ifndef NO_CONSTANTS_DB
+	#include "ConstantsDB.hpp"
+	#define NO_DB 1
+#else
+	#define NO_DB 0
+#endif
 
 bool VersionRes::VarsFromStream(Vars& vars, const MByteStreamEx& stream)
 {
@@ -167,38 +172,43 @@ VersionRes::Dump(const MIdOrString& name) const
 
 	// FILEOS
 	dwValue = m_fixed.dwFileOS;
-	if (g_settings.bHideID)
+	if (g_settings.bHideID || NO_DB)
 	{
 		StringCchPrintfW(line, _countof(line), L"FILEOS          0x%lX\r\n", dwValue);
 	}
+#ifndef NO_CONSTANTS_DB
 	else
 	{
 		str = g_db.DumpValue(L"VOS_", dwValue, true);
 		StringCchPrintfW(line, _countof(line), L"FILEOS          %s\r\n", str.c_str());
 	}
+#endif
 	ret += line;
 
 	// FILETYPE
 	dwValue = m_fixed.dwFileType;
-	if (g_settings.bHideID)
+	if (g_settings.bHideID || NO_DB)
 	{
 		StringCchPrintfW(line, _countof(line), L"FILETYPE        0x%lX\r\n", dwValue);
 	}
+#ifndef NO_CONSTANTS_DB
 	else
 	{
 		str = g_db.DumpValue(L"VFT_", dwValue, true);
 		StringCchPrintfW(line, _countof(line), L"FILETYPE        %s\r\n", str.c_str());
 	}
+#endif
 	ret += line;
 
 	// FILESUBTYPE
 	dwValue = m_fixed.dwFileSubtype;
 	if (dwValue)
 	{
-		if (g_settings.bHideID)
+		if (g_settings.bHideID || NO_DB)
 		{
 			StringCchPrintfW(line, _countof(line), L"FILESUBTYPE     0x%lX\r\n", dwValue);
 		}
+#ifndef NO_CONSTANTS_DB
 		else
 		{
 			if (m_fixed.dwFileType == VFT_DRV)
@@ -209,6 +219,7 @@ VersionRes::Dump(const MIdOrString& name) const
 				str = g_db.DumpValue(L"VFT2_others", dwValue, true);
 			StringCchPrintfW(line, _countof(line), L"FILESUBTYPE     %s\r\n", str.c_str());
 		}
+#endif
 		ret += line;
 	}
 
@@ -216,28 +227,32 @@ VersionRes::Dump(const MIdOrString& name) const
 	{
 		// FILEFLAGSMASK
 		dwValue = m_fixed.dwFileFlagsMask;
-		if (g_settings.bHideID)
+		if (g_settings.bHideID || NO_DB)
 		{
 			StringCchPrintfW(line, _countof(line), L"FILEFLAGSMASK   0x%lX\r\n", dwValue);
 		}
+#ifndef NO_CONSTANTS_DB
 		else
 		{
 			str = g_db.DumpBitFieldOrZero(L"VS_FF_", dwValue);
 			StringCchPrintfW(line, _countof(line), L"FILEFLAGSMASK   %s\r\n", str.c_str());
 		}
+#endif
 		ret += line;
 
 		// FILEFLAGS
 		dwValue = m_fixed.dwFileFlags;
-		if (g_settings.bHideID)
+		if (g_settings.bHideID || NO_DB)
 		{
 			StringCchPrintfW(line, _countof(line), L"FILEFLAGS       0x%lX\r\n", dwValue);
 		}
+#ifndef NO_CONSTANTS_DB
 		else
 		{
 			str = g_db.DumpBitFieldOrZero(L"VS_FF_", dwValue);
 			StringCchPrintfW(line, _countof(line), L"FILEFLAGS       %s\r\n", str.c_str());
 		}
+#endif
 		ret += line;
 	}
 
