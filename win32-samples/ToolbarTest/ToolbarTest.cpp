@@ -35,6 +35,7 @@ static BOOL CALLBACK CommandIdToText(INT id, LPTSTR pszText, INT cchTextMax)
     return FALSE;
 }
 
+// WM_INITDIALOG
 BOOL OnInitDialog(HWND hwnd, HWND hwndFocus, LPARAM lParam)
 {
     DWORD style = WS_CHILD | WS_VISIBLE | CCS_TOP | TBS_HORZ | TBS_TOOLTIPS |
@@ -55,6 +56,7 @@ BOOL OnInitDialog(HWND hwnd, HWND hwndFocus, LPARAM lParam)
     return TRUE;
 }
 
+// WM_COMMAND
 void OnCommand(HWND hwnd, int id, HWND hwndCtl, UINT codeNotify)
 {
     switch (id)
@@ -66,11 +68,13 @@ void OnCommand(HWND hwnd, int id, HWND hwndCtl, UINT codeNotify)
     }
 }
 
+// WM_SIZE
 void OnSize(HWND hwnd, UINT state, int cx, int cy)
 {
     SendMessage(g_hwndTB, TB_AUTOSIZE, 0, 0);
 }
 
+// WM_NOTIFY
 LRESULT OnNotify(HWND hwnd, int idFrom, LPNMHDR pnmhdr)
 {
     assert(pnmhdr != NULL);
