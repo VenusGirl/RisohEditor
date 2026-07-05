@@ -5,7 +5,9 @@
 // License: GPL-3 or later
 
 #include "ToolbarRes.hpp"
-#include "ConstantsDB.hpp"
+#ifndef NO_CONSTANTS_DB
+	#include "ConstantsDB.hpp"
+#endif
 
 bool ToolbarRes::LoadFromStream(const MByteStreamEx& stream)
 {
@@ -107,7 +109,11 @@ MStringW ToolbarRes::Dump(const MIdOrString& id_or_str) const
 	}
 	else
 	{
+#ifndef NO_CONSTANTS_DB
 		ret += g_db.GetNameOfResID(IDTYPE_BITMAP, id_or_str.m_id);
+#else
+		ret += mstr_dec_short(id_or_str.m_id);
+#endif
 	}
 
 	ret += L" TOOLBAR ";
@@ -130,7 +136,11 @@ MStringW ToolbarRes::Dump(const MIdOrString& id_or_str) const
 		else
 		{
 			ret += L"    BUTTON ";
+#ifndef NO_CONSTANTS_DB
 			ret += g_db.GetNameOfResID(IDTYPE_COMMAND, IDTYPE_NEWCOMMAND, item, true);
+#else
+			ret += mstr_dec(item);
+#endif
 			ret += L"\r\n";
 		}
 	}
