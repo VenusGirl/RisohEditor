@@ -2,6 +2,7 @@
 
 - v.6.0.4 (2026-XX-YY)
     - Corrigida a interpretação dos IDs de recursos na visualização em árvore.
+    - Adicionado botão "Redefinir" na caixa de diálogo IDD_FONTS.
 - v.6.0.3 (2026-07-05)
     - Permitido o uso de números inteiros de 32 bits (com ou sem sinal) para o ID de Ajuda na caixa de diálogo "IDs de Recurso".
     - Finalizando a localização. 

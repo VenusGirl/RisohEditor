@@ -108,22 +108,14 @@ void MMainWnd::SetDefaultSettings(HWND hwnd)
 	if (HDC hDC = CreateCompatibleDC(NULL))
 	{
 		if (lfBin.lfHeight < 0)
-		{
 			g_settings.nBinFontSize = -MulDiv(lfBin.lfHeight, 72, GetDeviceCaps(hDC, LOGPIXELSY));
-		}
 		else
-		{
 			g_settings.nBinFontSize = MulDiv(lfBin.lfHeight, 72, GetDeviceCaps(hDC, LOGPIXELSY));
-		}
 
 		if (lfSrc.lfHeight < 0)
-		{
 			g_settings.nSrcFontSize = -MulDiv(lfSrc.lfHeight, 72, GetDeviceCaps(hDC, LOGPIXELSY));
-		}
 		else
-		{
 			g_settings.nSrcFontSize = MulDiv(lfSrc.lfHeight, 72, GetDeviceCaps(hDC, LOGPIXELSY));
-		}
 
 		DeleteDC(hDC);
 	}

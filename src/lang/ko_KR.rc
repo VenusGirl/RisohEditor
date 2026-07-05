@@ -986,6 +986,7 @@ FONT 9, "Gulim"
     GROUPBOX "미리보기", -1, 5, 45, 185, 39
     CTEXT "소스", stc1, 15, 55, 80, 25, SS_CENTERIMAGE | NOT WS_GROUP
     CTEXT "바이너리", stc2, 100, 55, 85, 25, SS_CENTERIMAGE | NOT WS_GROUP
+    PUSHBUTTON "&다시 놓기", psh3, 5, 90, 50, 14
     DEFPUSHBUTTON "확인", IDOK, 65, 90, 60, 14
     PUSHBUTTON "취소", IDCANCEL, 130, 90, 60, 14
 }

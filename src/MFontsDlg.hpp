@@ -211,6 +211,69 @@ public:
 		}
 	}
 
+    void OnPsh3(HWND hwnd)
+    {
+    	HFONT hFont;
+		LOGFONTW lf, lfBin, lfSrc;
+		GetObject(GetStockObject(DEFAULT_GUI_FONT), sizeof(lf), &lf);
+
+		ZeroMemory(&lfBin, sizeof(lfBin));
+		lfBin.lfHeight = 10;
+		lfBin.lfPitchAndFamily = FIXED_PITCH | FF_MODERN;
+		lfBin.lfCharSet = lf.lfCharSet;
+		hFont = CreateFontIndirectW(&lfBin);
+		GetObject(hFont, sizeof(lfBin), &lfBin);
+		if (HDC hDC = CreateCompatibleDC(NULL))
+		{
+			SelectObject(hDC, hFont);
+			GetTextFace(hDC, LF_FACESIZE, lfBin.lfFaceName);
+			DeleteDC(hDC);
+		}
+		DeleteObject(hFont);
+
+		ZeroMemory(&lfSrc, sizeof(lfSrc));
+		lfSrc.lfHeight = 13;
+		lfSrc.lfPitchAndFamily = FIXED_PITCH | FF_MODERN;
+		lfSrc.lfCharSet = lf.lfCharSet;
+		hFont = CreateFontIndirectW(&lfSrc);
+		GetObject(hFont, sizeof(lfSrc), &lfSrc);
+		if (HDC hDC = CreateCompatibleDC(NULL))
+		{
+			SelectObject(hDC, hFont);
+			GetTextFace(hDC, LF_FACESIZE, lfSrc.lfFaceName);
+			DeleteDC(hDC);
+		}
+		DeleteObject(hFont);
+
+		g_settings.strSrcFont = lfSrc.lfFaceName;
+		g_settings.nSrcFontSize = 12;
+		DestroySrcFont();
+
+		g_settings.strBinFont = lfBin.lfFaceName;
+		g_settings.nBinFontSize = 9;
+		DestroyBinFont();
+
+		if (HDC hDC = CreateCompatibleDC(NULL))
+		{
+			if (lfBin.lfHeight < 0)
+				g_settings.nBinFontSize = -MulDiv(lfBin.lfHeight, 72, GetDeviceCaps(hDC, LOGPIXELSY));
+			else
+				g_settings.nBinFontSize = MulDiv(lfBin.lfHeight, 72, GetDeviceCaps(hDC, LOGPIXELSY));
+
+			if (lfSrc.lfHeight < 0)
+				g_settings.nSrcFontSize = -MulDiv(lfSrc.lfHeight, 72, GetDeviceCaps(hDC, LOGPIXELSY));
+			else
+				g_settings.nSrcFontSize = MulDiv(lfSrc.lfHeight, 72, GetDeviceCaps(hDC, LOGPIXELSY));
+
+			DeleteDC(hDC);
+		}
+
+		m_hSrcFont = CreateMyFont(g_settings.strSrcFont.c_str(), g_settings.nSrcFontSize);
+		m_hBinFont = CreateMyFont(g_settings.strBinFont.c_str(), g_settings.nBinFontSize);
+
+		EndDialog(IDOK);
+    }
+
 	void OnCommand(HWND hwnd, int id, HWND hwndCtl, UINT codeNotify)
 	{
 		switch (id)
@@ -221,12 +284,15 @@ public:
 		case IDCANCEL:
 			EndDialog(IDCANCEL);
 			break;
-		case psh1:
+		case psh1: // Source font
 			OnPsh1(hwnd);
 			break;
-		case psh2:
+		case psh2: // Binary font
 			OnPsh2(hwnd);
 			break;
+		case psh3: // Reset
+		    OnPsh3(hwnd);
+		    break;
 		}
 	}
 

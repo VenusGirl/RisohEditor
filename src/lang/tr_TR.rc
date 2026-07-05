@@ -984,6 +984,7 @@ FONT 9, "MS Shell Dlg"
     GROUPBOX "Önizleme", -1, 5, 45, 185, 39
     CTEXT "Kaynak", stc1, 15, 55, 80, 25, SS_CENTERIMAGE | NOT WS_GROUP
     CTEXT "İkili", stc2, 100, 55, 85, 25, SS_CENTERIMAGE | NOT WS_GROUP
+    PUSHBUTTON "&Sıfırla", psh3, 5, 90, 50, 14
     DEFPUSHBUTTON "Tamam", IDOK, 65, 90, 60, 14
     PUSHBUTTON "İptal", IDCANCEL, 130, 90, 60, 14
 }
