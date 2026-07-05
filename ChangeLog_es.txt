@@ -1,6 +1,6 @@
 ﻿## HISTORIA
 
-- v.6.0.3 (2026-XX-YY)
+- v.6.0.3 (2026-07-05)
     - Se permite el uso de enteros de 32 bits (con o sin signo) para el ID de ayuda en el cuadro de diálogo "Resource IDs".
     - Finalización de la localización. 
     - Corregido un error menor en los «Lista de ID de recursos».
