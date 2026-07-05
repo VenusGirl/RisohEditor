@@ -100,6 +100,9 @@ public:
 		if (!stream.ReadRaw(data) || data.NumberOfBlocks == 0)
 			return false;
 
+		if (data.NumberOfBlocks > ULONG_MAX / sizeof(MESSAGE_RESOURCE_BLOCK))
+			return false;
+
 		std::vector<MESSAGE_RESOURCE_BLOCK> blocks(data.NumberOfBlocks);
 		DWORD dwSizeOfBlocks = sizeof(MESSAGE_RESOURCE_BLOCK) * data.NumberOfBlocks;
 		if (!stream.ReadData(&blocks[0], dwSizeOfBlocks))
@@ -152,7 +155,7 @@ public:
 		return true;
 	}
 
-	bool SaveToStream(MByteStream& stream)
+	bool SaveToStream(MByteStream& stream) const
 	{
 		if (m_map.empty())
 			return true;
@@ -193,7 +196,10 @@ public:
 			{
 				for (DWORD k = it->FirstId; k <= it->LastId; ++k)
 				{
-					MStringW& wstr = m_map[k];
+					auto it = m_map.find(k);
+					if (it == m_map.end())
+						return false;
+					auto& wstr = it->second;
 
 					MESSAGE_RESOURCE_ENTRY_HEADER header;
 					header.Length = (WORD)(sizeof(header) + (wstr.size() + 1) * sizeof(WCHAR));
@@ -334,7 +340,7 @@ protected:
 	}
 
 	typedef std::vector<size_t> offsets_type;
-	bool OffsetsFromRanges(offsets_type& offsets, const ranges_type& ranges)
+	bool OffsetsFromRanges(offsets_type& offsets, const ranges_type& ranges) const
 	{
 		size_t offset = sizeof(ULONG);
 		offset += sizeof(MESSAGE_RESOURCE_BLOCK) * ranges.size();
@@ -346,7 +352,10 @@ protected:
 			for (DWORD k = it->FirstId; k <= it->LastId; ++k)
 			{
 				offset += sizeof(MESSAGE_RESOURCE_ENTRY_HEADER);
-				offset += (m_map[k].size() + 1) * sizeof(WCHAR);
+				auto it = m_map.find(k);
+				if (it == m_map.end())
+					return false;
+				offset += (it->second.size() + 1) * sizeof(WCHAR);
 			}
 		}
 		return true;
