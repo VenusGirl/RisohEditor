@@ -147,6 +147,11 @@ public:
 		{
 			SetDlgItemTextW(hwnd, cmb2, L"1");
 		}
+		// if RT_MESSAGETABLE, the name should be one
+		else if (type == RT_MESSAGETABLE)
+		{
+			SetDlgItemTextW(hwnd, cmb2, L"1");
+		}
 
 		// check the name combobox cmb2
 		HWND hCmb2 = GetDlgItem(hwnd, cmb2);
