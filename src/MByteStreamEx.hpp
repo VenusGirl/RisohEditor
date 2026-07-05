@@ -17,22 +17,10 @@ class MByteStreamEx;
 class MByteStreamEx : public MByteStream
 {
 public:
-	MByteStreamEx()
-	{
-	}
-
-	MByteStreamEx(size_t size) : MByteStream(size)
-	{
-		m_data.resize(size);
-	}
-
-	MByteStreamEx(const data_type& data) : MByteStream(data)
-	{
-	}
-
-	MByteStreamEx(const void *ptr, size_t size) : MByteStream(ptr, size)
-	{
-	}
+	MByteStreamEx() { }
+	MByteStreamEx(size_t size) : MByteStream(size) { }
+	MByteStreamEx(const data_type& data) : MByteStream(data) { }
+	MByteStreamEx(const void *ptr, size_t size) : MByteStream(ptr, size) { }
 
 	BOOL ReadID(MIdOrString& id_or_str) const
 	{
