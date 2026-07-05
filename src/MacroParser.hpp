@@ -1069,30 +1069,17 @@ namespace MacroParser
 	//                      | <unary_operator>* <postfix_expression>
 	inline BaseAst* Parser::visit_unary_expression()
 	{
-		UnaryAst *ret = NULL, *first = NULL;
-		while (type() == TOK_SYMBOL &&
-			   (str() == "+" || str() == "-" || str() == "~" || str() == "!"))
+		if (type() == TOK_SYMBOL &&
+			(str() == "+" || str() == "-" || str() == "~" || str() == "!"))
 		{
-			ret = new UnaryAst(str(), ret);
-			if (first == NULL)
-				first = ret;
+			string_type op = str();
 			next();
-		}
-		if (ret)
-		{
-			BaseAst *postfix = visit_postfix_expression();
-			if (postfix)
-			{
-				first->m_arg = postfix;
-				return ret;
-			}
-			delete ret;
+			BaseAst *arg = visit_unary_expression();
+			if (arg)
+				return new UnaryAst(op, arg);
 			return NULL;
 		}
-		else
-		{
-			return visit_postfix_expression();
-		}
+		return visit_postfix_expression();
 	}
 
 	// <primary_expression> ::= <identifier>
@@ -1249,7 +1236,6 @@ namespace MacroParser
 		else if (unary->m_str == "-") value = -value;
 		else if (unary->m_str == "~") value = ~value;
 		else if (unary->m_str == "!") value = !value;
-		else if (unary->m_str == "+") value = value;
 		else if (unary->m_str == "+") value = value;
 		else return false;
 		return true;
