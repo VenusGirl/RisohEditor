@@ -5,7 +5,9 @@
 // License: GPL-3 or later
 
 #include "MenuRes.hpp"
-#include "ConstantsDB.hpp"
+#ifndef NO_CONSTANTS_DB
+	#include "ConstantsDB.hpp"
+#endif
 #include <stack>
 #include <cassert>
 
@@ -412,7 +414,11 @@ MenuRes::Dump(const MIdOrString& name) const
 	}
 	else
 	{
+#ifndef NO_CONSTANTS_DB
 		ret += g_db.GetNameOfResID(IDTYPE_MENU, name.m_id, true);
+#else
+		ret += mstr_dec_short(name.m_id);
+#endif
 	}
 
 	ret += L" MENU\r\n";
@@ -460,14 +466,11 @@ MenuRes::Dump(const MIdOrString& name) const
 				ret += L"MENUITEM \"";
 				ret += mstr_escape_with_wrap(item.text);
 				ret += L"\", ";
-				if (0)
-				{
-					ret += mstr_dec_word(item.wMenuID);
-				}
-				else
-				{
-					ret += g_db.GetNameOfResID(IDTYPE_COMMAND, IDTYPE_NEWCOMMAND, item.wMenuID, true);
-				}
+#ifndef NO_CONSTANTS_DB
+				ret += g_db.GetNameOfResID(IDTYPE_COMMAND, IDTYPE_NEWCOMMAND, item.wMenuID, true);
+#else
+				ret += mstr_dec_short(item.wMenuID);
+#endif
 				ret += DumpFlags(item.fItemFlags);
 				ret += L"\r\n";
 			}
@@ -502,7 +505,11 @@ MenuRes::DumpEx(const MIdOrString& name) const
 	}
 	else
 	{
+#ifndef NO_CONSTANTS_DB
 		ret += g_db.GetNameOfResID(IDTYPE_MENU, name.m_id, true);
+#else
+		ret += mstr_dec_short(name.m_id);
+#endif
 	}
 
 	ret += L" MENUEX\r\n";
@@ -532,38 +539,40 @@ MenuRes::DumpEx(const MIdOrString& name) const
 			if (item.menuId || item.dwType || item.dwState || item.dwHelpId)
 			{
 				ret += L", ";
-				if (0)
-				{
-					ret += mstr_dec_dword(item.menuId);
-				}
-				else
-				{
-					ret += g_db.GetNameOfResID(IDTYPE_COMMAND, IDTYPE_NEWCOMMAND, item.menuId, true);
-				}
+#ifndef NO_CONSTANTS_DB
+				ret += g_db.GetNameOfResID(IDTYPE_COMMAND, IDTYPE_NEWCOMMAND, item.menuId, true);
+#else
+				ret += mstr_dec_dword(item.menuId);
+#endif
 			}
 			if (item.dwType || item.dwState || item.dwHelpId)
 			{
 				ret += L", ";
 				DWORD value = item.dwType;
+#ifndef NO_CONSTANTS_DB
 				ret += g_db.DumpBitFieldOrZero(L"MFT_", value);
+#else
+				ret += mstr_hex(value);
+#endif
 			}
 			if (item.dwState || item.dwHelpId)
 			{
 				ret += L", ";
 				DWORD value = item.dwState;
+#ifndef NO_CONSTANTS_DB
 				ret += g_db.DumpBitFieldOrZero(L"MFS_", value);
+#else
+				ret += mstr_hex(value);
+#endif
 			}
 			if (item.dwHelpId)
 			{
 				ret += L", ";
-				if (0)
-				{
-					ret += mstr_dec_dword(item.dwHelpId);
-				}
-				else
-				{
-					ret += g_db.GetNameOfResID(IDTYPE_HELP, item.dwHelpId);
-				}
+#ifndef NO_CONSTANTS_DB
+				ret += g_db.GetNameOfResID(IDTYPE_HELP, item.dwHelpId);
+#else
+				ret += mstr_hex(item.dwHelpId);
+#endif
 			}
 			ret += L"\r\n";
 			ret += string_type((item.wDepth + 1) * 4, L' ');
@@ -580,30 +589,36 @@ MenuRes::DumpEx(const MIdOrString& name) const
 			if (item.menuId || item.dwType || item.dwState)
 			{
 				ret += L", ";
-				if (0)
-				{
-					ret += mstr_dec_dword(item.menuId);
-				}
-				else
-				{
-					ret += g_db.GetNameOfResID(IDTYPE_COMMAND, IDTYPE_NEWCOMMAND, item.menuId, true);
-				}
+#ifndef NO_CONSTANTS_DB
+				ret += g_db.GetNameOfResID(IDTYPE_COMMAND, IDTYPE_NEWCOMMAND, item.menuId, true);
+#else
+				ret += mstr_dec_dword(item.menuId);
+#endif
 			}
 			if (item.dwType || item.dwState)
 			{
 				ret += L", ";
 				DWORD value = item.dwType;
+#ifndef NO_CONSTANTS_DB
 				ret += g_db.DumpBitFieldOrZero(L"MFT_", value);
+#else
+				ret += mstr_hex(value);
+#endif
 			}
 			if (item.dwState)
 			{
 				ret += L", ";
 				DWORD value = item.dwState;
+#ifndef NO_CONSTANTS_DB
 				ret += g_db.DumpBitFieldOrZero(L"MFS_", value);
+#else
+				ret += mstr_hex(value);
+#endif
 			}
 			ret += L"\r\n";
 		}
 	}
+
 	while (0 < wDepth)
 	{
 		--wDepth;
@@ -629,22 +644,14 @@ void MenuRes::Update()
 		for (size_t i = 0; i < m_exitems.size(); ++i)
 		{
 			if (IsLastItem(i))
-			{
 				m_exitems[i].bResInfo |= 0x80;
-			}
 			else
-			{
 				m_exitems[i].bResInfo &= ~0x80;
-			}
 
 			if (IsParent(i))
-			{
 				m_exitems[i].bResInfo |= 0x01;
-			}
 			else
-			{
 				m_exitems[i].bResInfo &= ~0x01;
-			}
 		}
 	}
 	else
@@ -652,22 +659,14 @@ void MenuRes::Update()
 		for (size_t i = 0; i < m_items.size(); ++i)
 		{
 			if (IsLastItem(i))
-			{
 				m_items[i].fItemFlags |= MF_END;
-			}
 			else
-			{
 				m_items[i].fItemFlags &= ~MF_END;
-			}
 
 			if (IsParent(i))
-			{
 				m_items[i].fItemFlags |= MF_POPUP;
-			}
 			else
-			{
 				m_items[i].fItemFlags &= ~MF_POPUP;
-			}
 		}
 	}
 }
@@ -677,20 +676,14 @@ bool MenuRes::IsParent(size_t iItem) const
 	if (IsExtended())
 	{
 		WORD wDepth = m_exitems[iItem].wDepth;
-		if (iItem + 1 < m_exitems.size() &&
-			wDepth < m_exitems[iItem + 1].wDepth)
-		{
+		if (iItem + 1 < m_exitems.size() && wDepth < m_exitems[iItem + 1].wDepth)
 			return true;
-		}
 	}
 	else
 	{
 		WORD wDepth = m_items[iItem].wDepth;
-		if (iItem + 1 < m_items.size() &&
-			wDepth < m_items[iItem + 1].wDepth)
-		{
+		if (iItem + 1 < m_items.size() && wDepth < m_items[iItem + 1].wDepth)
 			return true;
-		}
 	}
 	return false;
 }
@@ -704,13 +697,9 @@ bool MenuRes::IsLastItem(size_t iItem) const
 		for (size_t i = iItem + 1; i < m_exitems.size(); ++i)
 		{
 			if (m_exitems[i].wDepth == wDepth)
-			{
 				Found = true;
-			}
 			if (m_exitems[i].wDepth < wDepth)
-			{
 				break;
-			}
 		}
 	}
 	else
@@ -719,13 +708,9 @@ bool MenuRes::IsLastItem(size_t iItem) const
 		for (size_t i = iItem + 1; i < m_items.size(); ++i)
 		{
 			if (m_items[i].wDepth == wDepth)
-			{
 				Found = true;
-			}
 			if (m_items[i].wDepth < wDepth)
-			{
 				break;
-			}
 		}
 	}
 	return !Found;
