@@ -9632,7 +9632,7 @@ MIdOrString GetNameFromText(const WCHAR *pszText)
 	// pszText --> szText
 	WCHAR szText[MAX_PATH];
 	StringCchCopyW(szText, _countof(szText), pszText);
-	mstr_trim(szText, L" \t　");
+	mstr_trim(szText, L" \t\r\n　");
 
 	// replace the fullwidth characters with halfwidth characters
 	ReplaceFullWithHalf(szText);
