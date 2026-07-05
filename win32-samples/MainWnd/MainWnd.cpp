@@ -12,6 +12,7 @@ static const TCHAR s_szClassName[] = TEXT("RisohEditor MainWnd");
 static TCHAR s_szText[64] = TEXT("");
 HWND g_hButton = NULL;
 
+// button size
 #define CX_BUTTON 100
 #define CY_BUTTON 24
 
