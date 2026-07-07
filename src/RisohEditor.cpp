@@ -4796,7 +4796,7 @@ BOOL ChooseLangListBoxLang(HWND hwnd, LANGID wLangId)
 	if (index >= (INT)g_langs.size())
 		return FALSE;
 
-	index = ListBox_FindStringExact(hwnd, -1, g_langs[index].str.c_str());
+	index = ListBox_FindString(hwnd, -1, g_langs[index].str.c_str());
 	if (index < 0)
 		return FALSE;
 
