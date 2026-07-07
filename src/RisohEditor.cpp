@@ -8188,6 +8188,9 @@ void MMainWnd::DoRefreshTV(HWND hwnd)
 	// clean up
 	res.delete_all();
 
+	// hide language drop-down arrow
+	ShowWindowAsync(m_arrow, SW_HIDE);
+
 	// redraw
 	InvalidateRect(m_hwndTV, NULL, TRUE);
 }
@@ -8464,10 +8467,10 @@ void MMainWnd::OnIdAssoc(HWND hwnd)
 	MIdAssocDlg dialog;
 	if (dialog.DialogBoxDx(hwnd) == IDOK)
 	{
-		DoRefreshIDList(hwnd);
-
 		// update the prefix database
 		UpdatePrefixDB(hwnd);
+
+		DoRefreshIDList(hwnd);
 	}
 }
 

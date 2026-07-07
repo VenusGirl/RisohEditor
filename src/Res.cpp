@@ -52,10 +52,12 @@ Res_IsEntityType(const MIdOrString& type)
 
 MStringW EntryBase::get_name_label() const
 {
-	if (m_name.is_zero()) return L"0";
+	if (m_name.is_str())
+		return m_name.quoted_wstr(); // string name resource name
 
 	WORD id = m_name.m_id;
-	if (!id) return m_name.m_str;        // string name resource name
+	if (id == 0)
+		return L"0";
 
 	// get an IDTYPE_ value
 	IDTYPE_ nIDTYPE_ = g_db.IDTypeFromResType(m_type);
