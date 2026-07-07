@@ -2064,16 +2064,16 @@ LRESULT MMainWnd::OnComplement(HWND hwnd, WPARAM wParam, LPARAM lParam)
 
 	switch (m_arrow.m_target_type)
 	{
-	case MDropdownArrow::TARGET_TYPE_TYPE:
+	case TARGET_TYPE_TYPE:
 		return FALSE;
 
-	case MDropdownArrow::TARGET_TYPE_NAME:
+	case TARGET_TYPE_NAME:
 		if (g_pNames)
 		{
 			MIdOrString new_name = (*g_pNames)[index].c_str();
 
 			auto entry = g_res.get_entry();
-			if (!entry || entry->m_et == ET_TYPE || entry->m_et == ET_LANG)
+			if (!entry || entry->m_et != ET_NAME)
 				return FALSE;   // reject
 
 			// A resource ID?
@@ -2101,12 +2101,12 @@ LRESULT MMainWnd::OnComplement(HWND hwnd, WPARAM wParam, LPARAM lParam)
 		}
 		return TRUE; // accepted
 
-	case MDropdownArrow::TARGET_TYPE_LANG:
+	case TARGET_TYPE_LANG:
 		{
 			LANGID wNewLang = g_langs[index].LangID;
 
 			auto entry = g_res.get_entry();
-			if (!entry || entry->m_et == ET_TYPE || entry->m_et == ET_NAME)
+			if (!entry || (entry->m_et != ET_LANG && entry->m_et != ET_STRING))
 				return FALSE;   // reject
 
 			LANGID wOldLang = entry->m_lang;
@@ -4785,8 +4785,6 @@ BOOL ChooseNameListBoxName(HWND hwnd, const MIdOrString& type, const MIdOrString
 
 BOOL ChooseLangListBoxLang(HWND hwnd, LANGID wLangId)
 {
-	ListBox_ResetContent(hwnd);
-
 	INT index = 0;
 	for (auto& lang : g_langs)
 	{
@@ -4809,11 +4807,14 @@ BOOL ChooseLangListBoxLang(HWND hwnd, LANGID wLangId)
 
 BOOL InitLangListBox(HWND hwnd)
 {
+	ListBox_ResetContent(hwnd);
+
 	for (auto& lang : g_langs)
 	{
 		INT index = ListBox_AddString(hwnd, lang.str.c_str());
 		ListBox_SetItemData(hwnd, index, lang.LangID);
 	}
+
 	return TRUE;
 }
 

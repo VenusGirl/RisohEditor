@@ -14,11 +14,19 @@
 #define MYWM_COMPLEMENT (WM_USER + 112)
 #define MYWM_CLOSELIST (WM_USER + 103)
 
+enum ARROW_TARGET_TYPE
+{
+	TARGET_TYPE_TYPE,
+	TARGET_TYPE_NAME,
+	TARGET_TYPE_LANG,
+};
+
 class MDropdownListDlg : public MDialogBase
 {
 public:
 	HWND m_lst1;
 	HWND m_arrow;
+	ARROW_TARGET_TYPE m_target_type = TARGET_TYPE_LANG;
 
 	MDropdownListDlg() : MDialogBase(IDD_DROPDOWNPOPUP)
 	{
@@ -32,9 +40,20 @@ public:
 		return TRUE;
 	}
 
+	void SetTargetType(ARROW_TARGET_TYPE target_type)
+	{
+		if (m_target_type == target_type)
+			return;
+		if (m_target_type == TARGET_TYPE_LANG)
+			InitLangListBox(m_lst1);
+		else
+			ListBox_ResetContent(m_lst1);
+	}
+
 	void InitList(HWND hwnd)
 	{
-		InitLangListBox(m_lst1);
+		if (m_target_type == TARGET_TYPE_LANG)
+			InitLangListBox(m_lst1);
 
 		INT nCount = ListBox_GetCount(m_lst1);
 
@@ -131,13 +150,7 @@ public:
 	RECT m_rcItem = {};
 	MDropdownListDlg m_dialog;
 	HWND m_hwndMain = nullptr;
-	enum TARGET_TYPE
-	{
-		TARGET_TYPE_TYPE,
-		TARGET_TYPE_NAME,
-		TARGET_TYPE_LANG,
-	};
-	TARGET_TYPE m_target_type = TARGET_TYPE_LANG;
+	ARROW_TARGET_TYPE m_target_type = TARGET_TYPE_LANG;
 	MIdOrString m_type;
 	MIdOrString m_name;
 	LANGID m_wLangId = 0;
@@ -150,6 +163,7 @@ public:
 	BOOL ChooseName(const MIdOrString& type, const MIdOrString& name)
 	{
 		m_target_type = TARGET_TYPE_NAME;
+		m_dialog.SetTargetType(TARGET_TYPE_NAME);
 		m_type = type;
 		m_name = name;
 		return TRUE;
@@ -158,6 +172,7 @@ public:
 	BOOL ChooseLang(LANGID wLangId)
 	{
 		m_target_type = TARGET_TYPE_LANG;
+		m_dialog.SetTargetType(TARGET_TYPE_LANG);
 		m_wLangId = wLangId;
 		return TRUE;
 	}
