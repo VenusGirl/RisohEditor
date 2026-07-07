@@ -1,6 +1,6 @@
 ﻿## HISTORY (ChangeLog)
 
-- v.6.0.4 (2026-XX-YY)
+- v.6.0.4 (2026-07-07)
     - Fixed the interpretation of the tree view resource ID.
     - Added "Reset" button on IDD_FONTS dialog.
 - v.6.0.3 (2026-07-05)

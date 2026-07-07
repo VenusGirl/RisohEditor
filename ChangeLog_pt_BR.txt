@@ -1,6 +1,6 @@
 ﻿## HISTÓRICO
 
-- v.6.0.4 (2026-XX-YY)
+- v.6.0.4 (2026-07-07)
     - Corrigida a interpretação dos IDs de recursos na visualização em árvore.
     - Adicionado botão "Redefinir" na caixa de diálogo IDD_FONTS.
 - v.6.0.3 (2026-07-05)

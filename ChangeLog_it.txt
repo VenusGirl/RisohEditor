@@ -1,6 +1,6 @@
 ## CRONOLOGIA VERSIONI PROGRAMMA
 
-- v.6.0.4 (2026-XX-YY)
+- v.6.0.4 (07.07.2026)
     - Corretta nella visualizzazione struttura l'interpretazione ID risorse.
     - Aggiunto nella finestra di dialogo IDD_FONTS il pulsante "Ripristina".
 - v.6.0.3 (05.07.2026)
