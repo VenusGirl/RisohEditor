@@ -50,7 +50,7 @@ IDR_MAINMENU MENU
             MENUITEM "文字列テーブルを追加(&S)...", ID_ADDSTRINGTABLE
             MENUITEM "メッセージ テーブルを追加(&E)...", ID_ADDMESSAGETABLE
             MENUITEM "&HTMLを追加...", ID_ADDHTML
-            MENUITEM "アクセスキーを追加(&A)...", ID_ADDACCEL
+            MENUITEM "アクセラレータを追加(&A)...", ID_ADDACCEL
             MENUITEM "バージョン情報を追加(&V)...", ID_ADDVERINFO
             MENUITEM "マニフェストを追加(&F)...", ID_ADDMANIFEST
             MENUITEM "ツールバーを追加(&T)...", ID_ADDTOOLBAR
@@ -164,7 +164,7 @@ IDR_POPUPMENUS MENU
             MENUITEM "文字列テーブルを追加(&S)...", ID_ADDSTRINGTABLE
             MENUITEM "メッセージ テーブルを追加(&E)...", ID_ADDMESSAGETABLE
             MENUITEM "&HTMLを追加...", ID_ADDHTML
-            MENUITEM "アクセスキーを追加(&A)...", ID_ADDACCEL
+            MENUITEM "アクセラレータを追加(&A)...", ID_ADDACCEL
             MENUITEM "バージョン情報を追加(&V)...", ID_ADDVERINFO
             MENUITEM "マニフェストを追加(&F)...", ID_ADDMANIFEST
             MENUITEM "ツールバーを追加(&T)...", ID_ADDTOOLBAR
@@ -493,7 +493,7 @@ FONT 9, "MS UI Gothic"
 }
 
 IDD_EDITACCEL DIALOG 0, 0, 285, 165
-CAPTION "アクセスキーの編集"
+CAPTION "アクセラレータの編集"
 STYLE WS_POPUPWINDOW | WS_CAPTION | WS_THICKFRAME
 FONT 9, "MS UI Gothic"
 {
