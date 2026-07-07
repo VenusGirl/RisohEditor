@@ -19,7 +19,7 @@
 // the maximum number of captions to remember
 static const DWORD s_nMaxCaptions = 10;
 
-const LPCWSTR g_idtype_strings[] =
+std::vector<LPCWSTR> g_idtype_strings =
 {
 #define DEFINE_IDTYPE(index, idtype, str, wstr, ids, prefix) wstr,
 #include "idtypes.h"

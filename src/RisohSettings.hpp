@@ -33,6 +33,8 @@ typedef std::vector<MString>            captions_type;      // captions type
 MStringW MapIDType(IDTYPE_ nIDType);
 IDTYPE_ UnMapIDType(const MStringW& str);
 
+extern std::vector<LPCWSTR> g_idtype_strings;
+
 //////////////////////////////////////////////////////////////////////////////
 
 struct RisohSettings
