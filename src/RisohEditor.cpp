@@ -9816,10 +9816,16 @@ BOOL MMainWnd::ShowTreeViewArrow(BOOL bShow, HTREEITEM hItem)
 		m_arrow.m_hwndMain = m_hwnd;
 		m_arrow.SendMessageDx(MYWM_SETITEMRECT, 0, (LPARAM)&rc);
 		ShowWindowAsync(m_arrow, SW_SHOWNOACTIVATE);
-		if (entry->m_et == ET_LANG)
+		switch (entry->m_et)
+		{
+		case ET_LANG:
+		case ET_STRING:
 			m_arrow.ChooseLang(entry->m_lang);
-		else if (entry->m_et == ET_NAME)
+			break;
+		case ET_NAME:
 			m_arrow.ChooseName(entry->m_type, entry->m_name);
+			break;
+		}
 	}
 	else
 	{
