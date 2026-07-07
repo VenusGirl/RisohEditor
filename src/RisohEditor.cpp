@@ -8435,6 +8435,16 @@ void MMainWnd::OnIDList(HWND hwnd)
 	ShowIDList(hwnd, TRUE);
 }
 
+void MMainWnd::DoRefreshTVEntryNames(HWND hwnd)
+{
+	EntrySet found;
+	g_res.search(found, ET_NAME);
+	for (auto entry : found)
+	{
+		UpdateEntryName(entry);
+	}
+}
+
 // show the ID association dialog
 void MMainWnd::OnIdAssoc(HWND hwnd)
 {
@@ -8446,9 +8456,7 @@ void MMainWnd::OnIdAssoc(HWND hwnd)
 	MIdAssocDlg dialog;
 	if (dialog.DialogBoxDx(hwnd) == IDOK)
 	{
-		// update the prefix database
-		UpdatePrefixDB(hwnd);
-
+		DoRefreshTVEntryNames(hwnd);
 		DoRefreshIDList(hwnd);
 	}
 }

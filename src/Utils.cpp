@@ -1784,8 +1784,7 @@ void InitCtrlIDComboBox(HWND hCmb)
 	}
 
 	// get the prefix of Control.ID
-	table = g_db.GetTable(L"RESOURCE.ID.PREFIX");
-	MStringW prefix = table[IDTYPE_CONTROL].name;
+	auto prefix = MapIDTypeToPrefix(IDTYPE_CONTROL);
 	if (prefix.size())
 	{
 		// get the resource IDs by the prefix
@@ -1798,8 +1797,7 @@ void InitCtrlIDComboBox(HWND hCmb)
 	}
 
 	// get the prefix of Command.ID
-	table = g_db.GetTable(L"RESOURCE.ID.PREFIX");
-	prefix = table[IDTYPE_COMMAND].name;
+	prefix = MapIDTypeToPrefix(IDTYPE_COMMAND);
 	if (prefix.size())
 	{
 		// get the resource IDs by the prefix
@@ -1812,8 +1810,7 @@ void InitCtrlIDComboBox(HWND hCmb)
 	}
 
 	// get the prefix of New.Command.ID
-	table = g_db.GetTable(L"RESOURCE.ID.PREFIX");
-	prefix = table[IDTYPE_NEWCOMMAND].name;
+	prefix = MapIDTypeToPrefix(IDTYPE_NEWCOMMAND);
 	if (prefix.size())
 	{
 		// get the resource IDs by the prefix
@@ -2066,13 +2063,12 @@ void InitResNameComboBox(HWND hCmb, const MIdOrString& id, IDTYPE_ nIDTYPE_)
 	if (nIDTYPE_ != IDTYPE_UNKNOWN)
 	{
 		// get the prefix from an IDTYPE_ value
-		auto table = g_db.GetTable(L"RESOURCE.ID.PREFIX");
-		prefix = table[nIDTYPE_].name;
+		prefix = MapIDTypeToPrefix(nIDTYPE_);
 		if (prefix.empty())
 			return;	 // unable to get
 
 		// get the resource IDs by the prefix
-		table = g_db.GetTableByPrefix(L"RESOURCE.ID", prefix);
+		auto table = g_db.GetTableByPrefix(L"RESOURCE.ID", prefix);
 		for (auto& table_entry : table)
 		{
 			INT iItem = ComboBox_FindStringExact(hCmb, -1, table_entry.name.c_str());
@@ -2095,11 +2091,10 @@ void InitResNameComboBox(HWND hCmb, const MIdOrString& id, IDTYPE_ nIDTYPE_)
 		// not found
 
 		// get the prefix of Resource.ID
-		auto table = g_db.GetTable(L"RESOURCE.ID.PREFIX");
-		prefix = table[IDTYPE_RESOURCE].name;
+		prefix = MapIDTypeToPrefix(IDTYPE_RESOURCE);
 
 		// get the resource IDs by the prefix
-		table = g_db.GetTableByPrefix(L"RESOURCE.ID", prefix);
+		auto table = g_db.GetTableByPrefix(L"RESOURCE.ID", prefix);
 		for (auto& table_entry : table)
 		{
 			INT iItem = ComboBox_FindStringExact(hCmb, -1, table_entry.name.c_str());
@@ -2146,13 +2141,12 @@ void InitResNameComboBoxDword(HWND hCmb, const DWORD& id, IDTYPE_ nIDTYPE_)
 	if (nIDTYPE_ != IDTYPE_UNKNOWN)
 	{
 		// get the prefix from an IDTYPE_ value
-		auto table = g_db.GetTable(L"RESOURCE.ID.PREFIX");
-		prefix = table[nIDTYPE_].name;
+		prefix = MapIDTypeToPrefix(nIDTYPE_);
 		if (prefix.empty())
 			return;	 // unable to get
 
 		// get the resource IDs by the prefix
-		table = g_db.GetTableByPrefix(L"RESOURCE.ID", prefix);
+		auto table = g_db.GetTableByPrefix(L"RESOURCE.ID", prefix);
 		for (auto& table_entry : table)
 		{
 			INT iItem = ComboBox_FindStringExact(hCmb, -1, table_entry.name.c_str());
@@ -2175,11 +2169,10 @@ void InitResNameComboBoxDword(HWND hCmb, const DWORD& id, IDTYPE_ nIDTYPE_)
 		// not found
 
 		// get the prefix of Resource.ID
-		auto table = g_db.GetTable(L"RESOURCE.ID.PREFIX");
-		prefix = table[IDTYPE_RESOURCE].name;
+		prefix = MapIDTypeToPrefix(IDTYPE_RESOURCE);
 
 		// get the resource IDs by the prefix
-		table = g_db.GetTableByPrefix(L"RESOURCE.ID", prefix);
+		auto table = g_db.GetTableByPrefix(L"RESOURCE.ID", prefix);
 		for (auto& table_entry : table)
 		{
 			INT iItem = ComboBox_FindStringExact(hCmb, -1, table_entry.name.c_str());
@@ -2229,13 +2222,12 @@ void InitResNameComboBox(HWND hCmb, const MIdOrString& id, IDTYPE_ nIDTYPE_1, ID
 	if (nIDTYPE_1 != IDTYPE_UNKNOWN)
 	{
 		// get the prefix from nIDTYPE_1
-		auto table = g_db.GetTable(L"RESOURCE.ID.PREFIX");
-		prefix = table[nIDTYPE_1].name;
+		prefix = MapIDTypeToPrefix(nIDTYPE_1);
 		if (prefix.empty())
 			return;
 
 		// get the resource IDs from the prefix
-		table = g_db.GetTableByPrefix(L"RESOURCE.ID", prefix);
+		auto table = g_db.GetTableByPrefix(L"RESOURCE.ID", prefix);
 
 		// add the resource IDs
 		for (auto& table_entry : table)
@@ -2257,13 +2249,12 @@ void InitResNameComboBox(HWND hCmb, const MIdOrString& id, IDTYPE_ nIDTYPE_1, ID
 	if (nIDTYPE_2 != IDTYPE_UNKNOWN)
 	{
 		// get the prefix from nIDTYPE_2
-		auto table = g_db.GetTable(L"RESOURCE.ID.PREFIX");
-		prefix = table[nIDTYPE_2].name;
+		prefix = MapIDTypeToPrefix(nIDTYPE_2);
 		if (prefix.empty())
 			return;
 
 		// get the resource IDs from the prefix
-		table = g_db.GetTableByPrefix(L"RESOURCE.ID", prefix);
+		auto table = g_db.GetTableByPrefix(L"RESOURCE.ID", prefix);
 		for (auto& table_entry : table)
 		{
 			// add an item to combobox
@@ -2287,11 +2278,10 @@ void InitResNameComboBox(HWND hCmb, const MIdOrString& id, IDTYPE_ nIDTYPE_1, ID
 		// not found
 
 		// get the prefix from IDTYPE_RESOURCE
-		auto table = g_db.GetTable(L"RESOURCE.ID.PREFIX");
-		prefix = table[IDTYPE_RESOURCE].name;
+		prefix = MapIDTypeToPrefix(IDTYPE_RESOURCE);
 
 		// get the resource IDs from the prefix
-		table = g_db.GetTableByPrefix(L"RESOURCE.ID", prefix);
+		auto table = g_db.GetTableByPrefix(L"RESOURCE.ID", prefix);
 		for (auto& table_entry : table)
 		{
 			// add an item to combobox
@@ -2355,13 +2345,12 @@ void InitStringComboBox(HWND hCmb, const MString& strString)
 		return;	 // don't use macro IDs
 
 	// get the prefix from IDTYPE_STRING
-	auto table = g_db.GetTable(L"RESOURCE.ID.PREFIX");
-	MStringW prefix = table[IDTYPE_STRING].name;
+	MStringW prefix = MapIDTypeToPrefix(IDTYPE_STRING);
 	if (prefix.empty())
 		return;
 
 	// get the resource IDs from the prefix
-	table = g_db.GetTableByPrefix(L"RESOURCE.ID", prefix);
+	auto table = g_db.GetTableByPrefix(L"RESOURCE.ID", prefix);
 
 	// add the resource IDs
 	for (auto& table_entry : table)
@@ -2376,8 +2365,7 @@ void InitStringComboBox(HWND hCmb, const MString& strString)
 	}
 
 	// get the prefix from IDTYPE_PROMPT
-	table = g_db.GetTable(L"RESOURCE.ID.PREFIX");
-	prefix = table[IDTYPE_PROMPT].name;
+	prefix = MapIDTypeToPrefix(IDTYPE_PROMPT);
 
 	// get the resource IDs from the prefix
 	table = g_db.GetTableByPrefix(L"RESOURCE.ID", prefix);
@@ -2405,13 +2393,12 @@ void InitMessageComboBox(HWND hCmb, const MString& strString)
 		return;	 // don't use macro IDs
 
 	// get the prefix from IDTYPE_MESSAGE
-	auto table = g_db.GetTable(L"RESOURCE.ID.PREFIX");
-	MStringW prefix = table[IDTYPE_MESSAGE].name;
+	MStringW prefix = MapIDTypeToPrefix(IDTYPE_MESSAGE);
 	if (prefix.empty())
 		return;
 
 	// get the resource IDs from the prefix
-	table = g_db.GetTableByPrefix(L"RESOURCE.ID", prefix);
+	auto table = g_db.GetTableByPrefix(L"RESOURCE.ID", prefix);
 
 	// add the resource IDs
 	for (auto& table_entry : table)

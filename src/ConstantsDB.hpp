@@ -275,13 +275,12 @@ public:
 			return GetCtrlOrCmdName(value, unsign);
 		}
 
-		TableType table = GetTable(L"RESOURCE.ID.PREFIX");
-		if (nIDTYPE_ < 0 || nIDTYPE_ >= INT(table.size()))
+		if (nIDTYPE_ < 0 || nIDTYPE_ >= INT(g_idtype_strings.size()))
 		{
 			return mstr_dec_word((WORD)value);
 		}
 
-		StringType prefix = table[nIDTYPE_].name;
+		auto prefix = MapIDTypeToPrefix(nIDTYPE_);
 		if (prefix.empty())
 		{
 			if (nIDTYPE_ == IDTYPE_CONTROL)
@@ -292,7 +291,7 @@ public:
 				return mstr_dec_word((WORD)value);
 		}
 
-		table = GetTableByPrefix(L"RESOURCE.ID", prefix);
+		auto table = GetTableByPrefix(L"RESOURCE.ID", prefix);
 		auto end = table.end();
 		for (auto it = table.begin(); it != end; ++it)
 		{
@@ -332,10 +331,8 @@ public:
 
 	StringType GetNameOfIDTypeValue(IDTYPE_ nIDTYPE_, ValueType value) const
 	{
-		TableType table = GetTable(L"RESOURCE.ID.PREFIX");
-		StringType prefix = table[nIDTYPE_].name;
-
-		table = GetTableByPrefix(L"RESOURCE.ID", prefix);
+		auto prefix = MapIDTypeToPrefix(nIDTYPE_);
+		auto table = GetTableByPrefix(L"RESOURCE.ID", prefix);
 		{
 			auto end = table.end();
 			for (auto it = table.begin(); it != end; ++it)

@@ -394,7 +394,7 @@ public:
 		}
 
 		// iType (IDTYPE_*) --> prefix
-		MString prefix = g_db.GetName(L"RESOURCE.ID.PREFIX", iType);
+		auto prefix = MapIDTypeToPrefix(IDTYPE_(iType));
 		if (prefix.empty())
 			return;
 

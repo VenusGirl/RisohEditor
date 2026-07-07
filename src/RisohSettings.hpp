@@ -35,6 +35,8 @@ IDTYPE_ UnMapIDType(const MStringW& str);
 
 extern std::vector<LPCWSTR> g_idtype_strings;
 
+MStringW MapIDTypeToPrefix(IDTYPE_ idtype);
+
 //////////////////////////////////////////////////////////////////////////////
 
 struct RisohSettings

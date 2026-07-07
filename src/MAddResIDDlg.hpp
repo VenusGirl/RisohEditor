@@ -35,8 +35,6 @@ public:
 
 	BOOL OnInitDialog(HWND hwnd, HWND hwndFocus, LPARAM lParam)
 	{
-		const INT IDTYPE_default = IDTYPE_COMMAND;
-
 		for (INT i = IDTYPE_UNKNOWN; i <= IDTYPE_MSGTABLE; ++i)
 		{
 			MStringW text;
@@ -50,12 +48,11 @@ public:
 		}
 
 		m_bChanging = TRUE;
-		SendDlgItemMessage(hwnd, cmb1, CB_SETCURSEL, IDTYPE_default, 0);
+		SendDlgItemMessage(hwnd, cmb1, CB_SETCURSEL, IDTYPE_COMMAND, 0);
 		m_bChanging = FALSE;
 
-		ConstantsDB::TableType table = g_db.GetTable(L"RESOURCE.ID.PREFIX");
 		m_bChanging = TRUE;
-		SetDlgItemTextW(hwnd, edt1, table[IDTYPE_default].name.c_str());
+		SetDlgItemTextW(hwnd, edt1, MapIDTypeToPrefix(IDTYPE_COMMAND).c_str());
 		m_bChanging = FALSE;
 
 		SendDlgItemMessage(hwnd, scr1, UDM_SETRANGE32, SHRT_MIN, USHRT_MAX);
@@ -166,9 +163,6 @@ public:
 					break;
 				}
 
-				ConstantsDB::TableType table;
-				table = g_db.GetTable(L"RESOURCE.ID.PREFIX");
-
 				m_bChanging = TRUE;
 				SendDlgItemMessage(hwnd, cmb1, CB_SETCURSEL, indexes[0], 0);
 				m_bChanging = FALSE;
@@ -181,10 +175,8 @@ public:
 				INT k = INT(SendMessage(hCmb1, CB_GETCURSEL, 0, 0));
 				if (k != -1)
 				{
-					ConstantsDB::TableType table = g_db.GetTable(L"RESOURCE.ID.PREFIX");
-
 					m_bChanging = TRUE;
-					SetDlgItemText(hwnd, edt1, table[k].name.c_str());
+					SetDlgItemText(hwnd, edt1, MapIDTypeToPrefix(IDTYPE_(k)).c_str());
 					m_bChanging = FALSE;
 
 					MString strType = GetComboBoxLBText(hCmb1, k);

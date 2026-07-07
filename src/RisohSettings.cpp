@@ -26,6 +26,15 @@ std::vector<LPCWSTR> g_idtype_strings =
 #undef DEFINE_IDTYPE
 };
 
+MStringW MapIDTypeToPrefix(IDTYPE_ idtype)
+{
+	auto localized = MapIDType(idtype);
+	auto it = g_settings.assoc_map.find(localized);
+	if (it == g_settings.assoc_map.end())
+		return L"";
+	return it->second;
+}
+
 // set the default settings
 void MMainWnd::SetDefaultSettings(HWND hwnd)
 {
@@ -190,25 +199,6 @@ void MMainWnd::SetDefaultSettings(HWND hwnd)
 
 	// update the menu
 	UpdateMenu();
-}
-
-// update the prefix data
-void MMainWnd::UpdatePrefixDB(HWND hwnd)
-{
-	// update "RESOURCE.ID.PREFIX" table
-	auto& table = g_db.m_map[L"RESOURCE.ID.PREFIX"];
-	for (size_t i = 0; i < table.size(); ++i)
-	{
-		for (auto& pair : g_settings.assoc_map)
-		{
-			if (table[i].name == pair.first)    // matched
-			{
-				// update the value
-				table[i].value = mstr_parse_int(pair.second.c_str());
-				break;
-			}
-		}
-	}
 }
 
 // load the settings
@@ -421,7 +411,6 @@ BOOL MMainWnd::LoadSettings(HWND hwnd)
 } while (0);
 #include "idtypes.h"
 #undef DEFINE_IDTYPE
-	UpdatePrefixDB(hwnd);
 
 	keyRisoh.QueryDword(TEXT("bSepFilesByLang"), (DWORD&)g_settings.bSepFilesByLang);
 	g_settings.bStoreToResFolder = TRUE;

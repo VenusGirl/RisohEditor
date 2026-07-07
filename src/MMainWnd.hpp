@@ -141,7 +141,6 @@ public:
 	void SetDefaultSettings(HWND hwnd);
 	BOOL LoadSettings(HWND hwnd);
 	BOOL SaveSettings(HWND hwnd);
-	void UpdatePrefixDB(HWND hwnd);
 	BOOL ReCreateSrcEdit(HWND hwnd);
 
 	virtual void ModifyWndClassDx(WNDCLASSEX& wcx)
@@ -502,6 +501,7 @@ protected:
 	void UpdateEntryName(EntryBase *e, LPWSTR pszText = NULL);
 	void UpdateEntryLang(EntryBase *e, LPWSTR pszText = NULL);
 	void DoHelp();
+	void DoRefreshTVEntryNames(HWND hwnd);
 
 	std::wstring GetRisohEditorVersion() const;
 	std::wstring ParseVersionFile(LPCWSTR pszFile, std::wstring& url) const;

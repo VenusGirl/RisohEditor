@@ -77,10 +77,8 @@ public:
 	{
 		ComboBox_ResetContent(hCmb);
 
-		auto table = g_db.GetTable(L"RESOURCE.ID.PREFIX");
-		MStringW prefix = table[IDTYPE_MENU].name;
-
-		table = g_db.GetTable(L"RESOURCE.ID");
+		auto prefix = MapIDTypeToPrefix(IDTYPE_MENU);
+		auto table = g_db.GetTable(L"RESOURCE.ID");
 		for (auto& table_entry : table)
 		{
 			if (table_entry.name.find(prefix) == 0)
