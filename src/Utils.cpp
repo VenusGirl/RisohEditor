@@ -77,6 +77,31 @@ void StopAvi(void) {
 	}
 }
 
+// get the resource type label
+MStringW get_type_label(const MIdOrString& type)
+{
+	if (type.is_str())
+		return type.quoted_wstr(); // string name type
+
+	if (type.m_id == 0)
+		return L"0";
+
+	MStringW label = g_db.GetName(L"RESOURCE", type.m_id);
+	if (label.empty())  // unable to get the label
+		return mstr_dec_word(type.m_id);  // returns the numeric text
+
+	// got the label
+	if (!mchr_is_digit(label[0]))   // first character is not digit
+	{
+		// add a parenthesis pair and numeric text
+		label += L" (";
+		label += mstr_dec_word(type.m_id);
+		label += L")";
+	}
+
+	return label;
+}
+
 BOOL PlayAvi(HWND hwnd, LPCVOID ptr, size_t size) {
 	StopAvi();
 
@@ -2985,6 +3010,9 @@ BOOL CheckTypeComboBox(HWND hCmb1, MIdOrString& type)
 	}
 	else
 	{
+		if (str.size())
+			::CharUpperW(&str[0]);
+		
 		size_t i = str.rfind(L'('); // ')'
 		if (i != MStringW::npos && mchr_is_digit(str[i + 1]))
 		{
@@ -3024,6 +3052,10 @@ BOOL CheckTypeComboBox(HWND hCmb1, MIdOrString& type)
 			}
 			else
 			{
+				// Unquote
+				if (str[0] == L'"')
+					mstr_unquote(str);
+
 				// a string type name
 				type = str.c_str();
 			}

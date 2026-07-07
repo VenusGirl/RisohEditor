@@ -199,28 +199,7 @@ struct EntryBase
 	}
 
 	// get the resource type label
-	MStringW get_type_label() const
-	{
-		if (m_type.is_str())
-			return m_type.m_str;    // string name type
-
-		// it was integer name type
-
-		MStringW label = g_db.GetName(L"RESOURCE", m_type.m_id);
-		if (label.empty())  // unable to get the label
-			return mstr_dec_word(m_type.m_id);  // returns the numeric text
-
-		// got the label
-		if (!mchr_is_digit(label[0]))   // first character is not digit
-		{
-			// add a parenthesis pair and numeric text
-			label += L" (";
-			label += mstr_dec_word(m_type.m_id);
-			label += L")";
-		}
-
-		return label;
-	}
+	MStringW get_type_label() const;
 
 	// get the resource name label
 	MStringW get_name_label() const;

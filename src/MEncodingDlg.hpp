@@ -18,6 +18,8 @@ class MAddEncDlg;
 class MModifyEncDlg;
 class MEncodingDlg;
 
+MStringW get_type_label(const MIdOrString& type);
+
 //////////////////////////////////////////////////////////////////////////////
 
 inline MString txt2enc(const MString& txt)
@@ -68,33 +70,11 @@ inline MIdOrString get_type_from_text(MString str)
 	}
 	else
 	{
+		if (str.size())
+			::CharUpperW(&str[0]);
 		type.m_str = std::move(str);
 	}
 	return type;
-}
-
-// get the resource type label
-inline MStringW get_type_label(MIdOrString& type)
-{
-	if (!type.m_id)
-		return type.m_str;    // string name type
-
-	// it was integer name type
-
-	MStringW label = g_db.GetName(L"RESOURCE", type.m_id);
-	if (label.empty())  // unable to get the label
-		return mstr_dec_word(type.m_id);  // returns the numeric text
-
-	// got the label
-	if (!mchr_is_digit(label[0]))   // first character is not digit
-	{
-		// add a parenthesis pair and numeric text
-		label += L" (";
-		label += mstr_dec_word(type.m_id);
-		label += L")";
-	}
-
-	return label;
 }
 
 //////////////////////////////////////////////////////////////////////////////

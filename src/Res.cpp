@@ -1249,6 +1249,14 @@ bool EntrySet::is_childless_parent(EntryBase *entry) const
 	}
 }
 
+MStringW get_type_label(const MIdOrString& type);
+
+// get the resource type label
+MStringW EntryBase::get_type_label() const
+{
+	return ::get_type_label(m_type);
+}
+
 MStringW EntrySet::get_label(const EntryBase *entry)
 {
 	MStringW strText;
