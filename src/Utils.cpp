@@ -2271,6 +2271,7 @@ void InitResNameComboBox(HWND hCmb, const MIdOrString& id, IDTYPE_ nIDTYPE_1, ID
 			}
 		}
 	}
+
 	if (nIDTYPE_2 != IDTYPE_UNKNOWN)
 	{
 		// get the prefix from nIDTYPE_2

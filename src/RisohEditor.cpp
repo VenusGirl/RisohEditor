@@ -18,6 +18,7 @@ LPWSTR g_pszLogFile = NULL;
 
 std::unordered_map<INT, MStringW> *g_pmapIDTypeToLocalized = NULL;
 std::unordered_map<MStringW, INT> *g_pmapLocalizedToIDType = NULL;
+std::vector<MString> *g_pNames = NULL;
 
 void InitIDTypeMaps()
 {
@@ -75,7 +76,7 @@ typedef HRESULT (WINAPI *SETWINDOWTHEME)(HWND, LPCWSTR, LPCWSTR);
 #define CX_STATUS_PART  80      // status bar part width
 #define ERROR_LINE_COLOR RGB(255, 191, 191)
 
-#define MYWM_UPDATELANGARROW (WM_USER + 114)
+#define MYWM_UPDATEARROW (WM_USER + 114)
 #define MYWM_GETDLGHEADLINES (WM_USER + 250)
 
 // the maximum number of backup
@@ -854,15 +855,15 @@ void MMainWnd::OnExtractRC(HWND hwnd)
 	}
 }
 
-void MMainWnd::PostUpdateLangArrow(HWND hwnd)
+void MMainWnd::PostUpdateArrow(HWND hwnd)
 {
-	PostMessage(hwnd, MYWM_UPDATELANGARROW, 0, 0);
+	PostMessage(hwnd, MYWM_UPDATEARROW, 0, 0);
 }
 
-// MYWM_UPDATELANGARROW
-LRESULT MMainWnd::OnUpdateLangArrow(HWND hwnd, WPARAM wParam, LPARAM lParam)
+// MYWM_UPDATEARROW
+LRESULT MMainWnd::OnUpdateArrow(HWND hwnd, WPARAM wParam, LPARAM lParam)
 {
-	UpdateLangArrow();
+	UpdateArrow();
 	return 0;
 }
 
@@ -1360,7 +1361,7 @@ void MMainWnd::OnNew(HWND hwnd)
 	DoSetFileModified(FALSE);
 
 	// update language arrow
-	PostUpdateLangArrow(hwnd);
+	PostUpdateArrow(hwnd);
 }
 
 enum ResFileFilterIndex     // see also: IDS_EXERESFILTER
@@ -2061,31 +2062,76 @@ LRESULT MMainWnd::OnComplement(HWND hwnd, WPARAM wParam, LPARAM lParam)
 	if (index >= (INT)g_langs.size())
 		return FALSE; // reject
 
-	LANGID wNewLang = g_langs[index].LangID;
-
-	auto entry = g_res.get_entry();
-	if (!entry || entry->m_et == ET_TYPE || entry->m_et == ET_NAME)
-		return FALSE;   // reject
-
-	LANGID wOldLang = entry->m_lang;
-	if (wNewLang == BAD_LANG || wOldLang == wNewLang)
-		return FALSE;   // reject
-
-	// check if it already exists
-	if (g_res.find(ET_LANG, entry->m_type, entry->m_name, wNewLang))
+	switch (m_arrow.m_target_type)
 	{
-		ErrorBoxDx(IDS_ALREADYEXISTS);
-		return FALSE;   // reject
+	case MDropdownArrow::TARGET_TYPE_TYPE:
+		return FALSE;
+
+	case MDropdownArrow::TARGET_TYPE_NAME:
+		if (g_pNames)
+		{
+			MIdOrString new_name = (*g_pNames)[index].c_str();
+
+			auto entry = g_res.get_entry();
+			if (!entry || entry->m_et == ET_TYPE || entry->m_et == ET_LANG)
+				return FALSE;   // reject
+
+			// A resource ID?
+			if (g_db.HasResID(new_name.str()))
+				new_name = (WORD)g_db.GetResIDValue(new_name.str());
+
+			auto old_name = entry->m_name;
+			if (old_name == BAD_NAME || old_name.str() == new_name.str())
+				return FALSE;   // reject
+
+			// check if it already exists
+			if (g_res.find(ET_LANG, entry->m_type, new_name, entry->m_lang))
+			{
+				ErrorBoxDx(IDS_ALREADYEXISTS);
+				return FALSE;   // reject
+			}
+
+			PostUpdateArrow(hwnd);
+
+			WCHAR szText[MAX_PATH];
+			StringCchCopyW(szText, _countof(szText), new_name.c_str());
+
+			DoRenameEntry(szText, entry, old_name, new_name);
+			DoSetFileModified(TRUE);
+		}
+		return TRUE; // accepted
+
+	case MDropdownArrow::TARGET_TYPE_LANG:
+		{
+			LANGID wNewLang = g_langs[index].LangID;
+
+			auto entry = g_res.get_entry();
+			if (!entry || entry->m_et == ET_TYPE || entry->m_et == ET_NAME)
+				return FALSE;   // reject
+
+			LANGID wOldLang = entry->m_lang;
+			if (wNewLang == BAD_LANG || wOldLang == wNewLang)
+				return FALSE;   // reject
+
+			// check if it already exists
+			if (g_res.find(ET_LANG, entry->m_type, entry->m_name, wNewLang))
+			{
+				ErrorBoxDx(IDS_ALREADYEXISTS);
+				return FALSE;   // reject
+			}
+
+			PostUpdateArrow(hwnd);
+
+			WCHAR szText[MAX_PATH];
+			MString strLang = TextFromLang(wNewLang);
+			StringCbCopy(szText, sizeof(szText), strLang.c_str());
+			DoRelangEntry(szText, entry, wOldLang, wNewLang);
+			DoSetFileModified(TRUE);
+		}
+		return TRUE; // accepted
 	}
 
-	PostUpdateLangArrow(hwnd);
-
-	WCHAR szText[MAX_PATH];
-	MString strLang = TextFromLang(wNewLang);
-	StringCbCopy(szText, sizeof(szText), strLang.c_str());
-	DoRelangEntry(szText, entry, wOldLang, wNewLang);
-	DoSetFileModified(TRUE);
-	return TRUE; // accepted
+	return FALSE;
 }
 
 BOOL MMainWnd::DoInnerSearch(HWND hwnd)
@@ -4702,8 +4748,45 @@ void MMainWnd::DoLoadLangInfo(VOID)
 	std::sort(g_langs.begin(), g_langs.end());
 }
 
+BOOL ChooseNameListBoxName(HWND hwnd, const MIdOrString& type, const MIdOrString& name)
+{
+	if (g_pNames)
+		delete g_pNames;
+	g_pNames = new std::vector<MString>();
+
+	ListBox_ResetContent(hwnd);
+
+	if (g_settings.bHideID)
+		return TRUE;
+
+	auto nIDTYPE_ = g_db.IDTypeFromResType(type);
+	auto prefix = MapIDTypeToPrefix(nIDTYPE_);
+	auto table = g_db.GetTableByPrefix(L"RESOURCE.ID", prefix);
+	auto end = table.end();
+	for (auto it = table.begin(); it != end; ++it)
+	{
+		g_pNames->push_back(it->name);
+	}
+
+	std::sort(g_pNames->begin(), g_pNames->end());
+
+	for (auto& item : *g_pNames)
+	{
+		INT index = ListBox_AddString(hwnd, item.c_str());
+		if (index != LB_ERR && item == name.str())
+		{
+			ListBox_SetCurSel(hwnd, index);
+			ListBox_SetTopIndex(hwnd, index);
+		}
+	}
+
+	return TRUE;
+}
+
 BOOL ChooseLangListBoxLang(HWND hwnd, LANGID wLangId)
 {
+	ListBox_ResetContent(hwnd);
+
 	INT index = 0;
 	for (auto& lang : g_langs)
 	{
@@ -4918,7 +5001,7 @@ retry:
 	// load it now
 	m_bLoading = TRUE;
 	{
-		ShowLangArrow(FALSE);
+		ShowTreeViewArrow(FALSE);
 
 		// renewal
 		g_res.delete_all();
@@ -4963,7 +5046,7 @@ BOOL MMainWnd::DoLoadRES(HWND hwnd, LPCWSTR szPath)
 	// load it now
 	m_bLoading = TRUE;
 	{
-		ShowLangArrow(FALSE);
+		ShowTreeViewArrow(FALSE);
 
 		// renewal
 		g_res.delete_all();
@@ -5091,7 +5174,7 @@ BOOL MMainWnd::DoLoadEXE(HWND hwnd, LPCWSTR pszPath, BOOL bForceDecompress)
 	// load all the resource items from the executable
 	m_bLoading = TRUE;
 	{
-		ShowLangArrow(FALSE);
+		ShowTreeViewArrow(FALSE);
 		g_res.delete_all();
 		g_res.from_res(hMod);
 	}
@@ -5121,7 +5204,7 @@ BOOL MMainWnd::DoLoadEXE(HWND hwnd, LPCWSTR pszPath, BOOL bForceDecompress)
 	DoSetFileModified(FALSE);
 
 	// update language arrow
-	PostUpdateLangArrow(m_hwnd);
+	PostUpdateArrow(m_hwnd);
 
 	return TRUE; // success
 }
@@ -7269,7 +7352,7 @@ IMPORT_RESULT MMainWnd::DoImportRC(HWND hwnd, LPCWSTR pszFile)
 	// load it now
 	m_bLoading = TRUE;
 	{
-		ShowLangArrow(FALSE);
+		ShowTreeViewArrow(FALSE);
 
 		// merge
 		g_res.merge(res);
@@ -7283,7 +7366,7 @@ IMPORT_RESULT MMainWnd::DoImportRC(HWND hwnd, LPCWSTR pszFile)
 	SelectTV(NULL, FALSE);
 
 	// update language arrow
-	PostUpdateLangArrow(hwnd);
+	PostUpdateArrow(hwnd);
 
 	DoSetFileModified(TRUE);
 	return IMPORTED;
@@ -7327,7 +7410,7 @@ IMPORT_RESULT MMainWnd::DoImportRes(HWND hwnd, LPCWSTR pszFile)
 	// load it now
 	m_bLoading = TRUE;
 	{
-		ShowLangArrow(FALSE);
+		ShowTreeViewArrow(FALSE);
 
 		// renewal
 		g_res.merge(res);
@@ -7341,7 +7424,7 @@ IMPORT_RESULT MMainWnd::DoImportRes(HWND hwnd, LPCWSTR pszFile)
 	DoRefreshIDList(hwnd);
 
 	// update language arrow
-	PostUpdateLangArrow(hwnd);
+	PostUpdateArrow(hwnd);
 
 	return IMPORTED;
 }
@@ -7710,7 +7793,7 @@ void MMainWnd::OnDropFiles(HWND hwnd, HDROP hdrop)
 	}
 
 	// update language arrow
-	PostUpdateLangArrow(hwnd);
+	PostUpdateArrow(hwnd);
 
 	// remove the command lock
 	--m_nCommandLock;
@@ -8636,7 +8719,7 @@ void MMainWnd::OnPredefMacros(HWND hwnd)
 // expand all the tree control items
 void MMainWnd::OnExpandAll(HWND hwnd)
 {
-	ShowLangArrow(FALSE);
+	ShowTreeViewArrow(FALSE);
 
 	// get the selected entry
 	auto entry = g_res.get_entry();
@@ -8652,13 +8735,13 @@ void MMainWnd::OnExpandAll(HWND hwnd)
 	SelectTV(entry, FALSE);
 
 	// update language arrow
-	PostUpdateLangArrow(hwnd);
+	PostUpdateArrow(hwnd);
 }
 
 // unexpand all the tree control items
 void MMainWnd::OnCollapseAll(HWND hwnd)
 {
-	ShowLangArrow(FALSE);
+	ShowTreeViewArrow(FALSE);
 
 	HTREEITEM hItem = TreeView_GetRoot(m_hwndTV);
 	do
@@ -8671,7 +8754,7 @@ void MMainWnd::OnCollapseAll(HWND hwnd)
 	SelectTV(NULL, FALSE);
 
 	// update language arrow
-	PostUpdateLangArrow(hwnd);
+	PostUpdateArrow(hwnd);
 }
 
 void MMainWnd::OnAddBang(HWND hwnd, NMTOOLBAR *pToolBar)
@@ -8971,13 +9054,13 @@ void MMainWnd::Expand(HTREEITEM hItem)
 	} while (hItem);
 }
 
-void MMainWnd::UpdateLangArrow()
+void MMainWnd::UpdateArrow()
 {
 	EntryBase *entry = g_res.get_entry();
 	if (!entry)
 	{
 		HTREEITEM hItem = TreeView_GetSelection(m_hwndTV);
-		ShowLangArrow(FALSE, hItem);
+		ShowTreeViewArrow(FALSE, hItem);
 		return;
 	}
 
@@ -8987,15 +9070,18 @@ void MMainWnd::UpdateLangArrow()
 	{
 	case ET_LANG:
 		if (entry->m_type != RT_STRING)
-			ShowLangArrow(TRUE, hItem);
+			ShowTreeViewArrow(TRUE, hItem);
 		else
-			ShowLangArrow(FALSE, hItem);
+			ShowTreeViewArrow(FALSE, hItem);
+		break;
+	case ET_NAME:
+		ShowTreeViewArrow(TRUE, hItem);
 		break;
 	case ET_STRING:
-		ShowLangArrow(TRUE, hItem);
+		ShowTreeViewArrow(TRUE, hItem);
 		break;
 	default:
-		ShowLangArrow(FALSE, hItem);
+		ShowTreeViewArrow(FALSE, hItem);
 		break;
 	}
 }
@@ -9023,7 +9109,7 @@ void MMainWnd::OnRefreshAll(HWND hwnd)
 
 	s_bModified = bModifiedOld;
 
-	PostUpdateLangArrow(hwnd);
+	PostUpdateArrow(hwnd);
 }
 
 // ID_GOTOLINE
@@ -9564,7 +9650,7 @@ void MMainWnd::OnCommand(HWND hwnd, int id, HWND hwndCtl, UINT codeNotify)
 			g_RES_select_name = BAD_NAME;
 			g_RES_select_lang = BAD_LANG;
 		}
-		PostUpdateLangArrow(hwnd);
+		PostUpdateArrow(hwnd);
 		break;
 	case ID_INTERNALTEST:
 		OnInternalTest(hwnd);
@@ -9690,7 +9776,7 @@ std::vector<INT> GetPrefixIndexes(const MString& prefix)
 	return ret;
 }
 
-BOOL MMainWnd::ShowLangArrow(BOOL bShow, HTREEITEM hItem)
+BOOL MMainWnd::ShowTreeViewArrow(BOOL bShow, HTREEITEM hItem)
 {
 	auto entry = g_res.get_entry();
 	if (!entry)
@@ -9729,7 +9815,10 @@ BOOL MMainWnd::ShowLangArrow(BOOL bShow, HTREEITEM hItem)
 		m_arrow.m_hwndMain = m_hwnd;
 		m_arrow.SendMessageDx(MYWM_SETITEMRECT, 0, (LPARAM)&rc);
 		ShowWindowAsync(m_arrow, SW_SHOWNOACTIVATE);
-		m_arrow.ChooseLang(entry->m_lang);
+		if (entry->m_et == ET_LANG)
+			m_arrow.ChooseLang(entry->m_lang);
+		else if (entry->m_et == ET_NAME)
+			m_arrow.ChooseName(entry->m_type, entry->m_name);
 	}
 	else
 	{
@@ -9858,17 +9947,17 @@ LRESULT MMainWnd::OnNotify(HWND hwnd, int idFrom, NMHDR *pnmhdr)
 			SelectTV(entry, FALSE);
 			OnSelChange(hwnd, 0);
 
-			PostUpdateLangArrow(hwnd);
+			PostUpdateArrow(hwnd);
 		}
 	}
 	else if (pnmhdr->code == TVN_ITEMEXPANDING)
 	{
 		m_arrow.ShowDropDownList(m_arrow, FALSE);
-		ShowLangArrow(FALSE);
+		ShowTreeViewArrow(FALSE);
 	}
 	else if (pnmhdr->code == TVN_ITEMEXPANDED)
 	{
-		PostUpdateLangArrow(hwnd);
+		PostUpdateArrow(hwnd);
 	}
 	else if (pnmhdr->code == NM_RETURN)
 	{
@@ -9908,8 +9997,8 @@ LRESULT MMainWnd::OnNotify(HWND hwnd, int idFrom, NMHDR *pnmhdr)
 			return TRUE;
 		case VK_LEFT:
 		case VK_RIGHT:
-			ShowLangArrow(FALSE);
-			PostUpdateLangArrow(hwnd);
+			ShowTreeViewArrow(FALSE);
+			PostUpdateArrow(hwnd);
 			break;
 		case VK_F2:
 			{
@@ -9993,7 +10082,7 @@ LRESULT MMainWnd::OnNotify(HWND hwnd, int idFrom, NMHDR *pnmhdr)
 			}
 
 			m_arrow.ShowDropDownList(m_arrow, FALSE);
-			ShowLangArrow(FALSE);
+			ShowTreeViewArrow(FALSE);
 
 			switch (entry->m_et)
 			{
@@ -10024,7 +10113,7 @@ LRESULT MMainWnd::OnNotify(HWND hwnd, int idFrom, NMHDR *pnmhdr)
 
 			if (pszNewText == NULL)
 			{
-				PostUpdateLangArrow(hwnd);
+				PostUpdateArrow(hwnd);
 				return FALSE;   // reject
 			}
 
@@ -10074,12 +10163,13 @@ LRESULT MMainWnd::OnNotify(HWND hwnd, int idFrom, NMHDR *pnmhdr)
 				}
 
 				DoRenameEntry(pszNewText, entry, old_name, new_name);
+				m_arrow.ChooseName(entry->m_type, entry->m_name);
 				DoSetFileModified(TRUE);
 				return TRUE;   // accept
 			}
 			else if (entry->m_et == ET_LANG)
 			{
-				PostUpdateLangArrow(hwnd);
+				PostUpdateArrow(hwnd);
 
 				old_lang = LangFromText(szOldText);
 				if (old_lang == BAD_LANG)
@@ -10110,7 +10200,7 @@ LRESULT MMainWnd::OnNotify(HWND hwnd, int idFrom, NMHDR *pnmhdr)
 			}
 			else if (entry->m_et == ET_STRING)
 			{
-				PostUpdateLangArrow(hwnd);
+				PostUpdateArrow(hwnd);
 
 				old_lang = LangFromText(szOldText);
 				if (old_lang == BAD_LANG)
@@ -11353,7 +11443,7 @@ MMainWnd::TreeViewWndProcDx(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		if (IsWindow(m_arrow))
 		{
 			// hide language arrow
-			ShowLangArrow(FALSE);
+			ShowTreeViewArrow(FALSE);
 
 			// get selected item rect
 			RECT rc;
@@ -11367,7 +11457,7 @@ MMainWnd::TreeViewWndProcDx(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 			InvalidateRect(hwnd, &rc, TRUE);
 
 			// restore language arrow
-			PostUpdateLangArrow(m_hwnd);
+			PostUpdateArrow(m_hwnd);
 
 			return ret;
 		}
@@ -11604,7 +11694,7 @@ MMainWnd::WindowProcDx(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		DO_MESSAGE(MYWM_TLB_B2T, OnTLB2IDL);
 		DO_MESSAGE(MYWM_ITEMSEARCH, OnItemSearchBang);
 		DO_MESSAGE(MYWM_COMPLEMENT, OnComplement);
-		DO_MESSAGE(MYWM_UPDATELANGARROW, OnUpdateLangArrow);
+		DO_MESSAGE(MYWM_UPDATEARROW, OnUpdateArrow);
 		DO_MESSAGE(MYWM_RADDBLCLICK, OnRadDblClick);
 
 	default:
@@ -12390,6 +12480,9 @@ wWinMain(HINSTANCE   hInstance,
 	INT ret = RisohEditor_Main(hInstance, hPrevInstance, lpCmdLine, nCmdShow);
 
     UnloadIDTypeMaps();
+
+	if (g_pNames)
+		delete g_pNames;
 
 	if (bWowFsDisabled)
 		RevertWow64FsRedirection(OldValue);

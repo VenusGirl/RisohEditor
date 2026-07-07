@@ -127,23 +127,37 @@ public:
 class MDropdownArrow : public MWindowBase
 {
 public:
-	BOOL m_bDown;
-	RECT m_rcItem;
+	BOOL m_bDown = FALSE;
+	RECT m_rcItem = {};
 	MDropdownListDlg m_dialog;
-	HWND m_hwndMain;
-	LANGID m_wLangId;
-
-	MDropdownArrow() : m_wLangId(0)
+	HWND m_hwndMain = nullptr;
+	enum TARGET_TYPE
 	{
-	}
+		TARGET_TYPE_TYPE,
+		TARGET_TYPE_NAME,
+		TARGET_TYPE_LANG,
+	};
+	TARGET_TYPE m_target_type = TARGET_TYPE_LANG;
+	MIdOrString m_type;
+	MIdOrString m_name;
+	LANGID m_wLangId = 0;
 
 	virtual LPCTSTR GetWndClassNameDx() const
 	{
 		return TEXT("MZC4 Dropdown Arrow");
 	}
 
+	BOOL ChooseName(const MIdOrString& type, const MIdOrString& name)
+	{
+		m_target_type = TARGET_TYPE_NAME;
+		m_type = type;
+		m_name = name;
+		return TRUE;
+	}
+
 	BOOL ChooseLang(LANGID wLangId)
 	{
+		m_target_type = TARGET_TYPE_LANG;
 		m_wLangId = wLangId;
 		return TRUE;
 	}
@@ -224,7 +238,18 @@ public:
 			SetWindowPos(m_dialog, NULL, rcItem.left, y, 0, 0,
 				SWP_NOACTIVATE | SWP_NOSIZE | SWP_NOZORDER | SWP_NOOWNERZORDER | SWP_SHOWWINDOW);
 
-			ChooseLangListBoxLang(m_dialog.m_lst1, m_wLangId);
+			switch (m_target_type)
+			{
+			case TARGET_TYPE_TYPE:
+				assert(0);
+				break;
+			case TARGET_TYPE_NAME:
+				ChooseNameListBoxName(m_dialog.m_lst1, m_type, m_name);
+				break;
+			case TARGET_TYPE_LANG:
+				ChooseLangListBoxLang(m_dialog.m_lst1, m_wLangId);
+				break;
+			}
 		}
 
 		m_bDown = bShow;

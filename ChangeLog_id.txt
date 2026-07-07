@@ -1,6 +1,7 @@
 ﻿## SEJARAH
 
 - v.6.0.5 (2026-XX-YY)
+    - Enabled the treeview arrow to change the resource name.
 - v.6.0.4 (2026-07-07)
     - Memperbaiki interpretasi ID sumber daya pada tampilan pohon.
     - Menambahkan tombol "Reset" pada dialog IDD_FONTS.

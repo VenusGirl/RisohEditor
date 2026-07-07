@@ -232,9 +232,9 @@ public:
 	void SetShowMode(SHOW_MODE mode, BOOL bShowBinary);
 	void SetShowMode(SHOW_MODE mode) { SetShowMode(mode, m_bShowBinEdit); }
 	void ShowStatusBar(BOOL bShow = TRUE);
-	BOOL ShowLangArrow(BOOL bShow, HTREEITEM hItem = NULL);
-	void UpdateLangArrow();
-	void PostUpdateLangArrow(HWND hwnd);
+	BOOL ShowTreeViewArrow(BOOL bShow, HTREEITEM hItem = NULL);
+	void UpdateArrow();
+	void PostUpdateArrow(HWND hwnd);
 
 	// preview
 	VOID HidePreview(STV stv = STV_RESETTEXTANDMODIFIED);
@@ -424,7 +424,7 @@ protected:
 	LRESULT OnItemSearchBang(HWND hwnd, WPARAM wParam, LPARAM lParam);
 	LRESULT OnComplement(HWND hwnd, WPARAM wParam, LPARAM lParam);
 	BOOL DoInnerSearch(HWND hwnd);
-	LRESULT OnUpdateLangArrow(HWND hwnd, WPARAM wParam, LPARAM lParam);
+	LRESULT OnUpdateArrow(HWND hwnd, WPARAM wParam, LPARAM lParam);
 	LRESULT OnRadDblClick(HWND hwnd, WPARAM wParam, LPARAM lParam);
 
 	void OnAddBitmap(HWND hwnd);
