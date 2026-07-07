@@ -19,6 +19,13 @@
 // the maximum number of captions to remember
 static const DWORD s_nMaxCaptions = 10;
 
+const LPCWSTR g_idtype_strings[] =
+{
+#define DEFINE_IDTYPE(index, idtype, str, wstr, ids, prefix) wstr,
+#include "idtypes.h"
+#undef DEFINE_IDTYPE
+};
+
 // set the default settings
 void MMainWnd::SetDefaultSettings(HWND hwnd)
 {
@@ -120,13 +127,11 @@ void MMainWnd::SetDefaultSettings(HWND hwnd)
 		DeleteDC(hDC);
 	}
 
-	auto table2 = g_db.GetTable(L"RESOURCE.ID.PREFIX");
-
 	g_settings.assoc_map.clear();
-	for (size_t i = 0; i < table2.size(); ++i)
-	{
-		g_settings.assoc_map.insert(std::make_pair(MapIDType(IDTYPE_(i)), table2[i].name));
-	}
+#define DEFINE_IDTYPE(index, idtype, str, wstr, ids, prefix) \
+	g_settings.assoc_map.insert(std::make_pair(MapIDType(IDTYPE_(index)), prefix));
+#include "idtypes.h"
+#undef DEFINE_IDTYPE
 
 	g_settings.id_map.clear();
 	g_settings.added_ids.clear();
@@ -408,13 +413,14 @@ BOOL MMainWnd::LoadSettings(HWND hwnd)
 	}
 
 	TCHAR szName[MAX_PATH];
-	for (auto& pair : *g_pmapIDTypeToLocalized)
-	{
-		if (keyRisoh.QuerySz(pair.second.c_str(), szName, _countof(szName)) == ERROR_SUCCESS)
-		{
-            g_settings.assoc_map[pair.second] = szName;
-		}
-	}
+
+#define DEFINE_IDTYPE(index, idtype, str, wstr, ids, prefix) do { \
+	if (keyRisoh.QuerySz(wstr, szName, _countof(szName)) == ERROR_SUCCESS) { \
+		g_settings.assoc_map[MapIDType(idtype)] = szName; \
+	} \
+} while (0);
+#include "idtypes.h"
+#undef DEFINE_IDTYPE
 	UpdatePrefixDB(hwnd);
 
 	keyRisoh.QueryDword(TEXT("bSepFilesByLang"), (DWORD&)g_settings.bSepFilesByLang);
@@ -606,10 +612,11 @@ BOOL MMainWnd::SaveSettings(HWND hwnd)
 	}
 
 	// save the ID association mapping
+	size_t k = 0;
 	for (auto& pair : g_settings.assoc_map)
 	{
-		keyRisoh.SetSz(pair.first.c_str(), pair.second.c_str());
-		//MessageBoxW(NULL, pair.first.c_str(), pair.second.c_str(), 0);
+		keyRisoh.SetSz(g_idtype_strings[(*g_pmapLocalizedToIDType)[pair.first]], pair.second.c_str());
+		++k;
 	}
 
 	// save the macros

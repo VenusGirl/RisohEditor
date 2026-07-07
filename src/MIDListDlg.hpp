@@ -129,6 +129,7 @@ public:
 		} guard(m_bRefreshing);
 
 		UpdateItems();
+		ComboBox_SetCurSel(m_hCmb1, 0);
 		OnCmb1(hwnd);
 	}
 

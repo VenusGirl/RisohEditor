@@ -8462,10 +8462,13 @@ void MMainWnd::OnIdAssoc(HWND hwnd)
 
 	// show the dialog
 	MIdAssocDlg dialog;
-	dialog.DialogBoxDx(hwnd);
+	if (dialog.DialogBoxDx(hwnd) == IDOK)
+	{
+		DoRefreshIDList(hwnd);
 
-	// update the prefix database
-	UpdatePrefixDB(hwnd);
+		// update the prefix database
+		UpdatePrefixDB(hwnd);
+	}
 }
 
 // show the language list
