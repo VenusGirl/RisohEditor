@@ -781,7 +781,7 @@ FONT 9, "MS UI Gothic"
 {
     RTEXT "IDの種類(&T):", -1, 5, 7, 65, 12
     EDITTEXT edt1, 80, 5, 80, 14, WS_DISABLED
-    RTEXT "IDのプレフィックス(&P):", -1, 5, 32, 65, 12
+    RTEXT "IDの接頭辞(&P):", -1, 5, 32, 65, 12
     EDITTEXT edt2, 80, 28, 80, 14, ES_AUTOHSCROLL
     DEFPUSHBUTTON "OK", IDOK, 35, 50, 60, 14
     PUSHBUTTON "キャンセル", IDCANCEL, 100, 50, 60, 14
@@ -1499,7 +1499,7 @@ STRINGTABLE
     IDS_NONE, "(なし)"
     IDS_WAVESOUND, "(WAVE音声)\r\n"
     IDS_IDTYPE, "IDの種類"
-    IDS_IDPREFIX, "IDプレフィックス"
+    IDS_IDPREFIX, "IDの接頭辞"
     IDS_EMPTYSTR, "文字列を入力して下さい。"
     IDS_ANICURSOR, "(アニメーション カーソル)\r\n"
     IDS_ANIICON, "(アニメーション アイコン)\r\n"
