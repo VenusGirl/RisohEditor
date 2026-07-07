@@ -24,35 +24,14 @@ void InitIDTypeMaps()
 	g_pmapIDTypeToLocalized = new std::unordered_map<INT, MStringW>();
 	g_pmapLocalizedToIDType = new std::unordered_map<MStringW, INT>();
 
-	MStringW str;
-
-#define MAP(ids) do { \
-	str = LoadStringDx(ids); \
-	(*g_pmapIDTypeToLocalized)[ids - IDS_UNKNOWN_ID] = str; \
-	(*g_pmapLocalizedToIDType)[str] = ids - IDS_UNKNOWN_ID; \
-} while (0)
-	MAP(IDS_UNKNOWN_ID);
-	MAP(IDS_CURSOR_ID);
-	MAP(IDS_BITMAP_ID);
-	MAP(IDS_MENU_ID);
-	MAP(IDS_DIALOG_ID);
-	MAP(IDS_STRING_ID);
-	MAP(IDS_ACCEL_ID);
-	MAP(IDS_ICON_ID);
-	MAP(IDS_ANICURSOR_ID);
-	MAP(IDS_ANIICON_ID);
-	MAP(IDS_HTML_ID);
-	MAP(IDS_HELP_ID);
-	MAP(IDS_COMMAND_ID);
-	MAP(IDS_CONTROL_ID);
-	MAP(IDS_RESOURCE_ID);
-	MAP(IDS_MESSAGE_ID);
-	MAP(IDS_WINDOW_ID);
-	MAP(IDS_NEWCOMMAND_ID);
-	MAP(IDS_PROMPT_ID);
-	MAP(IDS_RCDATA_ID);
-	MAP(IDS_MSGTABLE_ID);
-#undef MAP
+	MStringW s;
+#define DEFINE_IDTYPE(index, idtype, str, wstr, ids, prefix) do { \
+	s = LoadStringDx(ids); \
+	(*g_pmapIDTypeToLocalized)[index] = s; \
+	(*g_pmapLocalizedToIDType)[s] = index; \
+} while (0);
+#include "idtypes.h"
+#undef DEFINE_IDTYPE
 }
 
 void UnloadIDTypeMaps()
