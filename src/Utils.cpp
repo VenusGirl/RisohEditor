@@ -3083,14 +3083,18 @@ BOOL CheckNameComboBox(HWND hCmb2, const MIdOrString& type, MIdOrString& name)
 	}
 	else
 	{
-		if (str[0] == L'"') // Quoted?
-			mstr_unquote(str); // Unquote
-
 		// a non-numeric name
 		if (g_db.HasResID(str))
+		{
 			name = (WORD)g_db.GetResIDValue(str);	// a valued name
+		}
 		else
+		{
+			if (str[0] == L'"') // Quoted?
+				mstr_unquote(str); // Unquote
+
 			name = str.c_str();  // a string name
+		}
 	}
 
 	return TRUE;	// success
