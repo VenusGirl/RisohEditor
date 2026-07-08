@@ -3,7 +3,7 @@
 
 - v.6.0.5 (2026-XX-YY)
     - Enabled the treeview arrow to change the resource name.
-    - Fixed EGA. Added DeleteAll.ega and ConvertJapaneseToKorean.ega. Renamed RES_delete.ega as DeleteJapanese.ega.
+    - Fixed EGA. Added DeleteAll.ega, ConvertJapaneseToChinese.ega, and ConvertJapaneseToKorean.ega. Renamed RES_delete.ega as DeleteJapanese.ega.
     - Used DIALOGEX instead of DIALOG.
     - Improved DIALOGEX FONT dumping.
     - Improved handling when multiple controls are selected in IDD_CTRLPROP.
