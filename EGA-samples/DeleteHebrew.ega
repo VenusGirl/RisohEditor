@@ -1,0 +1,4 @@
+@ Delete Hebrew (1037) resources all.
+println("Deleting Hebrew...");
+RES_delete("*", "*", 1037);
+println("Done.");
