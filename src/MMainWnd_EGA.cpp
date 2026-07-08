@@ -312,7 +312,7 @@ EGA::arg_t MMainWnd::RES_delete(const EGA::args_t& args)
 	if (arg2)
 		lang = (WORD)EGA_get_int(arg2);
 
-	bool ret = g_res.search_and_delete(ET_LANG, type, name, lang);
+	bool ret = g_res.search_and_delete(ET_ANY, type, name, lang);
 	g_res.delete_invalid();
 
 	if (ret)
