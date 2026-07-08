@@ -13,24 +13,29 @@ using namespace EGA;
 
 namespace
 {
-	static LONG s_nRunning = 0;
-	static bool s_bInitialized = false;
+	static CRITICAL_SECTION s_cs;
+	static bool     s_bCsReady    = false;
+	static HANDLE   s_hThread     = NULL;
+	static HANDLE   s_hStopEvent  = NULL;   // manual-reset
+	static bool     s_bRunning    = false;
+	static bool     s_bInitialized = false;
 }
 
 static DWORD WINAPI EgaBridgeThreadProc(LPVOID args)
 {
-	if (InterlockedIncrement(&s_nRunning) == 1)
+	try
 	{
-		try
-		{
-			EGA_interactive(NULL, true);
-		}
-		catch (...)
-		{
-			// Exception caught - continue to decrement counter below
-		}
+		EGA_interactive(NULL, true);
 	}
-	InterlockedDecrement(&s_nRunning);
+	catch (...)
+	{
+		;
+	}
+
+	EnterCriticalSection(&s_cs);
+	s_bRunning = false;
+	LeaveCriticalSection(&s_cs);
+
 	return 0;
 }
 
@@ -41,8 +46,22 @@ namespace EgaBridge
 		if (s_bInitialized)
 			return true;
 
-		if (!EGA_init())
+		InitializeCriticalSection(&s_cs);
+		s_hStopEvent = ::CreateEventW(NULL, TRUE, FALSE, NULL); // Manual-reset
+		if (!s_hStopEvent)
+		{
+			DeleteCriticalSection(&s_cs);
 			return false;
+		}
+
+		s_bCsReady = true;
+
+		if (!EGA_init())
+		{
+			s_bCsReady = false;
+			DeleteCriticalSection(&s_cs);
+			return false;
+		}
 
 		s_bInitialized = true;
 		return true;
@@ -56,6 +75,9 @@ namespace EgaBridge
 		StopInteractive();
 		EGA_uninit();
 		s_bInitialized = false;
+
+		if (s_hStopEvent) { ::CloseHandle(s_hStopEvent); s_hStopEvent = NULL; }
+		if (s_bCsReady)   { DeleteCriticalSection(&s_cs); s_bCsReady = false; }
 	}
 
 	void SetInputFn(EgaInputFn fn)
@@ -70,25 +92,61 @@ namespace EgaBridge
 
 	bool StartInteractive()
 	{
-		if (s_nRunning)
+		EnterCriticalSection(&s_cs);
+		if (s_bRunning)
 		{
+			LeaveCriticalSection(&s_cs);
 			return true;
 		}
 
+		::ResetEvent(s_hStopEvent);
+		s_bRunning = true;
+
 		HANDLE hThread = ::CreateThread(NULL, 0, EgaBridgeThreadProc, NULL, 0, NULL);
-		if (hThread)
+		if (!hThread)
 		{
-			// Close handle immediately; the thread runs independently.
-			// The s_nRunning counter tracks if the thread is active.
-			::CloseHandle(hThread);
-			return true;
+			s_bRunning = false;
+			LeaveCriticalSection(&s_cs);
+			return false;
 		}
-		return false;
+
+		if (s_hThread)
+			::CloseHandle(s_hThread);
+		s_hThread = hThread;
+
+		LeaveCriticalSection(&s_cs);
+		return true;
 	}
 
 	void StopInteractive()
 	{
-		// EGA_interactive will return when input 'exit' is sent.
-		// The thread handle was already closed; s_nRunning tracks completion.
+		HANDLE hThread = NULL;
+
+		EnterCriticalSection(&s_cs);
+		if (!s_bRunning)
+		{
+			LeaveCriticalSection(&s_cs);
+			return;
+		}
+
+		::SetEvent(s_hStopEvent); // Stop now!
+		hThread = s_hThread;
+		LeaveCriticalSection(&s_cs);
+
+		if (hThread)
+		{
+			if (::WaitForSingleObject(hThread, 3000) == WAIT_TIMEOUT)
+			{
+				::TerminateThread(hThread, 1);
+			}
+			::CloseHandle(hThread);
+			s_hThread = NULL;
+		}
+	}
+
+	bool IsStopRequested()
+	{
+		return s_hStopEvent != NULL &&
+		       ::WaitForSingleObject(s_hStopEvent, 0) == WAIT_OBJECT_0;
 	}
 }

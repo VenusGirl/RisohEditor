@@ -32,6 +32,9 @@ static bool EGA_dialog_input(char *buf, size_t buflen)
 
 	while (!s_bEnter || !::IsWindowVisible(s_hwndEga))
 	{
+		if (EgaBridge::IsStopRequested())
+			return false;
+
 		Sleep(100);
 	}
 	s_bEnter = FALSE;

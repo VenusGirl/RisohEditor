@@ -21,4 +21,5 @@ namespace EgaBridge
 	void SetPrintFn(EgaPrintFn fn);
 	bool StartInteractive();
 	void StopInteractive();
+	bool IsStopRequested();
 }
