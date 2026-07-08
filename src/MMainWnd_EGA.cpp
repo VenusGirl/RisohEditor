@@ -275,6 +275,9 @@ EGA::arg_t MMainWnd::RES_search(const EGA::args_t& args)
 	if (arg2)
 		lang = (WORD)EGA_get_int(arg2);
 
+	if (type == (WORD)0)
+		type = BAD_TYPE;
+
 	EntrySet found;
 	g_res.search(found, ET_LANG, type, name, lang);
 
@@ -312,7 +315,10 @@ EGA::arg_t MMainWnd::RES_delete(const EGA::args_t& args)
 	if (arg2)
 		lang = (WORD)EGA_get_int(arg2);
 
-	bool ret = g_res.search_and_delete(ET_ANY, type, name, lang);
+	if (type == (WORD)0)
+		type = BAD_TYPE;
+
+	bool ret = g_res.search_and_delete(ET_LANG, type, name, lang);
 	g_res.delete_invalid();
 
 	if (ret)
@@ -346,6 +352,9 @@ EGA::arg_t MMainWnd::RES_clone_by_name(const EGA::args_t& args)
 		src_name = EGA_get_id_or_str(arg1);
 	if (arg2)
 		dest_name = EGA_get_id_or_str(arg2);
+
+	if (type == (WORD)0)
+		type = BAD_TYPE;
 
 	EntrySet found;
 	g_res.search(found, ET_LANG, type, src_name, lang);
@@ -405,6 +414,9 @@ EGA::arg_t MMainWnd::RES_clone_by_lang(const EGA::args_t& args)
 		src_lang = EGA_get_int(arg2);
 	if (arg3)
 		dest_lang = EGA_get_int(arg3);
+
+	if (type == (WORD)0)
+		type = BAD_TYPE;
 
 	EntrySet found2;
 	g_res.search(found2, ET_LANG, type, name, src_lang);
@@ -546,6 +558,9 @@ EGA::arg_t MMainWnd::RES_get_binary(const EGA::args_t& args)
 		name = EGA_get_id_or_str(arg1);
 	if (arg2)
 		lang = EGA_get_int(arg2);
+
+	if (type == (WORD)0)
+		type = BAD_TYPE;
 
 	EntrySet found;
 	g_res.search(found, ET_LANG, type, name, lang);
@@ -805,6 +820,9 @@ EGA::arg_t MMainWnd::RES_select(const EGA::args_t& args)
 		name = EGA_get_id_or_str(arg1);
 	if (arg2)
 		lang = EGA_get_int(arg2);
+
+	if (type == (WORD)0)
+		type = BAD_TYPE;
 
 	EntrySet found;
 	g_res.search(found, ET_LANG, type, name, lang);

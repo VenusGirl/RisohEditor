@@ -464,7 +464,7 @@ struct EntrySet : protected EntrySetBase
 	}
 
 	// delete the invalid entries
-	void delete_invalid();
+	bool delete_invalid();
 
 	// search and delete
 	bool search_and_delete(EntryType et, const MIdOrString& type = BAD_TYPE, const MIdOrString& name = BAD_NAME, LANGID lang = BAD_LANG)
@@ -480,6 +480,7 @@ struct EntrySet : protected EntrySetBase
 			ret = true;
 			delete_entry(entry);
 		}
+
 		return ret;
 	}
 

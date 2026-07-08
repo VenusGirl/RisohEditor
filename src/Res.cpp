@@ -513,14 +513,14 @@ void EntrySet::delete_entry(EntryBase *entry)
 	} while (0);
 }
 
-void EntrySet::delete_invalid()
+bool EntrySet::delete_invalid()
 {
 	// search the invalid
 	super_type found;
 	search_invalid(found);
 
 	if (found.empty())
-		return;
+		return false;
 
 	// for all the invalid entries
 	for (auto entry : found)
@@ -538,6 +538,8 @@ void EntrySet::delete_invalid()
 		erase(entry);
 		delete entry;
 	}
+
+	return true;
 }
 
 UINT EntrySet::get_last_id(const MIdOrString& type, LANGID lang) const
