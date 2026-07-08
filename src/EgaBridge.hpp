@@ -22,4 +22,5 @@ namespace EgaBridge
 	bool StartInteractive();
 	void StopInteractive();
 	bool IsStopRequested();
+	void* GetStopEventHandle();
 }

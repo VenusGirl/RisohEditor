@@ -149,4 +149,9 @@ namespace EgaBridge
 		return s_hStopEvent != NULL &&
 		       ::WaitForSingleObject(s_hStopEvent, 0) == WAIT_OBJECT_0;
 	}
+
+	void* GetStopEventHandle()
+	{
+		return s_hStopEvent;
+	}
 }

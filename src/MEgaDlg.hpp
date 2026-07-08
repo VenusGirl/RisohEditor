@@ -14,6 +14,9 @@
 
 using namespace EGA;
 
+#define WM_EGA_DO_GETINPUT (WM_APP + 100)  // UI thread reads edt2 and clear
+#define WM_EGA_DO_PRINT    (WM_APP + 101)  // lParam = LPWSTR (UI thread will free)
+
 class MEgaDlg;
 extern HWND s_hwndEga;
 static BOOL s_bEnter = FALSE;
@@ -21,6 +24,10 @@ extern HWND g_hMainWnd;
 extern MIdOrString g_RES_select_type;
 extern MIdOrString g_RES_select_name;
 extern LANGID g_RES_select_lang;
+static CRITICAL_SECTION s_inputCs;
+static bool s_inputCsReady = false;
+static HANDLE s_hInputDone  = NULL;  // auto-reset event
+static std::wstring s_inputBuffer; // Protected by s_inputCs
 
 static bool EGA_dialog_input(char *buf, size_t buflen)
 {
@@ -34,20 +41,27 @@ static bool EGA_dialog_input(char *buf, size_t buflen)
 	{
 		if (EgaBridge::IsStopRequested())
 			return false;
-
 		Sleep(100);
 	}
 	s_bEnter = FALSE;
 
-	WCHAR szTextW[512];
-	GetDlgItemTextW(s_hwndEga, edt2, szTextW, ARRAYSIZE(szTextW));
-	mstr_trim(szTextW);
+	::ResetEvent(s_hInputDone);
+	::PostMessageW(s_hwndEga, WM_EGA_DO_GETINPUT, 0, 0);
+
+	// Wait for results or stop request
+	HANDLE waitHandles[2] = { s_hInputDone, (HANDLE)EgaBridge::GetStopEventHandle() };
+	DWORD wait = ::WaitForMultipleObjects(2, waitHandles, FALSE, INFINITE);
+	if (wait != WAIT_OBJECT_0)
+		return false; // Stop request
+
+	std::wstring textW;
+	EnterCriticalSection(&s_inputCs);
+	textW = s_inputBuffer;
+	LeaveCriticalSection(&s_inputCs);
 
 	char szTextA[512];
-	WideCharToMultiByte(CP_UTF8, 0, szTextW, -1, szTextA, ARRAYSIZE(szTextA), NULL, NULL);
-
+	WideCharToMultiByte(CP_UTF8, 0, textW.c_str(), -1, szTextA, ARRAYSIZE(szTextA), NULL, NULL);
 	StringCchCopyA(buf, buflen, szTextA);
-	SetDlgItemTextA(s_hwndEga, edt2, NULL);
 
 	if (lstrcmpA(szTextA, "exit") == 0 || lstrcmpA(szTextA, "exit;") == 0)
 		PostMessageW(s_hwndEga, WM_COMMAND, IDCANCEL, 0);
@@ -72,10 +86,9 @@ static void EGA_dialog_print(const char *fmt, va_list va)
 
 	MAnsiToWide wide(CP_UTF8, str.c_str());
 
-	INT cch = GetWindowTextLengthW(GetDlgItem(s_hwndEga, edt1));
-	SendDlgItemMessageW(s_hwndEga, edt1, EM_SETSEL, cch, cch);
-	SendDlgItemMessageW(s_hwndEga, edt1, EM_REPLACESEL, FALSE, (LPARAM)wide.c_str());
-	SendDlgItemMessageW(s_hwndEga, edt1, EM_SCROLLCARET, 0, 0);
+	LPWSTR heapStr = _wcsdup(wide.c_str());
+	if (heapStr && !::PostMessageW(s_hwndEga, WM_EGA_DO_PRINT, 0, (LPARAM)heapStr))
+		free(heapStr);
 }
 
 void EGA_extension(void);
@@ -91,10 +104,13 @@ public:
 
 	MEgaDlg() : MDialogBase(IDD_EGA)
 	{
+		InitializeCriticalSection(&s_inputCs);
+		s_inputCsReady = true;
+		s_hInputDone = ::CreateEventW(NULL, FALSE, FALSE, NULL); // auto-reset
+
 		m_hIcon = LoadIconDx(IDI_SMILY);
 		m_hIconSm = LoadSmallIconDx(IDI_SMILY);
 
-		// Initialize EGA via bridge and register dialog callbacks
 		EgaBridge::Initialize();
 		EgaBridge::SetInputFn(EGA_dialog_input);
 		EgaBridge::SetPrintFn(EGA_dialog_print);
@@ -106,8 +122,10 @@ public:
 	{
 		EgaBridge::Uninitialize();
 
-		DeleteObject(m_hFont);
+		if (s_hInputDone) { ::CloseHandle(s_hInputDone); s_hInputDone = NULL; }
+		if (s_inputCsReady) { DeleteCriticalSection(&s_inputCs); s_inputCsReady = false; }
 
+		DeleteObject(m_hFont);
 		DestroyIcon(m_hIcon);
 		DestroyIcon(m_hIconSm);
 	}
@@ -261,6 +279,30 @@ public:
 		}
 	}
 
+	void OnEgaGetInput(HWND hwnd)
+	{
+		WCHAR szTextW[512];
+		GetDlgItemTextW(hwnd, edt2, szTextW, ARRAYSIZE(szTextW));
+		mstr_trim(szTextW);
+		SetDlgItemTextW(hwnd, edt2, L"");
+
+		EnterCriticalSection(&s_inputCs);
+		s_inputBuffer = szTextW;
+		LeaveCriticalSection(&s_inputCs);
+
+		::SetEvent(s_hInputDone);
+	}
+
+	void OnEgaPrint(HWND hwnd, LPWSTR text)
+	{
+		if (!text) return;
+		INT cch = GetWindowTextLengthW(GetDlgItem(hwnd, edt1));
+		SendDlgItemMessageW(hwnd, edt1, EM_SETSEL, cch, cch);
+		SendDlgItemMessageW(hwnd, edt1, EM_REPLACESEL, FALSE, (LPARAM)text);
+		SendDlgItemMessageW(hwnd, edt1, EM_SCROLLCARET, 0, 0);
+		free(text);
+	}
+
 	virtual INT_PTR CALLBACK
 	DialogProcDx(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 	{
@@ -273,6 +315,12 @@ public:
 		HANDLE_MSG(hwnd, WM_MOVE, OnMove);
 		HANDLE_MSG(hwnd, WM_SIZE, OnSize);
 		HANDLE_MSG(hwnd, WM_SHOWWINDOW, OnShowWindow);
+		case WM_EGA_DO_GETINPUT:
+			OnEgaGetInput(hwnd);
+			return 0;
+		case WM_EGA_DO_PRINT:
+			OnEgaPrint(hwnd, (LPWSTR)lParam);
+			return 0;
 		default:
 			return DefaultProcDx();
 		}
