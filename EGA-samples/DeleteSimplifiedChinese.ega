@@ -1,0 +1,4 @@
+@ Delete Simplified Chinese (2052) resources all.
+println("Deleting Simplified Chinese...");
+RES_delete("*", "*", 2052);
+println("Done.");
