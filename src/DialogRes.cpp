@@ -1031,15 +1031,18 @@ MStringW DialogRes::Dump(const MIdOrString& id_or_str, bool bAlwaysControl)
 			ret += mstr_dec_short(!!m_italic);
 			ret += L", ";
 			ret += mstr_dec_short(m_charset);
-			bool found = false;
-			MStringW s;
+			if (g_settings.bRedundantComments)
+			{
+				bool found = false;
+				MStringW s;
 #define DEFINE_CHARSET(name, str, wstr, value) if (m_charset == value) { found = true; s = wstr; }
 #include "charsets.h"
 #undef DEFINE_CHARSET
-			if (found)
-			{
-				ret += L" // ";
-				ret += s;
+				if (found)
+				{
+					ret += L" // ";
+					ret += s;
+				}
 			}
 		}
 		ret += L"\r\n";
