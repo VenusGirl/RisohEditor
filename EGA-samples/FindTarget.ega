@@ -10,7 +10,8 @@ foreach(item, res, (
             println(
                 "Target Word '", text,
                 "' found in { ", str(type), ", ", str(name), ", ", str(lang), " }."
-            )
+            ),
+            RES_select(type, name, lang)
         ))
     ))
 ));
