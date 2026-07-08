@@ -15,7 +15,8 @@ foreach(item, res, (
         =(hasKOR, len(RES_search(type, name, KOR))), @ Any Korean version?
         if(!(hasKOR), (
             @ No Korean version. Clone it to Korean
-            RES_clone_by_lang(type, name, JPN, KOR)
+            RES_clone_by_lang(type, name, JPN, KOR),
+            println("Cloned type: ", type, ", name: ", name, " as Korean")
         )),
 
         @ Delete Japanese

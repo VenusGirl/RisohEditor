@@ -15,7 +15,8 @@ foreach(item, res, (
         =(hasCHN, len(RES_search(type, name, CHN))), @ Any Chinese version?
         if(!(hasCHN), (
             @ No Chinese version. Clone it to Chinese
-            RES_clone_by_lang(type, name, JPN, CHN)
+            RES_clone_by_lang(type, name, JPN, CHN),
+            println("Cloned type: ", type, ", name: ", name, " as Chinese")
         )),
 
         @ Delete Japanese
