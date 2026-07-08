@@ -38,6 +38,7 @@ static bool EGA_dialog_input(char *buf, size_t buflen)
 
 	WCHAR szTextW[512];
 	GetDlgItemTextW(s_hwndEga, edt2, szTextW, ARRAYSIZE(szTextW));
+	mstr_trim(szTextW);
 
 	char szTextA[512];
 	WideCharToMultiByte(CP_UTF8, 0, szTextW, -1, szTextA, ARRAYSIZE(szTextA), NULL, NULL);
@@ -47,8 +48,6 @@ static bool EGA_dialog_input(char *buf, size_t buflen)
 
 	if (lstrcmpA(szTextA, "exit") == 0 || lstrcmpA(szTextA, "exit;") == 0)
 		PostMessageW(s_hwndEga, WM_COMMAND, IDCANCEL, 0);
-
-	mstr_trim(szTextW);
 
 	return true;
 }
