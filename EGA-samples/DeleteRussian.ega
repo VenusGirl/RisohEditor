@@ -1,0 +1,4 @@
+@ Delete Russian (1049) resources all.
+println("Deleting Russian...");
+RES_delete("*", "*", 1049);
+println("Done.");
