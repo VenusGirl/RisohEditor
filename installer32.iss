@@ -112,10 +112,10 @@ Source: "EGA\samples\fact.ega"; DestDir: "{app}\EGA"; Flags: ignoreversion
 Source: "EGA\samples\break.ega"; DestDir: "{app}\EGA"; Flags: ignoreversion
 Source: "EGA-samples\Censorship.ega"; DestDir: "{app}\EGA"; Flags: ignoreversion
 Source: "EGA-samples\DeleteAll.ega"; DestDir: "{app}\EGA"; Flags: ignoreversion
+Source: "EGA-samples\DeleteJapanese.ega"; DestDir: "{app}\EGA"; Flags: ignoreversion
 Source: "EGA-samples\DeleteNonEnglish.ega"; DestDir: "{app}\EGA"; Flags: ignoreversion
 Source: "EGA-samples\NeutralToEnglish.ega"; DestDir: "{app}\EGA"; Flags: ignoreversion
 Source: "EGA-samples\RES_clone_by_lang.ega"; DestDir: "{app}\EGA"; Flags: ignoreversion
-Source: "EGA-samples\RES_delete.ega"; DestDir: "{app}\EGA"; Flags: ignoreversion
 Source: "EGA-samples\RES_select.ega"; DestDir: "{app}\EGA"; Flags: ignoreversion
 Source: "EGA-samples\RES_set_binary.ega"; DestDir: "{app}\EGA"; Flags: ignoreversion
 Source: "EGA-samples\RES_set_text.ega"; DestDir: "{app}\EGA"; Flags: ignoreversion

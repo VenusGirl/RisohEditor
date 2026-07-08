@@ -1,4 +1,0 @@
-@ Delete Japanese (1041) resources all.
-println("Deleting Japanese...");
-RES_delete("*", "*", 1041);
-println("Done.");
