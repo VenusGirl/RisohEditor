@@ -113,6 +113,7 @@ Source: "EGA\samples\break.ega"; DestDir: "{app}\EGA"; Flags: ignoreversion
 Source: "EGA-samples\Censorship.ega"; DestDir: "{app}\EGA"; Flags: ignoreversion
 Source: "EGA-samples\ConvertJapaneseToChinese.ega"; DestDir: "{app}\EGA"; Flags: ignoreversion
 Source: "EGA-samples\ConvertJapaneseToKorean.ega"; DestDir: "{app}\EGA"; Flags: ignoreversion
+Source: "EGA-samples\ConvertRussianToUkrainian.ega"; DestDir: "{app}\EGA"; Flags: ignoreversion
 Source: "EGA-samples\DeleteAll.ega"; DestDir: "{app}\EGA"; Flags: ignoreversion
 Source: "EGA-samples\DeleteHebrew.ega"; DestDir: "{app}\EGA"; Flags: ignoreversion
 Source: "EGA-samples\DeleteJapanese.ega"; DestDir: "{app}\EGA"; Flags: ignoreversion
