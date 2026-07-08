@@ -2,7 +2,7 @@
 
 - v.6.0.5 (2026-XX-YY)
     - ツリービュー矢印がリソース名を変更可能に。
-    - EGAを修正。DeleteAll.ega と ConvertJapaneseToChinese.ega と ConvertJapaneseToKorean.ega を追加。RES_delete.ega を DeleteJapanese.egaに改名。
+    - EGAを修正。いくつかEGAプログラムを追加。RES_delete.ega を DeleteJapanese.egaに改名。
     - DIALOGの代わりにDIALOGEXを使用した。
     - DIALOGEX FONT のダンピングを改良。
     - IDD_CTRLPROPにおいてコントロールを複数選択したときの処理を改善。
