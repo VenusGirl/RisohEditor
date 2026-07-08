@@ -25,6 +25,7 @@
 class MCtrlPropDlg : public MDialogBase
 {
 public:
+	static constexpr LPCTSTR MULTIPLE_TEXT = TEXT("<multiple>");
 	enum Flags
 	{
 		F_NONE = 0,
@@ -43,11 +44,14 @@ public:
 		F_ALL = 0x0FFF
 	};
 	DialogRes&          m_dialog_res;
-	BOOL                m_bUpdating;
+	BOOL                m_bUpdating = FALSE;
 	std::unordered_set<INT>       m_indeces;
 	DWORD               m_flags;
-	DWORD               m_dwStyle;
-	DWORD               m_dwExStyle;
+	BOOL                m_bClassMixed = FALSE;
+	BOOL                m_bTitleMixed = FALSE;
+	BOOL                m_bIDMixed = FALSE;
+	DWORD               m_dwStyle = 0;
+	DWORD               m_dwExStyle = 0;
 	DialogItem          m_item;
 	ConstantsDB::TableType  m_style_table;
 	ConstantsDB::TableType  m_exstyle_table;
@@ -64,7 +68,7 @@ public:
 
 	MCtrlPropDlg(DialogRes& dialog_res, const std::unordered_set<INT>& indeces)
 		: MDialogBase(IDD_CTRLPROP), m_dialog_res(dialog_res),
-		  m_bUpdating(FALSE), m_indeces(indeces)
+		  m_indeces(indeces)
 	{
 		m_himlControls = NULL;
 		m_cmb2.m_bAcceptSpace = TRUE;
@@ -84,6 +88,10 @@ public:
 	{
 		if (m_indeces.empty())
 			return;
+
+		m_bClassMixed = FALSE;
+		m_bTitleMixed = FALSE;
+		m_bIDMixed = FALSE;
 
 		m_flags = F_ALL;
 		auto end = m_indeces.end();
@@ -109,17 +117,26 @@ public:
 				m_flags &= ~F_CX;
 			if (m_item.m_siz.cy != item.m_siz.cy)
 				m_flags &= ~F_CY;
+ 			if (m_item.m_class != item.m_class)
+			{
+ 				m_flags &= ~F_CLASS;
+				m_bClassMixed = TRUE;
+			}
+ 			if (m_item.m_title != item.m_title)
+			{
+ 				m_flags &= ~F_TITLE;
+				m_bTitleMixed = TRUE;
+			}
 			if (m_item.m_id != item.m_id)
+			{
 				m_flags &= ~F_ID;
-			if (m_item.m_class != item.m_class)
-				m_flags &= ~F_CLASS;
-			if (m_item.m_title != item.m_title)
-				m_flags &= ~F_TITLE;
+				m_bIDMixed = TRUE;
+			}
 		}
 
 		if (m_flags & F_CLASS)
 		{
-			if (m_item.m_class.is_int())
+			if (!m_item.m_class.is_str())
 			{
 				std::wstring cls;
 				if (IDToPredefClass(m_item.m_class.m_id, cls))
@@ -133,10 +150,10 @@ public:
 		DWORD flags = m_flags;
 
 		MString strCaption = GetDlgItemText(cmb2);
-		if (!strCaption.empty())
+		if (!strCaption.empty() && strCaption != MULTIPLE_TEXT)
 			flags |= F_TITLE;
 		g_settings.AddCaption(strCaption.c_str());
-		if (strCaption[0] == TEXT('"'))
+		if (strCaption.size() && strCaption[0] == TEXT('"'))
 			mstr_unquote(strCaption);
 		item.m_title = strCaption.c_str();
 
@@ -166,9 +183,13 @@ public:
 
 		MString strID = GetDlgItemText(cmb3);
 		mstr_trim(strID);
+		if (strID == MULTIPLE_TEXT)
+			strID.clear();
+
 		UINT id = 0;
-		if ((TEXT('0') <= strID[0] && strID[0] <= TEXT('9')) ||
-			strID[0] == TEXT('-') || strID[0] == TEXT('+'))
+		if (strID.size() && (
+			(TEXT('0') <= strID[0] && strID[0] <= TEXT('9')) ||
+			strID[0] == TEXT('-') || strID[0] == TEXT('+')))
 		{
 			id = mstr_parse_int(strID.c_str());
 			flags |= F_ID;
@@ -198,10 +219,11 @@ public:
 
 		MString strClass = GetDlgItemText(cmb4);
 		mstr_trim(strClass);
-		if (strClass[0] == TEXT('"'))
-		{
+		if (strClass == MULTIPLE_TEXT)
+			strClass.clear();
+
+		if (strClass.size() && strClass[0] == TEXT('"'))
 			mstr_unquote(strClass);
-		}
 		if (!strClass.empty())
 			flags |= F_CLASS;
 		item.m_class = strClass.c_str();
@@ -302,7 +324,7 @@ public:
 				if ((style & SS_TYPEMASK) == SS_ICON ||
 					(style & SS_TYPEMASK) == SS_BITMAP)
 				{
-					if (mchr_is_digit(item.m_title.str()[0]))
+					if (item.m_title.str().size() && mchr_is_digit(item.m_title.str()[0]))
 					{
 						LONG n = mstr_parse_int(item.m_title.c_str());
 						item.m_title = WORD(n);
@@ -399,7 +421,7 @@ public:
 			buttons[i].iString = 0;
 			m_vecControls.push_back(table[i].name);
 		}
-		m_hTB.AddButtons(nCount, &buttons[0]);
+		m_hTB.AddButtons(nCount, buttons.data());
 	}
 
 	BOOL OnInitDialog(HWND hwnd, HWND hwndFocus, LPARAM lParam)
@@ -509,16 +531,31 @@ public:
 		{
 			SetDlgItemInt(hwnd, edt4, m_item.m_siz.cy, TRUE);
 		}
-		if (m_flags & F_ID)
+
+		if (m_bIDMixed)
+		{
+			SetDlgItemTextW(hwnd, cmb3, MULTIPLE_TEXT);
+		}
+		else if (m_flags & F_ID)
 		{
 			MStringW name = g_db.GetNameOfResID(IDTYPE_CONTROL, m_item.m_id);
 			SetDlgItemTextW(hwnd, cmb3, name.c_str());
 		}
-		if (m_flags & F_CLASS)
+
+		if (m_bClassMixed)
+		{
+			SetDlgItemText(hwnd, cmb4, MULTIPLE_TEXT);
+		}
+		else if (m_flags & F_CLASS)
 		{
 			SetDlgItemText(hwnd, cmb4, m_item.m_class.c_str());
 		}
-		if (m_flags & F_TITLE)
+
+		if (m_bTitleMixed)
+		{
+			SetDlgItemText(hwnd, cmb2, MULTIPLE_TEXT);
+		}
+		else if (m_flags & F_TITLE)
 		{
 			MString strCaption;
 			if (!m_item.m_title.empty())
@@ -576,7 +613,7 @@ public:
 		{
 			MString strClass = GetDlgItemText(cmb4);
 			mstr_trim(strClass);
-			if (strClass[0] == TEXT('"'))
+			if (strClass.size() && strClass[0] == TEXT('"'))
 			{
 				mstr_unquote(strClass);
 			}
@@ -798,12 +835,24 @@ public:
 		case cmb2:
 			if (codeNotify == CBN_EDITCHANGE)
 			{
+				MString text = GetDlgItemText(hwnd, cmb2);
+				if (text == MULTIPLE_TEXT)
+				{
+					SetDlgItemText(hwnd, cmb2, TEXT(""));
+					text.clear();
+				}
 				m_cmb2.OnEditChange();
 			}
 			break;
 		case cmb3:
 			if (codeNotify == CBN_EDITCHANGE)
 			{
+				MString text = GetDlgItemText(hwnd, cmb3);
+				if (text == MULTIPLE_TEXT)
+				{
+					SetDlgItemText(hwnd, cmb3, TEXT(""));
+					text.clear();
+				}
 				m_cmb3.OnEditChange();
 			}
 			break;
@@ -811,7 +860,7 @@ public:
 			if (codeNotify == CBN_SELCHANGE)
 			{
 				INT nIndex = ComboBox_GetCurSel(hCmb4);
-				MString text = GetComboBoxLBText(hCmb4, nIndex);
+				auto text = GetComboBoxLBText(hCmb4, nIndex);
 				mstr_trim(text);
 				UpdateClass(hwnd, hLst1, text);
 			}
@@ -822,6 +871,11 @@ public:
 				{
 					MString text = GetDlgItemText(hwnd, cmb4);
 					mstr_trim(text);
+					if (text == MULTIPLE_TEXT)
+					{
+						SetDlgItemText(hwnd, cmb4, TEXT(""));
+						text.clear();
+					}
 					InitTables(text.c_str());
 					UpdateClass(hwnd, hLst1, text);
 				}
@@ -868,7 +922,7 @@ public:
 			OnPsh3(hwnd);
 			break;
 		default:
-			if (size_t(id - 1000) < m_vecControls.size())
+			if (id >= 1000 && size_t(id - 1000) < m_vecControls.size())
 			{
 				MString text;
 				UINT nID = UINT(id - 1000);

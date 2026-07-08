@@ -5,6 +5,7 @@
     - Fixed EGA. Added DeleteAll.ega.
     - Used DIALOGEX instead of DIALOG.
     - Improved DIALOGEX FONT dumping.
+    - Improved handling when multiple controls are selected in IDD_CTRLPROP.
 - v.6.0.4 (2026-07-07)
     - Se corrigió la interpretación de los ID de recursos en la vista de árbol.
     - Se añadió el botón "Restablecer" en el cuadro de diálogo IDD_FONTS.
