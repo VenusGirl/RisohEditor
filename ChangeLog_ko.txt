@@ -4,6 +4,8 @@
 - v.6.0.5 (2026-XX-YY)
     - Enabled the treeview arrow to change the resource name.
     - Fixed EGA. Added DeleteAll.ega.
+    - Used DIALOGEX instead of DIALOG.
+    - Improved DIALOGEX FONT dumping.
 - v.6.0.4 (2026-07-07)
     - 트리 보기의 리소스 ID 해석을 수정했습니다.
     - IDD_FONTS 대화 상자에 "재설정" 버튼을 추가했습니다.

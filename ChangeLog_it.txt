@@ -3,6 +3,8 @@
 - v.6.0.5 (2026-XX-YY)
     - Abilitata la freccia della visualizzazione struttura per modificare il nome risorsa.
     - Fixed EGA. Added DeleteAll.ega.
+    - Used DIALOGEX instead of DIALOG.
+    - Improved DIALOGEX FONT dumping.
 - v.6.0.4 (07.07.2026)
     - Corretta nella visualizzazione struttura l'interpretazione ID risorse.
     - Aggiunto nella finestra di dialogo IDD_FONTS il pulsante "Ripristina".

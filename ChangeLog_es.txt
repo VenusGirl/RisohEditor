@@ -3,6 +3,8 @@
 - v.6.0.5 (2026-XX-YY)
     - Enabled the treeview arrow to change the resource name.
     - Fixed EGA. Added DeleteAll.ega.
+    - Used DIALOGEX instead of DIALOG.
+    - Improved DIALOGEX FONT dumping.
 - v.6.0.4 (2026-07-07)
     - Se corrigió la interpretación de los ID de recursos en la vista de árbol.
     - Se añadió el botón "Restablecer" en el cuadro de diálogo IDD_FONTS.
