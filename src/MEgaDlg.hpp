@@ -229,8 +229,13 @@ public:
 		if (fShow)
 		{
 			// Start the interactive loop if needed
+			::EnableWindow(g_hMainWnd, FALSE);
 			EgaBridge::StartInteractive();
 			::SetFocus(::GetDlgItem(hwnd, edt2));
+		}
+		else
+		{
+			::EnableWindow(g_hMainWnd, TRUE);
 		}
 	}
 

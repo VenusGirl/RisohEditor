@@ -9159,6 +9159,9 @@ void MMainWnd::OnCommand(HWND hwnd, int id, HWND hwndCtl, UINT codeNotify)
 {
 	MWaitCursor wait;
 
+	if (!::IsWindowEnabled(hwnd) && id != ID_EGAFINISH)
+		return;
+
 	if (codeNotify == EN_CHANGE && m_hCodeEditor == hwndCtl)
 	{
 		// the source EDIT control was modified.
@@ -9675,6 +9678,7 @@ void MMainWnd::OnCommand(HWND hwnd, int id, HWND hwndCtl, UINT codeNotify)
 			g_RES_select_name = BAD_NAME;
 			g_RES_select_lang = BAD_LANG;
 		}
+		::EnableWindow(g_hMainWnd, TRUE);
 		PostUpdateArrow(hwnd);
 		break;
 	case ID_INTERNALTEST:
