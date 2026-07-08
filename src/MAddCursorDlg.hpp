@@ -11,7 +11,7 @@
 #include "ConstantsDB.hpp"
 #include "Res.hpp"
 #include "MComboBoxAutoComplete.hpp"
-#include "MLangAutoComplete.hpp"
+#include "MRisohAutoComplete.hpp"
 #include "Common.hpp"
 
 //////////////////////////////////////////////////////////////////////////////
@@ -26,12 +26,12 @@ public:
 	LANGID m_lang;
 	MComboBoxAutoComplete m_cmb2;
 	MComboBoxAutoComplete m_cmb3;
-	MLangAutoComplete *m_pAutoComplete;
+	MRisohAutoComplete *m_pAutoComplete;
 
 	MAddCursorDlg()
 		: MDialogBase(IDD_ADDCURSOR)
 		, m_file(NULL)
-		, m_pAutoComplete(new MLangAutoComplete())
+		, m_pAutoComplete(new MRisohAutoComplete(2))
 	{
 		m_hCursor = NULL;
 		m_cmb3.m_bAcceptSpace = TRUE;

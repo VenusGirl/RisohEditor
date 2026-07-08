@@ -150,6 +150,7 @@ BOOL CheckTypeComboBox(HWND hCmb1, MIdOrString& type);
 BOOL Cmb1_CheckKey(HWND hwnd, HWND hCmb1, BOOL bVirtKey, std::wstring& str);
 BOOL Edt1_CheckFile(HWND hEdt1, std::wstring& file);
 BOOL InitLangListBox(HWND hwnd);
+BOOL InitNames(void);
 BOOL ChooseLangListBoxLang(HWND hwnd, LANGID wLangId);
 BOOL ChooseNameListBoxName(HWND hwnd, const MIdOrString& type, const MIdOrString& name);
 BOOL IsThereWndClass(const WCHAR *pszName);

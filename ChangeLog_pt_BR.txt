@@ -6,6 +6,8 @@
     - Used DIALOGEX instead of DIALOG.
     - Improved DIALOGEX FONT dumping.
     - Improved handling when multiple controls are selected in IDD_CTRLPROP.
+    - Enabled input auto completion on name item of treeview.
+    - Fixed item deletion on treeview.
 - v.6.0.4 (2026-07-07)
     - Corrigida a interpretação dos IDs de recursos na visualização em árvore.
     - Adicionado botão "Redefinir" na caixa de diálogo IDD_FONTS.

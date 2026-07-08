@@ -7,6 +7,8 @@
     - Used DIALOGEX instead of DIALOG.
     - Improved DIALOGEX FONT dumping.
     - Improved handling when multiple controls are selected in IDD_CTRLPROP.
+    - Enabled input auto completion on name item of treeview.
+    - Fixed item deletion on treeview.
 - v.6.0.4 (2026-07-07)
     - 트리 보기의 리소스 ID 해석을 수정했습니다.
     - IDD_FONTS 대화 상자에 "재설정" 버튼을 추가했습니다.

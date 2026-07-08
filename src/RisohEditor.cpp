@@ -2280,8 +2280,8 @@ void MMainWnd::OnDeleteRes(HWND hwnd)
 	if (auto entry = g_res.get_entry())
 	{
 		// delete it
-		if (g_res.super()->find(entry) != g_res.end())
-			TreeView_DeleteItem(m_hwndTV, entry->m_hItem);
+		if (!TreeView_DeleteItem(m_hwndTV, entry->m_hItem))
+			assert(0);
 	}
 
 	DoRefreshIDList(hwnd);
@@ -4746,6 +4746,29 @@ void MMainWnd::DoLoadLangInfo(VOID)
 
 	// sort
 	std::sort(g_langs.begin(), g_langs.end());
+}
+
+BOOL InitNames(void)
+{
+	if (g_pNames)
+		delete g_pNames;
+	g_pNames = new std::vector<MString>();
+
+	auto entry = g_res.get_entry();
+	if (!entry)
+		return FALSE;   // no selection
+
+	auto nIDTYPE_ = g_db.IDTypeFromResType(entry->m_type);
+	auto prefix = MapIDTypeToPrefix(nIDTYPE_);
+	auto table = g_db.GetTableByPrefix(L"RESOURCE.ID", prefix);
+	auto end = table.end();
+	for (auto it = table.begin(); it != end; ++it)
+	{
+		g_pNames->push_back(it->name);
+	}
+
+	std::sort(g_pNames->begin(), g_pNames->end());
+	return TRUE;
 }
 
 BOOL ChooseNameListBoxName(HWND hwnd, const MIdOrString& type, const MIdOrString& name)
@@ -7888,7 +7911,7 @@ void MMainWnd::OnDestroy(HWND hwnd)
 	::Sleep(100);
 
 	// release auto complete
-	DoLangEditAutoCompleteRelease(hwnd);
+	DoTVEditAutoCompleteRelease(hwnd);
 
 	// close preview
 	HidePreview();
@@ -9596,11 +9619,11 @@ void MMainWnd::OnCommand(HWND hwnd, int id, HWND hwndCtl, UINT codeNotify)
 	case ID_AUTOCOMPLETE:
 		{
 			HWND hwndEdit = TreeView_GetEditControl(m_hwndTV);
-			DoLangEditAutoComplete(hwnd, hwndEdit);
+			DoTVEditAutoComplete(hwnd, hwndEdit);
 		}
 		break;
 	case ID_AUTOCOMPLETEDONE:
-		DoLangEditAutoCompleteRelease(hwnd);
+		DoTVEditAutoCompleteRelease(hwnd);
 		break;
 	case ID_OPENREADMEKO:
 		OnOpenLocalFile(hwnd, L"README_ko.txt");
@@ -9839,7 +9862,7 @@ BOOL MMainWnd::ShowTreeViewArrow(BOOL bShow, HTREEITEM hItem)
 	return TRUE;
 }
 
-void MMainWnd::DoLangEditAutoCompleteRelease(HWND hwnd)
+void MMainWnd::DoTVEditAutoCompleteRelease(HWND hwnd)
 {
 	if (m_pAutoComplete)
 	{
@@ -9851,11 +9874,14 @@ void MMainWnd::DoLangEditAutoCompleteRelease(HWND hwnd)
 	m_auto_comp_edit.unhook();
 }
 
-void MMainWnd::DoLangEditAutoComplete(HWND hwnd, HWND hwndEdit)
+void MMainWnd::DoTVEditAutoComplete(HWND hwnd, HWND hwndEdit)
 {
-	DoLangEditAutoCompleteRelease(hwnd);
+	DoTVEditAutoCompleteRelease(hwnd);
 
-	m_pAutoComplete = new MLangAutoComplete();
+	INT type;
+	auto entry = g_res.get_entry();
+
+	m_pAutoComplete = new MRisohAutoComplete((entry && entry->m_et == ET_NAME) ? 1 : 2);
 	if (!m_pAutoComplete)
 		return;
 
@@ -10093,6 +10119,9 @@ LRESULT MMainWnd::OnNotify(HWND hwnd, int idFrom, NMHDR *pnmhdr)
 
 			switch (entry->m_et)
 			{
+			case ET_TYPE:
+				break;
+			case ET_NAME:
 			case ET_LANG:
 			case ET_STRING:
 				PostMessage(hwnd, WM_COMMAND, ID_AUTOCOMPLETE, 0);
@@ -10112,6 +10141,7 @@ LRESULT MMainWnd::OnNotify(HWND hwnd, int idFrom, NMHDR *pnmhdr)
 
 			switch (entry->m_et)
 			{
+			case ET_NAME:
 			case ET_LANG:
 			case ET_STRING:
 				PostMessage(hwnd, WM_COMMAND, ID_AUTOCOMPLETEDONE, 0);
@@ -10271,7 +10301,6 @@ void MMainWnd::DoRenameEntry(LPWSTR pszText, EntryBase *entry, MIdOrString& old_
 	EntrySet found;
 	g_res.search(found, ET_LANG, entry->m_type, old_name);
 
-	// rename them
 	for (auto e : found)
 	{
 		assert(e->m_name == old_name);

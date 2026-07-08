@@ -7,7 +7,7 @@
 #pragma once
 
 #include "RisohEditor.hpp"
-#include "MLangAutoComplete.hpp"
+#include "MRisohAutoComplete.hpp"
 
 //////////////////////////////////////////////////////////////////////////////
 // MMainWnd --- the main window
@@ -95,8 +95,8 @@ protected:
 	MTabCtrl        m_tab;                      // the tab control
 
 	// auto completion
-	MLangAutoCompleteEdit   m_auto_comp_edit;
-	MLangAutoComplete *m_pAutoComplete;
+	MTVAutoCompleteEdit m_auto_comp_edit;
+	MRisohAutoComplete *m_pAutoComplete;
 
 public:
 	MDropdownArrow  m_arrow;                    // the language drop-down arrow
@@ -278,8 +278,8 @@ public:
 	void DoRelangEntry(LPWSTR pszText, EntryBase *entry, LANGID old_lang, LANGID new_lang);
 	void DoRefreshTV(HWND hwnd);
 	void DoRefreshIDList(HWND hwnd);
-	void DoLangEditAutoComplete(HWND hwnd, HWND hwndEdit);
-	void DoLangEditAutoCompleteRelease(HWND hwnd);
+	void DoTVEditAutoComplete(HWND hwnd, HWND hwndEdit);
+	void DoTVEditAutoCompleteRelease(HWND hwnd);
 
 	void ReCreateFonts(HWND hwnd);
 	void ReSetPaths(HWND hwnd);

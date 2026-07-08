@@ -11,7 +11,7 @@
 #include "ConstantsDB.hpp"
 #include "Res.hpp"
 #include "MComboBoxAutoComplete.hpp"
-#include "MLangAutoComplete.hpp"
+#include "MRisohAutoComplete.hpp"
 #include "Common.hpp"
 
 //////////////////////////////////////////////////////////////////////////////
@@ -25,12 +25,12 @@ public:
 	LANGID m_lang;
 	MComboBoxAutoComplete m_cmb3;
 	std::vector<LANGID> m_langs;
-	MLangAutoComplete *m_pAutoComplete;
+	MRisohAutoComplete *m_pAutoComplete;
 
 	MCopyToMultiLangDlg(EntryBase* entry)
 		: MDialogBase(IDD_COPYTOMULTILANG), m_entry(entry),
 		  m_type(entry->m_type), m_name(entry->m_name), m_lang(entry->m_lang),
-		  m_pAutoComplete(new MLangAutoComplete())
+		  m_pAutoComplete(new MRisohAutoComplete(2))
 	{
 		m_cmb3.m_bAcceptSpace = TRUE;
 		m_cmb3.m_bIgnoreCase = TRUE;

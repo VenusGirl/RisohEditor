@@ -13,7 +13,7 @@
 #include "MMacrosDlg.hpp"
 #include "MPathsDlg.hpp"
 #include "MFontsDlg.hpp"
-#include "MLangAutoComplete.hpp"
+#include "MRisohAutoComplete.hpp"
 
 //////////////////////////////////////////////////////////////////////////////
 
@@ -21,11 +21,11 @@ class MConfigDlg : public MDialogBase
 {
 public:
 	MComboBoxAutoComplete m_cmb3;
-	MLangAutoComplete *m_pAutoComplete;
+	MRisohAutoComplete *m_pAutoComplete;
 
 	MConfigDlg()
 		: MDialogBase(IDD_CONFIG)
-		, m_pAutoComplete(new MLangAutoComplete())
+		, m_pAutoComplete(new MRisohAutoComplete(2))
 	{
 		m_cmb3.m_bAcceptSpace = TRUE;
 		m_cmb3.m_bIgnoreCase = TRUE;

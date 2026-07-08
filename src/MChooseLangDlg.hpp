@@ -11,7 +11,7 @@
 #include "MString.hpp"
 #include "ConstantsDB.hpp"
 #include "MComboBoxAutoComplete.hpp"
-#include "MLangAutoComplete.hpp"
+#include "MRisohAutoComplete.hpp"
 #include "Common.hpp"
 
 class MChooseLangDlg;
@@ -23,11 +23,11 @@ class MChooseLangDlg : public MDialogBase
 public:
 	LANGID m_langid;
 	MComboBoxAutoComplete m_cmb3;
-	MLangAutoComplete *m_pAutoComplete;
+	MRisohAutoComplete *m_pAutoComplete;
 
 	MChooseLangDlg()
 		: MDialogBase(IDD_UILANG)
-		, m_pAutoComplete(new MLangAutoComplete(TRUE))
+		, m_pAutoComplete(new MRisohAutoComplete(2, TRUE))
 	{
 		m_cmb3.m_bAcceptSpace = TRUE;
 		m_cmb3.m_bIgnoreCase = TRUE;

@@ -2425,6 +2425,7 @@ void InitMessageComboBox(HWND hCmb, const MString& strString)
 // languages
 
 std::vector<LANG_ENTRY> g_langs;
+extern std::vector<MString> *g_pNames;
 
 BOOL CALLBACK
 EnumResLangProc(HMODULE hModule, LPCTSTR lpszType, LPCTSTR lpszName, WORD wIDLanguage,
@@ -2447,19 +2448,33 @@ BOOL IsValidUILang(LANGID langid)
 	return value != langid;
 }
 
-MLangAutoComplete::MLangAutoComplete(BOOL bUILanguage)
+MRisohAutoComplete::MRisohAutoComplete(INT type, BOOL bUILanguage)
 {
+	m_type = type;
 	m_nCurrentElement = 0;
 	m_nRefCount = 1;
 	m_fBound = FALSE;
 	m_pAC = NULL;
 
-	for (auto& lang : g_langs)
+	if (type == 1) // Names
 	{
-		if (bUILanguage && !IsValidUILang(lang.LangID))
-			continue;
+		if (InitNames() && g_pNames)
+		{
+			for (auto& name : *g_pNames)
+			{
+				push_back(name);
+			}
+		}
+	}
+	if (type == 2) // Languages
+	{
+		for (auto& lang : g_langs)
+		{
+			if (bUILanguage && !IsValidUILang(lang.LangID))
+				continue;
 
-		push_back(lang.str);
+			push_back(lang.str);
+		}
 	}
 }
 
