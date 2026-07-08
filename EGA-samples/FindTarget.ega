@@ -1,0 +1,16 @@
+﻿=(TARGET, { "Trump", "trump", "TRUMP" });
+=(res, RES_search());
+foreach(item, res, (
+    =(type, [](item, 0)),
+    =(name, [](item, 1)),
+    =(lang, [](item, 2)),
+    =(bin, RES_get_binary(type, name, lang)),
+    foreach(text, TARGET, (
+        if(or(!=(find(str(name), text), -(1)), !=(find(bin, text), -(1)), !=(find(bin, u16fromu8(text)), -(1))), (
+            println(
+                "Target Word '", text,
+                "' found in { ", str(type), ", ", str(name), ", ", str(lang), " }."
+            )
+        ))
+    ))
+));

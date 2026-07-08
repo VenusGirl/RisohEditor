@@ -15,7 +15,7 @@
 using namespace EGA;
 
 class MEgaDlg;
-static HWND s_hwndEga = NULL;
+extern HWND s_hwndEga;
 static BOOL s_bEnter = FALSE;
 extern HWND g_hMainWnd;
 extern MIdOrString g_RES_select_type;

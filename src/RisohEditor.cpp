@@ -19,6 +19,7 @@ LPWSTR g_pszLogFile = NULL;
 std::unordered_map<INT, MStringW> *g_pmapIDTypeToLocalized = NULL;
 std::unordered_map<MStringW, INT> *g_pmapLocalizedToIDType = NULL;
 std::vector<MString> *g_pNames = NULL;
+HWND s_hwndEga = NULL;
 
 void InitIDTypeMaps()
 {
@@ -12249,6 +12250,9 @@ void MMainWnd::DoMsg(MSG& msg)
 		if (::IsDialogMessage(hDlg, &msg))
 			return; // processed
 	}
+
+	if (s_hwndEga && ::IsDialogMessageW(s_hwndEga, &msg))
+		return;
 
 	// the default processing
 	TranslateMessage(&msg);
