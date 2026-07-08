@@ -1,2 +1,4 @@
 @ Delete all resources.
+println("Deleting all...");
 RES_delete("*", "*", -(1))
+println("Done.");
