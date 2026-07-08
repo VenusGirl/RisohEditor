@@ -1,4 +1,5 @@
 @ Delete non-Neutral (0) and non-English (1033) resources.
+println("Deleting non-English...");
 =(res, RES_search("*", "*", -(1)));
 foreach(item, res, (
     =(lang, [](item, 2)),
@@ -8,3 +9,4 @@ foreach(item, res, (
         RES_delete(type, name, lang)
     ))
 ));
+println("Done.");
