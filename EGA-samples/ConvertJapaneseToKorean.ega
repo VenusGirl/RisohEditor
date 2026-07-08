@@ -7,14 +7,17 @@ println("Converting Japanese to Korean...");
 
 foreach(item, res, (
     =(lang, [](item, 2)),
+
     if(==(lang, JPN), ( @ Found Japanese?
         =(type, [](item, 0)),
         =(name, [](item, 1)),
+
         =(hasKOR, len(RES_search(type, name, KOR))), @ Any Korean version?
         if(!(hasKOR), (
             @ No Korean version. Clone it to Korean
             RES_clone_by_lang(type, name, JPN, KOR)
         )),
+
         @ Delete Japanese
         RES_delete(type, name, JPN)
     ))
