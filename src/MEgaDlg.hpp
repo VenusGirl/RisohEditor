@@ -33,7 +33,7 @@ static bool EGA_dialog_input(char *buf, size_t buflen)
 {
 	if (buf == NULL && buflen == 0)
 	{
-		SendMessageW(g_hMainWnd, WM_COMMAND, ID_EGAFINISH, 0);
+		PostMessageW(g_hMainWnd, WM_COMMAND, ID_EGAFINISH, 0);
 		return true;
 	}
 
