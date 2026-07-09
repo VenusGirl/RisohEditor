@@ -1221,8 +1221,17 @@ EntryBase *EntrySet::get_parent(EntryBase *entry)
 		break;
 
 	case ET_LANG:
-		// parent is a name entry
-		parent = find(ET_NAME, entry->m_type, entry->m_name);
+		if (entry->m_type == RT_STRING)
+		{
+			// RT_STRING entries are grouped directly under an ET_STRING
+			// (language) entry, not an ET_NAME entry
+			parent = find(ET_STRING, entry->m_type, BAD_NAME, entry->m_lang);
+		}
+		else
+		{
+			// parent is a name entry
+			parent = find(ET_NAME, entry->m_type, entry->m_name);
+		}
 		break;
 
 	default:
@@ -1239,12 +1248,16 @@ bool EntrySet::is_childless_parent(EntryBase *entry) const
 	switch (entry->m_et)
 	{
 	case ET_TYPE:
+		if (entry->m_type == RT_STRING)
+			return !find(ET_STRING, entry->m_type);    // any language node left?
 		return !find(ET_NAME, entry->m_type);
 
 	case ET_NAME:
 		return !find(ET_LANG, entry->m_type, entry->m_name);
 
 	case ET_STRING:
+		return !find(ET_LANG, entry->m_type, BAD_NAME, entry->m_lang);
+
 	case ET_LANG:
 	default:
 		return false;   // not parent
@@ -1463,11 +1476,19 @@ EntryBase *EntrySet::get_child(EntryBase *parent) const
 	switch (parent->m_et)
 	{
 	case ET_TYPE:
-		child = find(ET_NAME, parent->m_type);
+		if (parent->m_type == RT_STRING)
+			child = find(ET_STRING, parent->m_type);   // language node
+		else
+			child = find(ET_NAME, parent->m_type);
 		break;
 
 	case ET_NAME:
 		child = find(ET_LANG, parent->m_type, parent->m_name);
+		break;
+
+	case ET_STRING:
+		// children are the RT_STRING blocks of the same language
+		child = find(ET_LANG, parent->m_type, BAD_NAME, parent->m_lang);
 		break;
 
 	default:

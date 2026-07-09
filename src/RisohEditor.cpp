@@ -8273,20 +8273,27 @@ void MMainWnd::DoRefreshIDList(HWND hwnd)
 }
 
 // refresh the treeview
-void MMainWnd::DoRefreshTV(HWND hwnd)
+void MMainWnd::DoRefreshTV(HWND hwnd, BOOL bNoDeleteAll)
 {
-	// refresh the resource items
-	EntrySet res;
-	res.merge(g_res);
+	if (bNoDeleteAll)
+	{
+		DoRefreshTVEntryNames(hwnd);
+	}
+	else
+	{
+		// refresh the resource items
+		EntrySet res;
+		res.merge(g_res);
 
-	SendMessageW(m_hwndTV, WM_SETREDRAW, FALSE, 0);
-	g_res.delete_all();
-	g_res.merge(res);
-	SendMessageW(m_hwndTV, WM_SETREDRAW, TRUE, 0);
-	InvalidateRect(m_hwndTV, NULL, TRUE);
+		SendMessageW(m_hwndTV, WM_SETREDRAW, FALSE, 0);
+		g_res.delete_all();
+		g_res.merge(res);
+		SendMessageW(m_hwndTV, WM_SETREDRAW, TRUE, 0);
+		InvalidateRect(m_hwndTV, NULL, TRUE);
 
-	// clean up
-	res.delete_all();
+		// clean up
+		res.delete_all();
+	}
 
 	// hide language drop-down arrow
 	ShowWindowAsync(m_arrow, SW_HIDE);
@@ -9670,7 +9677,7 @@ void MMainWnd::OnCommand(HWND hwnd, int id, HWND hwndCtl, UINT codeNotify)
 	case ID_EGAFINISH:
 		{
 			BOOL bModifiedOld = s_bModified;
-			DoRefreshTV(hwnd);
+			DoRefreshTV(hwnd, TRUE);
 			DoRefreshIDList(hwnd);
 			s_bModified = bModifiedOld;
 		}
