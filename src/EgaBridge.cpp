@@ -219,6 +219,10 @@ namespace EgaBridge
 
 	bool RunOnUIThread(std::function<void(void*)> fn, void* param)
 	{
+#ifndef NDEBUG
+		OutputDebugStringA("RunOnUIThread\n");
+#endif
+
 		if (IsStopRequested())
 			return false;
 
@@ -247,7 +251,14 @@ namespace EgaBridge
 		LeaveCriticalSection(&s_uiCs);
 
 		if (task)
-			task(param);
+		{
+			try
+			{
+				task(param);
+			} catch (const std::runtime_error& e) {
+				OutputDebugStringA(e.what());
+			}
+		}
 
 		::SetEvent(s_hUIDone);
 	}

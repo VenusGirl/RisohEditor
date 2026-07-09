@@ -112,6 +112,7 @@ public:
 
 	MEgaDlg() : MDialogBase(IDD_EGA)
 	{
+		MTRACEA("%s\n", __FUNCTION__);
 		InitializeCriticalSection(&s_inputCs);
 		s_inputCsReady = true;
 		s_hInputDone = ::CreateEventW(NULL, FALSE, FALSE, NULL); // auto-reset
@@ -128,6 +129,7 @@ public:
 
 	virtual ~MEgaDlg()
 	{
+		MTRACEA("%s\n", __FUNCTION__);
 		EgaBridge::Uninitialize();
 
 		if (s_hInputDone) { ::CloseHandle(s_hInputDone); s_hInputDone = NULL; }
@@ -140,6 +142,7 @@ public:
 
 	void Run(LPCWSTR filename)
 	{
+		MTRACEA("%s\n", __FUNCTION__);
 		char szFileName[MAX_PATH];
 		if (filename && filename[0])
 		{
@@ -154,6 +157,7 @@ public:
 
 	BOOL OnInitDialog(HWND hwnd, HWND hwndFocus, LPARAM lParam)
 	{
+		MTRACEA("%s\n", __FUNCTION__);
 		s_hwndEga = hwnd;
 		m_resizable.OnParentCreate(hwnd);
 
@@ -211,6 +215,7 @@ public:
 
 	void OnOK(HWND hwnd)
 	{
+		MTRACEA("%s\n", __FUNCTION__);
 		g_RES_select_type = BAD_TYPE;
 		g_RES_select_name = BAD_NAME;
 		g_RES_select_lang = BAD_LANG;
@@ -233,6 +238,7 @@ public:
 
 	void OnDestroy(HWND hwnd)
 	{
+		MTRACEA("%s\n", __FUNCTION__);
 		SetDlgItemTextW(hwnd, edt2, L"exit");
 		s_bEnter = TRUE;
 		PostMessageW(g_hMainWnd, WM_COMMAND, ID_EGAFINISH, 0);
@@ -287,6 +293,7 @@ public:
 
 	void OnEgaGetInput(HWND hwnd)
 	{
+		MTRACEA("%s\n", __FUNCTION__);
 		WCHAR szTextW[512];
 		GetDlgItemTextW(hwnd, edt2, szTextW, ARRAYSIZE(szTextW));
 		mstr_trim(szTextW);
@@ -301,6 +308,7 @@ public:
 
 	void OnEgaPrint(HWND hwnd, LPWSTR text)
 	{
+		MTRACEA("%s\n", __FUNCTION__);
 		if (!text) return;
 		INT cch = GetWindowTextLengthW(GetDlgItem(hwnd, edt1));
 		SendDlgItemMessageW(hwnd, edt1, EM_SETSEL, cch, cch);
