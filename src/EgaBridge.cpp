@@ -154,7 +154,7 @@ namespace EgaBridge
 
 		if (hThread)
 		{
-			if (::WaitForSingleObject(hThread, 3000) == WAIT_TIMEOUT)
+			if (::WaitForSingleObject(hThread, 10 * 1000) == WAIT_TIMEOUT)
 			{
 				::TerminateThread(hThread, 1);
 			}
