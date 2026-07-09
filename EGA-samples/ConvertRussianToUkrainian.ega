@@ -1,29 +1,25 @@
 println("Converting Russian to Ukrainian...");
 
-=(ROS, 1049);
+=(RUS, 1049);
 =(UKR, 1058);
 
-=(res, RES_search());
+=(res, RES_search("*", "*", RUS));
 
 foreach(item, res, (
-    =(lang, [](item, 2)),
+    =(type, [](item, 0)),
+    =(name, [](item, 1)),
 
-    if(==(lang, ROS), ( @ Found Russian?
-        =(type, [](item, 0)),
-        =(name, [](item, 1)),
+    =(hasUKR, len(RES_search(type, name, UKR))), @ Any Ukrainian version?
+    if(!(hasUKR), (
+        @ No Ukrainian version. Clone it to Ukrainian
+        RES_clone_by_lang(type, name, RUS, UKR),
+        println("Cloned type: ", type, ", name: ", name, " as Ukrainian")
+    ), (
+        println("Deleted type: ", type, ", name: ", name, " Russian")
+    )),
 
-        =(hasUKR, len(RES_search(type, name, UKR))), @ Any Ukrainian version?
-        if(!(hasUKR), (
-            @ No Ukrainian version. Clone it to Ukrainian
-            RES_clone_by_lang(type, name, ROS, UKR),
-            println("Cloned type: ", type, ", name: ", name, " as Ukrainian")
-        ), (
-            println("Deleted type: ", type, ", name: ", name, " Russian")
-        )),
-
-        @ Delete Russian
-        RES_delete(type, name, ROS)
-    ))
+    @ Delete Russian
+    RES_delete(type, name, RUS)
 ));
 
 println("Done.");

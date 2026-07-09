@@ -3,27 +3,23 @@ println("Converting Japanese to Korean...");
 =(JPN, 1041);
 =(KOR, 1042);
 
-=(res, RES_search());
+=(res, RES_search("*", "*", JPN));
 
 foreach(item, res, (
-    =(lang, [](item, 2)),
+    =(type, [](item, 0)),
+    =(name, [](item, 1)),
 
-    if(==(lang, JPN), ( @ Found Japanese?
-        =(type, [](item, 0)),
-        =(name, [](item, 1)),
+    =(hasKOR, len(RES_search(type, name, KOR))), @ Any Korean version?
+    if(!(hasKOR), (
+        @ No Korean version. Clone it to Korean
+        RES_clone_by_lang(type, name, JPN, KOR),
+        println("Cloned type: ", type, ", name: ", name, " as Korean")
+    ), (
+        println("Deleted type: ", type, ", name: ", name, " Japanese")
+    )),
 
-        =(hasKOR, len(RES_search(type, name, KOR))), @ Any Korean version?
-        if(!(hasKOR), (
-            @ No Korean version. Clone it to Korean
-            RES_clone_by_lang(type, name, JPN, KOR),
-            println("Cloned type: ", type, ", name: ", name, " as Korean")
-        ), (
-            println("Deleted type: ", type, ", name: ", name, " Japanese")
-        )),
-
-        @ Delete Japanese
-        RES_delete(type, name, JPN)
-    ))
+    @ Delete Japanese
+    RES_delete(type, name, JPN)
 ));
 
 println("Done.");

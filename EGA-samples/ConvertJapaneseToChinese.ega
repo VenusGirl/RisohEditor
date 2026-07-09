@@ -3,27 +3,23 @@ println("Converting Japanese to Simplified Chinese...");
 =(JPN, 1041);
 =(CHN, 2052);
 
-=(res, RES_search());
+=(res, RES_search("*", "*", JPN));
 
 foreach(item, res, (
-    =(lang, [](item, 2)),
+    =(type, [](item, 0)),
+    =(name, [](item, 1)),
 
-    if(==(lang, JPN), ( @ Found Japanese?
-        =(type, [](item, 0)),
-        =(name, [](item, 1)),
+    =(hasCHN, len(RES_search(type, name, CHN))), @ Any Chinese version?
+    if(!(hasCHN), (
+        @ No Chinese version. Clone it to Chinese
+        RES_clone_by_lang(type, name, JPN, CHN),
+        println("Cloned type: ", type, ", name: ", name, " as Chinese")
+    ), (
+        println("Deleted type: ", type, ", name: ", name, " Japanese")
+    )),
 
-        =(hasCHN, len(RES_search(type, name, CHN))), @ Any Chinese version?
-        if(!(hasCHN), (
-            @ No Chinese version. Clone it to Chinese
-            RES_clone_by_lang(type, name, JPN, CHN),
-            println("Cloned type: ", type, ", name: ", name, " as Chinese")
-        ), (
-            println("Deleted type: ", type, ", name: ", name, " Japanese")
-        )),
-
-        @ Delete Japanese
-        RES_delete(type, name, JPN)
-    ))
+    @ Delete Japanese
+    RES_delete(type, name, JPN)
 ));
 
 println("Done.");
