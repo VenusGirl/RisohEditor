@@ -308,7 +308,7 @@ public:
 
 	void OnEgaPrint(HWND hwnd, LPWSTR text)
 	{
-		MTRACEA("%s\n", __FUNCTION__);
+		MTRACEA("%s(%ls)\n", __FUNCTION__, text);
 		if (!text) return;
 		INT cch = GetWindowTextLengthW(GetDlgItem(hwnd, edt1));
 		SendDlgItemMessageW(hwnd, edt1, EM_SETSEL, cch, cch);
