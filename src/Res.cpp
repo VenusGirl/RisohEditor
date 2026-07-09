@@ -1289,9 +1289,9 @@ MStringW EntrySet::get_label(const EntryBase *entry)
 
 EntryBase *EntrySet::on_insert_entry(EntryBase *entry)
 {
-	MTRACEW(L"on_insert_entry: %p, %s, %s, %u, %s\n",
-		entry, entry->m_type.c_str(), entry->m_name.c_str(),
-		entry->m_lang, entry->m_strLabel.c_str());
+	//MTRACEW(L"on_insert_entry: %p, %s, %s, %u, %s\n",
+	//	entry, entry->m_type.c_str(), entry->m_name.c_str(),
+	//	entry->m_lang, entry->m_strLabel.c_str());
 
 	if (m_hwndTV == NULL)   // no treeview handle
 	{

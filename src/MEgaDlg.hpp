@@ -41,6 +41,14 @@ static bool EGA_dialog_input(char *buf, size_t buflen)
 	{
 		if (EgaBridge::IsStopRequested())
 			return false;
+
+		std::string pendingFile;
+		if (EgaBridge::TryTakeFileInputRequest(pendingFile))
+		{
+			EGA_file_input(pendingFile.c_str());
+			continue;
+		}
+
 		Sleep(100);
 	}
 	s_bEnter = FALSE;
@@ -139,7 +147,8 @@ public:
 			g_RES_select_type = BAD_TYPE;
 			g_RES_select_name = BAD_NAME;
 			g_RES_select_lang = BAD_LANG;
-			EGA_file_input(szFileName);
+
+			EgaBridge::RequestFileInput(szFileName);
 		}
 	}
 
@@ -192,6 +201,11 @@ public:
 		{
 			CenterWindowDx();
 		}
+
+		// Start the interactive loop if needed
+		EgaBridge::StartInteractive();
+		::SetFocus(::GetDlgItem(hwnd, edt2));
+
 		return TRUE;
 	}
 
@@ -216,7 +230,7 @@ public:
 			OnOK(hwnd);
 			break;
 		case IDCANCEL:
-			::ShowWindow(hwnd, SW_HIDE);
+			::DestroyWindow(hwnd);
 			break;
 		case psh1:
 			OnPsh1(hwnd);
@@ -224,19 +238,11 @@ public:
 		}
 	}
 
-	void OnShowWindow(HWND hwnd, BOOL fShow, UINT status)
+	void OnDestroy(HWND hwnd)
 	{
-		if (fShow)
-		{
-			// Start the interactive loop if needed
-			::EnableWindow(g_hMainWnd, FALSE);
-			EgaBridge::StartInteractive();
-			::SetFocus(::GetDlgItem(hwnd, edt2));
-		}
-		else
-		{
-			::EnableWindow(g_hMainWnd, TRUE);
-		}
+		PostMessageW(g_hMainWnd, WM_COMMAND, ID_EGAFINISH, 0);
+		s_hwndEga = NULL;
+		EgaBridge::StopInteractive();
 	}
 
 	HBRUSH OnCtlColor(HWND hwnd, HDC hdc, HWND hwndChild, int type)
@@ -319,7 +325,7 @@ public:
 		HANDLE_MSG(hwnd, WM_CTLCOLORSTATIC, OnCtlColor);
 		HANDLE_MSG(hwnd, WM_MOVE, OnMove);
 		HANDLE_MSG(hwnd, WM_SIZE, OnSize);
-		HANDLE_MSG(hwnd, WM_SHOWWINDOW, OnShowWindow);
+		HANDLE_MSG(hwnd, WM_DESTROY, OnDestroy);
 		case WM_EGA_DO_GETINPUT:
 			OnEgaGetInput(hwnd);
 			return 0;

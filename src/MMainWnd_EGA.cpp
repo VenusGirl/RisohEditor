@@ -318,8 +318,6 @@ EGA::arg_t MMainWnd::RES_delete(const EGA::args_t& args)
 	if (ret)
 	{
 		DoSetFileModified(TRUE);
-
-		SelectTV(NULL, FALSE);
 	}
 
 	return make_arg<AstInt>(ret);

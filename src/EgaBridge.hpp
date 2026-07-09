@@ -8,6 +8,7 @@
 
 #include <cstdarg>
 #include <cstddef>
+#include <string>
 
 // Function pointer types matching EGA API
 typedef bool (*EgaInputFn)(char* buf, size_t buflen);
@@ -23,4 +24,6 @@ namespace EgaBridge
 	void StopInteractive();
 	bool IsStopRequested();
 	void* GetStopEventHandle();
+	void RequestFileInput(const std::string& filename);
+	bool TryTakeFileInputRequest(std::string& filename);
 }

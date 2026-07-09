@@ -654,7 +654,7 @@ public:
 		if (!entry || super()->find(entry) == super()->end())
 			return;
 
-		MTRACEW(L"on_delete_item: %p, %s, %s, %u, %s\n", entry, entry->m_type.c_str(), entry->m_name.c_str(), entry->m_lang, entry->m_strLabel.c_str());
+		//MTRACEW(L"on_delete_item: %p, %s, %s, %u, %s\n", entry, entry->m_type.c_str(), entry->m_name.c_str(), entry->m_lang, entry->m_strLabel.c_str());
 		entry->m_hItem = NULL;
 		delete_entry(entry);
 	}

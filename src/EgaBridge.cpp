@@ -6,6 +6,7 @@
 
 #include "EgaBridge.hpp"
 #include <windows.h>
+#include <queue>
 
 #include "../EGA/ega.hpp"
 
@@ -19,10 +20,17 @@ namespace
 	static HANDLE   s_hStopEvent  = NULL;   // manual-reset
 	static bool     s_bRunning    = false;
 	static bool     s_bInitialized = false;
+	static CRITICAL_SECTION s_fileCs;
+	static bool             s_fileCsReady = false;
+	static std::queue<std::string> s_fileQueue;
 }
 
 static DWORD WINAPI EgaBridgeThreadProc(LPVOID args)
 {
+#ifndef NDEBUG
+	OutputDebugStringW(L"EgaBridgeThreadProc: enter\n");
+#endif
+
 	try
 	{
 		EGA_interactive(NULL, true);
@@ -36,6 +44,9 @@ static DWORD WINAPI EgaBridgeThreadProc(LPVOID args)
 	s_bRunning = false;
 	LeaveCriticalSection(&s_cs);
 
+#ifndef NDEBUG
+	OutputDebugStringW(L"EgaBridgeThreadProc: leave\n");
+#endif
 	return 0;
 }
 
@@ -47,9 +58,13 @@ namespace EgaBridge
 			return true;
 
 		InitializeCriticalSection(&s_cs);
+		InitializeCriticalSection(&s_fileCs);
+		s_fileCsReady = true;
 		s_hStopEvent = ::CreateEventW(NULL, TRUE, FALSE, NULL); // Manual-reset
 		if (!s_hStopEvent)
 		{
+			DeleteCriticalSection(&s_fileCs);
+			s_fileCsReady = false;
 			DeleteCriticalSection(&s_cs);
 			return false;
 		}
@@ -59,6 +74,8 @@ namespace EgaBridge
 		if (!EGA_init())
 		{
 			s_bCsReady = false;
+			DeleteCriticalSection(&s_fileCs);
+			s_fileCsReady = false;
 			DeleteCriticalSection(&s_cs);
 			return false;
 		}
@@ -78,6 +95,7 @@ namespace EgaBridge
 
 		if (s_hStopEvent) { ::CloseHandle(s_hStopEvent); s_hStopEvent = NULL; }
 		if (s_bCsReady)   { DeleteCriticalSection(&s_cs); s_bCsReady = false; }
+		if (s_fileCsReady) { DeleteCriticalSection(&s_fileCs); s_fileCsReady = false; }
 	}
 
 	void SetInputFn(EgaInputFn fn)
@@ -153,5 +171,30 @@ namespace EgaBridge
 	void* GetStopEventHandle()
 	{
 		return s_hStopEvent;
+	}
+
+	void RequestFileInput(const std::string& filename)
+	{
+		if (!s_fileCsReady)
+			return;
+		EnterCriticalSection(&s_fileCs);
+		s_fileQueue.push(filename);
+		LeaveCriticalSection(&s_fileCs);
+	}
+
+	bool TryTakeFileInputRequest(std::string& filename)
+	{
+		if (!s_fileCsReady)
+			return false;
+		bool ret = false;
+		EnterCriticalSection(&s_fileCs);
+		if (!s_fileQueue.empty())
+		{
+			filename = s_fileQueue.front();
+			s_fileQueue.pop();
+			ret = true;
+		}
+		LeaveCriticalSection(&s_fileCs);
+		return ret;
 	}
 }

@@ -9883,7 +9883,6 @@ void MMainWnd::DoTVEditAutoComplete(HWND hwnd, HWND hwndEdit)
 {
 	DoTVEditAutoCompleteRelease(hwnd);
 
-	INT type;
 	auto entry = g_res.get_entry();
 
 	m_pAutoComplete = new MRisohAutoComplete((entry && entry->m_et == ET_NAME) ? 1 : 2);
