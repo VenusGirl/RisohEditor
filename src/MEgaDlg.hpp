@@ -218,22 +218,15 @@ public:
 		::SetFocus(::GetDlgItem(hwnd, edt2));
 	}
 
-	void OnPsh1(HWND hwnd)
-	{
-	}
-
 	void OnCommand(HWND hwnd, int id, HWND hwndCtl, UINT codeNotify)
 	{
 		switch (id)
 		{
-		case IDOK:
+		case IDOK: // Enter
 			OnOK(hwnd);
 			break;
-		case IDCANCEL:
+		case IDCANCEL: // Close
 			::DestroyWindow(hwnd);
-			break;
-		case psh1:
-			OnPsh1(hwnd);
 			break;
 		}
 	}
