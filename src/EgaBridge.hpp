@@ -9,6 +9,10 @@
 #include <cstdarg>
 #include <cstddef>
 #include <string>
+#include <functional>
+#include <windows.h>
+
+#define WM_EGA_DO_RUN_ON_UI (WM_APP + 102)
 
 // Function pointer types matching EGA API
 typedef bool (*EgaInputFn)(char* buf, size_t buflen);
@@ -26,4 +30,6 @@ namespace EgaBridge
 	void* GetStopEventHandle();
 	void RequestFileInput(const std::string& filename);
 	bool TryTakeFileInputRequest(std::string& filename);
+	bool RunOnUIThread(std::function<void(void*)> fn, void* param = nullptr);
+	void ExecuteUITask(void* param);
 }

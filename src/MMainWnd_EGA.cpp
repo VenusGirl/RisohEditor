@@ -213,17 +213,22 @@ EGA::arg_t MMainWnd::RES_load(const EGA::args_t& args)
 	if (args.size() >= 2)
 		arg1 = EGA_eval_arg(args[1], false);
 
-	bool ret;
 	MAnsiToWide str0(CP_UTF8, EGA_get_str(arg0));
+	MStringW filename = str0.c_str();
+	MStringW options;
 	if (args.size() >= 2)
 	{
 		MAnsiToWide str1(CP_UTF8, EGA_get_str(arg1));
-		ret = DoResLoad(str0.c_str(), str1.c_str());
+		options = str1.c_str();
 	}
-	else
+
+	bool ret = false;
+	bool completed = EgaBridge::RunOnUIThread([this, &ret, filename, options](void*)
 	{
-		ret = DoResLoad(str0.c_str(), L"");
-	}
+		ret = DoResLoad(filename, options);
+	});
+	if (!completed)
+		throw EGA_control_break(0);
 
 	return make_arg<AstInt>(ret);
 }
@@ -238,19 +243,39 @@ EGA::arg_t MMainWnd::RES_save(const EGA::args_t& args)
 	if (args.size() >= 2)
 		arg1 = EGA_eval_arg(args[1], false);
 
-	bool ret;
 	MAnsiToWide str0(CP_UTF8, EGA_get_str(arg0));
+	MStringW filename = str0.c_str();
+	MStringW options;
 	if (args.size() >= 2)
 	{
 		MAnsiToWide str1(CP_UTF8, EGA_get_str(arg1));
-		ret = DoResSave(str0.c_str(), str1.c_str());
-	}
-	else
-	{
-		ret = DoResSave(str0.c_str(), L"");
+		options = str1.c_str();
 	}
 
+	bool ret = false;
+	bool completed = EgaBridge::RunOnUIThread([this, &ret, filename, options](void*)
+	{
+		ret = DoResSave(filename, options);
+	});
+	if (!completed)
+		throw EGA_control_break(0);
+
 	return make_arg<AstInt>(ret);
+}
+
+EGA::arg_t MMainWnd::RES_unload_resh(const EGA::args_t& args)
+{
+	using namespace EGA;
+
+	bool completed = EgaBridge::RunOnUIThread([this](void*)
+	{
+		UnloadResourceH(m_hwnd);
+		DoSetFileModified(TRUE);
+	});
+	if (!completed)
+		throw EGA_control_break(0);
+
+	return make_arg<AstInt>(1);
 }
 
 EGA::arg_t MMainWnd::RES_search(const EGA::args_t& args)
@@ -815,17 +840,6 @@ EGA::arg_t MMainWnd::RES_select(const EGA::args_t& args)
 	}
 
 	return make_arg<AstInt>(!found.empty());
-}
-
-EGA::arg_t MMainWnd::RES_unload_resh(const EGA::args_t& args)
-{
-	using namespace EGA;
-
-	UnloadResourceH(m_hwnd);
-
-	DoSetFileModified(TRUE);
-
-	return make_arg<AstInt>(1);
 }
 
 void MMainWnd::OnEga(HWND hwnd, LPCWSTR file)

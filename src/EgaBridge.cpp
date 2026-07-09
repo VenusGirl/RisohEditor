@@ -12,6 +12,8 @@
 
 using namespace EGA;
 
+extern HWND s_hwndEga;
+
 namespace
 {
 	static CRITICAL_SECTION s_cs;
@@ -23,6 +25,10 @@ namespace
 	static CRITICAL_SECTION s_fileCs;
 	static volatile bool             s_fileCsReady = false;
 	static std::queue<std::string> s_fileQueue;
+	static std::function<void(void*)> s_uiTask;
+	static CRITICAL_SECTION s_uiCs;
+	static HANDLE s_hUIDone = NULL;
+	static void* s_uiParam = nullptr;
 }
 
 static DWORD WINAPI EgaBridgeThreadProc(LPVOID args)
@@ -59,11 +65,17 @@ namespace EgaBridge
 
 		InitializeCriticalSection(&s_cs);
 		InitializeCriticalSection(&s_fileCs);
+		InitializeCriticalSection(&s_uiCs);
 		s_fileCsReady = true;
+
 		s_hStopEvent = ::CreateEventW(NULL, TRUE, FALSE, NULL); // Manual-reset
+		s_hUIDone    = ::CreateEventW(NULL, FALSE, FALSE, NULL); // auto-reset
 		if (!s_hStopEvent)
 		{
+			if (s_hUIDone) { ::CloseHandle(s_hUIDone); s_hUIDone = NULL; }
+			if (s_hStopEvent) { ::CloseHandle(s_hStopEvent); s_hStopEvent = NULL; }
 			DeleteCriticalSection(&s_fileCs);
+			DeleteCriticalSection(&s_cs);
 			s_fileCsReady = false;
 			DeleteCriticalSection(&s_cs);
 			return false;
@@ -74,6 +86,9 @@ namespace EgaBridge
 		if (!EGA_init())
 		{
 			s_bCsReady = false;
+			::CloseHandle(s_hUIDone); s_hUIDone = NULL;
+			::CloseHandle(s_hStopEvent); s_hStopEvent = NULL;
+			DeleteCriticalSection(&s_uiCs);
 			DeleteCriticalSection(&s_fileCs);
 			s_fileCsReady = false;
 			DeleteCriticalSection(&s_cs);
@@ -96,6 +111,8 @@ namespace EgaBridge
 		if (s_hStopEvent) { ::CloseHandle(s_hStopEvent); s_hStopEvent = NULL; }
 		if (s_bCsReady)   { DeleteCriticalSection(&s_cs); s_bCsReady = false; }
 		if (s_fileCsReady) { DeleteCriticalSection(&s_fileCs); s_fileCsReady = false; }
+		if (s_hUIDone) { ::CloseHandle(s_hUIDone); s_hUIDone = nullptr; }
+		::DeleteCriticalSection(&s_uiCs);
 	}
 
 	void SetInputFn(EgaInputFn fn)
@@ -198,5 +215,40 @@ namespace EgaBridge
 		}
 		LeaveCriticalSection(&s_fileCs);
 		return ret;
+	}
+
+	bool RunOnUIThread(std::function<void(void*)> fn, void* param)
+	{
+		if (IsStopRequested())
+			return false;
+
+		EnterCriticalSection(&s_uiCs);
+		s_uiTask = fn;
+		s_uiParam = param;
+		LeaveCriticalSection(&s_uiCs);
+
+		::ResetEvent(s_hUIDone);
+
+		if (!::IsWindow(s_hwndEga))
+			return false;
+
+		::PostMessageW(s_hwndEga, WM_EGA_DO_RUN_ON_UI, 0, (LPARAM)param);
+
+		HANDLE waitHandles[2] = { s_hUIDone, s_hStopEvent };
+		DWORD wait = ::WaitForMultipleObjects(2, waitHandles, FALSE, INFINITE);
+		return wait == WAIT_OBJECT_0;
+	}
+
+	void ExecuteUITask(void* param)
+	{
+		std::function<void(void*)> task;
+		EnterCriticalSection(&s_uiCs);
+		task = s_uiTask;
+		LeaveCriticalSection(&s_uiCs);
+
+		if (task)
+			task(param);
+
+		::SetEvent(s_hUIDone);
 	}
 }

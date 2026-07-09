@@ -240,6 +240,8 @@ public:
 
 	void OnDestroy(HWND hwnd)
 	{
+		SetDlgItemTextW(hwnd, edt2, L"exit");
+		s_bEnter = TRUE;
 		PostMessageW(g_hMainWnd, WM_COMMAND, ID_EGAFINISH, 0);
 		s_hwndEga = NULL;
 		EgaBridge::StopInteractive();
@@ -331,6 +333,9 @@ public:
 			return 0;
 		case WM_EGA_DO_PRINT:
 			OnEgaPrint(hwnd, (LPWSTR)lParam);
+			return 0;
+		case WM_EGA_DO_RUN_ON_UI:
+			EgaBridge::ExecuteUITask((void*)lParam);
 			return 0;
 		default:
 			return DefaultProcDx();
