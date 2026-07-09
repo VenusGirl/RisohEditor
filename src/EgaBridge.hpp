@@ -25,11 +25,25 @@ namespace EgaBridge
 	void SetInputFn(EgaInputFn fn);
 	void SetPrintFn(EgaPrintFn fn);
 	bool StartInteractive();
-	void StopInteractive();
+	void StopInteractive(bool wait = true);
 	bool IsStopRequested();
 	void* GetStopEventHandle();
 	void RequestFileInput(const std::string& filename);
 	bool TryTakeFileInputRequest(std::string& filename);
 	bool RunOnUIThread(std::function<void(void*)> fn, void* param = nullptr);
 	void ExecuteUITask(void* param);
+
+	// Enter/input handshake between the UI thread and the EGA worker thread.
+	// All of this state is (re-)created in Initialize() and destroyed in
+	// Uninitialize(), so every session starts from a clean state -- this is
+	// what guarantees that closing and re-opening the EGA dialog reconnects
+	// correctly instead of misfiring on stale state left over from a
+	// previous session.
+	void NotifyEnterPressed();                          // UI thread: user pressed Enter / clicked OK
+	bool IsEnterPressed();                              // EGA thread: non-destructive poll
+	void ClearEnterPressed();                           // EGA thread: call once the wait is over
+
+	void PrepareForInput();                             // EGA thread: call before requesting input
+	void SubmitInputText(const std::wstring& text);      // UI thread: call after reading the edit control
+	bool WaitAndTakeInputText(std::wstring& outText);    // EGA thread: wait for SubmitInputText or stop
 }

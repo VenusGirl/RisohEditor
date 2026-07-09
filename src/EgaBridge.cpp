@@ -7,6 +7,8 @@
 #include "EgaBridge.hpp"
 #include <windows.h>
 #include <queue>
+#include <utility>
+#include <atomic>
 
 #include "../EGA/ega.hpp"
 
@@ -25,9 +27,17 @@ namespace
 	static CRITICAL_SECTION s_fileCs;
 	static bool     s_fileCsReady = false;
 	static std::queue<std::string> s_fileQueue;
-	static std::function<void(void*)> s_uiTask;
+	static std::queue<std::pair<std::function<void(void*)>, void*>> s_uiQueue;
 	static CRITICAL_SECTION s_uiCs;
 	static HANDLE s_hUIDone = NULL;
+
+	// Enter/input handshake state (owned by EgaBridge so that it is
+	// re-created every session -- see Initialize()/Uninitialize()).
+	static std::atomic<bool> s_bEnterPressed(false);
+	static CRITICAL_SECTION s_inputCs;
+	static bool     s_inputCsReady = false;
+	static HANDLE   s_hInputDone   = NULL;   // auto-reset event
+	static std::wstring s_inputBuffer;       // protected by s_inputCs
 }
 
 static DWORD WINAPI EgaBridgeThreadProc(LPVOID args)
@@ -52,6 +62,8 @@ static DWORD WINAPI EgaBridgeThreadProc(LPVOID args)
 #ifndef NDEBUG
 	OutputDebugStringW(L"EgaBridgeThreadProc: leave\n");
 #endif
+
+	// Do not close s_hThread here. Owner thread handles it.
 	return 0;
 }
 
@@ -65,30 +77,44 @@ namespace EgaBridge
 		InitializeCriticalSection(&s_cs);
 		InitializeCriticalSection(&s_fileCs);
 		InitializeCriticalSection(&s_uiCs);
+		InitializeCriticalSection(&s_inputCs);
 		s_fileCsReady = true;
+		s_inputCsReady = true;
 
 		s_hStopEvent = ::CreateEventW(NULL, TRUE, FALSE, NULL); // Manual-reset
 		s_hUIDone    = ::CreateEventW(NULL, FALSE, FALSE, NULL); // auto-reset
-		if (!s_hStopEvent)
+		s_hInputDone = ::CreateEventW(NULL, FALSE, FALSE, NULL); // auto-reset
+		if (!s_hStopEvent || !s_hUIDone || !s_hInputDone)
 		{
+			if (s_hInputDone) { ::CloseHandle(s_hInputDone); s_hInputDone = NULL; }
 			if (s_hUIDone) { ::CloseHandle(s_hUIDone); s_hUIDone = NULL; }
 			if (s_hStopEvent) { ::CloseHandle(s_hStopEvent); s_hStopEvent = NULL; }
+			DeleteCriticalSection(&s_inputCs);
 			DeleteCriticalSection(&s_uiCs);
 			DeleteCriticalSection(&s_fileCs);
 			DeleteCriticalSection(&s_cs);
+			s_inputCsReady = false;
 			s_fileCsReady = false;
 			return false;
 		}
 
 		s_bCsReady = true;
 
+		// Fresh session: make sure no state leaks in from a previous
+		// EGA dialog session.
+		s_bEnterPressed = false;
+		s_inputBuffer.clear();
+
 		if (!EGA_init())
 		{
 			s_bCsReady = false;
+			::CloseHandle(s_hInputDone); s_hInputDone = NULL;
 			::CloseHandle(s_hUIDone); s_hUIDone = NULL;
 			::CloseHandle(s_hStopEvent); s_hStopEvent = NULL;
+			DeleteCriticalSection(&s_inputCs);
 			DeleteCriticalSection(&s_uiCs);
 			DeleteCriticalSection(&s_fileCs);
+			s_inputCsReady = false;
 			s_fileCsReady = false;
 			DeleteCriticalSection(&s_cs);
 			return false;
@@ -103,7 +129,7 @@ namespace EgaBridge
 		if (!s_bInitialized)
 			return;
 
-		StopInteractive();
+		StopInteractive(true);
 		EGA_uninit();
 		s_bInitialized = false;
 
@@ -112,6 +138,11 @@ namespace EgaBridge
 		if (s_fileCsReady) { DeleteCriticalSection(&s_fileCs); s_fileCsReady = false; }
 		if (s_hUIDone) { ::CloseHandle(s_hUIDone); s_hUIDone = nullptr; }
 		::DeleteCriticalSection(&s_uiCs);
+
+		if (s_hInputDone) { ::CloseHandle(s_hInputDone); s_hInputDone = NULL; }
+		if (s_inputCsReady) { DeleteCriticalSection(&s_inputCs); s_inputCsReady = false; }
+		s_bEnterPressed = false;
+		s_inputBuffer.clear();
 	}
 
 	void SetInputFn(EgaInputFn fn)
@@ -127,8 +158,12 @@ namespace EgaBridge
 	bool StartInteractive()
 	{
 		EnterCriticalSection(&s_cs);
+
+		OutputDebugStringA("StartInteractive\n");
+
 		if (s_bRunning)
 		{
+			OutputDebugStringA("already running\n");
 			LeaveCriticalSection(&s_cs);
 			return true;
 		}
@@ -139,6 +174,7 @@ namespace EgaBridge
 		HANDLE hThread = ::CreateThread(NULL, 0, EgaBridgeThreadProc, NULL, 0, NULL);
 		if (!hThread)
 		{
+			OutputDebugStringA("CreateThread failed\n");
 			s_bRunning = false;
 			LeaveCriticalSection(&s_cs);
 			return false;
@@ -152,34 +188,53 @@ namespace EgaBridge
 		return true;
 	}
 
-	void StopInteractive()
+	void StopInteractive(bool wait)
 	{
 		HANDLE hThread = NULL;
 
 		EnterCriticalSection(&s_cs);
+
 		if (!s_bRunning)
 		{
+			if (s_hThread)
+			{
+				::CloseHandle(s_hThread);
+				s_hThread = NULL;
+			}
+
 			LeaveCriticalSection(&s_cs);
 			return;
 		}
 
 		EGA_stop();
-		::SetEvent(s_hStopEvent); // Stop now!
+		::SetEvent(s_hStopEvent);
 		hThread = s_hThread;
+
 		LeaveCriticalSection(&s_cs);
 
-		if (hThread)
+		if (hThread && wait)
 		{
-			if (::WaitForSingleObject(hThread, 10 * 1000) == WAIT_TIMEOUT)
-			{
+			DWORD result = ::WaitForSingleObject(hThread, 10 * 1000);
+
+			if (result == WAIT_TIMEOUT)
 				::DebugBreak();
-			}
+
 			::CloseHandle(hThread);
-			s_hThread = NULL;
+
+			EnterCriticalSection(&s_cs);
+
+			if (s_hThread == hThread)
+				s_hThread = NULL;
+
+			LeaveCriticalSection(&s_cs);
 		}
 
-		while(!s_fileQueue.empty())
+		EnterCriticalSection(&s_fileCs);
+
+		while (!s_fileQueue.empty())
 			s_fileQueue.pop();
+
+		LeaveCriticalSection(&s_fileCs);
 	}
 
 	bool IsStopRequested()
@@ -224,20 +279,19 @@ namespace EgaBridge
 #ifndef NDEBUG
 		OutputDebugStringA("RunOnUIThread\n");
 #endif
-
 		if (IsStopRequested())
 			return false;
 
-		::ResetEvent(s_hUIDone);
-
+		HWND hwnd;
 		EnterCriticalSection(&s_uiCs);
-		s_uiTask = fn;
+		s_uiQueue.push(std::make_pair(fn, param));
+		hwnd = s_hwndEga;
 		LeaveCriticalSection(&s_uiCs);
 
-		if (!::IsWindow(s_hwndEga))
+		if (!::IsWindow(hwnd))
 			return false;
 
-		if (!::PostMessageW(s_hwndEga, WM_EGA_DO_RUN_ON_UI, 0, (LPARAM)param))
+		if (!::PostMessageW(hwnd, WM_EGA_DO_RUN_ON_UI, 0, 0))
 			return false;
 
 		HANDLE waitHandles[2] = { s_hUIDone, s_hStopEvent };
@@ -245,11 +299,20 @@ namespace EgaBridge
 		return wait == WAIT_OBJECT_0;
 	}
 
-	void ExecuteUITask(void* param)
+	void ExecuteUITask(void*)
 	{
 		std::function<void(void*)> task;
+		void* param = nullptr;
+
 		EnterCriticalSection(&s_uiCs);
-		task = std::move(s_uiTask);
+
+		if (!s_uiQueue.empty())
+		{
+			task  = std::move(s_uiQueue.front().first);
+			param = s_uiQueue.front().second;
+			s_uiQueue.pop();
+		}
+
 		LeaveCriticalSection(&s_uiCs);
 
 		if (task)
@@ -257,12 +320,69 @@ namespace EgaBridge
 			try
 			{
 				task(param);
-			} catch (const std::runtime_error& e) {
-				OutputDebugStringA(e.what());
 			}
-			task = {};
+			catch (...)
+			{
+	#ifndef NDEBUG
+				OutputDebugStringA(
+					"EGA UI task exception\n");
+	#endif
+			}
 		}
 
 		::SetEvent(s_hUIDone);
+	}
+
+	void NotifyEnterPressed()
+	{
+		s_bEnterPressed = true;
+	}
+
+	bool IsEnterPressed()
+	{
+		return s_bEnterPressed;
+	}
+
+	void ClearEnterPressed()
+	{
+		s_bEnterPressed = false;
+	}
+
+	void PrepareForInput()
+	{
+		if (s_hInputDone)
+			::ResetEvent(s_hInputDone);
+	}
+
+	void SubmitInputText(const std::wstring& text)
+	{
+		if (!s_inputCsReady)
+			return;
+
+		EnterCriticalSection(&s_inputCs);
+		s_inputBuffer = text;
+		LeaveCriticalSection(&s_inputCs);
+
+		if (s_hInputDone)
+			::SetEvent(s_hInputDone);
+	}
+
+	bool WaitAndTakeInputText(std::wstring& outText)
+	{
+		if (!s_hInputDone || !s_hStopEvent)
+			return false;
+
+		HANDLE waitHandles[2] = { s_hInputDone, s_hStopEvent };
+		DWORD wait = ::WaitForMultipleObjects(2, waitHandles, FALSE, INFINITE);
+		if (wait != WAIT_OBJECT_0)
+			return false; // stop request (or failure)
+
+		if (s_inputCsReady)
+		{
+			EnterCriticalSection(&s_inputCs);
+			outText = s_inputBuffer;
+			LeaveCriticalSection(&s_inputCs);
+		}
+		return true;
 	}
 }

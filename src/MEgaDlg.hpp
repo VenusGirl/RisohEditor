@@ -19,15 +19,17 @@ using namespace EGA;
 
 class MEgaDlg;
 extern HWND s_hwndEga;
-static BOOL s_bEnter = FALSE;
 extern HWND g_hMainWnd;
 extern MIdOrString g_RES_select_type;
 extern MIdOrString g_RES_select_name;
 extern LANGID g_RES_select_lang;
-static CRITICAL_SECTION s_inputCs;
-static bool s_inputCsReady = false;
-static HANDLE s_hInputDone  = NULL;  // auto-reset event
-static std::wstring s_inputBuffer; // Protected by s_inputCs
+// NOTE: The Enter/input handshake state used to live here as raw file-scope
+// statics (s_bEnter, s_inputCs, s_hInputDone, s_inputBuffer). It has been
+// moved into EgaBridge, which owns its lifetime together with the rest of
+// the per-session bridge state (see EgaBridge::Initialize/Uninitialize).
+// This guarantees the state is reset every time a new EGA session starts,
+// instead of possibly carrying over a stale value from a previous session
+// when the EGA dialog is closed and reopened.
 
 static bool EGA_dialog_input(char *buf, size_t buflen)
 {
@@ -37,7 +39,7 @@ static bool EGA_dialog_input(char *buf, size_t buflen)
 		return true;
 	}
 
-	while (!s_bEnter || !::IsWindowVisible(s_hwndEga))
+	while (!EgaBridge::IsEnterPressed() || !::IsWindowVisible(s_hwndEga))
 	{
 		if (EgaBridge::IsStopRequested())
 			return false;
@@ -51,21 +53,15 @@ static bool EGA_dialog_input(char *buf, size_t buflen)
 
 		Sleep(100);
 	}
-	s_bEnter = FALSE;
+	EgaBridge::ClearEnterPressed();
 
-	::ResetEvent(s_hInputDone);
+	EgaBridge::PrepareForInput();
 	::PostMessageW(s_hwndEga, WM_EGA_DO_GETINPUT, 0, 0);
 
 	// Wait for results or stop request
-	HANDLE waitHandles[2] = { s_hInputDone, (HANDLE)EgaBridge::GetStopEventHandle() };
-	DWORD wait = ::WaitForMultipleObjects(2, waitHandles, FALSE, INFINITE);
-	if (wait != WAIT_OBJECT_0)
-		return false; // Stop request
-
 	std::wstring textW;
-	EnterCriticalSection(&s_inputCs);
-	textW = s_inputBuffer;
-	LeaveCriticalSection(&s_inputCs);
+	if (!EgaBridge::WaitAndTakeInputText(textW))
+		return false; // Stop request
 
 	char szTextA[512];
 	WideCharToMultiByte(CP_UTF8, 0, textW.c_str(), -1, szTextA, ARRAYSIZE(szTextA), NULL, NULL);
@@ -113,9 +109,6 @@ public:
 	MEgaDlg() : MDialogBase(IDD_EGA)
 	{
 		MTRACEA("%s\n", __FUNCTION__);
-		InitializeCriticalSection(&s_inputCs);
-		s_inputCsReady = true;
-		s_hInputDone = ::CreateEventW(NULL, FALSE, FALSE, NULL); // auto-reset
 
 		m_hIcon = LoadIconDx(IDI_SMILY);
 		m_hIconSm = LoadSmallIconDx(IDI_SMILY);
@@ -131,9 +124,6 @@ public:
 	{
 		MTRACEA("%s\n", __FUNCTION__);
 		EgaBridge::Uninitialize();
-
-		if (s_hInputDone) { ::CloseHandle(s_hInputDone); s_hInputDone = NULL; }
-		if (s_inputCsReady) { DeleteCriticalSection(&s_inputCs); s_inputCsReady = false; }
 
 		DeleteObject(m_hFont);
 		DestroyIcon(m_hIcon);
@@ -216,7 +206,7 @@ public:
 		g_RES_select_type = BAD_TYPE;
 		g_RES_select_name = BAD_NAME;
 		g_RES_select_lang = BAD_LANG;
-		s_bEnter = TRUE;
+		EgaBridge::NotifyEnterPressed();
 		::SetFocus(::GetDlgItem(hwnd, edt2));
 	}
 
@@ -236,10 +226,16 @@ public:
 	void OnDestroy(HWND hwnd)
 	{
 		MTRACEA("%s\n", __FUNCTION__);
-		SetDlgItemTextW(hwnd, edt2, L"exit");
-		s_bEnter = TRUE;
+		// NOTE: We used to also force-feed "exit" into edt2 and set the
+		// (now-removed) s_bEnter flag here to try to unblock the EGA
+		// worker thread. That was both redundant and a source of a bug:
+		// StopInteractive() below already unblocks the worker thread
+		// reliably via the stop event (see EGA_dialog_input's polling
+		// loop and EgaBridge::WaitAndTakeInputText), and forcing the
+		// enter-flag here could leave stale state for the *next* EGA
+		// session if this dialog is reopened later.
 		PostMessageW(g_hMainWnd, WM_COMMAND, ID_EGAFINISH, 0);
-		EgaBridge::StopInteractive();
+		EgaBridge::StopInteractive(true);
 		s_hwndEga = NULL;
 	}
 
@@ -296,11 +292,7 @@ public:
 		mstr_trim(szTextW);
 		SetDlgItemTextW(hwnd, edt2, L"");
 
-		EnterCriticalSection(&s_inputCs);
-		s_inputBuffer = szTextW;
-		LeaveCriticalSection(&s_inputCs);
-
-		::SetEvent(s_hInputDone);
+		EgaBridge::SubmitInputText(szTextW);
 	}
 
 	void OnEgaPrint(HWND hwnd, LPWSTR text)
