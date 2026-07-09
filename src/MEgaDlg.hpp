@@ -80,8 +80,15 @@ static void EGA_dialog_print(const char *fmt, va_list va)
 
 	std::string str;
 	str.resize(512);
-	while (StringCbVPrintfA(&str[0], str.size(), fmt, va) == STRSAFE_E_INSUFFICIENT_BUFFER)
+	for (;;)
 	{
+		va_list va2;
+		va_copy(va2, va);
+		HRESULT hr = StringCbVPrintfA(&str[0], str.size(), fmt, va2);
+		va_end(va2);
+
+		if (hr != STRSAFE_E_INSUFFICIENT_BUFFER)
+			break;
 		str.resize(str.size() * 2);
 	}
 	str.resize(lstrlenA(str.c_str()));
