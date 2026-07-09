@@ -17,18 +17,17 @@ extern HWND s_hwndEga;
 namespace
 {
 	static CRITICAL_SECTION s_cs;
-	static volatile bool     s_bCsReady    = false;
+	static bool     s_bCsReady    = false;
 	static HANDLE   s_hThread     = NULL;
 	static HANDLE   s_hStopEvent  = NULL;   // manual-reset
-	static volatile bool     s_bRunning    = false;
-	static volatile bool     s_bInitialized = false;
+	static bool     s_bRunning    = false;
+	static bool     s_bInitialized = false;
 	static CRITICAL_SECTION s_fileCs;
-	static volatile bool             s_fileCsReady = false;
+	static bool     s_fileCsReady = false;
 	static std::queue<std::string> s_fileQueue;
 	static std::function<void(void*)> s_uiTask;
 	static CRITICAL_SECTION s_uiCs;
 	static HANDLE s_hUIDone = NULL;
-	static void* s_uiParam = nullptr;
 }
 
 static DWORD WINAPI EgaBridgeThreadProc(LPVOID args)
@@ -74,10 +73,10 @@ namespace EgaBridge
 		{
 			if (s_hUIDone) { ::CloseHandle(s_hUIDone); s_hUIDone = NULL; }
 			if (s_hStopEvent) { ::CloseHandle(s_hStopEvent); s_hStopEvent = NULL; }
+			DeleteCriticalSection(&s_uiCs);
 			DeleteCriticalSection(&s_fileCs);
 			DeleteCriticalSection(&s_cs);
 			s_fileCsReady = false;
-			DeleteCriticalSection(&s_cs);
 			return false;
 		}
 
@@ -173,11 +172,14 @@ namespace EgaBridge
 		{
 			if (::WaitForSingleObject(hThread, 10 * 1000) == WAIT_TIMEOUT)
 			{
-				::TerminateThread(hThread, 1);
+				::DebugBreak();
 			}
 			::CloseHandle(hThread);
 			s_hThread = NULL;
 		}
+
+		while(!s_fileQueue.empty())
+			s_fileQueue.pop();
 	}
 
 	bool IsStopRequested()
@@ -226,17 +228,17 @@ namespace EgaBridge
 		if (IsStopRequested())
 			return false;
 
+		::ResetEvent(s_hUIDone);
+
 		EnterCriticalSection(&s_uiCs);
 		s_uiTask = fn;
-		s_uiParam = param;
 		LeaveCriticalSection(&s_uiCs);
-
-		::ResetEvent(s_hUIDone);
 
 		if (!::IsWindow(s_hwndEga))
 			return false;
 
-		::PostMessageW(s_hwndEga, WM_EGA_DO_RUN_ON_UI, 0, (LPARAM)param);
+		if (!::PostMessageW(s_hwndEga, WM_EGA_DO_RUN_ON_UI, 0, (LPARAM)param))
+			return false;
 
 		HANDLE waitHandles[2] = { s_hUIDone, s_hStopEvent };
 		DWORD wait = ::WaitForMultipleObjects(2, waitHandles, FALSE, INFINITE);
@@ -247,7 +249,7 @@ namespace EgaBridge
 	{
 		std::function<void(void*)> task;
 		EnterCriticalSection(&s_uiCs);
-		task = s_uiTask;
+		task = std::move(s_uiTask);
 		LeaveCriticalSection(&s_uiCs);
 
 		if (task)
@@ -258,6 +260,7 @@ namespace EgaBridge
 			} catch (const std::runtime_error& e) {
 				OutputDebugStringA(e.what());
 			}
+			task = {};
 		}
 
 		::SetEvent(s_hUIDone);

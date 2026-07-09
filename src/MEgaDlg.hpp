@@ -177,9 +177,6 @@ public:
 		m_hFont = CreateFontIndirectW(&lf);
 		SendDlgItemMessageW(hwnd, edt1, WM_SETFONT, (WPARAM)m_hFont, TRUE);
 
-		// Start the interactive loop now that dialog hwnd is set
-		EgaBridge::StartInteractive();
-
 		if (g_settings.nEgaX != CW_USEDEFAULT && g_settings.nEgaWidth != CW_USEDEFAULT)
 		{
 			SetWindowPos(hwnd, NULL,
@@ -242,8 +239,8 @@ public:
 		SetDlgItemTextW(hwnd, edt2, L"exit");
 		s_bEnter = TRUE;
 		PostMessageW(g_hMainWnd, WM_COMMAND, ID_EGAFINISH, 0);
-		s_hwndEga = NULL;
 		EgaBridge::StopInteractive();
+		s_hwndEga = NULL;
 	}
 
 	HBRUSH OnCtlColor(HWND hwnd, HDC hdc, HWND hwndChild, int type)
