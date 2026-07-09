@@ -15,13 +15,13 @@ using namespace EGA;
 namespace
 {
 	static CRITICAL_SECTION s_cs;
-	static bool     s_bCsReady    = false;
+	static volatile bool     s_bCsReady    = false;
 	static HANDLE   s_hThread     = NULL;
 	static HANDLE   s_hStopEvent  = NULL;   // manual-reset
-	static bool     s_bRunning    = false;
-	static bool     s_bInitialized = false;
+	static volatile bool     s_bRunning    = false;
+	static volatile bool     s_bInitialized = false;
 	static CRITICAL_SECTION s_fileCs;
-	static bool             s_fileCsReady = false;
+	static volatile bool             s_fileCsReady = false;
 	static std::queue<std::string> s_fileQueue;
 }
 
@@ -147,6 +147,7 @@ namespace EgaBridge
 			return;
 		}
 
+		EGA_stop();
 		::SetEvent(s_hStopEvent); // Stop now!
 		hThread = s_hThread;
 		LeaveCriticalSection(&s_cs);
@@ -164,8 +165,9 @@ namespace EgaBridge
 
 	bool IsStopRequested()
 	{
-		return s_hStopEvent != NULL &&
-		       ::WaitForSingleObject(s_hStopEvent, 0) == WAIT_OBJECT_0;
+		return EGA_is_stopping() || 
+		       (s_hStopEvent != NULL &&
+		        ::WaitForSingleObject(s_hStopEvent, 0) == WAIT_OBJECT_0);
 	}
 
 	void* GetStopEventHandle()
