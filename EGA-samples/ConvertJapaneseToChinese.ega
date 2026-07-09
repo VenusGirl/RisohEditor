@@ -17,6 +17,8 @@ foreach(item, res, (
             @ No Chinese version. Clone it to Chinese
             RES_clone_by_lang(type, name, JPN, CHN),
             println("Cloned type: ", type, ", name: ", name, " as Chinese")
+        ), (
+            println("Deleted type: ", type, ", name: ", name, " Japanese")
         )),
 
         @ Delete Japanese

@@ -17,6 +17,8 @@ foreach(item, res, (
             @ No Ukrainian version. Clone it to Ukrainian
             RES_clone_by_lang(type, name, ROS, UKR),
             println("Cloned type: ", type, ", name: ", name, " as Ukrainian")
+        ), (
+            println("Deleted type: ", type, ", name: ", name, " Russian")
         )),
 
         @ Delete Russian
