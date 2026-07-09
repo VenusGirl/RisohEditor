@@ -5029,8 +5029,11 @@ retry:
 		ShowTreeViewArrow(FALSE);
 
 		// renewal
+		SendMessageW(m_hwndTV, WM_SETREDRAW, FALSE, 0);
 		g_res.delete_all();
 		g_res.merge(res1);
+		SendMessageW(m_hwndTV, WM_SETREDRAW, TRUE, 0);
+		InvalidateRect(m_hwndTV, NULL, TRUE);
 
 		// clean up
 		res1.delete_all();
@@ -5074,8 +5077,11 @@ BOOL MMainWnd::DoLoadRES(HWND hwnd, LPCWSTR szPath)
 		ShowTreeViewArrow(FALSE);
 
 		// renewal
+		SendMessageW(m_hwndTV, WM_SETREDRAW, FALSE, 0);
 		g_res.delete_all();
 		g_res.merge(res);
+		SendMessageW(m_hwndTV, WM_SETREDRAW, TRUE, 0);
+		InvalidateRect(m_hwndTV, NULL, TRUE);
 
 		// clean up
 		res.delete_all();
@@ -5200,8 +5206,11 @@ BOOL MMainWnd::DoLoadEXE(HWND hwnd, LPCWSTR pszPath, BOOL bForceDecompress)
 	m_bLoading = TRUE;
 	{
 		ShowTreeViewArrow(FALSE);
+		SendMessageW(m_hwndTV, WM_SETREDRAW, FALSE, 0);
 		g_res.delete_all();
 		g_res.from_res(hMod);
+		SendMessageW(m_hwndTV, WM_SETREDRAW, TRUE, 0);
+		InvalidateRect(m_hwndTV, NULL, TRUE);
 	}
 	m_bLoading = FALSE;
 
@@ -8269,8 +8278,12 @@ void MMainWnd::DoRefreshTV(HWND hwnd)
 	// refresh the resource items
 	EntrySet res;
 	res.merge(g_res);
+
+	SendMessageW(m_hwndTV, WM_SETREDRAW, FALSE, 0);
 	g_res.delete_all();
 	g_res.merge(res);
+	SendMessageW(m_hwndTV, WM_SETREDRAW, TRUE, 0);
+	InvalidateRect(m_hwndTV, NULL, TRUE);
 
 	// clean up
 	res.delete_all();
