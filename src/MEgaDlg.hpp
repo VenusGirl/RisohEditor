@@ -15,7 +15,8 @@
 using namespace EGA;
 
 #define WM_EGA_DO_GETINPUT (WM_APP + 100)  // UI thread reads edt2 and clear
-#define WM_EGA_DO_PRINT    (WM_APP + 101)  // lParam = LPWSTR (UI thread will free)
+// WM_EGA_DO_PRINT is defined in EgaBridge.hpp (included above), since
+// EgaBridge itself now posts it from QueuePrintText().
 
 class MEgaDlg;
 extern HWND s_hwndEga;
@@ -51,6 +52,16 @@ protected:
 	HICON m_hIconSm;
 	MResizable m_resizable;
 
+	// Running length of edt1's text, maintained incrementally by
+	// OnEgaPrint instead of being re-queried via GetWindowTextLengthW on
+	// every single print. GetWindowTextLengthW on a multi-line edit
+	// control costs time proportional to the *current* text length, so
+	// calling it once per printed line made repeated prints cost
+	// roughly O(n^2) in total as the log grew. edt1 is only ever appended
+	// to (never edited elsewhere), so tracking the length ourselves is
+	// safe and turns that back into O(n).
+	int m_cchEdt1 = 0;
+
 	BOOL OnInitDialog(HWND hwnd, HWND hwndFocus, LPARAM lParam);
 	void OnOK(HWND hwnd);
 	void OnCommand(HWND hwnd, int id, HWND hwndCtl, UINT codeNotify);
@@ -59,5 +70,5 @@ protected:
 	void OnMove(HWND hwnd, int x, int y);
 	void OnSize(HWND hwnd, UINT state, int cx, int cy);
 	void OnEgaGetInput(HWND hwnd);
-	void OnEgaPrint(HWND hwnd, LPWSTR text);
+	void OnEgaPrint(HWND hwnd);
 };

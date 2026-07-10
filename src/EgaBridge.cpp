@@ -38,6 +38,15 @@ namespace
 	static bool     s_inputCsReady = false;
 	static HANDLE   s_hInputDone   = NULL;   // auto-reset event
 	static std::wstring s_inputBuffer;       // protected by s_inputCs
+
+	// Coalesced print-output state. Protected by s_printCs. s_bPrintPosted
+	// tracks whether a WM_EGA_DO_PRINT flush is already sitting in the UI
+	// thread's queue, so that bursts of prints between two UI-thread pumps
+	// get merged into a single message instead of one message each.
+	static CRITICAL_SECTION s_printCs;
+	static bool     s_printCsReady = false;
+	static std::atomic<bool> s_bPrintPosted(false);
+	static std::wstring s_printBuffer;       // protected by s_printCs
 }
 
 static DWORD WINAPI EgaBridgeThreadProc(LPVOID args)
@@ -78,8 +87,10 @@ namespace EgaBridge
 		InitializeCriticalSection(&s_fileCs);
 		InitializeCriticalSection(&s_uiCs);
 		InitializeCriticalSection(&s_inputCs);
+		InitializeCriticalSection(&s_printCs);
 		s_fileCsReady = true;
 		s_inputCsReady = true;
+		s_printCsReady = true;
 
 		s_hStopEvent = ::CreateEventW(NULL, TRUE, FALSE, NULL); // Manual-reset
 		s_hUIDone    = ::CreateEventW(NULL, FALSE, FALSE, NULL); // auto-reset
@@ -89,10 +100,12 @@ namespace EgaBridge
 			if (s_hInputDone) { ::CloseHandle(s_hInputDone); s_hInputDone = NULL; }
 			if (s_hUIDone) { ::CloseHandle(s_hUIDone); s_hUIDone = NULL; }
 			if (s_hStopEvent) { ::CloseHandle(s_hStopEvent); s_hStopEvent = NULL; }
+			DeleteCriticalSection(&s_printCs);
 			DeleteCriticalSection(&s_inputCs);
 			DeleteCriticalSection(&s_uiCs);
 			DeleteCriticalSection(&s_fileCs);
 			DeleteCriticalSection(&s_cs);
+			s_printCsReady = false;
 			s_inputCsReady = false;
 			s_fileCsReady = false;
 			return false;
@@ -104,6 +117,8 @@ namespace EgaBridge
 		// EGA dialog session.
 		s_bEnterPressed = false;
 		s_inputBuffer.clear();
+		s_bPrintPosted = false;
+		s_printBuffer.clear();
 
 		if (!EGA_init())
 		{
@@ -111,9 +126,11 @@ namespace EgaBridge
 			::CloseHandle(s_hInputDone); s_hInputDone = NULL;
 			::CloseHandle(s_hUIDone); s_hUIDone = NULL;
 			::CloseHandle(s_hStopEvent); s_hStopEvent = NULL;
+			DeleteCriticalSection(&s_printCs);
 			DeleteCriticalSection(&s_inputCs);
 			DeleteCriticalSection(&s_uiCs);
 			DeleteCriticalSection(&s_fileCs);
+			s_printCsReady = false;
 			s_inputCsReady = false;
 			s_fileCsReady = false;
 			DeleteCriticalSection(&s_cs);
@@ -143,6 +160,10 @@ namespace EgaBridge
 		if (s_inputCsReady) { DeleteCriticalSection(&s_inputCs); s_inputCsReady = false; }
 		s_bEnterPressed = false;
 		s_inputBuffer.clear();
+
+		if (s_printCsReady) { DeleteCriticalSection(&s_printCs); s_printCsReady = false; }
+		s_bPrintPosted = false;
+		s_printBuffer.clear();
 	}
 
 	void SetInputFn(EgaInputFn fn)
@@ -384,5 +405,55 @@ namespace EgaBridge
 			LeaveCriticalSection(&s_inputCs);
 		}
 		return true;
+	}
+
+	void QueuePrintText(const std::wstring& text)
+	{
+		if (!s_printCsReady || text.empty())
+			return;
+
+		// Append to the shared buffer and remember whether *we* are the
+		// one that flips s_bPrintPosted from false to true -- only that
+		// caller actually posts a message. Any prints that arrive while a
+		// flush is already pending just add to the buffer and return
+		// immediately; they'll be picked up by the pending flush once the
+		// UI thread gets around to it. This is what turns an arbitrarily
+		// long burst of EGA_do_print calls (e.g. from a tight `for` loop)
+		// into at most one message in flight at a time, instead of one
+		// WM_EGA_DO_PRINT per call.
+		bool needPost = false;
+		EnterCriticalSection(&s_printCs);
+		s_printBuffer += text;
+		if (!s_bPrintPosted.exchange(true))
+			needPost = true;
+		LeaveCriticalSection(&s_printCs);
+
+		if (!needPost)
+			return;
+
+		HWND hwnd = s_hwndEga;
+		if (!::IsWindow(hwnd) || !::PostMessageW(hwnd, WM_EGA_DO_PRINT, 0, 0))
+		{
+			// Nobody to deliver to right now (dialog not up yet / already
+			// closing). Clear the flag so the text isn't lost silently --
+			// the next QueuePrintText() call (or a manual flush once the
+			// window exists) will retry posting.
+			s_bPrintPosted = false;
+		}
+	}
+
+	bool TakePendingPrintText(std::wstring& outText)
+	{
+		outText.clear();
+
+		if (!s_printCsReady)
+			return false;
+
+		EnterCriticalSection(&s_printCs);
+		outText.swap(s_printBuffer);
+		s_bPrintPosted = false;
+		LeaveCriticalSection(&s_printCs);
+
+		return !outText.empty();
 	}
 }

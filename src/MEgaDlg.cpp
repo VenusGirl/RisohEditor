@@ -81,9 +81,16 @@ void EGA_dialog_print(const char *fmt, va_list va)
 
 	MAnsiToWide wide(CP_UTF8, str.c_str());
 
-	LPWSTR heapStr = _wcsdup(wide.c_str());
-	if (heapStr && !::PostMessageW(s_hwndEga, WM_EGA_DO_PRINT, 0, (LPARAM)heapStr))
-		free(heapStr);
+	// NOTE: This used to _wcsdup() the text and PostMessageW() a fresh
+	// WM_EGA_DO_PRINT for every single call. A fast script (e.g.
+	// for(i, 0, 1000, println(i))) can call this hundreds/thousands of
+	// times within milliseconds -- far faster than the UI thread can
+	// drain the resulting message flood -- which made the dialog look
+	// hung (no repaint, stale cursor) even though nothing was actually
+	// deadlocked. EgaBridge::QueuePrintText() coalesces any number of
+	// prints that happen between two UI-thread pumps into a single
+	// buffered flush / single WM_EGA_DO_PRINT.
+	EgaBridge::QueuePrintText(wide.c_str());
 }
 
 MEgaDlg::MEgaDlg() : MDialogBase(IDD_EGA)
@@ -139,6 +146,8 @@ BOOL MEgaDlg::OnInitDialog(HWND hwnd, HWND hwndFocus, LPARAM lParam)
 	SendMessageDx(WM_SETICON, ICON_BIG, (LPARAM)m_hIcon);
 	SendMessageDx(WM_SETICON, ICON_SMALL, (LPARAM)m_hIconSm);
 
+	SendDlgItemMessageW(hwnd, edt1, EM_SETLIMITTEXT, 0, 0);
+
 	LOGFONTW lf;
 	ZeroMemory(&lf, sizeof(lf));
 	lf.lfHeight = -12;
@@ -146,6 +155,10 @@ BOOL MEgaDlg::OnInitDialog(HWND hwnd, HWND hwndFocus, LPARAM lParam)
 	lf.lfPitchAndFamily = FIXED_PITCH | FF_MODERN;
 	m_hFont = CreateFontIndirectW(&lf);
 	SendDlgItemMessageW(hwnd, edt1, WM_SETFONT, (WPARAM)m_hFont, TRUE);
+
+	// edt1 starts out empty; track its length ourselves from here on
+	// (see the m_cchEdt1 comment in MEgaDlg.hpp).
+	m_cchEdt1 = GetWindowTextLengthW(GetDlgItem(hwnd, edt1));
 
 	if (g_settings.nEgaX != CW_USEDEFAULT && g_settings.nEgaWidth != CW_USEDEFAULT)
 	{
@@ -275,15 +288,25 @@ void MEgaDlg::OnEgaGetInput(HWND hwnd)
 	EgaBridge::SubmitInputText(szTextW);
 }
 
-void MEgaDlg::OnEgaPrint(HWND hwnd, LPWSTR text)
+void MEgaDlg::OnEgaPrint(HWND hwnd)
 {
-	MTRACEA("%s(%ls)\n", __FUNCTION__, text);
-	if (!text) return;
-	INT cch = GetWindowTextLengthW(GetDlgItem(hwnd, edt1));
-	SendDlgItemMessageW(hwnd, edt1, EM_SETSEL, cch, cch);
-	SendDlgItemMessageW(hwnd, edt1, EM_REPLACESEL, FALSE, (LPARAM)text);
+	// Pull out everything that has accumulated since the last flush --
+	// possibly many EGA_do_print() calls' worth -- and append it in one
+	// shot. This is what collapses e.g. 2000 tiny prints from a fast
+	// `for` loop into a handful of edit-control updates instead of 2000.
+	std::wstring text;
+	if (!EgaBridge::TakePendingPrintText(text))
+		return;
+
+	MTRACEA("%s(%d chars)\n", __FUNCTION__, (int)text.size());
+
+	// Use the length we've been tracking ourselves instead of calling
+	// GetWindowTextLengthW() here, which would cost time proportional to
+	// edt1's current (and ever-growing) content.
+	SendDlgItemMessageW(hwnd, edt1, EM_SETSEL, m_cchEdt1, m_cchEdt1);
+	SendDlgItemMessageW(hwnd, edt1, EM_REPLACESEL, FALSE, (LPARAM)text.c_str());
 	SendDlgItemMessageW(hwnd, edt1, EM_SCROLLCARET, 0, 0);
-	free(text);
+	m_cchEdt1 += (int)text.size();
 }
 
 INT_PTR CALLBACK
@@ -302,7 +325,7 @@ MEgaDlg::DialogProcDx(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		OnEgaGetInput(hwnd);
 		return 0;
 	case WM_EGA_DO_PRINT:
-		OnEgaPrint(hwnd, (LPWSTR)lParam);
+		OnEgaPrint(hwnd);
 		return 0;
 	case WM_EGA_DO_RUN_ON_UI:
 		EgaBridge::ExecuteUITask((void*)lParam);
