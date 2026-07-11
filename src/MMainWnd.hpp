@@ -464,8 +464,8 @@ protected:
 	void OnOpen(HWND hwnd);
 	BOOL OnSave(HWND hwnd);
 	BOOL OnSaveAs(HWND hwnd);
-	void OnEga(HWND hwnd, LPCWSTR file = NULL);
-	void OnEgaProgram(HWND hwnd);
+	void OnStartEgaConsole(HWND hwnd, PCWSTR file = nullptr);
+	void OnAskEgaProgramAndExecute(HWND hwnd);
 	void OnImport(HWND hwnd);
 	void OnLoadResH(HWND hwnd);
 	void OnLoadResHBang(HWND hwnd);

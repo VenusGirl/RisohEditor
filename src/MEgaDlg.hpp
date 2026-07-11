@@ -1,4 +1,4 @@
-// MEgaDlg.hpp --- Programming Language EGA dialog
+﻿// MEgaDlg.hpp --- Programming Language EGA dialog
 //////////////////////////////////////////////////////////////////////////////
 // RisohEditor --- Another free Win32 resource editor
 // Copyright (C) 2020 Katayama Hirofumi MZ <katayama.hirofumi.mz@gmail.com>
@@ -41,7 +41,7 @@ public:
 	MEgaDlg();
 	virtual ~MEgaDlg();
 
-	void Run(LPCWSTR filename);
+	void ExecuteEgaFile(LPCWSTR filename = nullptr);
 
 	virtual INT_PTR CALLBACK
 	DialogProcDx(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
@@ -51,16 +51,7 @@ protected:
 	HICON m_hIcon;
 	HICON m_hIconSm;
 	MResizable m_resizable;
-
-	// Running length of edt1's text, maintained incrementally by
-	// OnEgaPrint instead of being re-queried via GetWindowTextLengthW on
-	// every single print. GetWindowTextLengthW on a multi-line edit
-	// control costs time proportional to the *current* text length, so
-	// calling it once per printed line made repeated prints cost
-	// roughly O(n^2) in total as the log grew. edt1 is only ever appended
-	// to (never edited elsewhere), so tracking the length ourselves is
-	// safe and turns that back into O(n).
-	int m_cchEdt1 = 0;
+	INT m_cchEdt1 = 0;
 
 	BOOL OnInitDialog(HWND hwnd, HWND hwndFocus, LPARAM lParam);
 	void OnOK(HWND hwnd);

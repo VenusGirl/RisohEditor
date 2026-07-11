@@ -1,7 +1,7 @@
-// EgaBridge.cpp --- Bridge for EGA Programming Language integration
+﻿// EgaBridge.cpp --- Bridge for EGA Programming Language integration
 //////////////////////////////////////////////////////////////////////////////
 // RisohEditor --- Another free Win32 resource editor
-// Copyright (C) 2020 Katayama Hirofumi MZ <katayama.hirofumi.mz@gmail.com>
+// Copyright (C) 2020-2026 Katayama Hirofumi MZ <katayama.hirofumi.mz@gmail.com>
 // License: GPL-3 or later
 
 #include "EgaBridge.hpp"
@@ -19,17 +19,19 @@ extern HWND s_hwndEga;
 namespace
 {
 	static CRITICAL_SECTION s_cs;
-	static bool     s_bCsReady    = false;
-	static HANDLE   s_hThread     = NULL;
-	static HANDLE   s_hStopEvent  = NULL;   // manual-reset
-	static bool     s_bRunning    = false;
-	static bool     s_bInitialized = false;
-	static CRITICAL_SECTION s_fileCs;
-	static bool     s_fileCsReady = false;
-	static std::queue<std::string> s_fileQueue;
+	static bool     s_bCsReady    = false; // s_csの準備ＯＫ？
+	static HANDLE   s_hThread     = NULL;  // スレッド
+	static HANDLE   s_hStopEvent  = NULL;  // manual-reset
+	static bool     s_bRunning    = false; // 実行中？
+	static bool     s_bInitialized = false; // 初期化済み？
+	static CRITICAL_SECTION s_fileCs; // ファイル処理のクリティカルセクション。
+	static bool     s_fileCsReady = false; // s_fileCsの準備ＯＫ？
+	static std::queue<std::string> s_fileQueue; // ファイルのキュー。
+
+	// UIスレッドで実行する処理のキュー。
 	static std::queue<std::pair<std::function<void(void*)>, void*>> s_uiQueue;
-	static CRITICAL_SECTION s_uiCs;
-	static HANDLE s_hUIDone = NULL;
+	static CRITICAL_SECTION s_uiCs; // UIスレッドのクリティカルセクション。
+	static HANDLE s_hUIDone = NULL; // UI処理終了か？
 
 	// Enter/input handshake state (owned by EgaBridge so that it is
 	// re-created every session -- see Initialize()/Uninitialize()).
@@ -43,12 +45,15 @@ namespace
 	// tracks whether a WM_EGA_DO_PRINT flush is already sitting in the UI
 	// thread's queue, so that bursts of prints between two UI-thread pumps
 	// get merged into a single message instead of one message each.
-	static CRITICAL_SECTION s_printCs;
-	static bool     s_printCsReady = false;
-	static std::atomic<bool> s_bPrintPosted(false);
-	static std::wstring s_printBuffer;       // protected by s_printCs
+	static CRITICAL_SECTION s_printCs; // 出力用のクリティカルセクション。
+	static bool     s_printCsReady = false; // s_printCs準備ＯＫ？
+	static std::atomic<bool> s_bPrintPosted(false); // 出力が投函されたか？
+	static std::wstring s_printBuffer; // 出力バッファ。protected by s_printCs
 }
 
+// EGAを実行するためのスレッド関数。
+// すべてのRisohEditorのEGA実行単位はこの中で実行されなければならない。
+// RisohEditorのEGA実行単位はこの関数の外では実行してはならない。
 static DWORD WINAPI EgaBridgeThreadProc(LPVOID args)
 {
 #ifndef NDEBUG
@@ -65,7 +70,7 @@ static DWORD WINAPI EgaBridgeThreadProc(LPVOID args)
 	}
 
 	EnterCriticalSection(&s_cs);
-	s_bRunning = false;
+	s_bRunning = false; // EGA実行終了。
 	LeaveCriticalSection(&s_cs);
 
 #ifndef NDEBUG
@@ -78,6 +83,7 @@ static DWORD WINAPI EgaBridgeThreadProc(LPVOID args)
 
 namespace EgaBridge
 {
+	// 初期化。
 	bool Initialize()
 	{
 		if (s_bInitialized)
@@ -141,6 +147,7 @@ namespace EgaBridge
 		return true;
 	}
 
+	// 終了。
 	void Uninitialize()
 	{
 		if (!s_bInitialized)
@@ -166,16 +173,19 @@ namespace EgaBridge
 		s_printBuffer.clear();
 	}
 
+	// EGA入力関数をセット。
 	void SetInputFn(EgaInputFn fn)
 	{
 		EGA_set_input_fn(fn);
 	}
 
+	// EGA出力関数をセット。
 	void SetPrintFn(EgaPrintFn fn)
 	{
 		EGA_set_print_fn(fn);
 	}
 
+	// EGAとの対話を開始。
 	bool StartInteractive()
 	{
 		EnterCriticalSection(&s_cs);
@@ -209,14 +219,16 @@ namespace EgaBridge
 		return true;
 	}
 
+	// EGAとの対話を停止。
 	void StopInteractive(bool wait)
 	{
 		HANDLE hThread = NULL;
 
 		EnterCriticalSection(&s_cs);
 
-		if (!s_bRunning)
+		if (!s_bRunning) // 実行されていない？
 		{
+			// スレッドを閉じる。
 			if (s_hThread)
 			{
 				::CloseHandle(s_hThread);
@@ -235,10 +247,10 @@ namespace EgaBridge
 
 		if (hThread && wait)
 		{
+			// 10秒待つ。
 			DWORD result = ::WaitForSingleObject(hThread, 10 * 1000);
-
 			if (result == WAIT_TIMEOUT)
-				::DebugBreak();
+				::DebugBreak(); // FIXME: ここに来てはならない。
 
 			::CloseHandle(hThread);
 
@@ -250,14 +262,14 @@ namespace EgaBridge
 			LeaveCriticalSection(&s_cs);
 		}
 
+		// ファイル入力をクリア。
 		EnterCriticalSection(&s_fileCs);
-
 		while (!s_fileQueue.empty())
 			s_fileQueue.pop();
-
 		LeaveCriticalSection(&s_fileCs);
 	}
 
+	// 停止要求されたか？
 	bool IsStopRequested()
 	{
 		return EGA_is_stopping() || 
@@ -265,11 +277,13 @@ namespace EgaBridge
 		        ::WaitForSingleObject(s_hStopEvent, 0) == WAIT_OBJECT_0);
 	}
 
+	// 停止ハンドルを取得。クライアントは閉じてはいけない。
 	void* GetStopEventHandle()
 	{
 		return s_hStopEvent;
 	}
 
+	// 入力ファイルをプッシュ。
 	void RequestFileInput(const std::string& filename)
 	{
 		if (!s_fileCsReady)
@@ -279,6 +293,7 @@ namespace EgaBridge
 		LeaveCriticalSection(&s_fileCs);
 	}
 
+	// 入力ファイルをポップ。
 	bool TryTakeFileInputRequest(std::string& filename)
 	{
 		if (!s_fileCsReady)
@@ -295,6 +310,7 @@ namespace EgaBridge
 		return ret;
 	}
 
+	// UIスレッドを実行。
 	bool RunOnUIThread(std::function<void(void*)> fn, void* param)
 	{
 #ifndef NDEBUG
@@ -320,6 +336,7 @@ namespace EgaBridge
 		return wait == WAIT_OBJECT_0;
 	}
 
+	// UIタスクを実行。
 	void ExecuteUITask(void*)
 	{
 		std::function<void(void*)> task;
@@ -354,27 +371,32 @@ namespace EgaBridge
 		::SetEvent(s_hUIDone);
 	}
 
+	// Enterキーが押されたのを通知。
 	void NotifyEnterPressed()
 	{
 		s_bEnterPressed = true;
 	}
 
+	// Enterキーが押された？
 	bool IsEnterPressed()
 	{
 		return s_bEnterPressed;
 	}
 
+	// Enterキーが押された状態を解除。
 	void ClearEnterPressed()
 	{
 		s_bEnterPressed = false;
 	}
 
+	// 入力を受け取る準備。
 	void PrepareForInput()
 	{
 		if (s_hInputDone)
 			::ResetEvent(s_hInputDone);
 	}
 
+	// 入力内容を投稿。
 	void SubmitInputText(const std::wstring& text)
 	{
 		if (!s_inputCsReady)
@@ -388,13 +410,14 @@ namespace EgaBridge
 			::SetEvent(s_hInputDone);
 	}
 
-	bool WaitAndTakeInputText(std::wstring& outText)
+	// 入力待ちして、入力文字列を取得。入力か停止要求が来るまでいつまでも待つ。
+	bool WaitAndTakeInputText(std::wstring& outText, DWORD dwTimeout)
 	{
 		if (!s_hInputDone || !s_hStopEvent)
 			return false;
 
 		HANDLE waitHandles[2] = { s_hInputDone, s_hStopEvent };
-		DWORD wait = ::WaitForMultipleObjects(2, waitHandles, FALSE, INFINITE);
+		DWORD wait = ::WaitForMultipleObjects(2, waitHandles, FALSE, dwTimeout);
 		if (wait != WAIT_OBJECT_0)
 			return false; // stop request (or failure)
 
@@ -404,23 +427,16 @@ namespace EgaBridge
 			outText = s_inputBuffer;
 			LeaveCriticalSection(&s_inputCs);
 		}
+
 		return true;
 	}
 
+	// 出力文字列をキューに追加。
 	void QueuePrintText(const std::wstring& text)
 	{
 		if (!s_printCsReady || text.empty())
 			return;
 
-		// Append to the shared buffer and remember whether *we* are the
-		// one that flips s_bPrintPosted from false to true -- only that
-		// caller actually posts a message. Any prints that arrive while a
-		// flush is already pending just add to the buffer and return
-		// immediately; they'll be picked up by the pending flush once the
-		// UI thread gets around to it. This is what turns an arbitrarily
-		// long burst of EGA_do_print calls (e.g. from a tight `for` loop)
-		// into at most one message in flight at a time, instead of one
-		// WM_EGA_DO_PRINT per call.
 		bool needPost = false;
 		EnterCriticalSection(&s_printCs);
 		s_printBuffer += text;
@@ -434,14 +450,11 @@ namespace EgaBridge
 		HWND hwnd = s_hwndEga;
 		if (!::IsWindow(hwnd) || !::PostMessageW(hwnd, WM_EGA_DO_PRINT, 0, 0))
 		{
-			// Nobody to deliver to right now (dialog not up yet / already
-			// closing). Clear the flag so the text isn't lost silently --
-			// the next QueuePrintText() call (or a manual flush once the
-			// window exists) will retry posting.
 			s_bPrintPosted = false;
 		}
 	}
 
+	// 未処理の出力文字列を取得する。出力文字列が空か、失敗したならfalseを返す。
 	bool TakePendingPrintText(std::wstring& outText)
 	{
 		outText.clear();

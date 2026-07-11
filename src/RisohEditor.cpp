@@ -9605,10 +9605,10 @@ void MMainWnd::OnCommand(HWND hwnd, int id, HWND hwndCtl, UINT codeNotify)
 		OnSave(hwnd);
 		break;
 	case ID_EGA:
-		OnEga(hwnd);
+		OnStartEgaConsole(hwnd, nullptr);
 		break;
 	case ID_EGA_PROGRAM:
-		OnEgaProgram(hwnd);
+		OnAskEgaProgramAndExecute(hwnd);
 		break;
 	case ID_OPENREADMEIT:
 		OnOpenLocalFile(hwnd, L"README_it.txt");

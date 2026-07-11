@@ -842,23 +842,20 @@ EGA::arg_t MMainWnd::RES_select(const EGA::args_t& args)
 	return make_arg<AstInt>(!found.empty());
 }
 
-void MMainWnd::OnEga(HWND hwnd, LPCWSTR file)
+void MMainWnd::OnStartEgaConsole(HWND hwnd, PCWSTR file)
 {
-	// Hide ID list
-	ShowIDList(hwnd, FALSE);
-
 	// compile if necessary
 	if (!CompileIfNecessary(TRUE))
 		return;
 
-	if (s_hwndEga && ::IsWindow(s_hwndEga))
+	if (s_hwndEga && ::IsWindow(s_hwndEga)) // Already open?
 	{
 		::ShowWindow(s_hwndEga, SW_SHOWNORMAL);
 		::SetForegroundWindow(s_hwndEga);
 		auto pDialog = dynamic_cast<MEgaDlg*>(MDialogBase::GetUserData(s_hwndEga));
 		assert(pDialog);
-		if (pDialog)
-			pDialog->Run(file);
+		if (pDialog && file && file[0])
+			pDialog->ExecuteEgaFile(file);
 		return;
 	}
 
@@ -866,21 +863,21 @@ void MMainWnd::OnEga(HWND hwnd, LPCWSTR file)
 	assert(pDialog);
 	pDialog->CreateDialogDx(hwnd);
 	::ShowWindow(*pDialog, SW_SHOWNORMAL);
-	pDialog->Run(file);
+	if (file && file[0])
+		pDialog->ExecuteEgaFile(file);
 }
 
-void MMainWnd::OnEgaProgram(HWND hwnd)
+void MMainWnd::OnAskEgaProgramAndExecute(HWND hwnd)
 {
 	// compile if necessary
 	if (!CompileIfNecessary(TRUE))
 		return;
 
-	OPENFILENAMEW ofn = { OPENFILENAME_SIZE_VERSION_400W, hwnd };
-
 	WCHAR szDir[MAX_PATH];
 	GetModuleFileNameW(NULL, szDir, ARRAYSIZE(szDir));
 	PathRemoveFileSpecW(szDir);
 
+	// Find EGA folder and build a filter
 	WCHAR szFile[MAX_PATH] = L"";
 	StringCbCopyW(szFile, sizeof(szFile), szDir);
 	PathAppendW(szFile, L"EGA");
@@ -905,6 +902,8 @@ void MMainWnd::OnEgaProgram(HWND hwnd)
 	}
 	PathAppendW(szFile, L"*.ega");
 
+	// Ask EGA program
+	OPENFILENAMEW ofn = { OPENFILENAME_SIZE_VERSION_400W, hwnd };
 	ofn.hwndOwner = hwnd;
 	ofn.lpstrFilter = MakeFilterDx(LoadStringDx(IDS_EGAFILTER));
 	ofn.lpstrFile = szFile;
@@ -913,7 +912,8 @@ void MMainWnd::OnEgaProgram(HWND hwnd)
 	ofn.lpstrDefExt = L"ega";
 	if (GetOpenFileNameW(&ofn))
 	{
-		OnEga(hwnd, szFile);
+		// Start EGA console and execute
+		OnStartEgaConsole(hwnd, szFile);
 	}
 }
 

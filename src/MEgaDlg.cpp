@@ -1,4 +1,4 @@
-// MEgaDlg.cpp --- Programming Language EGA dialog
+﻿// MEgaDlg.cpp --- Programming Language EGA dialog
 //////////////////////////////////////////////////////////////////////////////
 // RisohEditor --- Another free Win32 resource editor
 // Copyright (C) 2020 Katayama Hirofumi MZ <katayama.hirofumi.mz@gmail.com>
@@ -7,61 +7,67 @@
 #include "MEgaDlg.hpp"
 #include "Res.hpp"
 
-// NOTE: The Enter/input handshake state used to live here as raw file-scope
-// statics (s_bEnter, s_inputCs, s_hInputDone, s_inputBuffer). It has been
-// moved into EgaBridge, which owns its lifetime together with the rest of
-// the per-session bridge state (see EgaBridge::Initialize/Uninitialize).
-// This guarantees the state is reset every time a new EGA session starts,
-// instead of possibly carrying over a stale value from a previous session
-// when the EGA dialog is closed and reopened.
-
+// EGA入力関数。EGA_set_input_fnに渡される。
+// この関数がfalseを返せば、EGAの実行単位が終了する。
 bool EGA_dialog_input(char *buf, size_t buflen)
 {
-	if (buf == NULL && buflen == 0)
+	if (buf == NULL && buflen == 0) // １つ実行単位の実行が終わったとき？
 	{
+		// 特殊なメッセージを投函する。
 		PostMessageW(g_hMainWnd, WM_COMMAND, ID_EGAFINISH, 0);
 		return true;
 	}
 
+	// 入力と終了を待つ。
 	while (!EgaBridge::IsEnterPressed() || !::IsWindowVisible(s_hwndEga))
 	{
-		if (EgaBridge::IsStopRequested())
+		if (EgaBridge::IsStopRequested()) // 停止を要求されたか？
 			return false;
 
+		// キューから入力ファイルを取得。
 		std::string pendingFile;
 		if (EgaBridge::TryTakeFileInputRequest(pendingFile))
 		{
+			// このスレッドで実行する。
 			EGA_file_input(pendingFile.c_str());
 			continue;
 		}
 
-		Sleep(100);
+		Sleep(100); // FIXME: もっと良い待ち方があるはずだ。
 	}
-	EgaBridge::ClearEnterPressed();
 
+	// 入力を受け入れる準備をする。
+	EgaBridge::ClearEnterPressed();
 	EgaBridge::PrepareForInput();
+
+	// 入力を要求する。
 	::PostMessageW(s_hwndEga, WM_EGA_DO_GETINPUT, 0, 0);
 
-	// Wait for results or stop request
+	// このスレッドで実際に入力と終了要求を待つ。
 	std::wstring textW;
-	if (!EgaBridge::WaitAndTakeInputText(textW))
+	if (!EgaBridge::WaitAndTakeInputText(textW, INFINITE))
 		return false; // Stop request
 
+	// UTF-8化してbufに格納する。
 	char szTextA[512];
 	WideCharToMultiByte(CP_UTF8, 0, textW.c_str(), -1, szTextA, ARRAYSIZE(szTextA), NULL, NULL);
 	StringCchCopyA(buf, buflen, szTextA);
 
+	// 「exit」か「exit;」の場合は終了を要求するためのコマンドを投函する。
 	if (lstrcmpA(szTextA, "exit") == 0 || lstrcmpA(szTextA, "exit;") == 0)
 		PostMessageW(s_hwndEga, WM_COMMAND, IDCANCEL, 0);
 
 	return true;
 }
 
+// EGA出力関数。EGA_set_print_fnに渡される。
 void EGA_dialog_print(const char *fmt, va_list va)
 {
+	// s_hwndEgaが無効なら戻る。
 	if (!IsWindow(s_hwndEga))
 		return;
 
+	// 出力バッファを確保して出力文字列を取得する。
 	std::string str;
 	str.resize(512);
 	for (;;)
@@ -75,21 +81,13 @@ void EGA_dialog_print(const char *fmt, va_list va)
 			break;
 		str.resize(str.size() * 2);
 	}
-	str.resize(lstrlenA(str.c_str()));
 
+	// 文字列を整える。
+	str.resize(lstrlenA(str.c_str()));
 	mstr_replace_all(str, "\n", "\r\n");
 
+	// ワイド文字列にしてブリッジに渡す。
 	MAnsiToWide wide(CP_UTF8, str.c_str());
-
-	// NOTE: This used to _wcsdup() the text and PostMessageW() a fresh
-	// WM_EGA_DO_PRINT for every single call. A fast script (e.g.
-	// for(i, 0, 1000, println(i))) can call this hundreds/thousands of
-	// times within milliseconds -- far faster than the UI thread can
-	// drain the resulting message flood -- which made the dialog look
-	// hung (no repaint, stale cursor) even though nothing was actually
-	// deadlocked. EgaBridge::QueuePrintText() coalesces any number of
-	// prints that happen between two UI-thread pumps into a single
-	// buffered flush / single WM_EGA_DO_PRINT.
 	EgaBridge::QueuePrintText(wide.c_str());
 }
 
@@ -97,6 +95,7 @@ MEgaDlg::MEgaDlg() : MDialogBase(IDD_EGA)
 {
 	MTRACEA("%s\n", __FUNCTION__);
 
+	// アイコン読み込み。
 	m_hIcon = LoadIconDx(IDI_SMILY);
 	m_hIconSm = LoadSmallIconDx(IDI_SMILY);
 
@@ -117,7 +116,7 @@ MEgaDlg::~MEgaDlg()
 	DestroyIcon(m_hIconSm);
 }
 
-void MEgaDlg::Run(LPCWSTR filename)
+void MEgaDlg::ExecuteEgaFile(LPCWSTR filename)
 {
 	MTRACEA("%s\n", __FUNCTION__);
 	char szFileName[MAX_PATH];
@@ -127,7 +126,6 @@ void MEgaDlg::Run(LPCWSTR filename)
 		g_RES_select_type = BAD_TYPE;
 		g_RES_select_name = BAD_NAME;
 		g_RES_select_lang = BAD_LANG;
-
 		EgaBridge::RequestFileInput(szFileName);
 	}
 }
@@ -135,19 +133,24 @@ void MEgaDlg::Run(LPCWSTR filename)
 BOOL MEgaDlg::OnInitDialog(HWND hwnd, HWND hwndFocus, LPARAM lParam)
 {
 	MTRACEA("%s\n", __FUNCTION__);
-	s_hwndEga = hwnd;
-	m_resizable.OnParentCreate(hwnd);
+	s_hwndEga = hwnd; // Remember
 
+	// Make it a resizable dialog
+	m_resizable.OnParentCreate(hwnd);
 	m_resizable.SetLayoutAnchor(grp1, mzcLA_TOP_LEFT, mzcLA_BOTTOM_RIGHT);
 	m_resizable.SetLayoutAnchor(edt1, mzcLA_TOP_LEFT, mzcLA_BOTTOM_RIGHT);
 	m_resizable.SetLayoutAnchor(stc1, mzcLA_BOTTOM_LEFT);
 	m_resizable.SetLayoutAnchor(edt2, mzcLA_BOTTOM_LEFT, mzcLA_BOTTOM_RIGHT);
 	m_resizable.SetLayoutAnchor(IDOK, mzcLA_BOTTOM_RIGHT);
+
+	// Set dialog icon
 	SendMessageDx(WM_SETICON, ICON_BIG, (LPARAM)m_hIcon);
 	SendMessageDx(WM_SETICON, ICON_SMALL, (LPARAM)m_hIconSm);
 
+	// No limit
 	SendDlgItemMessageW(hwnd, edt1, EM_SETLIMITTEXT, 0, 0);
 
+	// Create font
 	LOGFONTW lf;
 	ZeroMemory(&lf, sizeof(lf));
 	lf.lfHeight = -12;
@@ -160,6 +163,7 @@ BOOL MEgaDlg::OnInitDialog(HWND hwnd, HWND hwndFocus, LPARAM lParam)
 	// (see the m_cchEdt1 comment in MEgaDlg.hpp).
 	m_cchEdt1 = GetWindowTextLengthW(GetDlgItem(hwnd, edt1));
 
+	// Move and resize
 	if (g_settings.nEgaX != CW_USEDEFAULT && g_settings.nEgaWidth != CW_USEDEFAULT)
 	{
 		SetWindowPos(hwnd, NULL,
@@ -186,20 +190,26 @@ BOOL MEgaDlg::OnInitDialog(HWND hwnd, HWND hwndFocus, LPARAM lParam)
 		CenterWindowDx();
 	}
 
-	// Start the interactive loop if needed
+	// Start the EGA thread
 	EgaBridge::StartInteractive();
 	::SetFocus(::GetDlgItem(hwnd, edt2));
 
 	return TRUE;
 }
 
-void MEgaDlg::OnOK(HWND hwnd)
+void MEgaDlg::OnOK(HWND hwnd) // Enterキーが押された？
 {
 	MTRACEA("%s\n", __FUNCTION__);
+
+	// リソース項目の選択情報をクリアする。
 	g_RES_select_type = BAD_TYPE;
 	g_RES_select_name = BAD_NAME;
 	g_RES_select_lang = BAD_LANG;
+
+	// Enterを押したことを伝える。
 	EgaBridge::NotifyEnterPressed();
+
+	// フォーカスを edt2 に移動。
 	::SetFocus(::GetDlgItem(hwnd, edt2));
 }
 
@@ -219,17 +229,14 @@ void MEgaDlg::OnCommand(HWND hwnd, int id, HWND hwndCtl, UINT codeNotify)
 void MEgaDlg::OnDestroy(HWND hwnd)
 {
 	MTRACEA("%s\n", __FUNCTION__);
-	// NOTE: We used to also force-feed "exit" into edt2 and set the
-	// (now-removed) s_bEnter flag here to try to unblock the EGA
-	// worker thread. That was both redundant and a source of a bug:
-	// StopInteractive() below already unblocks the worker thread
-	// reliably via the stop event (see EGA_dialog_input's polling
-	// loop and EgaBridge::WaitAndTakeInputText), and forcing the
-	// enter-flag here could leave stale state for the *next* EGA
-	// session if this dialog is reopened later.
+
+	// 終了前に特殊なメッセージを投函する。
 	PostMessageW(g_hMainWnd, WM_COMMAND, ID_EGAFINISH, 0);
+
+	// EGAスレッドを終了する。
 	EgaBridge::StopInteractive(true);
-	s_hwndEga = NULL;
+
+	s_hwndEga = NULL; // Forget
 }
 
 HBRUSH MEgaDlg::OnCtlColor(HWND hwnd, HDC hdc, HWND hwndChild, int type)
@@ -277,36 +284,36 @@ void MEgaDlg::OnSize(HWND hwnd, UINT state, int cx, int cy)
 	}
 }
 
+// WM_EGA_DO_GETINPUT
 void MEgaDlg::OnEgaGetInput(HWND hwnd)
 {
 	MTRACEA("%s\n", __FUNCTION__);
+
+	// edt2から文字列を取得して、edt2をクリア。
 	WCHAR szTextW[512];
 	GetDlgItemTextW(hwnd, edt2, szTextW, ARRAYSIZE(szTextW));
 	mstr_trim(szTextW);
 	SetDlgItemTextW(hwnd, edt2, L"");
 
+	// 入力文字列を投函。
 	EgaBridge::SubmitInputText(szTextW);
 }
 
+// WM_EGA_DO_PRINT
 void MEgaDlg::OnEgaPrint(HWND hwnd)
 {
-	// Pull out everything that has accumulated since the last flush --
-	// possibly many EGA_do_print() calls' worth -- and append it in one
-	// shot. This is what collapses e.g. 2000 tiny prints from a fast
-	// `for` loop into a handful of edit-control updates instead of 2000.
+	// 未処理の出力文字列を取得する。
 	std::wstring text;
 	if (!EgaBridge::TakePendingPrintText(text))
-		return;
+		return; // そんなものはない。
 
 	MTRACEA("%s(%d chars)\n", __FUNCTION__, (int)text.size());
 
-	// Use the length we've been tracking ourselves instead of calling
-	// GetWindowTextLengthW() here, which would cost time proportional to
-	// edt1's current (and ever-growing) content.
+	// 追記。
 	SendDlgItemMessageW(hwnd, edt1, EM_SETSEL, m_cchEdt1, m_cchEdt1);
 	SendDlgItemMessageW(hwnd, edt1, EM_REPLACESEL, FALSE, (LPARAM)text.c_str());
 	SendDlgItemMessageW(hwnd, edt1, EM_SCROLLCARET, 0, 0);
-	m_cchEdt1 += (int)text.size();
+	m_cchEdt1 += (INT)text.size(); // 今後のためにも、文字列長を覚えておく。
 }
 
 INT_PTR CALLBACK
@@ -321,13 +328,13 @@ MEgaDlg::DialogProcDx(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 	HANDLE_MSG(hwnd, WM_MOVE, OnMove);
 	HANDLE_MSG(hwnd, WM_SIZE, OnSize);
 	HANDLE_MSG(hwnd, WM_DESTROY, OnDestroy);
-	case WM_EGA_DO_GETINPUT:
+	case WM_EGA_DO_GETINPUT: // 入力を取得する。
 		OnEgaGetInput(hwnd);
 		return 0;
-	case WM_EGA_DO_PRINT:
+	case WM_EGA_DO_PRINT: // EGA出力を行う。
 		OnEgaPrint(hwnd);
 		return 0;
-	case WM_EGA_DO_RUN_ON_UI:
+	case WM_EGA_DO_RUN_ON_UI: // UIタスクを実行。
 		EgaBridge::ExecuteUITask((void*)lParam);
 		return 0;
 	default:
