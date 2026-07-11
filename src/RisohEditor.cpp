@@ -1668,19 +1668,19 @@ static bool CheckTextForSearch(ITEM_SEARCH *pSearch, EntryBase *entry, MString t
 	if (pSearch->bDownward)     // go downward
 	{
 		// check the position
-		if (pSearch->pCurrent == NULL || *pSearch->pCurrent < *entry)
+		if (pSearch->pCurrent == nullptr || *pSearch->pCurrent < *entry)
 		{
 			if (pSearch->pFound)    // already found
 			{
 				if (*entry < *pSearch->pFound)  // compare with the found one
 				{
-					pSearch->pFound = entry;
+					pSearch->pFound = g_res.get_shared(entry);
 					return true;    // found
 				}
 			}
 			else    // not found yet
 			{
-				pSearch->pFound = entry;    // found
+				pSearch->pFound = g_res.get_shared(entry);    // found
 				return true;    // found
 			}
 		}
@@ -1688,19 +1688,19 @@ static bool CheckTextForSearch(ITEM_SEARCH *pSearch, EntryBase *entry, MString t
 	else    // go upward
 	{
 		// check the position
-		if (pSearch->pCurrent == NULL || *entry < *pSearch->pCurrent)
+		if (pSearch->pCurrent == nullptr || *entry < *pSearch->pCurrent)
 		{
 			if (pSearch->pFound)    // already found
 			{
 				if (*pSearch->pFound < *entry)  // compare with the found one
 				{
-					pSearch->pFound = entry;
+					pSearch->pFound = g_res.get_shared(entry);
 					return true;    // found
 				}
 			}
 			else
 			{
-				pSearch->pFound = entry;
+				pSearch->pFound = g_res.get_shared(entry);
 				return true;    // found
 			}
 		}
@@ -1777,7 +1777,7 @@ BOOL MMainWnd::DoItemSearch(ITEM_SEARCH& search)
 
 	search_proc(&search);
 
-	return search.pFound != NULL;
+	return search.pFound != nullptr;
 }
 
 // clone the resource item in new name
@@ -2210,8 +2210,8 @@ void MMainWnd::search_worker_thread_inner(HWND hwnd, MItemSearchDlg* pDialog)
 
 	// initialize
 	m_search.bCancelled = FALSE;
-	m_search.pFound = NULL;
-	m_search.pCurrent = entry;
+	m_search.pFound = nullptr;
+	m_search.pCurrent = g_res.get_shared(entry);
 
 	// start searching
 	if (DoInnerSearch(hwnd))

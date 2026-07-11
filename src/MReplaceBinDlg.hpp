@@ -18,13 +18,13 @@
 class MReplaceBinDlg : public MDialogBase
 {
 public:
-	EntryBase *m_entry;
+	EntryPtr m_entry;
 	MIdOrString m_type;
 	MIdOrString m_name;
 	LANGID m_lang;
 
 	MReplaceBinDlg(EntryBase *entry)
-		: MDialogBase(IDD_REPLACERES), m_entry(entry),
+		: MDialogBase(IDD_REPLACERES), m_entry(g_res.get_shared(entry)),
 		  m_type(entry->m_type), m_name(entry->m_name), m_lang(entry->m_lang)
 	{
 	}

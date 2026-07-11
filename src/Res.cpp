@@ -449,7 +449,7 @@ EntrySet::add_lang_entry(const MIdOrString& type, const MIdOrString& name,
 	if (!entry)
 	{
 		// if not found, then create it
-		entry = Res_NewLangEntry(type, name, lang);
+		entry = take_ownership(Res_NewLangEntry(type, name, lang));
 	}
 
 	// store the data
@@ -534,9 +534,12 @@ bool EntrySet::delete_invalid()
 			TreeView_DeleteItem(m_hwndTV, entry->m_hItem);
 		}
 
-		// real delete
+		// real delete: drop this EntrySet's shared_ptr. If nothing else
+		// is holding a reference, the EntryBase is destroyed right here;
+		// erase() must run first since EntryLess::operator() dereferences
+		// the (soon to be dangling) pointer to order the set.
 		erase(entry);
-		delete entry;
+		release_ownership(entry);
 	}
 
 	return true;

@@ -29,16 +29,20 @@ struct ITEM_SEARCH
 	BOOL        bRunning;
 	BOOL        bCancelled;
 	MString     strText;
-	EntryBase  *pCurrent;
-	EntryBase  *pFound;
+	// pCurrent/pFound live across multiple MYWM_ITEMSEARCH round-trips
+	// between MItemSearchDlg and its parent (the search advances one
+	// step per message so the UI stays responsive), so a raw pointer
+	// here could be left dangling if the tree changes mid-search.
+	// EntryPtr keeps whatever entry is referenced alive for as long as
+	// this struct points at it.
+	EntryPtr    pCurrent;
+	EntryPtr    pFound;
 	ITEM_SEARCH()
 	{
 		bIgnoreCases = TRUE;
 		bDownward = TRUE;
 		bRunning = FALSE;
 		bCancelled = FALSE;
-		pCurrent = NULL;
-		pFound = NULL;
 	}
 };
 

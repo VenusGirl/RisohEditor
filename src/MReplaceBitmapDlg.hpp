@@ -18,13 +18,13 @@
 class MReplaceBitmapDlg : public MDialogBase
 {
 public:
-	EntryBase& m_entry;
+	EntryPtr m_entry;
 	MIdOrString m_type;
 	MIdOrString m_name;
 	LANGID m_lang;
 
 	MReplaceBitmapDlg(EntryBase& entry)
-		: MDialogBase(IDD_REPLACEBMP), m_entry(entry),
+		: MDialogBase(IDD_REPLACEBMP), m_entry(g_res.get_shared(&entry)),
 		  m_type(entry.m_type), m_name(entry.m_name), m_lang(entry.m_lang)
 	{
 	}
@@ -35,11 +35,11 @@ public:
 
 		// for Names
 		HWND hCmb2 = GetDlgItem(hwnd, cmb2);
-		InitResNameComboBox(hCmb2, m_entry.m_name, IDTYPE_BITMAP);
+		InitResNameComboBox(hCmb2, m_entry->m_name, IDTYPE_BITMAP);
 
 		// for Langs
 		HWND hCmb3 = GetDlgItem(hwnd, cmb3);
-		InitLangComboBox(hCmb3, m_entry.m_lang);
+		InitLangComboBox(hCmb3, m_entry->m_lang);
 
 		FileSystemAutoComplete(GetDlgItem(hwnd, edt1));
 

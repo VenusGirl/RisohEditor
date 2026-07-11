@@ -11,6 +11,8 @@
 #include <cctype>
 #include <cwchar>
 #include <set>
+#include <map>
+#include <memory>            // for std::shared_ptr
 #include <unordered_set>     // for std::unordered_set
 #include <shlwapi.h>
 
@@ -77,6 +79,24 @@ enum EntryType
 #define BAD_TYPE    L"*"        // invalid type
 #define BAD_NAME    L"*"        // invalid name
 #define BAD_LANG    0xFFFF      // invalid language value
+
+struct EntryBase;
+
+// The lifetime of every EntryBase is now managed by std::shared_ptr rather
+// than by manual new/delete. EntryBase objects are only ever created via
+// the Res_New*Entry() factory functions below (which hand back an
+// EntryPtr), and the *only* owner of that EntryPtr is the EntrySet that
+// inserted it (see EntrySet::m_owned, take_ownership(), release_ownership()
+// in this header, and EntrySet::delete_invalid() in Res.cpp).
+//
+// Everywhere else in the codebase (RisohEditor.cpp, MMainWnd*.cpp, etc.)
+// continues to see and pass around plain, non-owning EntryBase* -- exactly
+// as before -- because that raw pointer is just a view into the object
+// that the owning EntrySet keeps alive via its shared_ptr. This keeps the
+// public API (find(), get_entry(), get_parent(), on_insert_entry(), ...)
+// unchanged so no caller elsewhere needs to be touched; only the
+// allocation/deallocation plumbing inside Res.hpp/Res.cpp changed.
+typedef std::shared_ptr<EntryBase> EntryPtr;
 
 struct EntryBase
 {
@@ -299,28 +319,28 @@ struct EntryBase
 	void set_dfm_text(LPCWSTR pszDFMSC, std::string& text);
 };
 
-inline EntryBase *
+inline EntryPtr
 Res_NewTypeEntry(const MIdOrString& type)
 {
-	return new EntryBase(ET_TYPE, type);
+	return std::make_shared<EntryBase>(ET_TYPE, type);
 }
 
-inline EntryBase *
+inline EntryPtr
 Res_NewNameEntry(const MIdOrString& type, const MIdOrString& name)
 {
-	return new EntryBase(ET_NAME, type, name);
+	return std::make_shared<EntryBase>(ET_NAME, type, name);
 }
 
-inline EntryBase *
+inline EntryPtr
 Res_NewStringEntry(LANGID lang)
 {
-	return new EntryBase(ET_STRING, RT_STRING, BAD_NAME, lang);
+	return std::make_shared<EntryBase>(ET_STRING, RT_STRING, BAD_NAME, lang);
 }
 
-inline EntryBase *
+inline EntryPtr
 Res_NewLangEntry(const MIdOrString& type, const MIdOrString& name, LANGID lang = BAD_LANG)
 {
-	return new EntryBase(ET_LANG, type, name, lang);
+	return std::make_shared<EntryBase>(ET_LANG, type, name, lang);
 }
 
 std::string
@@ -367,6 +387,50 @@ struct EntrySet : protected EntrySetBase
 	using super_type::swap;
 
 	HWND m_hwndTV;      // the treeview handle
+
+	// The entries actually created by (and thus owned by) this EntrySet,
+	// keyed by their raw pointer identity so lookups/erasure are O(log n)
+	// and unaffected by later mutation of an entry's content (m_type,
+	// m_name, ... can change after insertion, which rules out ordering
+	// this map with EntryLess). An EntrySet built as a search-result view
+	// (e.g. the `self_type found` locals in search()/search_and_delete(),
+	// or copies made via the super_type-only constructor below) never
+	// populates this map, so it never owns -- and never destroys -- the
+	// entries it merely references, exactly like the old raw-pointer code.
+	std::map<EntryBase *, EntryPtr> m_owned;
+
+	// take ownership of a freshly created entry; returns the raw,
+	// non-owning pointer that the rest of the codebase keeps using
+	EntryBase *take_ownership(const EntryPtr& entry)
+	{
+		EntryBase *raw = entry.get();
+		m_owned[raw] = entry;
+		return raw;
+	}
+
+	// give up ownership of (and, if this was the last reference, destroy)
+	// an entry previously returned by take_ownership()
+	void release_ownership(EntryBase *entry)
+	{
+		m_owned.erase(entry);
+	}
+
+	// Look up the EntryPtr backing a raw, non-owning EntryBase* that the
+	// caller already has (e.g. from find()/get_entry()/get_parent()).
+	// Use this when you need to *hold on to* an entry across something
+	// that isn't a single, immediate call -- a modal dialog's lifetime,
+	// a queued/async operation, a background thread -- so the entry
+	// can't be destroyed out from under you while you're holding it.
+	// Returns an empty EntryPtr if this EntrySet doesn't own `entry`
+	// (e.g. it belongs to a different EntrySet instance, or it has
+	// already been deleted).
+	EntryPtr get_shared(EntryBase *entry) const
+	{
+		auto it = m_owned.find(entry);
+		if (it == m_owned.end())
+			return EntryPtr();
+		return it->second;
+	}
 
 	// constructor
 	EntrySet(HWND hwndTV = NULL) : m_hwndTV(hwndTV)
@@ -525,7 +589,7 @@ struct EntrySet : protected EntrySetBase
 	{
 		auto entry = find(ET_STRING, RT_STRING, BAD_NAME, lang, true);
 		if (!entry)
-			entry = Res_NewStringEntry(lang);
+			entry = take_ownership(Res_NewStringEntry(lang));
 		return on_insert_entry(entry);
 	}
 
@@ -535,7 +599,7 @@ struct EntrySet : protected EntrySetBase
 	{
 		auto entry = find(ET_NAME, type, name, BAD_LANG, true);
 		if (!entry)
-			entry = Res_NewNameEntry(type, name);
+			entry = take_ownership(Res_NewNameEntry(type, name));
 		return on_insert_entry(entry);
 	}
 
@@ -545,7 +609,7 @@ struct EntrySet : protected EntrySetBase
 	{
 		auto entry = find(ET_TYPE, type, BAD_NAME, BAD_LANG, true);
 		if (!entry)
-			entry = Res_NewTypeEntry(type);
+			entry = take_ownership(Res_NewTypeEntry(type));
 		return on_insert_entry(entry);
 	}
 
