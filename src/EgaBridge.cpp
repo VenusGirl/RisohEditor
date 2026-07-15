@@ -254,10 +254,23 @@ namespace EgaBridge
 
 		if (hThread && wait)
 		{
-			// 10秒待つ。
-			DWORD result = ::WaitForSingleObject(hThread, 10 * 1000);
-			if (result == WAIT_TIMEOUT)
-				::DebugBreak(); // FIXME: ここに来てはならない。
+			// 10秒一括待ち → メッセージを処理しながら短時間ずつ待つ
+			const DWORD TIMEOUT = 100;  // 100ms ごとに UI メッセージを捌く
+			DWORD start = GetTickCount();
+
+			while (WaitForSingleObject(hThread, 0) == WAIT_TIMEOUT)
+			{
+				DWORD elapsed = GetTickCount() - start;
+				if (elapsed > 10000)
+					break;  // 10秒超えたら強制終了
+
+				// UI メッセージを処理しつつ EGA スレッドの終了を待つ
+				MsgWaitForMultipleObjects(1, &hThread, FALSE, TIMEOUT, QS_ALLINPUT);
+
+				MSG msg;
+				if (PeekMessageW(&msg, NULL, 0, 0, PM_NOREMOVE))
+					DispatchMessageW(&msg);
+			}
 
 			::CloseHandle(hThread);
 
@@ -339,7 +352,11 @@ namespace EgaBridge
 			return false;
 
 		HANDLE waitHandles[2] = { s_hUIDone, s_hStopEvent };
-		DWORD wait = ::WaitForMultipleObjects(2, waitHandles, FALSE, INFINITE);
+		DWORD wait = WaitForMultipleObjects(2, waitHandles, FALSE, 500);  // 500ms
+
+		if (wait == WAIT_OBJECT_0 + 1)  // StopEvent
+			return false;
+
 		return wait == WAIT_OBJECT_0;
 	}
 

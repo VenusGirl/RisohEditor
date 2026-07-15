@@ -253,6 +253,7 @@ public:
 		m_hwnd = NULL;
 		if (m_bDynamicCreated)
 		{
+			m_bDynamicCreated = false;
 			delete this;
 		}
 	}
@@ -1599,7 +1600,6 @@ MDialogBase::CreateDialogDx(HWND hwndOwner, LPCTSTR pDialogName)
 		m_hwndOwner = hwndOwner;
 	}
 	m_bModal = FALSE;
-	m_bDynamicCreated = true;
 	HWND hwnd = ::CreateDialogParam(::GetModuleHandle(NULL), pDialogName,
 									m_hwndOwner, MDialogBase::DialogProc,
 									reinterpret_cast<LPARAM>(this));

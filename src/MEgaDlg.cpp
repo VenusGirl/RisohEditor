@@ -105,6 +105,8 @@ MEgaDlg::MEgaDlg() : MDialogBase(IDD_EGA)
 	EgaBridge::SetPrintFn(EGA_dialog_print);
 
 	EGA_extension();
+
+	m_bDynamicCreated = true;
 }
 
 MEgaDlg::~MEgaDlg()
