@@ -12558,6 +12558,8 @@ wWinMain(HINSTANCE   hInstance,
 	if (SUCCEEDED(hrOleInit))
 		OleUninitialize();
 
+	g_RES_select_type.clear();
+	g_RES_select_name.clear();
 	assert(EntryBaseBase::is_alive_zero());
 	return ret;
 }
