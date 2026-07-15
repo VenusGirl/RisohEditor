@@ -173,6 +173,11 @@ namespace EgaBridge
 		if (s_printCsReady) { DeleteCriticalSection(&s_printCs); s_printCsReady = false; }
 		s_bPrintPosted = false;
 		s_printBuffer.clear();
+
+		while (!s_fileQueue.empty())
+			s_fileQueue.pop();
+		while (!s_uiQueue.empty())
+			s_uiQueue.pop();
 	}
 
 	// EGA入力関数をセット。

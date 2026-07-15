@@ -237,6 +237,9 @@ void MEgaDlg::OnDestroy(HWND hwnd)
 	// EGAスレッドを終了する。
 	EgaBridge::StopInteractive(true);
 
+	// EGAを破棄する。
+	EgaBridge::Uninitialize();
+
 	s_hwndEga = NULL; // Forget
 }
 
