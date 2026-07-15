@@ -12558,6 +12558,7 @@ wWinMain(HINSTANCE   hInstance,
 	if (SUCCEEDED(hrOleInit))
 		OleUninitialize();
 
+	assert(EntryBaseBase::is_alive_zero());
 	return ret;
 }
 

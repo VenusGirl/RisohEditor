@@ -98,7 +98,17 @@ struct EntryBase;
 // allocation/deallocation plumbing inside Res.hpp/Res.cpp changed.
 typedef std::shared_ptr<EntryBase> EntryPtr;
 
-struct EntryBase
+struct EntryBaseBase
+{
+#ifndef NDEBUG
+    static LONG s_alive_count;
+    static bool is_alive_zero() { return s_alive_count == 0; }
+             EntryBaseBase() { InterlockedIncrement(&s_alive_count); }
+    virtual ~EntryBaseBase() { InterlockedDecrement(&s_alive_count); }
+#endif
+};
+
+struct EntryBase : EntryBaseBase
 {
 	typedef DWORD               size_type;
 	typedef std::vector<BYTE>   data_type;

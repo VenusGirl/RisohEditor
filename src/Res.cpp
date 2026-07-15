@@ -23,6 +23,10 @@ struct AutoDeleteFileW
 	AutoDeleteFileW(AutoDeleteFileW&&) = delete;
 };
 
+#ifndef NDEBUG
+LONG EntryBaseBase::s_alive_count = 0;
+#endif
+
 BOOL
 Res_IsEntityType(const MIdOrString& type)
 {
