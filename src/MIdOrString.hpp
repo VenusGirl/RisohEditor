@@ -244,7 +244,7 @@ struct MIdOrString
 		}
 	}
 
-    mutable MStringW s_strTmp;
+    mutable MString s_strTmp;
 
 	const TCHAR *c_str() const
 	{
