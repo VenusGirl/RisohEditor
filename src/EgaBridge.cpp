@@ -49,6 +49,8 @@ namespace
 	static bool     s_printCsReady = false; // s_printCs準備ＯＫ？
 	static std::atomic<bool> s_bPrintPosted(false); // 出力が投函されたか？
 	static std::wstring s_printBuffer; // 出力バッファ。protected by s_printCs
+	static DWORD s_lastPrintFlush = 0;
+	static const DWORD PRINT_THROTTLE_MS = 50; // 最大20回/秒
 }
 
 // EGAを実行するためのスレッド関数。
@@ -440,17 +442,21 @@ namespace EgaBridge
 		bool needPost = false;
 		EnterCriticalSection(&s_printCs);
 		s_printBuffer += text;
-		if (!s_bPrintPosted.exchange(true))
+
+		DWORD now = GetTickCount();
+		if (!s_bPrintPosted && (now - s_lastPrintFlush > PRINT_THROTTLE_MS))
+		{
+			s_bPrintPosted = true;
 			needPost = true;
+			s_lastPrintFlush = now;
+		}
 		LeaveCriticalSection(&s_printCs);
 
-		if (!needPost)
-			return;
-
-		HWND hwnd = s_hwndEga;
-		if (!::IsWindow(hwnd) || !::PostMessageW(hwnd, WM_EGA_DO_PRINT, 0, 0))
+		if (needPost)
 		{
-			s_bPrintPosted = false;
+			HWND hwnd = s_hwndEga;
+			if (!::IsWindow(hwnd) || !::PostMessageW(hwnd, WM_EGA_DO_PRINT, 0, 0))
+				s_bPrintPosted = false;
 		}
 	}
 

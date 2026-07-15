@@ -307,11 +307,22 @@ void MEgaDlg::OnEgaPrint(HWND hwnd)
 	if (!EgaBridge::TakePendingPrintText(text))
 		return; // そんなものはない。
 
+	// 巨大になりすぎたら古い部分を削除（簡易版）
+	if (m_cchEdt1 > 10'000'000) // 約10MB超
+	{
+		SendDlgItemMessageW(hwnd, edt1, EM_SETSEL, 0, 500'000); // 先頭50万文字削除
+		SendDlgItemMessageW(hwnd, edt1, EM_REPLACESEL, FALSE, (LPARAM)L"");
+		m_cchEdt1 = GetWindowTextLengthW(GetDlgItem(hwnd, edt1));
+	}
+
 	// 追記。
 	SendDlgItemMessageW(hwnd, edt1, EM_SETSEL, m_cchEdt1, m_cchEdt1);
 	SendDlgItemMessageW(hwnd, edt1, EM_REPLACESEL, FALSE, (LPARAM)text.c_str());
 	SendDlgItemMessageW(hwnd, edt1, EM_SCROLLCARET, 0, 0);
 	m_cchEdt1 += (INT)text.size(); // 今後のためにも、文字列長を覚えておく。
+
+	// カーソル強制復元（念のため）
+	::SetCursor(::LoadCursorW(NULL, IDC_ARROW));
 }
 
 INT_PTR CALLBACK
