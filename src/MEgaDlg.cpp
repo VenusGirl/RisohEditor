@@ -14,7 +14,8 @@ bool EGA_dialog_input(char *buf, size_t buflen)
 	if (buf == NULL && buflen == 0) // １つ実行単位の実行が終わったとき？
 	{
 		// 特殊なメッセージを投函する。
-		PostMessageW(g_hMainWnd, WM_COMMAND, ID_EGAFINISH, 0);
+		::PostMessageW(s_hwndEga, WM_EGA_DO_PRINT, 0, 0);
+		::PostMessageW(g_hMainWnd, WM_COMMAND, ID_EGAFINISH, 0);
 		return true;
 	}
 
