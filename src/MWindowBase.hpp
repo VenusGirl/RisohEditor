@@ -3,7 +3,7 @@
 //////////////////////////////////////////////////////////////////////////////
 
 #ifndef MZC4_MWINDOWBASE_HPP_
-#define MZC4_MWINDOWBASE_HPP_    173     /* Version 173 */
+#define MZC4_MWINDOWBASE_HPP_    174     /* Version 174 */
 
 class MWindowBase;
 class MDialogBase;
@@ -1599,6 +1599,7 @@ MDialogBase::CreateDialogDx(HWND hwndOwner, LPCTSTR pDialogName)
 		m_hwndOwner = hwndOwner;
 	}
 	m_bModal = FALSE;
+	m_bDynamicCreated = true;
 	HWND hwnd = ::CreateDialogParam(::GetModuleHandle(NULL), pDialogName,
 									m_hwndOwner, MDialogBase::DialogProc,
 									reinterpret_cast<LPARAM>(this));
