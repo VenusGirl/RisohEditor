@@ -307,8 +307,6 @@ void MEgaDlg::OnEgaPrint(HWND hwnd)
 	if (!EgaBridge::TakePendingPrintText(text))
 		return; // そんなものはない。
 
-	MTRACEA("%s(%d chars)\n", __FUNCTION__, (int)text.size());
-
 	// 追記。
 	SendDlgItemMessageW(hwnd, edt1, EM_SETSEL, m_cchEdt1, m_cchEdt1);
 	SendDlgItemMessageW(hwnd, edt1, EM_REPLACESEL, FALSE, (LPARAM)text.c_str());
