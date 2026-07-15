@@ -1,0 +1,4 @@
+@ Delete Korean (1041) resources all.
+println("Deleting Korean...");
+RES_delete("*", "*", 1042);
+println("Done.");
