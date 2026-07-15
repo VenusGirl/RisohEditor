@@ -240,7 +240,7 @@ void MEgaDlg::OnDestroy(HWND hwnd)
 	// EGAを破棄する。
 	EgaBridge::Uninitialize();
 
-	s_hwndEga = NULL; // Forget
+	s_hwndEga = NULL;
 }
 
 HBRUSH MEgaDlg::OnCtlColor(HWND hwnd, HDC hdc, HWND hwndChild, int type)
