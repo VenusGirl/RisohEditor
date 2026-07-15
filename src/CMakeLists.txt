@@ -9,6 +9,7 @@ add_library(libRisohEditor STATIC
     MEditMenuDlg.cpp
     MEgaDlg.cpp
     MenuRes.cpp
+    MIDListDlg.cpp
     MMainWnd_Preview.cpp
     MMainWnd_EGA.cpp
     MMainWnd_Tests.cpp

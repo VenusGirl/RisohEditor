@@ -9,6 +9,7 @@
 #include "MTextToText.hpp"
 #include "ConstantsDB.hpp"
 #include "RisohSettings.hpp"
+#include "MStrBin.hpp"
 
 #include "DialogRes.hpp"
 #include "MenuRes.hpp"

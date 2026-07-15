@@ -1,0 +1,1035 @@
+// MIDListDlg.cpp --- "ID List" Dialog
+//////////////////////////////////////////////////////////////////////////////
+// RisohEditor --- Another free Win32 resource editor
+// Copyright (C) 2017-2018 Katayama Hirofumi MZ <katayama.hirofumi.mz@gmail.com>
+// License: GPL-3 or later
+
+#pragma once
+
+#include "resource.h"
+#include "MIDListDlg.hpp"
+
+LRESULT CALLBACK
+MSubclassedListView::WindowProcDx(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
+{
+	if (uMsg == WM_GETDLGCODE)
+	{
+		LPMSG pMsg = (LPMSG)lParam;
+		if (pMsg && pMsg->message == WM_KEYDOWN && pMsg->wParam == VK_RETURN)
+		{
+			INT iItem = ListView_GetNextItem(m_hwnd, -1, LVNI_ALL | LVNI_SELECTED);
+			if (iItem != -1)
+			{
+				TCHAR szText[MAX_PATH];
+				ListView_GetItemText(m_hwnd, iItem, 2, szText, _countof(szText));
+				if (szText[0] != TEXT('L') && szText[0] != TEXT('"'))
+				{
+					SendMessage(GetParent(hwnd), WM_COMMAND, ID_MODIFYRESID, (LPARAM)hwnd);
+				}
+			}
+		}
+	}
+	return DefaultProcDx();
+}
+
+bool RowKey::operator==(const RowKey& other) const {
+	return name == other.name && value == other.value;
+};
+
+size_t std::hash<RowKey>::operator()(const RowKey& k) const {
+	return std::hash<MString>()(k.name) ^ std::hash<MString>()(k.value);
+}
+
+MIDListDlg::MIDListDlg()
+	: MDialogBase(IDD_IDLIST), m_hMainWnd(NULL), m_pszResH(NULL),
+	  m_nBase(10), m_hCmb1(NULL), m_hLst1(NULL),
+	  m_bChanging(FALSE), m_bRefreshing(FALSE)
+{
+	m_hIconDiamond = LoadSmallIconDx(IDI_DIAMOND);
+	InitMaps();
+}
+
+void MIDListDlg::InitMaps()
+{
+	for (INT i = IDTYPE_UNKNOWN; i <= IDTYPE_MSGTABLE; ++i)
+	{
+		MStringW str = MapIDType(IDTYPE_(i));
+		m_map1[i] = str;
+		m_map2[str] = i;
+	}
+}
+
+MIDListDlg::~MIDListDlg()
+{
+	DestroyIcon(m_hIconDiamond);
+}
+
+void MIDListDlg::OnCmb1(HWND hwnd)
+{
+	INT iItem = ComboBox_GetCurSel(m_hCmb1);
+	MString szText = GetComboBoxLBText(m_hCmb1, iItem);
+	UpdateListView(szText.c_str());
+}
+
+void MIDListDlg::OnRefreshList(HWND hwnd)
+{
+	if (m_bRefreshing)
+		return;
+
+	struct MRefreshingGuard
+	{
+		BOOL& m_flag;
+		explicit MRefreshingGuard(BOOL& flag) : m_flag(flag)
+		{
+			m_flag = TRUE;
+		}
+		~MRefreshingGuard()
+		{
+			m_flag = FALSE;
+		}
+	} guard(m_bRefreshing);
+
+	UpdateItems();
+	ComboBox_SetCurSel(m_hCmb1, 0);
+	OnCmb1(hwnd);
+}
+
+MString MIDListDlg::FormatByBase(INT value) const
+{
+	if (m_nBase == 16)
+		return mstr_hex(value);
+	return mstr_dec(value);
+}
+
+void MIDListDlg::NormalizeValueText(MString& text, INT& value, bool& numeric) const
+{
+	numeric = false;
+	value = 0;
+
+	if (text.empty())
+		return;
+
+	if (text == TEXT("\"\""))
+	{
+		text = L"0";
+		value = 0;
+		numeric = true;
+		return;
+	}
+
+	if (text[0] == TEXT('"') || text[0] == TEXT('L'))
+		return;
+
+	value = mstr_parse_int(text.c_str(), true);
+	text = FormatByBase(value);
+	numeric = true;
+}
+
+bool MIDListDlg::IsTypeMatched(const MString& rowTypes, LPCTSTR pszIDType) const
+{
+	std::vector<MString> types;
+	mstr_split(types, rowTypes, TEXT("/"));
+	for (const auto& type : types)
+	{
+		if (type == pszIDType)
+			return true;
+	}
+	return false;
+}
+
+void MIDListDlg::MergeType(ItemRow& row, const MString& type, bool bRealType)
+{
+	std::vector<MString> types;
+	mstr_split(types, row.col1, TEXT("/"));
+	types.erase(std::remove_if(types.begin(), types.end(), [](const MString& item) { return item.empty(); }), types.end());
+	if (!type.empty() && std::find(types.begin(), types.end(), type) == types.end())
+		types.push_back(type);
+	std::sort(types.begin(), types.end());
+	types.erase(std::unique(types.begin(), types.end()), types.end());
+	row.col1 = mstr_join(types, TEXT("/"));
+
+	if (bRealType)
+		row.has_real_type = true;
+}
+
+void MIDListDlg::AddOrMergeRow(const MString& text1, const MString& type, const MString& text3, bool bRealType)
+{
+	MString normalizedValue = text3;
+	INT value = 0;
+	bool numeric = false;
+	NormalizeValueText(normalizedValue, value, numeric);
+
+	RowKey key{text1, normalizedValue};
+
+	auto it = m_rowIndexMap.find(key);
+	if (it != m_rowIndexMap.end())
+	{
+		MergeType(m_items[it->second], type, bRealType);
+		return;
+	}
+
+	ItemRow row = {};
+	row.col0 = text1;
+	row.col1.clear();
+	row.col2 = normalizedValue;
+	row.value = value;
+	row.numeric = numeric;
+	row.has_real_type = false;
+
+	INT index = (INT)m_items.size();
+	m_items.push_back(row);
+	m_rowIndexMap[key] = index;
+
+	MergeType(m_items.back(), type, bRealType);
+}
+
+MString MIDListDlg::GetTypeTextFromEntry(const EntryBase *entry) const
+{
+	auto nIDTYPE_ = g_db.IDTypeFromResType(entry->m_type);
+	if (nIDTYPE_ != IDTYPE_UNKNOWN && nIDTYPE_ != IDTYPE_RESOURCE)
+	{
+		auto it = m_map1.find(nIDTYPE_);
+		if (it != m_map1.end())
+			return it->second;
+	}
+
+	MString typeText;
+	if (entry->m_type.is_int())
+	{
+		typeText = g_db.GetName(L"RESOURCE", entry->m_type.m_id);
+		if (!typeText.empty())
+		{
+			Res_ReplaceResTypeString(typeText, false);
+		}
+		else
+		{
+			typeText = FormatByBase(entry->m_type.m_id);
+		}
+	}
+	else
+	{
+		typeText = entry->m_type.str();
+	}
+
+	if (typeText.empty())
+		typeText = MapIDType(IDTYPE_UNKNOWN);
+	return typeText;
+}
+
+std::vector<MString> MIDListDlg::GetPrefixTypeTexts(const MString& name) const
+{
+	std::vector<MString> texts;
+	size_t iUnderscore = name.find(L'_');
+	if (iUnderscore == MString::npos)
+		return texts;
+	MString prefix = name.substr(0, iUnderscore + 1);
+
+	std::vector<INT> indexes = GetPrefixIndexes(prefix);
+	for (size_t i = 0; i < indexes.size(); ++i)
+	{
+		auto nIDTYPE_ = IDTYPE_(indexes[i]);
+		if (nIDTYPE_ == IDTYPE_UNKNOWN)
+			continue;
+		MString text = MapIDType(nIDTYPE_);
+		if (text.empty())
+			continue;
+		if (std::find(texts.begin(), texts.end(), text) == texts.end())
+			texts.push_back(text);
+	}
+
+	std::sort(texts.begin(), texts.end());
+	if (texts.size() > 1)
+	{
+		auto it = std::find(texts.begin(), texts.end(), MapIDType(IDTYPE_RESOURCE));
+		if (it != texts.end())
+			texts.erase(it);
+	}
+	return texts;
+}
+
+void MIDListDlg::AddResourceRow(const EntryBase *entry)
+{
+	if (!entry || entry->m_et != ET_LANG)
+		return;
+
+	if (entry->m_type == RT_ICON || entry->m_type == RT_CURSOR ||
+		entry->m_type == RT_STRING || entry->m_type == RT_FONTDIR)
+	{
+		return;
+	}
+
+	MString text1, text3;
+	auto nIDTYPE_ = g_db.IDTypeFromResType(entry->m_type);
+	if (!entry->m_name.is_str())
+	{
+		if (g_settings.bHideID)
+		{
+			text1 = FormatByBase(entry->m_name.m_id);
+		}
+		else
+		{
+			text1 = g_db.GetNameOfIDTypeValue(nIDTYPE_, entry->m_name.m_id);
+			if (text1.empty() && entry->m_type == RT_DLGINIT)
+				text1 = g_db.GetNameOfIDTypeValue(IDTYPE_DIALOG, entry->m_name.m_id);
+			if (text1.empty() && entry->m_type == RT_TOOLBAR)
+				text1 = g_db.GetNameOfIDTypeValue(IDTYPE_BITMAP, entry->m_name.m_id);
+			if (text1.empty())
+				text1 = FormatByBase(entry->m_name.m_id);
+		}
+		text3 = FormatByBase(entry->m_name.m_id);
+	}
+	else
+	{
+		text1 = entry->m_name.quoted_wstr();
+		text3 = text1;
+	}
+
+	MString typeText = GetTypeTextFromEntry(entry);
+	AddOrMergeRow(text1, typeText, text3, true);
+}
+
+void MIDListDlg::AddMacroRow(const std::pair<MStringA, MStringA>& pair)
+{
+	MString text1 = MAnsiToText(CP_ACP, pair.first.c_str()).c_str();
+	MString text3 = MAnsiToText(CP_ACP, pair.second.c_str()).c_str();
+
+	INT value = 0;
+	bool numeric = false;
+	MString normalizedValue = text3;
+	NormalizeValueText(normalizedValue, value, numeric);
+
+	RowKey key{text1, normalizedValue};
+
+	auto it = m_rowIndexMap.find(key);
+	if (it != m_rowIndexMap.end() && m_items[it->second].has_real_type)
+		return;
+
+	std::vector<MString> types = GetPrefixTypeTexts(text1);
+	if (types.empty())
+		types.push_back(MapIDType(IDTYPE_UNKNOWN));
+
+	for (const auto& type : types)
+		AddOrMergeRow(text1, type, text3, false);
+}
+
+void MIDListDlg::UpdateComboBox()
+{
+	if (m_bChanging)
+		return;
+
+	m_bChanging = TRUE;
+
+	MString szPrevSelected;
+	INT iCurSel = ComboBox_GetCurSel(m_hCmb1);
+	if (iCurSel != CB_ERR)
+	{
+		szPrevSelected = GetComboBoxLBText(m_hCmb1, iCurSel);
+	}
+	else
+	{
+		szPrevSelected = LoadStringDx(IDS_ALL);
+	}
+
+	ComboBox_ResetContent(m_hCmb1);
+	ComboBox_AddString(m_hCmb1, LoadStringDx(IDS_ALL));
+	for (const auto& row : m_items)
+	{
+		std::vector<MString> types;
+		mstr_split(types, row.col1, TEXT("/"));
+		for (size_t k = 0; k < types.size(); ++k)
+		{
+			INT ret = ComboBox_FindStringExact(m_hCmb1, -1, types[k].c_str());
+			if (ret == CB_ERR && !types[k].empty())
+				ComboBox_AddString(m_hCmb1, types[k].c_str());
+		}
+	}
+
+	if (ComboBox_SelectString(m_hCmb1, -1, szPrevSelected.c_str()) == CB_ERR)
+		ComboBox_SelectString(m_hCmb1, -1, LoadStringDx(IDS_ALL));
+
+	m_bChanging = FALSE;
+}
+
+void MIDListDlg::UpdateItems()
+{
+	m_items.clear();
+	m_rowIndexMap.clear();
+	BuildItemsIntoCache();
+
+	std::sort(m_items.begin(), m_items.end(), [](const ItemRow& a, const ItemRow& b)
+	{
+		int cmp = lstrcmp(a.col1.c_str(), b.col1.c_str());
+		if (cmp != 0) return cmp < 0;
+		MIdOrString id1(a.col2.c_str()), id2(b.col2.c_str());
+		if (id1 < id2) return true;
+		if (id1 > id2) return false;
+		return lstrcmp(a.col0.c_str(), b.col0.c_str()) < 0;
+	});
+
+	UpdateComboBox();
+}
+
+void MIDListDlg::UpdateListView(LPCTSTR pszIDType)
+{
+	ListView_DeleteAllItems(m_hLst1);
+
+	BOOL bAll = (pszIDType == NULL || lstrcmp(pszIDType, LoadStringDx(IDS_ALL)) == 0);
+	INT iRow = 0;
+	for (const auto& row : m_items)
+	{
+		if (!bAll && !IsTypeMatched(row.col1, pszIDType))
+			continue;
+
+		LV_ITEM item;
+		ZeroMemory(&item, sizeof(item));
+		item.mask = LVIF_TEXT | LVIF_PARAM;
+		item.iItem = iRow;
+		item.iSubItem = 0;
+		item.pszText = const_cast<LPTSTR>(row.col0.c_str());
+		item.lParam = iRow;
+		ListView_InsertItem(m_hLst1, &item);
+
+		ZeroMemory(&item, sizeof(item));
+		item.mask = LVIF_TEXT;
+		item.iItem = iRow;
+		item.iSubItem = 1;
+		item.pszText = const_cast<LPTSTR>(row.col1.c_str());
+		ListView_SetItem(m_hLst1, &item);
+
+		ZeroMemory(&item, sizeof(item));
+		item.mask = LVIF_TEXT;
+		item.iItem = iRow;
+		item.iSubItem = 2;
+		item.pszText = const_cast<LPTSTR>(row.col2.c_str());
+		ListView_SetItem(m_hLst1, &item);
+
+		++iRow;
+	}
+}
+
+void MIDListDlg::BuildItemsIntoCache()
+{
+	m_items.clear();
+	m_rowIndexMap.clear();
+
+	EntrySet found;
+	g_res.search(found, ET_LANG);
+
+	for (auto entry : found)
+	{
+		AddResourceRow(entry);
+	}
+
+	if (!g_settings.bHideID)
+	{
+		for (auto& pair : g_settings.id_map)
+			AddMacroRow(pair);
+	}
+
+	for (auto& row : m_items)
+	{
+		if (row.col1.empty())
+			row.col1 = MapIDType(IDTYPE_UNKNOWN);
+	}
+}
+
+void MIDListDlg::OnMeasureItem(HWND hwnd, MEASUREITEMSTRUCT * lpMeasureItem)
+{
+	RECT rc;
+	SetRect(&rc, 0, 0, 200, 15);
+	MapDialogRect(hwnd, &rc);
+
+	lpMeasureItem->itemHeight = rc.bottom - rc.top;
+
+	GetClientRect(hwnd, &rc);
+	lpMeasureItem->itemWidth = rc.right - rc.left;
+}
+
+void MIDListDlg::OnDrawItem(HWND hwnd, const DRAWITEMSTRUCT * lpDrawItem)
+{
+	const INT CX_ICON_SMALL = 16;
+	const INT CY_ICON_SMALL = 16;
+
+	RECT rc = lpDrawItem->rcItem;
+
+	SetBkColor(lpDrawItem->hDC, GetSysColor(COLOR_WINDOW));
+	FillRect(lpDrawItem->hDC, &rc, (HBRUSH)(COLOR_WINDOW + 1));
+	SetTextColor(lpDrawItem->hDC, GetSysColor(COLOR_WINDOWTEXT));
+
+	INT x = 0;
+	INT y = ((rc.top + rc.bottom) - CY_ICON_SMALL) / 2 - 1;
+	if (lpDrawItem->itemState & ODS_COMBOBOXEDIT)
+	{
+		x += 3;
+	}
+	DrawIconEx(lpDrawItem->hDC, x, y, m_hIconDiamond, CX_ICON_SMALL, CY_ICON_SMALL, 0, NULL, DI_NORMAL);
+
+	rc.left += CX_ICON_SMALL;
+
+	SetBkMode(lpDrawItem->hDC, OPAQUE);
+	if (lpDrawItem->itemState & ODS_SELECTED)
+	{
+		SetBkColor(lpDrawItem->hDC, GetSysColor(COLOR_HIGHLIGHT));
+		FillRect(lpDrawItem->hDC, &rc, (HBRUSH)(COLOR_HIGHLIGHT + 1));
+		SetTextColor(lpDrawItem->hDC, GetSysColor(COLOR_HIGHLIGHTTEXT));
+	}
+
+	MString szText = GetComboBoxLBText(lpDrawItem->hwndItem, lpDrawItem->itemID);
+
+	InflateRect(&rc, -2, -2);
+	DrawText(lpDrawItem->hDC, szText.c_str(), -1, &rc,
+		DT_SINGLELINE | DT_LEFT | DT_VCENTER | DT_NOPREFIX);
+	InflateRect(&rc, 2, 2);
+
+	if (lpDrawItem->itemState & ODS_FOCUS)
+	{
+		DrawFocusRect(lpDrawItem->hDC, &rc);
+	}
+}
+
+int MIDListDlg::OnCompareItem(HWND hwnd, const COMPAREITEMSTRUCT * lpCompareItem)
+{
+	MString szText1 = GetComboBoxLBText(lpCompareItem->hwndItem, lpCompareItem->itemID1);
+	MString szText2 = GetComboBoxLBText(lpCompareItem->hwndItem, lpCompareItem->itemID2);
+	return lstrcmpi(szText1.c_str(), szText2.c_str());
+}
+
+BOOL MIDListDlg::OnInitDialog(HWND hwnd, HWND hwndFocus, LPARAM lParam)
+{
+	m_hCmb1 = GetDlgItem(hwnd, cmb1);
+	m_hLst1 = GetDlgItem(hwnd, lst1);
+
+	m_resizable.OnParentCreate(hwnd);
+
+	m_resizable.SetLayoutAnchor(cmb1, mzcLA_TOP_LEFT, mzcLA_TOP_RIGHT);
+	m_resizable.SetLayoutAnchor(lst1, mzcLA_TOP_LEFT, mzcLA_BOTTOM_RIGHT);
+
+	ListView_SetExtendedListViewStyle(m_hLst1, LVS_EX_FULLROWSELECT | LVS_EX_INFOTIP);
+	m_lv.SubclassDx(m_hLst1);
+
+	LV_COLUMN column;
+	ZeroMemory(&column, sizeof(column));
+
+	column.mask = LVCF_FMT | LVCF_SUBITEM | LVCF_TEXT | LVCF_WIDTH;
+	column.fmt = LVCFMT_LEFT;
+	column.cx = 160;
+	column.pszText = LoadStringDx(IDS_NAME);
+	column.iSubItem = 0;
+	ListView_InsertColumn(m_hLst1, 0, &column);
+
+	column.mask = LVCF_FMT | LVCF_SUBITEM | LVCF_TEXT | LVCF_WIDTH;
+	column.fmt = LVCFMT_LEFT;
+	column.cx = 120;
+	column.pszText = LoadStringDx(IDS_IDTYPE);
+	column.iSubItem = 1;
+	ListView_InsertColumn(m_hLst1, 1, &column);
+
+	column.mask = LVCF_FMT | LVCF_SUBITEM | LVCF_TEXT | LVCF_WIDTH;
+	column.fmt = LVCFMT_LEFT;
+	column.cx = 80;
+	column.pszText = LoadStringDx(IDS_VALUE);
+	column.iSubItem = 2;
+	ListView_InsertColumn(m_hLst1, 2, &column);
+
+	if (g_settings.bResumeWindowPos)
+	{
+		if (g_settings.nIDListLeft != CW_USEDEFAULT)
+		{
+			POINT pt = { g_settings.nIDListLeft, g_settings.nIDListTop };
+			SetWindowPosDx(&pt);
+		}
+		if (g_settings.nIDListWidth != CW_USEDEFAULT)
+		{
+			SIZE siz = { g_settings.nIDListWidth, g_settings.nIDListHeight };
+			SetWindowPosDx(NULL, &siz);
+		}
+	}
+
+	UpdateItems();
+	UpdateListView(NULL);
+
+	return TRUE;
+}
+
+void MIDListDlg::UpdateResHIfAsk()
+{
+	if (g_settings.bAskUpdateResH)
+		PostMessage(m_hMainWnd, WM_COMMAND, ID_UPDATERESHBANG, 0);
+}
+
+void MIDListDlg::RebuildNumericColumn()
+{
+	for (auto& row : m_items)
+	{
+		if (!row.numeric) continue;
+
+		TCHAR szText[64];
+		if (m_nBase == 10)
+			StringCchPrintf(szText, _countof(szText), TEXT("%d"), row.value);
+		else
+			StringCchPrintf(szText, _countof(szText), TEXT("0x%X"), row.value);
+
+		row.col2 = szText;
+	}
+
+	m_rowIndexMap.clear();
+	for (INT i = 0; i < (INT)m_items.size(); ++i)
+	{
+		RowKey key{m_items[i].col0, m_items[i].col2};
+		m_rowIndexMap[key] = i;
+	}
+}
+
+void MIDListDlg::OnCommand(HWND hwnd, int id, HWND hwndCtl, UINT codeNotify)
+{
+	INT iItem;
+	TCHAR szText[MAX_PATH];
+	MString str1, str2;
+	switch (id)
+	{
+	case cmb1:
+		if (codeNotify == CBN_SELCHANGE && !m_bChanging)
+		{
+			OnCmb1(hwnd);
+		}
+		break;
+	case IDCANCEL:
+		DestroyWindow(hwnd);
+		break;
+	case ID_ADDRESID:
+		{
+			MAddResIDDlg dialog;
+			if (dialog.DialogBoxDx(hwnd) == IDOK)
+			{
+				ConstantsDB::TableType& table = g_db.m_map[L"RESOURCE.ID"];
+				DWORD dwValue;
+				if (dialog.m_bIsHelpID && IsValidHelpIDText(dialog.m_str2.c_str(), &dwValue))
+				{
+					ConstantsDB::EntryType entry(dialog.m_str1, dwValue);
+					table.push_back(entry);
+				}
+				else
+				{
+					INT value = mstr_parse_int(dialog.m_str2.c_str());
+					ConstantsDB::EntryType entry(dialog.m_str1, value);
+					table.push_back(entry);
+				}
+
+				MStringA stra1 = MTextToAnsi(CP_ACP, dialog.m_str1).c_str();
+				MStringA stra2 = MTextToAnsi(CP_ACP, dialog.m_str2).c_str();
+				g_settings.id_map.insert(std::make_pair(stra1, stra2));
+
+				g_settings.added_ids.insert(std::make_pair(stra1, stra2));
+				g_settings.removed_ids.erase(stra1);
+
+				UpdateItems();
+
+				MString strCmbText = GetComboBoxText(m_hCmb1);
+				UpdateListView(strCmbText.c_str());
+
+				SendMessage(m_hMainWnd, WM_COMMAND, ID_UPDATEID, 0);
+
+				UpdateResHIfAsk();
+			}
+		}
+		break;
+	case ID_MODIFYRESID:
+		iItem = ListView_GetNextItem(m_hLst1, -1, LVNI_ALL | LVNI_SELECTED);
+		if (iItem == -1)
+			break;
+		ListView_GetItemText(m_hLst1, iItem, 0, szText, _countof(szText));
+		str1 = szText;
+		ListView_GetItemText(m_hLst1, iItem, 2, szText, _countof(szText));
+		str2 = szText;
+		if (str1.size() && !mchr_is_digit(str1[0]) &&
+			str2.size() && str2[0] != TEXT('L') && str2[0] != TEXT('"'))
+		{
+			// Detect whether this row is a Help ID (wider 32-bit range)
+			TCHAR szType[MAX_PATH];
+			ListView_GetItemText(m_hLst1, iItem, 1, szType, _countof(szType));
+			BOOL bIsHelpID = IsTypeMatched(MString(szType), MapIDType(IDTYPE_HELP).c_str());
+
+			MModifyResIDDlg dialog(str1, str2, bIsHelpID);
+			if (dialog.DialogBoxDx(hwnd) == IDOK)
+			{
+				ConstantsDB::TableType& table = g_db.m_map[L"RESOURCE.ID"];
+				auto end = table.end();
+				for (auto it = table.begin(); it != end; ++it)
+				{
+					if (it->name == str1)
+					{
+						table.erase(it);
+						break;
+					}
+				}
+				DWORD dwValue;
+				if (dialog.m_bIsHelpID && IsValidHelpIDText(dialog.m_str2.c_str(), &dwValue))
+				{
+					ConstantsDB::EntryType entry(dialog.m_str1, dwValue);
+					table.push_back(entry);
+				}
+				else
+				{
+					INT value = mstr_parse_int(dialog.m_str2.c_str());
+					ConstantsDB::EntryType entry(dialog.m_str1, value);
+					table.push_back(entry);
+				}
+
+				MStringA stra1old = MTextToAnsi(CP_ACP, str1).c_str();
+				MStringA stra2old = MTextToAnsi(CP_ACP, str2).c_str();
+				MStringA stra1 = MTextToAnsi(CP_ACP, dialog.m_str1).c_str();
+				MStringA stra2 = MTextToAnsi(CP_ACP, dialog.m_str2).c_str();
+				g_settings.id_map.erase(stra1old);
+				g_settings.id_map.insert(std::make_pair(stra1, stra2));
+				g_settings.added_ids.erase(stra1old);
+				g_settings.added_ids.insert(std::make_pair(stra1, stra2));
+				g_settings.removed_ids.erase(stra1old);
+				g_settings.removed_ids.insert(std::make_pair(stra1old, stra2old));
+
+				UpdateItems();
+
+				MString strCmbText = GetComboBoxText(m_hCmb1);
+				UpdateListView(strCmbText.c_str());
+
+				SendMessage(m_hMainWnd, WM_COMMAND, ID_UPDATEID, 0);
+				UpdateResHIfAsk();
+			}
+		}
+		break;
+	case ID_DELETERESID:
+		{
+			iItem = ListView_GetNextItem(m_hLst1, -1, LVNI_ALL | LVNI_SELECTED);
+			if (iItem == -1)
+				break;
+
+			ListView_GetItemText(m_hLst1, iItem, 0, szText, _countof(szText));
+			MString str1 = szText;
+			if (str1.size() && mchr_is_digit(str1[0]))
+				break;
+
+			MStringA astr1 = MTextToAnsi(CP_ACP, szText).c_str();
+			ListView_GetItemText(m_hLst1, iItem, 2, szText, _countof(szText));
+
+			ConstantsDB::TableType& table = g_db.m_map[L"RESOURCE.ID"];
+			auto end = table.end();
+			for (auto it = table.begin(); it != end; ++it)
+			{
+				if (it->name == str1)
+				{
+					table.erase(it);
+					break;
+				}
+			}
+
+			g_settings.id_map.erase(astr1);
+			if (!g_settings.added_ids.erase(astr1))
+			{
+				MStringA astr2 = MTextToAnsi(CP_ACP, szText).c_str();
+				g_settings.removed_ids.insert(std::make_pair(astr1, astr2));
+			}
+		}
+		UpdateItems();
+		OnCmb1(m_hwnd);
+		SendMessage(m_hMainWnd, WM_COMMAND, ID_UPDATEID, 0);
+		UpdateResHIfAsk();
+		break;
+	case ID_COPYRESIDNAME:
+		{
+			iItem = ListView_GetNextItem(m_hLst1, -1, LVNI_ALL | LVNI_SELECTED);
+			if (iItem == -1)
+				break;
+			ListView_GetItemText(m_hLst1, iItem, 0, szText, _countof(szText));
+			CopyTextDx(hwnd, szText);
+		}
+		break;
+	case ID_COPYRESIDVALUE:
+		{
+			iItem = ListView_GetNextItem(m_hLst1, -1, LVNI_ALL | LVNI_SELECTED);
+			if (iItem == -1)
+				break;
+			ListView_GetItemText(m_hLst1, iItem, 2, szText, _countof(szText));
+			MString text = szText;
+			CopyTextDx(hwnd, text);
+		}
+		break;
+	case ID_COPYIDDEF:
+		{
+			iItem = ListView_GetNextItem(m_hLst1, -1, LVNI_ALL | LVNI_SELECTED);
+			if (iItem == -1)
+				break;
+			ListView_GetItemText(m_hLst1, iItem, 0, szText, _countof(szText));
+			MString text1 = szText;
+			ListView_GetItemText(m_hLst1, iItem, 2, szText, _countof(szText));
+			MString text2 = szText;
+			MString text = TEXT("#define ");
+			text += text1;
+			text += TEXT(" ");
+			text += text2;
+			text += TEXT("\r\n");
+			CopyTextDx(hwnd, text);
+		}
+		break;
+	case ID_LOADRESH:
+		PostMessage(m_hMainWnd, WM_COMMAND, ID_LOADRESHBANG, 0);
+		break;
+	case ID_IDJUMP:
+		OnIdJump(hwnd);
+		break;
+	case ID_BASE10:
+		{
+			HCURSOR hOldCursor = SetCursor(LoadCursor(NULL, IDC_WAIT));
+			m_nBase = 10;
+			MString strText = GetComboBoxText(m_hCmb1);
+			RebuildNumericColumn();
+			UpdateListView(strText.c_str());
+			SetCursor(hOldCursor);
+		}
+		break;
+	case ID_BASE16:
+		{
+			HCURSOR hOldCursor = SetCursor(LoadCursor(NULL, IDC_WAIT));
+			m_nBase = 16;
+			MString strText = GetComboBoxText(m_hCmb1);
+			RebuildNumericColumn();
+			UpdateListView(strText.c_str());
+			SetCursor(hOldCursor);
+		}
+		break;
+	case ID_IDJUMP00:
+		OnIdJump(hwnd, 0);
+		break;
+	case ID_IDJUMP01:
+		OnIdJump(hwnd, 1);
+		break;
+	case ID_IDJUMP02:
+		OnIdJump(hwnd, 2);
+		break;
+	case ID_IDJUMP03:
+		OnIdJump(hwnd, 3);
+		break;
+	case ID_IDJUMP04:
+		OnIdJump(hwnd, 4);
+		break;
+	case ID_IDJUMP05:
+		OnIdJump(hwnd, 5);
+		break;
+	case ID_IDJUMP06:
+		OnIdJump(hwnd, 6);
+		break;
+	case ID_IDJUMP07:
+		OnIdJump(hwnd, 7);
+		break;
+	case ID_IDJUMP08:
+		OnIdJump(hwnd, 8);
+		break;
+	case ID_IDJUMP09:
+		OnIdJump(hwnd, 9);
+		break;
+	}
+}
+
+void MIDListDlg::OnIdJump(HWND hwnd, INT nIndex)
+{
+	INT iItem = ListView_GetNextItem(m_hLst1, -1, LVNI_ALL | LVNI_SELECTED);
+	if (iItem == -1)
+		return;
+
+	TCHAR szText[MAX_PATH];
+	ListView_GetItemText(m_hLst1, iItem, 1, szText, _countof(szText));
+	MString str = szText;
+	if (str.find(TEXT('/')) == MString::npos || nIndex == 0)
+	{
+		PostMessage(m_hMainWnd, MYWM_IDJUMPBANG, iItem, 0);
+		return;
+	}
+
+	std::vector<MString> vecItems;
+	mstr_split(vecItems, str, TEXT("/"));
+	vecItems.erase(std::remove_if(vecItems.begin(), vecItems.end(), [](const MString& item) { return item.empty(); }), vecItems.end());
+	if (vecItems.empty())
+		return;
+
+	if (nIndex == -1)
+	{
+		if (vecItems.size() == 1)
+		{
+			PostMessage(m_hMainWnd, MYWM_IDJUMPBANG, iItem, 0);
+			return;
+		}
+
+		HMENU hMenu = CreatePopupMenu();
+		const size_t max_count = 10;
+		for (size_t i = 0; i < vecItems.size() && i < max_count; ++i)
+		{
+			INT k = ID_IDJUMP00 + INT(i);
+			InsertMenu(hMenu, 0xFFFFFFFF, MF_BYPOSITION | MF_STRING | MF_ENABLED,
+				k, vecItems[i].c_str());
+		}
+
+		// get the cursor position
+		POINT pt;
+		GetCursorPos(&pt);
+
+		// See: https://msdn.microsoft.com/en-us/library/windows/desktop/ms648002.aspx
+		SetForegroundWindow(hwnd);
+
+		INT nCmd = (INT)TrackPopupMenu(hMenu, TPM_LEFTALIGN | TPM_RIGHTBUTTON | TPM_RETURNCMD,
+		                               pt.x, pt.y, 0, hwnd, NULL);
+
+		// See: https://msdn.microsoft.com/en-us/library/windows/desktop/ms648002.aspx
+		PostMessage(hwnd, WM_NULL, 0, 0);
+
+		// destroy the menu
+		DestroyMenu(hMenu);
+
+		// Post WM_COMMAND message
+		PostMessage(hwnd, WM_COMMAND, nCmd, 0);
+	}
+	else
+	{
+		PostMessage(m_hMainWnd, MYWM_IDJUMPBANG, iItem, nIndex);
+	}
+}
+
+INT_PTR CALLBACK
+MIDListDlg::DialogProcDx(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
+{
+	switch (uMsg)
+	{
+	HANDLE_MSG(hwnd, WM_INITDIALOG, OnInitDialog);
+	HANDLE_MSG(hwnd, WM_COMMAND, OnCommand);
+	HANDLE_MSG(hwnd, WM_MOVE, OnMove);
+	HANDLE_MSG(hwnd, WM_SIZE, OnSize);
+	HANDLE_MSG(hwnd, WM_CONTEXTMENU, OnContextMenu);
+	HANDLE_MSG(hwnd, WM_NOTIFY, OnNotify);
+	HANDLE_MSG(hwnd, WM_INITMENUPOPUP, OnInitMenuPopup);
+	HANDLE_MSG(hwnd, WM_MEASUREITEM, OnMeasureItem);
+	HANDLE_MSG(hwnd, WM_DRAWITEM, OnDrawItem);
+	HANDLE_MSG(hwnd, WM_COMPAREITEM, OnCompareItem);
+	case MYWM_REFRESHIDLIST:
+		OnRefreshList(hwnd);
+		break;
+	default:
+		return DefaultProcDx();
+	}
+	return 0;
+}
+
+void MIDListDlg::OnInitMenuPopup(HWND hwnd, HMENU hMenu, UINT item, BOOL fSystemMenu)
+{
+	if (m_nBase == 10)
+	{
+		CheckMenuRadioItem(hMenu, ID_BASE10, ID_BASE16, ID_BASE10, MF_BYCOMMAND);
+	}
+	else if (m_nBase == 16)
+	{
+		CheckMenuRadioItem(hMenu, ID_BASE10, ID_BASE16, ID_BASE16, MF_BYCOMMAND);
+	}
+	INT iItem = ListView_GetNextItem(m_hLst1, -1, LVNI_ALL | LVNI_SELECTED);
+
+	TCHAR szText[MAX_PATH];
+	if (iItem != -1)
+		ListView_GetItemText(m_hLst1, iItem, 2, szText, _countof(szText));
+	if (iItem == -1 || szText[0] == TEXT('L') || szText[0] == TEXT('"'))
+	{
+		EnableMenuItem(hMenu, ID_MODIFYRESID, MF_GRAYED);
+		EnableMenuItem(hMenu, ID_COPYRESIDNAME, MF_GRAYED);
+		EnableMenuItem(hMenu, ID_COPYRESIDVALUE, MF_GRAYED);
+		EnableMenuItem(hMenu, ID_COPYIDDEF, MF_GRAYED);
+		EnableMenuItem(hMenu, ID_DELETERESID, MF_GRAYED);
+	}
+	else
+	{
+		ListView_GetItemText(m_hLst1, iItem, 0, szText, _countof(szText));
+		if (mchr_is_digit(szText[0]) || szText[0] == L'-' ||
+			lstrcmpW(szText, L"IDC_STATIC") == 0)
+		{
+			EnableMenuItem(hMenu, ID_MODIFYRESID, MF_GRAYED);
+			EnableMenuItem(hMenu, ID_COPYRESIDNAME, MF_ENABLED);
+			EnableMenuItem(hMenu, ID_COPYRESIDVALUE, MF_ENABLED);
+			EnableMenuItem(hMenu, ID_COPYIDDEF, MF_ENABLED);
+			EnableMenuItem(hMenu, ID_DELETERESID, MF_GRAYED);
+		}
+		else
+		{
+			EnableMenuItem(hMenu, ID_MODIFYRESID, MF_ENABLED);
+			EnableMenuItem(hMenu, ID_COPYRESIDNAME, MF_ENABLED);
+			EnableMenuItem(hMenu, ID_COPYRESIDVALUE, MF_ENABLED);
+			EnableMenuItem(hMenu, ID_COPYIDDEF, MF_ENABLED);
+			EnableMenuItem(hMenu, ID_DELETERESID, MF_ENABLED);
+		}
+	}
+}
+
+void MIDListDlg::OnMove(HWND hwnd, int x, int y)
+{
+	assert(m_hwnd);
+
+	if (!IsZoomed(hwnd) && !IsIconic(hwnd))
+	{
+		RECT rc;
+		GetWindowRect(hwnd, &rc);
+		g_settings.nIDListLeft = rc.left;
+		g_settings.nIDListTop = rc.top;
+	}
+}
+
+void MIDListDlg::OnSize(HWND hwnd, UINT state, int cx, int cy)
+{
+	assert(m_hwnd);
+
+	if (!IsZoomed(hwnd) && !IsIconic(hwnd))
+	{
+		RECT rc;
+		GetWindowRect(hwnd, &rc);
+		g_settings.nIDListWidth = rc.right - rc.left;
+		g_settings.nIDListHeight = rc.bottom - rc.top;
+	}
+
+	m_resizable.OnSize();
+}
+
+void MIDListDlg::OnContextMenu(HWND hwnd, HWND hwndContext, UINT xPos, UINT yPos)
+{
+	if (hwndContext == m_hLst1)
+	{
+		PopupMenuDx(hwnd, m_hLst1, IDR_POPUPMENUS, 3, xPos, yPos);
+	}
+}
+
+LRESULT MIDListDlg::OnNotify(HWND hwnd, int idFrom, LPNMHDR pnmhdr)
+{
+	if (idFrom == lst1)
+	{
+		if (pnmhdr->code == NM_DBLCLK)
+		{
+			PostMessageDx(WM_COMMAND, ID_IDJUMP);
+			return 1;
+		}
+		if (pnmhdr->code == LVN_KEYDOWN)
+		{
+			LV_KEYDOWN *down = (LV_KEYDOWN *)pnmhdr;
+			if (down->wVKey == VK_DELETE)
+			{
+				PostMessageDx(WM_COMMAND, ID_DELETERESID);
+				return 1;
+			}
+			if (down->wVKey == 'C' && GetKeyState(VK_CONTROL) < 0)
+			{
+				PostMessageDx(WM_COMMAND, ID_COPYIDDEF);
+				return 1;
+			}
+		}
+		if (pnmhdr->code == LVN_GETINFOTIP)
+		{
+			NMLVGETINFOTIP *pGetInfoTip = (NMLVGETINFOTIP *)pnmhdr;
+			INT iItem = pGetInfoTip->iItem;
+			INT iSubItem = pGetInfoTip->iSubItem;
+			TCHAR szText[MAX_PATH];
+			ListView_GetItemText(m_hLst1, iItem, iSubItem, szText, _countof(szText));
+			StringCchCopy(pGetInfoTip->pszText, pGetInfoTip->cchTextMax, szText);
+			return 1;
+		}
+	}
+	return 0;
+}
