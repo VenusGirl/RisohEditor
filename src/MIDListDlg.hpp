@@ -7,6 +7,7 @@
 #pragma once
 
 #include <algorithm> // std::find, std::sort, std::unique
+#include <unordered_map>
 
 #include "resource.h"
 #include "MWindowBase.hpp"
@@ -54,6 +55,22 @@ public:
 	}
 };
 
+struct RowKey {
+	MString name;
+	MString value;
+	bool operator==(const RowKey& other) const {
+		return name == other.name && value == other.value;
+	}
+};
+
+namespace std {
+	template<> struct hash<RowKey> {
+		size_t operator()(const RowKey& k) const {
+			return hash<MString>()(k.name) ^ hash<MString>()(k.value);
+		}
+	};
+}
+
 class MIDListDlg : public MDialogBase
 {
 public:
@@ -65,6 +82,7 @@ public:
 		bool has_real_type;
 	};
 	std::vector<ItemRow> m_items; // Sorted
+	std::unordered_map<RowKey, INT> m_rowIndexMap;
 
 	HWND m_hMainWnd;
 	LPWSTR m_pszResH;
@@ -176,16 +194,6 @@ public:
 		return false;
 	}
 
-	INT FindRowIndex(const MString& text1, const MString& text3) const
-	{
-		for (size_t i = 0; i < m_items.size(); ++i)
-		{
-			if (m_items[i].col0 == text1 && m_items[i].col2 == text3)
-				return INT(i);
-		}
-		return -1;
-	}
-
 	void MergeType(ItemRow& row, const MString& type, bool bRealType)
 	{
 		std::vector<MString> types;
@@ -203,15 +211,17 @@ public:
 
 	void AddOrMergeRow(const MString& text1, const MString& type, const MString& text3, bool bRealType)
 	{
+		MString normalizedValue = text3;
 		INT value = 0;
 		bool numeric = false;
-		MString normalizedValue = text3;
 		NormalizeValueText(normalizedValue, value, numeric);
 
-		INT index = FindRowIndex(text1, normalizedValue);
-		if (index != -1)
+		RowKey key{text1, normalizedValue};
+
+		auto it = m_rowIndexMap.find(key);
+		if (it != m_rowIndexMap.end())
 		{
-			MergeType(m_items[index], type, bRealType);
+			MergeType(m_items[it->second], type, bRealType);
 			return;
 		}
 
@@ -222,8 +232,12 @@ public:
 		row.value = value;
 		row.numeric = numeric;
 		row.has_real_type = false;
-		MergeType(row, type, bRealType);
+
+		INT index = (INT)m_items.size();
 		m_items.push_back(row);
+		m_rowIndexMap[key] = index;
+
+		MergeType(m_items.back(), type, bRealType);
 	}
 
 	MString GetTypeTextFromEntry(const EntryBase *entry) const
@@ -341,8 +355,10 @@ public:
 		MString normalizedValue = text3;
 		NormalizeValueText(normalizedValue, value, numeric);
 
-		INT index = FindRowIndex(text1, normalizedValue);
-		if (index != -1 && m_items[index].has_real_type)
+		RowKey key{text1, normalizedValue};
+
+		auto it = m_rowIndexMap.find(key);
+		if (it != m_rowIndexMap.end() && m_items[it->second].has_real_type)
 			return;
 
 		std::vector<MString> types = GetPrefixTypeTexts(text1);
@@ -394,6 +410,7 @@ public:
 	void UpdateItems()
 	{
 		m_items.clear();
+		m_rowIndexMap.clear();
 		BuildItemsIntoCache();
 
 		std::sort(m_items.begin(), m_items.end(), [](const ItemRow& a, const ItemRow& b)
@@ -449,8 +466,12 @@ public:
 
 	void BuildItemsIntoCache()
 	{
+		m_items.clear();
+		m_rowIndexMap.clear();
+
 		EntrySet found;
 		g_res.search(found, ET_LANG);
+
 		for (auto entry : found)
 		{
 			AddResourceRow(entry);
@@ -597,17 +618,22 @@ public:
 	{
 		for (auto& row : m_items)
 		{
-			if (!row.numeric)
-				continue;
+			if (!row.numeric) continue;
 
 			TCHAR szText[64];
-
 			if (m_nBase == 10)
 				StringCchPrintf(szText, _countof(szText), TEXT("%d"), row.value);
 			else
 				StringCchPrintf(szText, _countof(szText), TEXT("0x%X"), row.value);
 
 			row.col2 = szText;
+		}
+
+		m_rowIndexMap.clear();
+		for (INT i = 0; i < (INT)m_items.size(); ++i)
+		{
+			RowKey key{m_items[i].col0, m_items[i].col2};
+			m_rowIndexMap[key] = i;
 		}
 	}
 
