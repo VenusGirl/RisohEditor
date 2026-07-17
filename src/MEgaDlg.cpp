@@ -34,7 +34,7 @@ bool EGA_dialog_input(char *buf, size_t buflen)
 			continue;
 		}
 
-		Sleep(100); // FIXME: もっと良い待ち方があるはずだ。
+		Sleep(10); // FIXME: もっと良い待ち方があるはずだ。
 	}
 
 	// 入力を受け入れる準備をする。
@@ -224,6 +224,7 @@ void MEgaDlg::OnCommand(HWND hwnd, int id, HWND hwndCtl, UINT codeNotify)
 		OnOK(hwnd);
 		break;
 	case IDCANCEL: // Close
+		EgaBridge::StopInteractive(false);
 		::DestroyWindow(hwnd);
 		break;
 	}
@@ -306,28 +307,47 @@ void MEgaDlg::OnEgaGetInput(HWND hwnd)
 }
 
 // WM_EGA_DO_PRINT
+// WM_EGA_DO_PRINT
 void MEgaDlg::OnEgaPrint(HWND hwnd)
 {
-	// 未処理の出力文字列を取得する。
 	std::wstring text;
-	if (!EgaBridge::TakePendingPrintText(text))
-		return; // そんなものはない。
+	if (!EgaBridge::TakePendingPrintText(text) || text.empty())
+		return;
 
-	// 巨大になりすぎたら古い部分を削除（簡易版）
-	if (m_cchEdt1 > 10'000'000) // 約10MB超
+	if (EgaBridge::IsStopRequested())
+		return;
+
+	static DWORD s_lastHeavyPrint = 0;
+	static int   s_skipCounter = 0;
+	DWORD now = GetTickCount();
+
+	// 出力が巨大になったら強くスキップ
+	if (m_cchEdt1 > 1'000'000)
 	{
-		SendDlgItemMessageW(hwnd, edt1, EM_SETSEL, 0, 500'000); // 先頭50万文字削除
-		SendDlgItemMessageW(hwnd, edt1, EM_REPLACESEL, FALSE, (LPARAM)L"");
+		if (++s_skipCounter < 50)  // 50回に1回だけ処理
+			return;
+		s_skipCounter = 0;
+	}
+	else if (m_cchEdt1 > 500'000 && (now - s_lastHeavyPrint < 200))
+	{
+		return; // 200ms以内に連続printはスキップ
+	}
+
+	s_lastHeavyPrint = now;
+
+	// 極端に巨大ならさらに削る
+	if (m_cchEdt1 > 3'000'000)
+	{
+		SendDlgItemMessageW(hwnd, edt1, EM_SETSEL, 0, 1'500'000);
+		SendDlgItemMessageW(hwnd, edt1, EM_REPLACESEL, FALSE, (LPARAM)L"[... truncated ...]\r\n");
 		m_cchEdt1 = GetWindowTextLengthW(GetDlgItem(hwnd, edt1));
 	}
 
-	// 追記。
 	SendDlgItemMessageW(hwnd, edt1, EM_SETSEL, m_cchEdt1, m_cchEdt1);
 	SendDlgItemMessageW(hwnd, edt1, EM_REPLACESEL, FALSE, (LPARAM)text.c_str());
 	SendDlgItemMessageW(hwnd, edt1, EM_SCROLLCARET, 0, 0);
-	m_cchEdt1 += (INT)text.size(); // 今後のためにも、文字列長を覚えておく。
+	m_cchEdt1 += (INT)text.size();
 
-	// カーソル強制復元（念のため）
 	::SetCursor(::LoadCursorW(NULL, IDC_ARROW));
 }
 

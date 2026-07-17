@@ -9,12 +9,13 @@
 #include <queue>
 #include <utility>
 #include <atomic>
-
+#include "MMainWnd.hpp"
 #include "../EGA/ega.hpp"
 
 using namespace EGA;
 
 extern HWND s_hwndEga;
+extern MMainWnd *s_pMainWnd;
 
 namespace
 {
@@ -22,10 +23,10 @@ namespace
 	static bool     s_bCsReady    = false; // s_csの準備ＯＫ？
 	static HANDLE   s_hThread     = NULL;  // スレッド
 	static HANDLE   s_hStopEvent  = NULL;  // manual-reset
-	static bool     s_bRunning    = false; // 実行中？
-	static bool     s_bInitialized = false; // 初期化済み？
+	static volatile bool s_bRunning = false; // 実行中？
+	static volatile bool s_bInitialized = false;// 初期化済み？
 	static CRITICAL_SECTION s_fileCs; // ファイル処理のクリティカルセクション。
-	static bool     s_fileCsReady = false; // s_fileCsの準備ＯＫ？
+	static bool s_fileCsReady = false; // s_fileCsの準備ＯＫ？
 	static std::queue<std::string> s_fileQueue; // ファイルのキュー。
 
 	// UIスレッドで実行する処理のキュー。
@@ -35,7 +36,7 @@ namespace
 
 	// Enter/input handshake state (owned by EgaBridge so that it is
 	// re-created every session -- see Initialize()/Uninitialize()).
-	static std::atomic<bool> s_bEnterPressed(false);
+	static volatile bool s_bEnterPressed;
 	static CRITICAL_SECTION s_inputCs;
 	static bool     s_inputCsReady = false;
 	static HANDLE   s_hInputDone   = NULL;   // auto-reset event
@@ -50,7 +51,6 @@ namespace
 	static std::atomic<bool> s_bPrintPosted(false); // 出力が投函されたか？
 	static std::wstring s_printBuffer; // 出力バッファ。protected by s_printCs
 	static DWORD s_lastPrintFlush = 0;
-	static const DWORD PRINT_THROTTLE_MS = 50; // 最大20回/秒
 }
 
 // EGAを実行するためのスレッド関数。
@@ -61,6 +61,8 @@ static DWORD WINAPI EgaBridgeThreadProc(LPVOID args)
 #ifndef NDEBUG
 	OutputDebugStringW(L"EgaBridgeThreadProc: enter\n");
 #endif
+
+	SetThreadPriority(GetCurrentThread(), THREAD_PRIORITY_BELOW_NORMAL);
 
 	try
 	{
@@ -195,16 +197,16 @@ namespace EgaBridge
 	// EGAとの対話を開始。
 	bool StartInteractive()
 	{
-		EnterCriticalSection(&s_cs);
-
-		OutputDebugStringA("StartInteractive\n");
-
 		if (s_bRunning)
 		{
 			OutputDebugStringA("already running\n");
-			LeaveCriticalSection(&s_cs);
-			return true;
+			StopInteractive(true);
+			OutputDebugStringA("waited\n");
 		}
+
+		EnterCriticalSection(&s_cs);
+
+		OutputDebugStringA("StartInteractive\n");
 
 		::ResetEvent(s_hStopEvent);
 		s_bRunning = true;
@@ -258,18 +260,26 @@ namespace EgaBridge
 			const DWORD TIMEOUT = 100;  // 100ms ごとに UI メッセージを捌く
 			DWORD start = GetTickCount();
 
-			while (WaitForSingleObject(hThread, 0) == WAIT_TIMEOUT)
+			HANDLE handles[] = { hThread, s_hStopEvent };
+			while (WaitForMultipleObjects(2, handles, FALSE, 0) == WAIT_TIMEOUT)
 			{
 				DWORD elapsed = GetTickCount() - start;
 				if (elapsed > 10000)
 					break;  // 10秒超えたら強制終了
 
 				// UI メッセージを処理しつつ EGA スレッドの終了を待つ
-				MsgWaitForMultipleObjects(1, &hThread, FALSE, TIMEOUT, QS_ALLINPUT);
+				DWORD dwWait = MsgWaitForMultipleObjects(2, handles, FALSE, TIMEOUT, QS_ALLINPUT);
+				if (dwWait == WAIT_OBJECT_0 || dwWait == WAIT_OBJECT_0 + 1)
+					break;
 
 				MSG msg;
 				if (PeekMessageW(&msg, NULL, 0, 0, PM_NOREMOVE))
-					DispatchMessageW(&msg);
+				{
+					GetMessage(&msg, NULL, 0, 0);
+					s_pMainWnd->DoMsg(msg);
+				}
+
+				Sleep(10);
 			}
 
 			::CloseHandle(hThread);
@@ -293,8 +303,7 @@ namespace EgaBridge
 	bool IsStopRequested()
 	{
 		return EGA_is_stopping() || 
-		       (s_hStopEvent != NULL &&
-		        ::WaitForSingleObject(s_hStopEvent, 0) == WAIT_OBJECT_0);
+		       (s_hStopEvent && ::WaitForSingleObject(s_hStopEvent, 0) == WAIT_OBJECT_0);
 	}
 
 	// 停止ハンドルを取得。クライアントは閉じてはいけない。
@@ -465,8 +474,16 @@ namespace EgaBridge
 		EnterCriticalSection(&s_printCs);
 		s_printBuffer += text;
 
+		// バッファが大きくなりすぎたら強制フラッシュ + トリム
 		DWORD now = GetTickCount();
-		if (!s_bPrintPosted && (now - s_lastPrintFlush > PRINT_THROTTLE_MS))
+		if (s_printBuffer.size() > 10000)
+		{
+			s_printBuffer.erase(0, 1000);
+			s_bPrintPosted = true;
+			needPost = true;
+			s_lastPrintFlush = now;
+		}
+		else if (!s_bPrintPosted && (now - s_lastPrintFlush > 300))
 		{
 			s_bPrintPosted = true;
 			needPost = true;
@@ -477,8 +494,11 @@ namespace EgaBridge
 		if (needPost)
 		{
 			HWND hwnd = s_hwndEga;
-			if (!::IsWindow(hwnd) || !::PostMessageW(hwnd, WM_EGA_DO_PRINT, 0, 0))
+			if (!::IsWindow(hwnd) || EgaBridge::IsStopRequested() ||
+				!::PostMessageW(hwnd, WM_EGA_DO_PRINT, 0, 0))
+			{
 				s_bPrintPosted = false;
+			}
 		}
 	}
 
