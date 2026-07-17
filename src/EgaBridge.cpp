@@ -261,14 +261,14 @@ namespace EgaBridge
 			DWORD start = GetTickCount();
 
 			HANDLE handles[] = { hThread, s_hStopEvent };
-			while (WaitForMultipleObjects(2, handles, FALSE, 0) == WAIT_TIMEOUT)
+			while (WaitForMultipleObjects(_countof(handles), handles, FALSE, 0) == WAIT_TIMEOUT)
 			{
 				DWORD elapsed = GetTickCount() - start;
 				if (elapsed > 10000)
 					break;  // 10秒超えたら強制終了
 
 				// UI メッセージを処理しつつ EGA スレッドの終了を待つ
-				DWORD dwWait = MsgWaitForMultipleObjects(2, handles, FALSE, TIMEOUT, QS_ALLINPUT);
+				DWORD dwWait = MsgWaitForMultipleObjects(_countof(handles), handles, FALSE, TIMEOUT, QS_ALLINPUT);
 				if (dwWait == WAIT_OBJECT_0 || dwWait == WAIT_OBJECT_0 + 1)
 					break;
 
