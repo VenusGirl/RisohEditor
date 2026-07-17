@@ -2,6 +2,8 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 ; !!! This file must be UTF-8 with BOM !!!
 
+#include                 "installer_languages.iss"
+
 [Setup]
 ; NOTE: The value of AppId uniquely identifies this application.
 ; Do not use the same AppId value in installers for other applications.
@@ -18,8 +20,6 @@
 #define MyAppCopyright   "(c) 2017-" + CurrentYear + " " + MyAppCompanyName
 #define MyAppURL         "https://katahiromz.fc2.page/risoheditor/"
 #define MyAppDescription "RisohEditor 32-bit"
-
-#include                 "installer_languages.iss"
 
 AppId={{AF7494D1-406F-4D04-A8FE-8F9DAB97F611}
 AppName={#MyAppName}
@@ -120,7 +120,7 @@ Source: "EGA-samples\DeleteKorean.ega"; DestDir: "{app}\EGA"; Flags: ignoreversi
 Source: "EGA-samples\DeleteNonEnglish.ega"; DestDir: "{app}\EGA"; Flags: ignoreversion
 Source: "EGA-samples\DeleteRussian.ega"; DestDir: "{app}\EGA"; Flags: ignoreversion
 Source: "EGA-samples\DeleteSimplifiedChinese.ega"; DestDir: "{app}\EGA"; Flags: ignoreversion
-Source: "EGA\samples\FindTarget.ega"; DestDir: "{app}\EGA"; Flags: ignoreversion
+Source: "EGA-samples\FindTarget.ega"; DestDir: "{app}\EGA"; Flags: ignoreversion
 Source: "EGA-samples\NeutralToEnglish.ega"; DestDir: "{app}\EGA"; Flags: ignoreversion
 Source: "EGA-samples\RES_clone_by_lang.ega"; DestDir: "{app}\EGA"; Flags: ignoreversion
 Source: "EGA-samples\RES_select.ega"; DestDir: "{app}\EGA"; Flags: ignoreversion
