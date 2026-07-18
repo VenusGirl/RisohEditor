@@ -64,9 +64,7 @@ namespace
 // RisohEditorのEGA実行単位はこの関数の外では実行してはならない。
 static DWORD WINAPI EgaBridgeThreadProc(LPVOID args)
 {
-#ifndef NDEBUG
-	OutputDebugStringW(L"EgaBridgeThreadProc: enter\n");
-#endif
+	DBGOUT("EgaBridgeThreadProc: enter\n");
 
 	SetThreadPriority(GetCurrentThread(), THREAD_PRIORITY_BELOW_NORMAL);
 
@@ -83,9 +81,7 @@ static DWORD WINAPI EgaBridgeThreadProc(LPVOID args)
 	s_bRunning = false; // EGA実行終了。
 	LeaveCriticalSection(&s_cs);
 
-#ifndef NDEBUG
-	OutputDebugStringW(L"EgaBridgeThreadProc: leave\n");
-#endif
+	DBGOUT("EgaBridgeThreadProc: leave\n");
 
 	// Do not close s_hThread here. Owner thread handles it.
 	return 0;
