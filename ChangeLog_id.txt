@@ -4,6 +4,7 @@
     - Added history on EGA Console (Up/Down keys).
     - Improved keyword help.
     - Added EGA localtime and gmtime functions.
+    - Improved EGA manual.
 - v.6.0.5 (2026-07-17)
     - Mengaktifkan fitur pengubahan nama sumber daya melalui tanda panah pada *treeview*. 
     - Memperbaiki dukungan EGA. Menambahkan beberapa program EGA. 

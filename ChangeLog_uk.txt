@@ -4,6 +4,7 @@
     - Added history on EGA Console (Up/Down keys).
     - Improved keyword help.
     - Added EGA localtime and gmtime functions.
+    - Improved EGA manual.
 - v.6.0.5 (2026-07-17)
     - Увімкнено стрілку деревоподібного перегляду для зміни назви ресурсу.
     - Виправлено EGA. Додано деякі програми EGA.
