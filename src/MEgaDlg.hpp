@@ -67,6 +67,7 @@ protected:
 	void OnSize(HWND hwnd, UINT state, int cx, int cy);
 	void OnEgaGetInput(HWND hwnd);
 	void OnEgaPrint(HWND hwnd);
+	void OnGetMinMaxInfo(HWND hwnd, LPMINMAXINFO lpMinMaxInfo);
 
 	void AddToHistory(const std::wstring& str);
 	void NavigateHistory(HWND hEdt2, bool bUp);
