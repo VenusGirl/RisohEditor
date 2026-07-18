@@ -169,6 +169,7 @@ BOOL MEgaDlg::OnInitDialog(HWND hwnd, HWND hwndFocus, LPARAM lParam)
 	MTRACEA("%s\n", __FUNCTION__);
 	s_hwndEga = hwnd; // Remember
 
+	// Subclassing edt2
 	HWND hEdt2 = GetDlgItem(hwnd, edt2);
 	m_fnOldEditWndProc = (WNDPROC)SetWindowLongPtrW(hEdt2, GWLP_WNDPROC, (LONG_PTR)Edt2WndProc);
 	SetWindowLongPtrW(hEdt2, GWLP_USERDATA, (LONG_PTR)this);
