@@ -2,13 +2,13 @@
 
 - v.6.0.6 (2026-XX-YY)
 - v.6.0.5 (2026-07-17)
-    - Enabled the treeview arrow to change the resource name.
-    - Fixed EGA. Added some EGA programs.
-    - Used DIALOGEX instead of DIALOG.
-    - Improved DIALOGEX FONT dumping.
-    - Improved handling when multiple controls are selected in IDD_CTRLPROP.
-    - Enabled input auto completion on name item of treeview.
-    - Fixed item deletion on treeview.
+    - Mengaktifkan fitur pengubahan nama sumber daya melalui tanda panah pada *treeview*. 
+    - Memperbaiki dukungan EGA. Menambahkan beberapa program EGA. 
+    - Menggunakan DIALOGEX sebagai pengganti DIALOG. 
+    - Menyempurnakan proses *dumping* FONT pada DIALOGEX. 
+    - Menyempurnakan penanganan saat beberapa kontrol dipilih di IDD_CTRLPROP. 
+    - Mengaktifkan fitur pelengkapan otomatis (*auto-completion*) untuk nama item pada *treeview*. 
+    - Memperbaiki masalah penghapusan item pada *treeview*.
 - v.6.0.4 (2026-07-07)
     - Memperbaiki interpretasi ID sumber daya pada tampilan pohon.
     - Menambahkan tombol "Reset" pada dialog IDD_FONTS.

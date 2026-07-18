@@ -2,13 +2,13 @@
 
 - v.6.0.6 (2026-XX-YY)
 - v.6.0.5 (2026-07-17)
-    - Enabled the treeview arrow to change the resource name.
-    - Fixed EGA. Added some EGA programs.
-    - Used DIALOGEX instead of DIALOG.
-    - Improved DIALOGEX FONT dumping.
-    - Improved handling when multiple controls are selected in IDD_CTRLPROP.
-    - Enabled input auto completion on name item of treeview.
-    - Fixed item deletion on treeview.
+    - Habilitada a seta da *treeview* para alterar o nome do recurso. 
+    - Corrigido o suporte a EGA. Adicionados alguns programas EGA. 
+    - Utilizado DIALOGEX em vez de DIALOG. 
+    - Melhorada a extração de fontes do DIALOGEX. 
+    - Melhorado o tratamento de seleção múltipla de controles em IDD_CTRLPROP. 
+    - Habilitado o preenchimento automático de entrada no campo de nome da *treeview*. 
+    - Corrigida a exclusão de itens na *treeview*.
 - v.6.0.4 (2026-07-07)
     - Corrigida a interpretação dos IDs de recursos na visualização em árvore.
     - Adicionado botão "Redefinir" na caixa de diálogo IDD_FONTS.
