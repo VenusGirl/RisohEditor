@@ -471,15 +471,15 @@ MEgaDlg::DialogProcDx(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 	HANDLE_MSG(hwnd, WM_GETMINMAXINFO, OnGetMinMaxInfo);
 	case WM_EGA_DO_GETINPUT: // 入力を取得する。
 		OnEgaGetInput(hwnd);
-		return 0;
+		break;
 	case WM_EGA_DO_PRINT: // EGA出力を行う。
 		OnEgaPrint(hwnd);
-		return 0;
+		break;
 	case WM_EGA_DO_RUN_ON_UI: // UIタスクを実行。
 		EgaBridge::ExecuteUITask((void*)lParam);
-		return 0;
+		break;
 	default:
 		return DefaultProcDx();
 	}
-	return DefaultProcDx();
+	return 0;
 }
