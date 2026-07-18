@@ -378,6 +378,7 @@
 #define IDS_PROMPT_ID                       376
 #define IDS_RCDATA_ID                       377
 #define IDS_MSGTABLE_ID                     378
+#define IDS_SEARCHURL                       379
 
 #define ID_NEW                              100
 #define ID_OPEN                             101

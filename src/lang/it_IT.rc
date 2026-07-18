@@ -1687,6 +1687,7 @@ STRINGTABLE
     IDS_PROMPT_ID, "ID prompt"
     IDS_RCDATA_ID, "ID RCData"
     IDS_MSGTABLE_ID, "ID tabella messaggi"
+    IDS_SEARCHURL, "https://duckduckgo.com/?q=%s&t=h_&ia=web"
 }
 
 //////////////////////////////////////////////////////////////////////////////

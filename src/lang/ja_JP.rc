@@ -1690,6 +1690,7 @@ STRINGTABLE
     IDS_PROMPT_ID, "プロンプトID"
     IDS_RCDATA_ID, "RCデータID"
     IDS_MSGTABLE_ID, "メッセージ テーブルID"
+    IDS_SEARCHURL, "https://duckduckgo.com/?q=%s&t=h_&ia=web"
 }
 
 //////////////////////////////////////////////////////////////////////////////

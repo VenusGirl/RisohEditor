@@ -1686,6 +1686,7 @@ STRINGTABLE
     IDS_PROMPT_ID, "提示ID"
     IDS_RCDATA_ID, "RC資料ID"
     IDS_MSGTABLE_ID, "訊息表ID"
+    IDS_SEARCHURL, "https://duckduckgo.com/?q=%s&t=h_&ia=web"
 }
 
 //////////////////////////////////////////////////////////////////////////////
