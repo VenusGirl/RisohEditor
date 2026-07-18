@@ -15,7 +15,7 @@ endif()
 enable_testing()
 
 # project name, version, and languages
-project(RisohEditor VERSION 6.0.5 LANGUAGES CXX RC)
+project(RisohEditor VERSION 6.0.6 LANGUAGES CXX RC)
 
 # PROJECT_VERSION macro
 add_definitions(-DPROJECT_VERSION=\"${PROJECT_VERSION}\")
