@@ -1,7 +1,8 @@
 ﻿## HISTORY (ChangeLog)
 
 - v.6.0.6 (2026-XX-YY)
-    - Added history on EGA Console.
+    - Added history on EGA Console (Up/Down keys).
+    - Improved keyword help.
 - v.6.0.5 (2026-07-17)
     - Enabled the treeview arrow to change the resource name.
     - Fixed EGA. Added some EGA programs.
