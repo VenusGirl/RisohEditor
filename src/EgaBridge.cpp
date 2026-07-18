@@ -17,6 +17,12 @@ using namespace EGA;
 extern HWND s_hwndEga;
 extern MMainWnd *s_pMainWnd;
 
+#ifndef NDEBUG
+	#define DBGOUT(str) OutputDebugStringA(str)
+#else
+	#define DBGOUT(str)
+#endif
+
 namespace
 {
 	static CRITICAL_SECTION s_cs;
@@ -199,14 +205,14 @@ namespace EgaBridge
 	{
 		if (s_bRunning)
 		{
-			OutputDebugStringA("already running\n");
+			DBGOUT("already running\n");
 			StopInteractive(true);
-			OutputDebugStringA("waited\n");
+			DBGOUT("waited\n");
 		}
 
 		EnterCriticalSection(&s_cs);
 
-		OutputDebugStringA("StartInteractive\n");
+		DBGOUT("StartInteractive\n");
 
 		::ResetEvent(s_hStopEvent);
 		s_bRunning = true;
@@ -214,7 +220,7 @@ namespace EgaBridge
 		HANDLE hThread = ::CreateThread(NULL, 0, EgaBridgeThreadProc, NULL, 0, NULL);
 		if (!hThread)
 		{
-			OutputDebugStringA("CreateThread failed\n");
+			DBGOUT("CreateThread failed\n");
 			s_bRunning = false;
 			LeaveCriticalSection(&s_cs);
 			return false;
@@ -342,9 +348,7 @@ namespace EgaBridge
 	// UIスレッドを実行。
 	bool RunOnUIThread(std::function<void(void*)> fn, void* param)
 	{
-#ifndef NDEBUG
-		OutputDebugStringA("RunOnUIThread\n");
-#endif
+		DBGOUT("RunOnUIThread\n");
 		if (IsStopRequested())
 			return false;
 
@@ -394,10 +398,7 @@ namespace EgaBridge
 			}
 			catch (...)
 			{
-	#ifndef NDEBUG
-				OutputDebugStringA(
-					"EGA UI task exception\n");
-	#endif
+				DBGOUT("EGA UI task exception\n");
 			}
 		}
 
