@@ -213,7 +213,14 @@ EGA::arg_t MMainWnd::RES_load(const EGA::args_t& args)
 	if (args.size() >= 2)
 		arg1 = EGA_eval_arg(args[1], false);
 
-	MAnsiToWide str0(CP_UTF8, EGA_get_str(arg0));
+	auto str = EGA_get_str(arg0);
+	if (!EgaBridge::FileSecurity(str))
+	{
+		EGA_do_print("SECURITY HIT!\n");
+		return make_arg<AstInt>(0);
+	}
+
+	MAnsiToWide str0(CP_UTF8, str);
 	MStringW filename = str0.c_str();
 	MStringW options;
 	if (args.size() >= 2)
@@ -243,7 +250,14 @@ EGA::arg_t MMainWnd::RES_save(const EGA::args_t& args)
 	if (args.size() >= 2)
 		arg1 = EGA_eval_arg(args[1], false);
 
-	MAnsiToWide str0(CP_UTF8, EGA_get_str(arg0));
+	auto str = EGA_get_str(arg0);
+	if (!EgaBridge::FileSecurity(str))
+	{
+		EGA_do_print("SECURITY HIT!\n");
+		return make_arg<AstInt>(0);
+	}
+
+	MAnsiToWide str0(CP_UTF8, str);
 	MStringW filename = str0.c_str();
 	MStringW options;
 	if (args.size() >= 2)

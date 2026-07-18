@@ -514,4 +514,9 @@ namespace EgaBridge
 
 		return !outText.empty();
 	}
+
+	bool FileSecurity(std::string& filename)
+	{
+		return EGA_file_security(filename);
+	}
 }
