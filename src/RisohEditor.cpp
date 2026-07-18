@@ -12167,6 +12167,7 @@ PCSTR MMainWnd::GetWordHelp(const MStringW& str)
 		WCHAR url[MAX_PATH];
 		StringCchPrintfW(url, _countof(url), LoadStringDx(IDS_SEARCHURL), str.c_str());
 		ShellExecuteW(m_hwnd, nullptr, url, nullptr, nullptr, SW_SHOWNORMAL);
+
 		MConstantDlg dialog(str.c_str());
 		dialog.DialogBoxDx(m_hwnd);
 		return NULL;
