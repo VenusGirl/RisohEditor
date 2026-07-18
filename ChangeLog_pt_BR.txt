@@ -5,6 +5,7 @@
     - Improved keyword help.
     - Added EGA localtime and gmtime functions.
     - Improved EGA manual.
+    - Added EGA load and save functions.
 - v.6.0.5 (2026-07-17)
     - Habilitada a seta da *treeview* para alterar o nome do recurso. 
     - Corrigido o suporte a EGA. Adicionados alguns programas EGA. 
