@@ -6,6 +6,8 @@
 
 #include "MEgaDlg.hpp"
 #include "Res.hpp"
+#include <vector>
+#include <string>
 
 // EGA入力関数。EGA_set_input_fnに渡される。
 // この関数がfalseを返せば、EGAの実行単位が終了する。
@@ -107,6 +109,10 @@ MEgaDlg::MEgaDlg() : MDialogBase(IDD_EGA)
 	EGA_extension();
 
 	m_bDynamicCreated = true;
+
+	// Initialize history
+	m_history.clear();
+	m_nHistoryPos = 0;
 }
 
 MEgaDlg::~MEgaDlg()
@@ -133,10 +139,39 @@ void MEgaDlg::ExecuteEgaFile(LPCWSTR filename)
 	}
 }
 
+LRESULT CALLBACK
+MEgaDlg::Edt2WndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
+{
+	auto pThis = (MEgaDlg*)GetWindowLongPtrW(hwnd, GWLP_USERDATA);
+	switch (uMsg)
+	{
+	case WM_KEYDOWN:
+		if (GetFocus() == hwnd)
+		{
+			if (wParam == VK_UP)
+			{
+				pThis->NavigateHistory(hwnd, true);
+				return 0;
+			}
+			else if (wParam == VK_DOWN)
+			{
+				pThis->NavigateHistory(hwnd, false);
+				return 0;
+			}
+		}
+		break;
+	}
+	return CallWindowProcW(pThis->m_fnOldEditWndProc, hwnd, uMsg, wParam, lParam);
+}
+
 BOOL MEgaDlg::OnInitDialog(HWND hwnd, HWND hwndFocus, LPARAM lParam)
 {
 	MTRACEA("%s\n", __FUNCTION__);
 	s_hwndEga = hwnd; // Remember
+
+	HWND hEdt2 = GetDlgItem(hwnd, edt2);
+	m_fnOldEditWndProc = (WNDPROC)SetWindowLongPtrW(hEdt2, GWLP_WNDPROC, (LONG_PTR)Edt2WndProc);
+	SetWindowLongPtrW(hEdt2, GWLP_USERDATA, (LONG_PTR)this);
 
 	// Make it a resizable dialog
 	m_resizable.OnParentCreate(hwnd);
@@ -204,6 +239,18 @@ void MEgaDlg::OnOK(HWND hwnd) // Enterキーが押された？
 {
 	MTRACEA("%s\n", __FUNCTION__);
 
+	// Get current text from edt2
+	WCHAR szTextW[512];
+	GetDlgItemTextW(hwnd, edt2, szTextW, ARRAYSIZE(szTextW));
+	std::wstring str(szTextW);
+	mstr_trim(str);
+
+	// Add to history if not empty
+	if (!str.empty())
+	{
+		AddToHistory(str);
+	}
+
 	// リソース項目の選択情報をクリアする。
 	g_RES_select_type = BAD_TYPE;
 	g_RES_select_name = BAD_NAME;
@@ -214,6 +261,9 @@ void MEgaDlg::OnOK(HWND hwnd) // Enterキーが押された？
 
 	// フォーカスを edt2 に移動。
 	::SetFocus(::GetDlgItem(hwnd, edt2));
+
+	// Reset history position
+	m_nHistoryPos = m_history.size();
 }
 
 void MEgaDlg::OnCommand(HWND hwnd, int id, HWND hwndCtl, UINT codeNotify)
@@ -299,14 +349,17 @@ void MEgaDlg::OnEgaGetInput(HWND hwnd)
 	// edt2から文字列を取得して、edt2をクリア。
 	WCHAR szTextW[512];
 	GetDlgItemTextW(hwnd, edt2, szTextW, ARRAYSIZE(szTextW));
-	mstr_trim(szTextW);
+	std::wstring str(szTextW);
+	mstr_trim(str);
 	SetDlgItemTextW(hwnd, edt2, L"");
 
 	// 入力文字列を投函。
-	EgaBridge::SubmitInputText(szTextW);
+	EgaBridge::SubmitInputText(str.c_str());
+
+	// Reset history position after input
+	m_nHistoryPos = m_history.size();
 }
 
-// WM_EGA_DO_PRINT
 // WM_EGA_DO_PRINT
 void MEgaDlg::OnEgaPrint(HWND hwnd)
 {
@@ -351,6 +404,51 @@ void MEgaDlg::OnEgaPrint(HWND hwnd)
 	::SetCursor(::LoadCursorW(NULL, IDC_ARROW));
 }
 
+// Add non-empty trimmed string to history (avoid duplicates at end)
+void MEgaDlg::AddToHistory(const std::wstring& str)
+{
+	if (str.empty())
+		return;
+
+	// Remove trailing duplicates if same as last
+	if (!m_history.empty() && m_history.back() == str)
+		return;
+
+	m_history.push_back(str);
+	if (m_history.size() > 100) // limit history size
+		m_history.erase(m_history.begin());
+}
+
+// Navigate history with Up/Down arrows
+void MEgaDlg::NavigateHistory(HWND hEdt2, bool bUp)
+{
+	if (m_history.empty())
+		return;
+
+	if (bUp)
+	{
+		if (m_nHistoryPos > 0)
+			--m_nHistoryPos;
+	}
+	else
+	{
+		if (m_nHistoryPos < m_history.size())
+			++m_nHistoryPos;
+	}
+
+	if (m_nHistoryPos < m_history.size())
+	{
+		// Show history item
+		SetWindowTextW(hEdt2, m_history[m_nHistoryPos].c_str());
+		SendMessageW(hEdt2, EM_SETSEL, 0, -1); // select all
+	}
+	else
+	{
+		// Back to empty/new input
+		SetWindowTextW(hEdt2, L"");
+	}
+}
+
 INT_PTR CALLBACK
 MEgaDlg::DialogProcDx(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
@@ -375,4 +473,5 @@ MEgaDlg::DialogProcDx(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 	default:
 		return DefaultProcDx();
 	}
+	return DefaultProcDx();
 }

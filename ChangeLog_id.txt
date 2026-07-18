@@ -1,6 +1,7 @@
 ﻿## SEJARAH
 
 - v.6.0.6 (2026-XX-YY)
+    - Added history on EGA Console.
 - v.6.0.5 (2026-07-17)
     - Mengaktifkan fitur pengubahan nama sumber daya melalui tanda panah pada *treeview*. 
     - Memperbaiki dukungan EGA. Menambahkan beberapa program EGA. 

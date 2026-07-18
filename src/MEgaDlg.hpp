@@ -52,6 +52,11 @@ protected:
 	HICON m_hIconSm;
 	MResizable m_resizable;
 	INT m_cchEdt1 = 0;
+	WNDPROC m_fnOldEditWndProc = nullptr;
+
+	// History for edt2 input (command history with Up/Down arrows)
+	std::vector<std::wstring> m_history;
+	size_t m_nHistoryPos = 0;
 
 	BOOL OnInitDialog(HWND hwnd, HWND hwndFocus, LPARAM lParam);
 	void OnOK(HWND hwnd);
@@ -62,4 +67,9 @@ protected:
 	void OnSize(HWND hwnd, UINT state, int cx, int cy);
 	void OnEgaGetInput(HWND hwnd);
 	void OnEgaPrint(HWND hwnd);
+
+	void AddToHistory(const std::wstring& str);
+	void NavigateHistory(HWND hEdt2, bool bUp);
+
+	static LRESULT CALLBACK Edt2WndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 };
