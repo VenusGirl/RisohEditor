@@ -478,7 +478,6 @@
 #define ID_REFRESHALL                       198
 #define ID_EXPORT                           199
 #define ID_FONTS                            200
-#define ID_REFRESH                          201
 #define ID_PREDEFMACROS                     202
 #define ID_ADD                              203
 #define ID_MODIFY                           204

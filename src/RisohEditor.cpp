@@ -9245,7 +9245,7 @@ void MMainWnd::Collapse(HTREEITEM hItem)
 void MMainWnd::OnRefreshAll(HWND hwnd)
 {
 	BOOL bModifiedOld = s_bModified;
-	DoRefreshTV(hwnd);
+	DoRefreshTV(hwnd, TRUE);
 	DoRefreshIDList(hwnd);
 	SelectTV(g_res.get_entry(), FALSE);
 
@@ -9641,9 +9641,6 @@ void MMainWnd::OnCommand(HWND hwnd, int id, HWND hwndCtl, UINT codeNotify)
 		break;
 	case ID_FONTS:
 		OnFonts(hwnd);
-		break;
-	case ID_REFRESH:
-		DoRefreshTV(hwnd);
 		break;
 	case ID_PREDEFMACROS:
 		OnPredefMacros(hwnd);
