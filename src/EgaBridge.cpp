@@ -519,4 +519,9 @@ namespace EgaBridge
 	{
 		return EGA_file_security(filename);
 	}
+
+	void HitSecurity(void)
+	{
+		EGA_hit_security();
+	}
 }

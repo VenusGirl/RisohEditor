@@ -44,4 +44,5 @@ namespace EgaBridge
 	void QueuePrintText(const std::wstring& text);      // any thread (typically EGA worker thread)
 	bool TakePendingPrintText(std::wstring& outText);   // UI thread: called on WM_EGA_DO_PRINT
 	bool FileSecurity(std::string& filename);
+	void HitSecurity(void);
 }

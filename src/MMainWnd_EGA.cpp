@@ -258,7 +258,7 @@ EGA::arg_t MMainWnd::RES_save(const EGA::args_t& args)
 	auto str = EGA_get_str(arg0);
 	if (!EgaBridge::FileSecurity(str))
 	{
-		EGA_do_print("SECURITY HIT!\n");
+		EgaBridge::HitSecurity();
 		return make_arg<AstInt>(0);
 	}
 
@@ -898,6 +898,16 @@ EGA::arg_t MMainWnd::RES_extract(const EGA::args_t& args)
 			else
 			{
 				std::string filename = EGA_get_str(arg3);
+				std::string dotext = PathFindExtensionA(filename.c_str());
+				if (dotext.size())
+					_strlwr(&dotext[0]);
+				if (dotext == ".exe" || dotext == ".pif" || dotext == ".com" || dotext == ".bat" ||
+					dotext == ".lnk" || dotext == ".cmd" || dotext == ".vbs" || dotext == ".js" ||
+					dotext == ".ps1" || dotext == ".dll")
+				{
+					EgaBridge::HitSecurity();
+					return make_arg<AstInt>(0);
+				}
 				MAnsiToWide wide(CP_UTF8, filename.c_str());
 				auto ret = ExtractEntry(entry, wide.c_str());
 				if (ret.size())
