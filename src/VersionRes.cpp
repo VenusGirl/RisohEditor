@@ -122,10 +122,10 @@ static inline BOOL is_8digit_hex(const MStringW& str)
 
 static inline PCWSTR GetCharSet2String(WORD wCharSet)
 {
-#define DEFINE_CHARSET2(index, value, name) if (wCharSet == value) return name;
-#include "charsets2.h"
-#undef DEFINE_CHARSET2
-	return L"(Unknown charset)";
+#define DEFINE_CODEPAGE2(index, value, name) if (wCharSet == value) return name;
+#include "codepages2.h"
+#undef DEFINE_CODEPAGE2
+	return L"(Unknown codepage)";
 }
 
 MStringW
