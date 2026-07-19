@@ -20,7 +20,7 @@ extern MMainWnd *s_pMainWnd;
 #ifndef NDEBUG
 	#define DBGOUT(str) OutputDebugStringA(str)
 #else
-	#define DBGOUT(str)
+	#define DBGOUT(str) do { } while (0)
 #endif
 
 namespace
