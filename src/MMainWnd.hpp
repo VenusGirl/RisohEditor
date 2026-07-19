@@ -512,6 +512,7 @@ protected:
 	void DoWordHelp(const MStringW& str);
 	PCSTR GetWordHelp(const MStringW& str);
 	std::wstring ExtractEntry(EntryBase *entry, PCWSTR filename);
+	void DestroyEga();
 };
 
 extern MMainWnd *s_pMainWnd;
