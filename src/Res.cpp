@@ -472,11 +472,34 @@ EntrySet::add_lang_entry(const MIdOrString& type, const MIdOrString& name,
 	return on_insert_entry(entry);
 }
 
+bool EntrySet::on_delete_type(EntryBase *entry)
+{
+	// search
+	self_type found;
+	search(found, ET_TYPE, BAD_TYPE, BAD_NAME, BAD_LANG);
+
+	// delete
+	bool ret = false;
+	for (auto* e : found)
+	{
+		if (e != entry)
+			ret = true;
+	}
+
+	if (!ret)
+		PostMessageW(g_hMainWnd, MYWM_EMPTYTREEVIEW, 0, 0);
+
+	return ret;
+}
+
 void EntrySet::delete_entry(EntryBase *entry)
 {
 	// delete the related entries
 	switch (entry->m_et)
 	{
+	case ET_TYPE:
+		on_delete_type(entry);
+		break;
 	case ET_LANG:
 		if (entry->m_type == RT_GROUP_CURSOR)
 		{

@@ -886,6 +886,13 @@ LRESULT MMainWnd::OnRadDblClick(HWND hwnd, WPARAM wParam, LPARAM lParam)
 	return 0;
 }
 
+// MYWM_EMPTYTREEVIEW
+LRESULT MMainWnd::OnEmptyTreeView(HWND hwnd, WPARAM wParam, LPARAM lParam)
+{
+	HidePreview();
+	return 0;
+}
+
 // extract an icon as an *.ico file
 void MMainWnd::OnExtractIcon(HWND hwnd)
 {
@@ -11845,6 +11852,7 @@ MMainWnd::WindowProcDx(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		DO_MESSAGE(MYWM_COMPLEMENT, OnComplement);
 		DO_MESSAGE(MYWM_UPDATEARROW, OnUpdateArrow);
 		DO_MESSAGE(MYWM_RADDBLCLICK, OnRadDblClick);
+		DO_MESSAGE(MYWM_EMPTYTREEVIEW, OnEmptyTreeView);
 
 	default:
 		return DefaultProcDx();
