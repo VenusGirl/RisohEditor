@@ -9770,12 +9770,6 @@ void MMainWnd::OnCommand(HWND hwnd, int id, HWND hwndCtl, UINT codeNotify)
 			g_RES_select_name = BAD_NAME;
 			g_RES_select_lang = BAD_LANG;
 		}
-		// NOTE: EnableWindow(g_hMainWnd, TRUE) used to be called here, but
-		// nothing in the EGA dialog code path ever disables g_hMainWnd, so
-		// this was a vestigial no-op left over from an earlier design.
-		// Disabling the main window while the EGA console is open is not
-		// an intended behavior, so it has been removed rather than paired
-		// with a matching EnableWindow(g_hMainWnd, FALSE).
 		PostUpdateArrow(hwnd);
 		break;
 	case ID_INTERNALTEST:
