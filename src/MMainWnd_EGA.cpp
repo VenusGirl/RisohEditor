@@ -920,11 +920,7 @@ EGA::arg_t MMainWnd::RES_extract(const EGA::args_t& args)
 void MMainWnd::DestroyEga()
 {
 	if (s_hwndEga && ::IsWindow(s_hwndEga)) // Already open?
-	{
-		auto pDialog = dynamic_cast<MEgaDlg*>(MDialogBase::GetUserData(s_hwndEga));
-		assert(pDialog);
-		SendMessageW(*pDialog, WM_CLOSE, 0, 0);
-	}
+		::PostMessageW(s_hwndEga, WM_COMMAND, IDCANCEL, 0);
 }
 
 void MMainWnd::OnStartEgaConsole(HWND hwnd, PCWSTR file)

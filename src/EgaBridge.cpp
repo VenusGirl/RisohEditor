@@ -74,8 +74,10 @@ static DWORD WINAPI EgaBridgeThreadProc(LPVOID args)
 	}
 	catch (...)
 	{
-		;
+		DBGOUT("EgaBridgeThreadProc: exception caught\n");
 	}
+
+	DBGOUT("EgaBridgeThreadProc: forcing cleanup before leave\n");
 
 	EnterCriticalSection(&s_cs);
 	s_bRunning = false; // EGA実行終了。
@@ -159,9 +161,9 @@ namespace EgaBridge
 		if (!s_bInitialized)
 			return;
 
+		s_bInitialized = false;
 		StopInteractive(true);
 		EGA_uninit();
-		s_bInitialized = false;
 
 		if (s_hStopEvent) { ::CloseHandle(s_hStopEvent); s_hStopEvent = NULL; }
 		if (s_bCsReady)   { DeleteCriticalSection(&s_cs); s_bCsReady = false; }
@@ -252,45 +254,25 @@ namespace EgaBridge
 
 		EGA_stop();
 		::SetEvent(s_hStopEvent);
+
+		if (s_hwndEga)
+			PostMessageW(s_hwndEga, WM_COMMAND, IDCANCEL, 0);
+
 		hThread = s_hThread;
 
 		LeaveCriticalSection(&s_cs);
 
 		if (hThread && wait)
 		{
-			// 10秒一括待ち → メッセージを処理しながら短時間ずつ待つ
-			const DWORD TIMEOUT = 100;  // 100ms ごとに UI メッセージを捌く
-			DWORD start = GetTickCount();
+			DWORD dwWait = WaitForSingleObject(hThread, 3000);  // 3秒待機
+			if (dwWait == WAIT_TIMEOUT)
+				DBGOUT("StopInteractive: Thread did not exit in time. Forcing...\n");
 
-			HANDLE handles[] = { hThread, s_hStopEvent };
-			while (WaitForMultipleObjects(_countof(handles), handles, FALSE, 0) == WAIT_TIMEOUT)
-			{
-				DWORD elapsed = GetTickCount() - start;
-				if (elapsed > 10000)
-					break;  // 10秒超えたら強制終了
-
-				// UI メッセージを処理しつつ EGA スレッドの終了を待つ
-				DWORD dwWait = MsgWaitForMultipleObjects(_countof(handles), handles, FALSE, TIMEOUT, QS_ALLINPUT);
-				if (dwWait == WAIT_OBJECT_0 || dwWait == WAIT_OBJECT_0 + 1)
-					break;
-
-				MSG msg;
-				if (PeekMessageW(&msg, NULL, 0, 0, PM_NOREMOVE))
-				{
-					GetMessage(&msg, NULL, 0, 0);
-					s_pMainWnd->DoMsg(msg);
-				}
-
-				Sleep(10);
-			}
-
-			::CloseHandle(hThread);
+			CloseHandle(hThread);
 
 			EnterCriticalSection(&s_cs);
-
 			if (s_hThread == hThread)
 				s_hThread = NULL;
-
 			LeaveCriticalSection(&s_cs);
 		}
 

@@ -22,21 +22,26 @@ bool EGA_dialog_input(char *buf, size_t buflen)
 	}
 
 	// 入力と終了を待つ。
-	while (!EgaBridge::IsEnterPressed() || !::IsWindowVisible(s_hwndEga))
+	while (true)
 	{
-		if (EgaBridge::IsStopRequested()) // 停止を要求されたか？
+		if (EgaBridge::IsStopRequested())
+		{
+			OutputDebugStringA("EGA_dialog_input: stop requested -> return false\n");
 			return false;
+		}
 
-		// キューから入力ファイルを取得。
+		if (EgaBridge::IsEnterPressed() && ::IsWindowVisible(s_hwndEga))
+			break;   // 入力可能
+
+		// ファイル入力
 		std::string pendingFile;
 		if (EgaBridge::TryTakeFileInputRequest(pendingFile))
 		{
-			// このスレッドで実行する。
 			EGA_file_input(pendingFile.c_str());
 			continue;
 		}
 
-		Sleep(10); // FIXME: もっと良い待ち方があるはずだ。
+		Sleep(10);
 	}
 
 	// 入力を受け入れる準備をする。
