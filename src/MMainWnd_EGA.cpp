@@ -879,42 +879,37 @@ EGA::arg_t MMainWnd::RES_extract(const EGA::args_t& args)
 	name = EGA_get_id_or_str(arg1);
 	lang = (WORD)EGA_get_int(arg2);
 
-	EntrySet found;
-	g_res.search(found, ET_LANG, type, name, lang);
-
-	if (found.size())
+	auto* entry = g_res.find(ET_LANG, type, name, lang);
+	if (entry)
 	{
-		for (auto* entry : found)
+		if (args.size() == 3)
 		{
-			if (args.size() == 3)
+			auto ret = ExtractEntry(entry, nullptr);
+			if (ret.size())
 			{
-				auto ret = ExtractEntry(entry, nullptr);
-				if (ret.size())
-				{
-					MWideToAnsi utf8(CP_UTF8, ret.c_str());
-					return make_arg<AstStr>(utf8.c_str());
-				}
+				MWideToAnsi utf8(CP_UTF8, ret.c_str());
+				return make_arg<AstStr>(utf8.c_str());
 			}
-			else
+		}
+		else
+		{
+			std::string filename = EGA_get_str(arg3);
+			std::string dotext = PathFindExtensionA(filename.c_str());
+			if (dotext.size())
+				_strlwr(&dotext[0]);
+			if (dotext == ".exe" || dotext == ".pif" || dotext == ".com" || dotext == ".bat" ||
+				dotext == ".lnk" || dotext == ".cmd" || dotext == ".vbs" || dotext == ".js" ||
+				dotext == ".ps1" || dotext == ".dll")
 			{
-				std::string filename = EGA_get_str(arg3);
-				std::string dotext = PathFindExtensionA(filename.c_str());
-				if (dotext.size())
-					_strlwr(&dotext[0]);
-				if (dotext == ".exe" || dotext == ".pif" || dotext == ".com" || dotext == ".bat" ||
-					dotext == ".lnk" || dotext == ".cmd" || dotext == ".vbs" || dotext == ".js" ||
-					dotext == ".ps1" || dotext == ".dll")
-				{
-					EgaBridge::HitSecurity();
-					return make_arg<AstInt>(0);
-				}
-				MAnsiToWide wide(CP_UTF8, filename.c_str());
-				auto ret = ExtractEntry(entry, wide.c_str());
-				if (ret.size())
-				{
-					MWideToAnsi utf8(CP_UTF8, ret.c_str());
-					return make_arg<AstStr>(utf8.c_str());
-				}
+				EgaBridge::HitSecurity();
+				return make_arg<AstInt>(0);
+			}
+			MAnsiToWide wide(CP_UTF8, filename.c_str());
+			auto ret = ExtractEntry(entry, wide.c_str());
+			if (ret.size())
+			{
+				MWideToAnsi utf8(CP_UTF8, ret.c_str());
+				return make_arg<AstStr>(utf8.c_str());
 			}
 		}
 	}
