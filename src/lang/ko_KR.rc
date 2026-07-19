@@ -1382,7 +1382,7 @@ FILETYPE        VFT_APP
 {
     BLOCK "StringFileInfo"
     {
-        BLOCK "041203B5"
+        BLOCK "041203B5" // ko_KR, Korea (KS C 5601)
         {
             VALUE "CompanyName", "카타야마 히로후미 MZ"
             VALUE "FileDescription", "RisohEditor"

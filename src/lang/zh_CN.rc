@@ -1380,7 +1380,7 @@ FILETYPE        VFT_APP
 {
     BLOCK "StringFileInfo"
     {
-        BLOCK "080404B0"
+        BLOCK "080404B0" // zh_CN, Unicode
         {
             VALUE "CompanyName", "片山博文MZ"
             VALUE "FileDescription", "RisohEditor"
