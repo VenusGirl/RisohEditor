@@ -6,6 +6,7 @@
     - Added EGA localtime and gmtime functions.
     - Improved EGA manual.
     - Added EGA load and save functions.
+    - Added EGA RES_extract function.
 - v.6.0.5 (2026-07-17)
     - Mengaktifkan fitur pengubahan nama sumber daya melalui tanda panah pada *treeview*. 
     - Memperbaiki dukungan EGA. Menambahkan beberapa program EGA. 

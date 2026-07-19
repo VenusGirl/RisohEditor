@@ -172,6 +172,11 @@ EGA::arg_t EGA_FN EGA_RES_str_set(const EGA::args_t& args)
 		return s_pMainWnd->RES_str_set(args[0], args[1], args[2]);
 }
 
+EGA::arg_t EGA_FN EGA_RES_extract(const EGA::args_t& args)
+{
+	return s_pMainWnd->RES_extract(args);
+}
+
 MIdOrString EGA_get_id_or_str(const arg_t& arg0)
 {
 	MIdOrString ret;
@@ -856,6 +861,57 @@ EGA::arg_t MMainWnd::RES_select(const EGA::args_t& args)
 	return make_arg<AstInt>(!found.empty());
 }
 
+EGA::arg_t MMainWnd::RES_extract(const EGA::args_t& args)
+{
+	using namespace EGA;
+	arg_t arg0, arg1, arg2, arg3;
+
+	arg0 = EGA_eval_arg(args[0], true);
+	arg1 = EGA_eval_arg(args[1], true);
+	arg2 = EGA_eval_arg(args[2], true);
+	if (args.size() == 4)
+		arg3 = EGA_eval_arg(args[3], true);
+
+	MIdOrString type = BAD_TYPE, name = BAD_NAME;
+	LANGID lang = BAD_LANG;
+
+	type = EGA_get_id_or_str(arg0);
+	name = EGA_get_id_or_str(arg1);
+	lang = (WORD)EGA_get_int(arg2);
+
+	EntrySet found;
+	g_res.search(found, ET_LANG, type, name, lang);
+
+	if (found.size())
+	{
+		for (auto* entry : found)
+		{
+			if (args.size() == 3)
+			{
+				auto ret = ExtractEntry(entry, nullptr);
+				if (ret.size())
+				{
+					MWideToAnsi utf8(CP_UTF8, ret.c_str());
+					return make_arg<AstStr>(utf8.c_str());
+				}
+			}
+			else
+			{
+				std::string filename = EGA_get_str(arg3);
+				MAnsiToWide wide(CP_UTF8, filename.c_str());
+				auto ret = ExtractEntry(entry, wide.c_str());
+				if (ret.size())
+				{
+					MWideToAnsi utf8(CP_UTF8, ret.c_str());
+					return make_arg<AstStr>(utf8.c_str());
+				}
+			}
+		}
+	}
+
+	return make_arg<AstInt>(0);
+}
+
 void MMainWnd::OnStartEgaConsole(HWND hwnd, PCWSTR file)
 {
 	// compile if necessary
@@ -950,4 +1006,5 @@ void EGA_extension(void)
 	EGA_add_fn("RES_str_set", 2, 3, EGA_RES_str_set, "RES_str_set(lang, str_id, str) or RES_str_set(lang, ary)");
 	EGA_add_fn("RES_get_text", 3, 3, EGA_RES_get_text, "RES_get_text(type, name, lang)");
 	EGA_add_fn("RES_set_text", 4, 4, EGA_RES_set_text, "RES_set_text(type, name, lang, text)");
+	EGA_add_fn("RES_extract", 3, 4, EGA_RES_extract, "RES_extract(type, name, lang[, filename])");
 }

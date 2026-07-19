@@ -8920,6 +8920,78 @@ void MMainWnd::OnQueryConstant(HWND hwnd)
 	dialog.DialogBoxDx(hwnd);
 }
 
+std::wstring MMainWnd::ExtractEntry(EntryBase *entry, PCWSTR filename)
+{
+	if (!entry)
+		return false;
+
+	std::wstring fname;
+	if (filename && filename[0])
+	{
+		fname = filename;
+	}
+	else
+	{
+		ResToText res2text;
+		fname = res2text.GetEntryFileName(*entry);
+		if (fname.empty())
+		{
+			fname += std::to_wstring(entry->m_lang);
+			fname += L"_";
+			fname += entry->m_type.str();
+			fname += L"_";
+			fname += entry->m_name.str();
+			fname += L".bin";
+		}
+	}
+
+	WCHAR path[MAX_PATH];
+	if (PathIsRelativeW(fname.c_str()))
+	{
+		GetModuleFileNameW(nullptr, path, _countof(path));
+		PathRemoveFileSpecW(path);
+		PathAppendW(path, fname.c_str());
+	}
+	else
+	{
+		StringCchCopyW(path, _countof(path), fname.c_str());
+	}
+
+	BOOL ret = FALSE;
+	switch (entry->m_et)
+	{
+	case ET_TYPE:
+	case ET_NAME:
+	case ET_STRING:
+		ret = !!g_res.extract_bin(path, entry);
+		break;
+
+	case ET_LANG:
+		if (entry->m_type == RT_ICON || entry->m_type == RT_GROUP_ICON ||
+			entry->m_type == RT_ANIICON)
+		{
+			ret = g_res.extract_icon(path, entry);
+		}
+		else if (entry->m_type == RT_CURSOR || entry->m_type == RT_GROUP_CURSOR ||
+				 entry->m_type == RT_ANICURSOR)
+		{
+			ret = g_res.extract_cursor(path, entry);
+		}
+		else if (entry->m_type == RT_BITMAP)
+		{
+			ret = PackedDIB_Extract(path, &(*entry)[0], (*entry).size(), false);
+		}
+		else
+		{
+			ret = g_res.extract_bin(path, entry);
+		}
+	}
+
+	if (ret)
+		return path;
+	return L"";
+}
+
 void MMainWnd::OnExtractBang(HWND hwnd)
 {
 	auto entry = g_res.get_entry();
@@ -12562,6 +12634,7 @@ wWinMain(HINSTANCE   hInstance,
 	if (SUCCEEDED(hrOleInit))
 		OleUninitialize();
 
+	Sleep(3000);
 	g_RES_select_type.clear();
 	g_RES_select_name.clear();
 	assert(EntryBaseBase::is_alive_zero());

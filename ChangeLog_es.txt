@@ -6,6 +6,7 @@
     - Added EGA localtime and gmtime functions.
     - Improved EGA manual.
     - Added EGA load and save functions.
+    - Added EGA RES_extract function.
 - v.6.0.5 (2026-07-17)
     - Se habilitó la flecha de la vista de árbol para cambiar el nombre del recurso. 
     - Se corrigió EGA. Se añadieron algunos programas EGA. 

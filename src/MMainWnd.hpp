@@ -298,6 +298,7 @@ public:
 	EGA::arg_t RES_delete(const EGA::args_t& args);
 	EGA::arg_t RES_clone_by_name(const EGA::args_t& args);
 	EGA::arg_t RES_clone_by_lang(const EGA::args_t& args);
+	EGA::arg_t RES_extract(const EGA::args_t& args);
 	EGA::arg_t RES_unload_resh(const EGA::args_t& args);
 	EGA::arg_t RES_select(const EGA::args_t& args);
 	EGA::arg_t RES_get_binary(const EGA::args_t& args);
@@ -510,6 +511,7 @@ protected:
 	PCSTR GetTreeItemHelp(EntryBase *entry);
 	void DoWordHelp(const MStringW& str);
 	PCSTR GetWordHelp(const MStringW& str);
+	std::wstring ExtractEntry(EntryBase *entry, PCWSTR filename);
 };
 
 extern MMainWnd *s_pMainWnd;
