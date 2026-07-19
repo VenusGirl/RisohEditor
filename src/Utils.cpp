@@ -3087,7 +3087,7 @@ BOOL CheckNameComboBox(HWND hCmb2, const MIdOrString& type, MIdOrString& name)
 			str = std::to_wstring(wID);
 	}
 
-	if (str.empty()) // an empty string
+	if (str.empty() || str == L"*") // an empty string or an asterisk
 	{
 		ComboBox_SetEditSel(hCmb2, 0, -1);  // select all
 		SetFocus(hCmb2);	// set focus
