@@ -6,7 +6,7 @@ FILETYPE        VFT_APP
 {
     BLOCK "StringFileInfo"
     {
-        BLOCK "04190376"
+        BLOCK "041904E3"
         {
             VALUE "CompanyName", "Моя Компания"
             VALUE "FileDescription", "Моя Заявка"
@@ -18,6 +18,6 @@ FILETYPE        VFT_APP
     }
     BLOCK "VarFileInfo"
     {
-        VALUE "Translation", 0x0419, 0x0376
+        VALUE "Translation", 0x0419, 0x04E3
     }
 }
