@@ -9189,13 +9189,10 @@ void MMainWnd::UpdateArrow()
 	switch (entry->m_et)
 	{
 	case ET_LANG:
-		if (entry->m_type != RT_STRING)
-			ShowTreeViewArrow(TRUE, hItem);
-		else
-			ShowTreeViewArrow(FALSE, hItem);
+		ShowTreeViewArrow((entry->m_type != RT_STRING), hItem);
 		break;
 	case ET_NAME:
-		ShowTreeViewArrow(TRUE, hItem);
+		ShowTreeViewArrow((entry->m_type != RT_STRING), hItem);
 		break;
 	case ET_STRING:
 		ShowTreeViewArrow(TRUE, hItem);
