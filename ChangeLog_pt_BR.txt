@@ -1,12 +1,12 @@
 ﻿## HISTÓRICO
 
 - v.6.0.6 (2026-XX-YY)
-    - Added history on EGA Console (Up/Down keys).
-    - Improved keyword help.
-    - Added EGA localtime and gmtime functions.
-    - Improved EGA manual.
-    - Added EGA load and save functions.
-    - Added EGA RES_extract function.
+    - Adicionado histórico ao Console EGA (teclas Cima/Baixo). 
+    - Aprimorada a ajuda de palavras-chave. 
+    - Adicionadas as funções `localtime` e `gmtime` ao EGA. 
+    - Aprimorado o manual do EGA. 
+    - Adicionadas funções de carregamento e salvamento ao EGA. 
+    - Adicionada a função `RES_extract` ao EGA.
 - v.6.0.5 (2026-07-17)
     - Habilitada a seta da *treeview* para alterar o nome do recurso. 
     - Corrigido o suporte a EGA. Adicionados alguns programas EGA. 
