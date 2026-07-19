@@ -83,7 +83,7 @@ typedef HRESULT (WINAPI *SETWINDOWTHEME)(HWND, LPCWSTR, LPCWSTR);
 // the maximum number of backup
 static const UINT s_nBackupMaxCount = 5;
 
-static const CODEPAGE_INFO g_codepage_info[] = {
+static const std::unordered_map<UINT, const char*> g_codepage_info = {
 #define DEFINE_CODEPAGE(number, name) { number, name },
 #include "codepages.h"
 #undef DEFINE_CODEPAGE
@@ -110,11 +110,9 @@ static SETWINDOWTHEME s_pSetWindowTheme = NULL;  // pointer to SetWindowTheme AP
 
 LPCSTR FindCodePageName(UINT nCodePage)
 {
-	for (auto& entry : g_codepage_info)
-	{
-		if (entry.number == nCodePage)
-			return entry.name;
-	}
+	auto it = g_codepage_info.find(nCodePage);
+	if (it != g_codepage_info.end())
+		return it->second;
 	return "(Unknown)";
 }
 
@@ -6064,11 +6062,8 @@ BOOL MMainWnd::DoWriteRC(LPCWSTR pszFileName, LPCWSTR pszResH, const EntrySet& f
 			file.WriteSzA("\r\n");
 		}
 
-		if (nCodePage == CP_UTF8)
-			file.WriteSzA("#pragma code_page(65001) // UTF-8\r\n\r\n");
-		else
-			file.WriteFormatA("#pragma code_page(%u) // %s\r\n\r\n", nCodePage,
-			                  FindCodePageName(nCodePage));
+		file.WriteFormatA("#pragma code_page(%u) // %s\r\n\r\n", nCodePage,
+		                  FindCodePageName(nCodePage));
 
 		if (g_settings.bUseIDC_STATIC && !g_settings.bHideID)
 		{
@@ -6195,11 +6190,8 @@ BOOL MMainWnd::DoWriteRC(LPCWSTR pszFileName, LPCWSTR pszResH, const EntrySet& f
 				lang_file.WriteSzA(ansiNotice.c_str());
 				lang_file.WriteSzA(ansiDagger.c_str());
 				lang_file.WriteSzA("\r\n");
-				if (nCodePage == CP_UTF8)
-					lang_file.WriteSzA("#pragma code_page(65001) // UTF-8\r\n\r\n");
-				else
-					lang_file.WriteFormatA("#pragma code_page(%u) // %s\r\n\r\n", nCodePage,
-					                       FindCodePageName(nCodePage));
+				lang_file.WriteFormatA("#pragma code_page(%u) // %s\r\n\r\n", nCodePage,
+				                       FindCodePageName(nCodePage));
 			}
 			if (!lang_file) {
 				textinclude.delete_all();
