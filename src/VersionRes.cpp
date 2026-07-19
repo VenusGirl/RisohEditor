@@ -120,7 +120,7 @@ static inline BOOL is_8digit_hex(const MStringW& str)
 	return TRUE;
 }
 
-static inline PCWSTR get_charset2(WORD wCharSet)
+static inline PCWSTR GetCharSet2String(WORD wCharSet)
 {
 #define DEFINE_CHARSET2(index, value, name) if (wCharSet == value) return name;
 #include "charsets2.h"
@@ -146,7 +146,7 @@ VersionRes::DumpBlock(const Var& var, int depth) const
 		MString lang_name = g_db.GetLangName(wLangID);
 		ret += lang_name;
 		ret += L", ";
-		ret += get_charset2(wCharSet);
+		ret += GetCharSet2String(wCharSet);
 		ret += L"\r\n";
 	}
 	else
