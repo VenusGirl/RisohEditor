@@ -99,4 +99,5 @@ public:
 	MString DumpEscapedName(const MIdOrString& name);
 
 	MString GetEntryFileName(const EntryBase& entry);
+	BOOL GetEntryFileNameEx(const EntryBase& entry, MString& str);
 };
