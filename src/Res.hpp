@@ -35,7 +35,7 @@ typedef std::map<MIdOrString, HICON>    MTitleToIcon;
 
 BOOL PackedDIB_GetInfo(const void *pPackedDIB, DWORD dwSize, BITMAP& bm);
 
-#define MYWM_EMPTYTREEVIEW (WM_USER + 500)
+#define MYWM_CHECKTREEVIEW (WM_USER + 500)
 
 extern HWND g_hMainWnd;
 

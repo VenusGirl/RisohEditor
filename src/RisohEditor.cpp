@@ -886,10 +886,11 @@ LRESULT MMainWnd::OnRadDblClick(HWND hwnd, WPARAM wParam, LPARAM lParam)
 	return 0;
 }
 
-// MYWM_EMPTYTREEVIEW
-LRESULT MMainWnd::OnEmptyTreeView(HWND hwnd, WPARAM wParam, LPARAM lParam)
+// MYWM_CHECKTREEVIEW
+LRESULT MMainWnd::OnCheckTreeView(HWND hwnd, WPARAM wParam, LPARAM lParam)
 {
-	HidePreview();
+	if (!g_res.get_entry())
+		HidePreview();
 	return 0;
 }
 
@@ -11852,7 +11853,7 @@ MMainWnd::WindowProcDx(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		DO_MESSAGE(MYWM_COMPLEMENT, OnComplement);
 		DO_MESSAGE(MYWM_UPDATEARROW, OnUpdateArrow);
 		DO_MESSAGE(MYWM_RADDBLCLICK, OnRadDblClick);
-		DO_MESSAGE(MYWM_EMPTYTREEVIEW, OnEmptyTreeView);
+		DO_MESSAGE(MYWM_CHECKTREEVIEW, OnCheckTreeView);
 
 	default:
 		return DefaultProcDx();

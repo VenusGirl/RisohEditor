@@ -486,7 +486,7 @@ protected:
 	void OnHelp(HWND hwnd);
 	void OnNextPane(HWND hwnd, BOOL bNext);
 	void OnTreeItemHelp(HWND hwnd);
-	LRESULT OnEmptyTreeView(HWND hwnd, WPARAM wParam, LPARAM lParam);
+	LRESULT OnCheckTreeView(HWND hwnd, WPARAM wParam, LPARAM lParam);
 
 	// find/replace
 	void OnFind(HWND hwnd);
