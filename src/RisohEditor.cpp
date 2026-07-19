@@ -9880,7 +9880,12 @@ MIdOrString GetNameFromText(const WCHAR *pszText)
 			return (WORD)g_db.GetResIDValue(str);
 
 		if (str[0] == L'"') // Quoted?
+		{
 			mstr_unquote(str); // Unquote
+
+			if (str.empty() || str == L"*")
+				return MIdOrString(BAD_NAME);
+		}
 
 		// string
 		return MIdOrString(str.c_str());
@@ -10294,7 +10299,7 @@ LRESULT MMainWnd::OnNotify(HWND hwnd, int idFrom, NMHDR *pnmhdr)
 				MIdOrString old_name = GetNameFromText(szOldText);
 				MIdOrString new_name = GetNameFromText(szNewText);
 
-				if (old_name == new_name)
+				if (old_name == new_name || new_name.empty() || new_name == BAD_NAME)
 					return FALSE;   // reject
 
 				// check if it already exists

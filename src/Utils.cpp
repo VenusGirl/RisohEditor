@@ -3122,7 +3122,19 @@ BOOL CheckNameComboBox(HWND hCmb2, const MIdOrString& type, MIdOrString& name)
 		else
 		{
 			if (str[0] == L'"') // Quoted?
+			{
 				mstr_unquote(str); // Unquote
+
+				if (str.empty() || str == L"*") // an empty string or an asterisk
+				{
+					ComboBox_SetEditSel(hCmb2, 0, -1);  // select all
+					SetFocus(hCmb2);	// set focus
+					// show error message
+					LogMessageBoxW(GetParent(hCmb2), LoadStringDx(IDS_ENTERNAME),
+								   NULL, MB_ICONERROR);
+					return FALSE;   // failure
+				}
+			}
 
 			name = str.c_str();  // a string name
 		}
