@@ -276,7 +276,7 @@ public:
 	BOOL DoUpxCompress(LPCWSTR pszUpx, LPCWSTR pszExeFile);
 	void DoRenameEntry(LPWSTR pszText, EntryBase *entry, MIdOrString& old_name, MIdOrString& new_name);
 	void DoRelangEntry(LPWSTR pszText, EntryBase *entry, LANGID old_lang, LANGID new_lang);
-	void DoRefreshTV(HWND hwnd, BOOL bNoDeleteAll = FALSE);
+	void DoRefreshTV(HWND hwnd);
 	void DoRefreshIDList(HWND hwnd);
 	void DoTVEditAutoComplete(HWND hwnd, HWND hwndEdit);
 	void DoTVEditAutoCompleteRelease(HWND hwnd);
