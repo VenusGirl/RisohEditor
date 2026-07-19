@@ -1,0 +1,13 @@
+/* DEFINE_CHARSET2(index, value, name) */
+DEFINE_CHARSET2( 0,    0, L"7-bit ASCII")
+DEFINE_CHARSET2( 1,  932, L"Japan (Shift_JIS)")
+DEFINE_CHARSET2( 2,  949, L"Korea (KS C 5601)")
+DEFINE_CHARSET2( 3,  950, L"Taiwan (Big5)")
+DEFINE_CHARSET2( 4, 1200, L"Unicode")
+DEFINE_CHARSET2( 5, 1250, L"Latin-2 (Eastern European)")
+DEFINE_CHARSET2( 6, 1251, L"Cyrillic")
+DEFINE_CHARSET2( 7, 1252, L"Multilingual")
+DEFINE_CHARSET2( 8, 1253, L"Greek")
+DEFINE_CHARSET2( 9, 1254, L"Turkish")
+DEFINE_CHARSET2(10, 1255, L"Hebrew")
+DEFINE_CHARSET2(11, 1256, L"Arabic")

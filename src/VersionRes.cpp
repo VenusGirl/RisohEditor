@@ -108,6 +108,26 @@ VersionRes::DumpValue(WORD wType, const Var& value, int depth) const
 	return ret;
 }
 
+static inline BOOL is_8digit_hex(const MStringW& str)
+{
+	if (str.size() != 8)
+		return FALSE;
+	for (auto& ch : str)
+	{
+		if (!mchr_is_xdigit(ch))
+			return FALSE;
+	}
+	return TRUE;
+}
+
+static inline PCWSTR get_charset2(WORD wCharSet)
+{
+#define DEFINE_CHARSET2(index, value, name) if (wCharSet == value) return name;
+#include "charsets2.h"
+#undef DEFINE_CHARSET2
+	return L"(Unknown charset)";
+}
+
 MStringW
 VersionRes::DumpBlock(const Var& var, int depth) const
 {
@@ -116,7 +136,24 @@ VersionRes::DumpBlock(const Var& var, int depth) const
 	ret += MStringW(depth * 4, L' ');
 	ret += L"BLOCK \"";
 	ret += var.key;
-	ret += L"\"\r\n";
+#ifndef NO_CONSTANTS_DB
+	if (is_8digit_hex(var.key))
+	{
+		ret += L"\" // ";
+		LANGID wLangID = (LANGID)std::wcstoul(var.key.substr(0, 4).c_str(), nullptr, 16);
+		WORD wCharSet = (WORD)std::wcstoul(var.key.substr(4, 4).c_str(), nullptr, 16);
+
+		MString lang_name = g_db.GetLangName(wLangID);
+		ret += lang_name;
+		ret += L", ";
+		ret += get_charset2(wCharSet);
+		ret += L"\r\n";
+	}
+	else
+#endif
+	{
+		ret += L"\"\r\n";
+	}
 	ret += MStringW(depth * 4, L' ');
 	if (g_settings.bUseBeginEnd)
 		ret += L"BEGIN\r\n";
