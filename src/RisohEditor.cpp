@@ -890,7 +890,11 @@ LRESULT MMainWnd::OnRadDblClick(HWND hwnd, WPARAM wParam, LPARAM lParam)
 LRESULT MMainWnd::OnCheckTreeView(HWND hwnd, WPARAM wParam, LPARAM lParam)
 {
 	if (!g_res.get_entry())
+	{
 		HidePreview();
+		Edit_SetReadOnly(m_hCodeEditor, TRUE);
+		UpdateOurToolBarButtons(3);
+	}
 	return 0;
 }
 
