@@ -4780,6 +4780,8 @@ BOOL InitNames(void)
 		return FALSE;   // no selection
 
 	auto nIDTYPE_ = g_db.IDTypeFromResType(entry->m_type);
+	if (entry->m_type == RT_DLGINIT)
+		nIDTYPE_ = IDTYPE_DIALOG;
 	auto prefix = MapIDTypeToPrefix(nIDTYPE_);
 	auto table = g_db.GetTableByPrefix(L"RESOURCE.ID", prefix);
 	auto end = table.end();
@@ -4804,6 +4806,8 @@ BOOL ChooseNameListBoxName(HWND hwnd, const MIdOrString& type, const MIdOrString
 		return TRUE;
 
 	auto nIDTYPE_ = g_db.IDTypeFromResType(type);
+	if (type == RT_DLGINIT)
+		nIDTYPE_ = IDTYPE_DIALOG;
 	auto prefix = MapIDTypeToPrefix(nIDTYPE_);
 	auto table = g_db.GetTableByPrefix(L"RESOURCE.ID", prefix);
 	auto end = table.end();
