@@ -10267,6 +10267,10 @@ LRESULT MMainWnd::OnNotify(HWND hwnd, int idFrom, NMHDR *pnmhdr)
 			WCHAR szNewText[MAX_PATH];
 			StringCchCopyW(szNewText, _countof(szNewText), pszNewText);
 			mstr_trim(szNewText);
+
+			if (lstrcmpW(szNewText, L"*") == 0)
+				return FALSE; // Reject
+
 			if (entry->m_et == ET_NAME && !szNewText[0])
 			{
 				ErrorBoxDx(IDS_INVALIDNAME);
