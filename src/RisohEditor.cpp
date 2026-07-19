@@ -8936,8 +8936,11 @@ std::wstring MMainWnd::ExtractEntry(EntryBase *entry, PCWSTR filename)
 		fname = res2text.GetEntryFileName(*entry);
 		if (fname.empty())
 		{
-			fname += std::to_wstring(entry->m_lang);
-			fname += L"_";
+			if (entry->m_lang)
+			{
+				fname += std::to_wstring(entry->m_lang);
+				fname += L"_";
+			}
 			fname += entry->m_type.str();
 			fname += L"_";
 			fname += entry->m_name.str();
