@@ -8,7 +8,7 @@ cmake_minimum_required(VERSION 3.10)
 cmake_policy(SET CMP0054 NEW)
 cmake_policy(SET CMP0003 NEW)
 if(POLICY CMP0091)
-	cmake_policy(SET CMP0091 NEW)
+    cmake_policy(SET CMP0091 NEW)
 endif()
 
 # enable testing
@@ -25,6 +25,9 @@ set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/build)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/build)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/build)
 
+# define RISOHEDITOR
+add_definitions(-DRISOHEDITOR)
+
 # statically link
 if (WIN32)
     if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
@@ -38,24 +41,24 @@ if (WIN32)
     elseif (MSVC)
         # use explicit runtime library settings (/MTd in Debug, /MT in others)
         if(POLICY CMP0091)
-			set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
-		else()
-			# fallback for older CMake versions
-			set(CompilerFlags
-				CMAKE_C_FLAGS
-				CMAKE_C_FLAGS_DEBUG
-				CMAKE_C_FLAGS_RELEASE
-				CMAKE_C_FLAGS_MINSIZEREL
-				CMAKE_C_FLAGS_RELWITHDEBINFO
-				CMAKE_CXX_FLAGS
-				CMAKE_CXX_FLAGS_DEBUG
-				CMAKE_CXX_FLAGS_RELEASE
-				CMAKE_CXX_FLAGS_MINSIZEREL
-				CMAKE_CXX_FLAGS_RELWITHDEBINFO)
-			foreach(CompilerFlags ${CompilerFlags})
-				string(REPLACE "/MD" "/MT" ${CompilerFlags} "${${CompilerFlags}}")
-			endforeach()
-		endif()
+            set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
+        else()
+            # fallback for older CMake versions
+            set(CompilerFlags
+                CMAKE_C_FLAGS
+                CMAKE_C_FLAGS_DEBUG
+                CMAKE_C_FLAGS_RELEASE
+                CMAKE_C_FLAGS_MINSIZEREL
+                CMAKE_C_FLAGS_RELWITHDEBINFO
+                CMAKE_CXX_FLAGS
+                CMAKE_CXX_FLAGS_DEBUG
+                CMAKE_CXX_FLAGS_RELEASE
+                CMAKE_CXX_FLAGS_MINSIZEREL
+                CMAKE_CXX_FLAGS_RELWITHDEBINFO)
+            foreach(CompilerFlags ${CompilerFlags})
+                string(REPLACE "/MD" "/MT" ${CompilerFlags} "${${CompilerFlags}}")
+            endforeach()
+        endif()
     endif()
 endif()
 
@@ -66,7 +69,7 @@ include_directories(WonSetThreadUILanguage)
 
 add_subdirectory(WonRes)
 if(MSVC AND TARGET WonRes AND DEFINED CMAKE_MSVC_RUNTIME_LIBRARY AND NOT CMAKE_MSVC_RUNTIME_LIBRARY STREQUAL "")
-	set_property(TARGET WonRes PROPERTY MSVC_RUNTIME_LIBRARY "${CMAKE_MSVC_RUNTIME_LIBRARY}")
+    set_property(TARGET WonRes PROPERTY MSVC_RUNTIME_LIBRARY "${CMAKE_MSVC_RUNTIME_LIBRARY}")
 endif()
 
 add_definitions(-DMZC4_HANDLE_MAP=1 -DUSE_GLOBALS=1)
