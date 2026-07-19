@@ -151,7 +151,11 @@ VersionRes::Dump(const MIdOrString& name) const
 	WCHAR line[MAX_PATH];
 	DWORD dwValue;
 
-	ret += name.str();
+	if (name.is_str())
+		ret += name.quoted_wstr();
+	else
+		ret += name.str();
+
 	ret += L" VERSIONINFO\r\n";
 
 	StringCchPrintfW(line, _countof(line),
