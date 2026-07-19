@@ -1,11 +1,11 @@
 ## CRONOLOGIA VERSIONI PROGRAMMA
 
 - v.6.0.6 (2026-XX-YY)
-    - Aggiunta la cronologia alla console EGA (tasti Su/Giù). 
-    - Migliorata la guida alle parole chiave. 
-    - Aggiunte le funzioni EGA `localtime` e `gmtime`. 
-    - Migliorato il manuale EGA. 
-    - Aggiunte le funzioni EGA di caricamento e salvataggio. 
+    - Aggiunta la cronologia alla console EGA (tasti Su/Giù).
+    - Migliorata la guida alle parole chiave.
+    - Aggiunte le funzioni EGA `localtime` e `gmtime`.
+    - Migliorato il manuale EGA.
+    - Aggiunte le funzioni EGA di caricamento e salvataggio.
     - Aggiunta la funzione EGA `RES_extract`.
 - v.6.0.5 (17.07.2026)
     - Abilitata la freccia della visualizzazione struttura per modificare il nome risorsa.
@@ -23,7 +23,7 @@
     - Finalizzazione localizzazione.
     - Corretto bug minore "ID risorse".
     - Corretta gestione nomi risorse tra virgolette.
-    - Migliorato dump di RT_VERSION. 
+    - Migliorato dump di RT_VERSION.
     - Aggiunto "winres.h".
     - Aggiunta alla visualizzazione struttura la funzionalità "Argomento Guida in linea".
     - Omesse virgole nella tabella delle stringhe.
