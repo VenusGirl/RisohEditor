@@ -19,6 +19,8 @@
 
 extern INT g_bNoGuiMode; // No-GUI mode
 extern LPWSTR g_pszLogFile;
+wclib_t s_wclib;
+std::vector<MString> *g_pNames = NULL;
 
 INT LogMessageBoxW(HWND hwnd, LPCWSTR text, LPCWSTR title, UINT uType)
 {
@@ -245,22 +247,6 @@ bool create_directories_recursive_win32(const std::wstring& path)
 	}
 
 	return true;
-}
-
-// store the toolbar strings
-VOID ToolBar_StoreStrings(HWND hwnd, INT nCount, TBBUTTON *pButtons)
-{
-	for (INT i = 0; i < nCount; ++i)
-	{
-		if (pButtons[i].idCommand == 0 || (pButtons[i].fsStyle & BTNS_SEP))
-			continue;   // ignore separators
-
-		// replace the resource string ID with a toolbar string ID
-		INT_PTR id = pButtons[i].iString;
-		LPWSTR psz = LoadStringDx(INT(id));
-		id = SendMessageW(hwnd, TB_ADDSTRING, 0, (LPARAM)psz);
-		pButtons[i].iString = id;
-	}
 }
 
 // dump data as a text
@@ -2461,36 +2447,6 @@ BOOL IsValidUILang(LANGID langid)
 	return value != langid;
 }
 
-MRisohAutoComplete::MRisohAutoComplete(INT type, BOOL bUILanguage)
-{
-	m_type = type;
-	m_nCurrentElement = 0;
-	m_nRefCount = 1;
-	m_fBound = FALSE;
-	m_pAC = NULL;
-
-	if (type == 1) // Names
-	{
-		if (InitNames() && g_pNames)
-		{
-			for (auto& name : *g_pNames)
-			{
-				push_back(name);
-			}
-		}
-	}
-	if (type == 2) // Languages
-	{
-		for (auto& lang : g_langs)
-		{
-			if (bUILanguage && !IsValidUILang(lang.LangID))
-				continue;
-
-			push_back(lang.str);
-		}
-	}
-}
-
 // initialize the language combobox
 void InitLangComboBox(HWND hCmb3, LANGID langid, BOOL bUILanguage)
 {
@@ -3408,4 +3364,429 @@ BOOL IsCodePageReallyUsable(UINT cp)
 		return TRUE;
 	CPINFOEXW info;
 	return IsValidCodePage(cp) && GetCPInfoExW(cp, 0, &info);
+}
+
+// get the resource name from text
+MIdOrString GetNameFromText(const WCHAR *pszText)
+{
+	// pszText --> szText
+	WCHAR szText[MAX_PATH];
+	StringCchCopyW(szText, _countof(szText), pszText);
+	mstr_trim(szText, L" \t\r\n　");
+
+	// replace the fullwidth characters with halfwidth characters
+	ReplaceFullWithHalf(szText);
+
+	if (szText[0] == 0)
+	{
+		return (WORD)0;     // empty
+	}
+	else if (mchr_is_digit(szText[0]) || szText[0] == L'-' || szText[0] == L'+')
+	{
+		// numeric
+		return WORD(mstr_parse_int(szText));
+	}
+	else
+	{
+		// string value
+		MStringW str = szText;
+
+		// is there parenthesis?
+		size_t i = str.rfind(L'('); // ')'
+		if (i != MStringW::npos && mchr_is_digit(str[i + 1]))
+		{
+			// parse the text after the last parenthesis
+			return WORD(mstr_parse_int(&str[i + 1]));
+		}
+
+		// A resource ID?
+		if (g_db.HasResID(str))
+			return (WORD)g_db.GetResIDValue(str);
+
+		// Make it Uppercase
+		if (str.size())
+			CharUpperW(&str[0]);
+
+		// Retry
+		if (g_db.HasResID(str))
+			return (WORD)g_db.GetResIDValue(str);
+
+		if (str[0] == L'"') // Quoted?
+		{
+			mstr_unquote(str); // Unquote
+
+			if (str.empty() || str == L"*")
+				return MIdOrString(BAD_NAME);
+		}
+
+		// string
+		return MIdOrString(str.c_str());
+	}
+}
+
+// get the IDTYPE_ values by the specified prefix
+std::vector<INT> GetPrefixIndexes(const MString& prefix)
+{
+	std::vector<INT> ret;
+	for (auto& pair : g_settings.assoc_map)
+	{
+		if (prefix == pair.second && !pair.second.empty())
+		{
+			auto nIDTYPE_ = UnMapIDType(pair.first);
+			ret.push_back(nIDTYPE_);
+		}
+	}
+	return ret;
+}
+
+// is there a window class that is named pszName?
+BOOL IsThereWndClass(const WCHAR *pszName)
+{
+	if (!pszName || pszName[0] == 0)
+		return FALSE;   // failure
+
+	WNDCLASSEX cls;
+	if (GetClassInfoEx(NULL, pszName, &cls) ||
+		GetClassInfoEx(GetModuleHandle(NULL), pszName, &cls))
+	{
+		return TRUE;    // already exists
+	}
+
+	// in the window class libraries?
+	for (auto& library : s_wclib)
+	{
+		if (GetClassInfoEx(library, pszName, &cls))
+			return TRUE;    // found
+	}
+
+	// CLSID?
+	if (pszName[0] == L'{' &&
+		pszName[9] == L'-' && pszName[14] == L'-' &&
+		pszName[19] == L'-' && pszName[24] == L'-' &&
+		pszName[37] == L'}')
+	{
+		return TRUE;        // it's a CLSID
+	}
+
+	// ATL OLE control?
+	if (std::wstring(pszName).find(L"AtlAxWin") == 0)
+		return TRUE;        // it's an ATL OLE control
+
+	return FALSE;   // failure
+}
+
+// release all the window class libraries
+void FreeWCLib()
+{
+	for (auto& library : s_wclib)
+	{
+		FreeLibrary(library);
+		//library = NULL;
+	}
+	s_wclib.clear();
+}
+
+MStringW GetResTypeEncoding(const MIdOrString& type)
+{
+	MStringW name;
+
+	if (type.m_id)
+	{
+		name = g_db.GetName(L"RESOURCE", type.m_id);
+		if (name.empty())
+			name = mstr_dec_word(type.m_id);
+	}
+	else
+	{
+		name = type.str();
+	}
+
+	auto it = g_settings.encoding_map.find(name);
+	if (it != g_settings.encoding_map.end())
+		return it->second;
+
+	return L"";
+}
+
+BOOL DoCheckFile(std::wstring& file, LPCWSTR psz)
+{
+	WCHAR szPath[MAX_PATH];
+	ExpandEnvironmentStringsW(psz, szPath, _countof(szPath));
+	if (PathFileExistsW(szPath))
+	{
+		file = szPath;
+		return TRUE;
+	}
+	return FALSE;
+}
+
+BOOL InitNames(void)
+{
+	if (g_pNames)
+		delete g_pNames;
+	g_pNames = new std::vector<MString>();
+
+	auto entry = g_res.get_entry();
+	if (!entry)
+		return FALSE;   // no selection
+
+	auto nIDTYPE_ = g_db.IDTypeFromResType(entry->m_type);
+	if (entry->m_type == RT_DLGINIT)
+		nIDTYPE_ = IDTYPE_DIALOG;
+	auto prefix = MapIDTypeToPrefix(nIDTYPE_);
+	auto table = g_db.GetTableByPrefix(L"RESOURCE.ID", prefix);
+	auto end = table.end();
+	for (auto it = table.begin(); it != end; ++it)
+	{
+		g_pNames->push_back(it->name);
+	}
+
+	std::sort(g_pNames->begin(), g_pNames->end());
+	return TRUE;
+}
+
+BOOL InitLangListBox(HWND hwnd)
+{
+	ListBox_ResetContent(hwnd);
+
+	for (auto& lang : g_langs)
+	{
+		INT index = ListBox_AddString(hwnd, lang.str.c_str());
+		ListBox_SetItemData(hwnd, index, lang.LangID);
+	}
+
+	return TRUE;
+}
+
+BOOL ChooseNameListBoxName(HWND hwnd, const MIdOrString& type, const MIdOrString& name)
+{
+	if (g_pNames)
+		delete g_pNames;
+	g_pNames = new std::vector<MString>();
+
+	ListBox_ResetContent(hwnd);
+
+	if (g_settings.bHideID)
+		return TRUE;
+
+	auto nIDTYPE_ = g_db.IDTypeFromResType(type);
+	if (type == RT_DLGINIT)
+		nIDTYPE_ = IDTYPE_DIALOG;
+	auto prefix = MapIDTypeToPrefix(nIDTYPE_);
+	auto table = g_db.GetTableByPrefix(L"RESOURCE.ID", prefix);
+	auto end = table.end();
+	for (auto it = table.begin(); it != end; ++it)
+	{
+		g_pNames->push_back(it->name);
+	}
+
+	std::sort(g_pNames->begin(), g_pNames->end());
+
+	for (auto& item : *g_pNames)
+	{
+		INT index = ListBox_AddString(hwnd, item.c_str());
+		if (index != LB_ERR && item == name.str())
+		{
+			ListBox_SetCurSel(hwnd, index);
+			ListBox_SetTopIndex(hwnd, index);
+		}
+	}
+
+	return TRUE;
+}
+
+BOOL ChooseLangListBoxLang(HWND hwnd, LANGID wLangId)
+{
+	INT index = 0;
+	for (auto& lang : g_langs)
+	{
+		if (lang.LangID == wLangId)
+			break;
+		++index;
+	}
+
+	if (index >= (INT)g_langs.size())
+		return FALSE;
+
+	index = ListBox_FindString(hwnd, -1, g_langs[index].str.c_str());
+	if (index < 0)
+		return FALSE;
+
+	ListBox_SetCurSel(hwnd, index);
+	ListBox_SetTopIndex(hwnd, index);
+	return TRUE;
+}
+
+// Helper function to get header file path from TEXTINCLUDE 1 data
+MStringW GetTextInclude1HeaderFile(const EntrySet& res, LPCWSTR szRCPath)
+{
+	// Find TEXTINCLUDE 1 entry
+	auto p_textinclude1 = res.find(ET_LANG, L"TEXTINCLUDE", WORD(1));
+	if (!p_textinclude1 || p_textinclude1->m_data.empty())
+		return L"";
+
+	// Extract the header file name from the data
+	std::string data(p_textinclude1->m_data.begin(), p_textinclude1->m_data.end());
+
+	// Remove trailing NUL characters
+	while (!data.empty() && data.back() == '\0')
+		data.pop_back();
+
+	// Remove surrounding quotes if present
+	if (data.size() >= 2 && data.front() == '"' && data.back() == '"')
+	{
+		data = data.substr(1, data.size() - 2);
+	}
+
+	// If empty, return empty
+	if (data.empty())
+		return L"";
+
+	// Remove read-only marker
+	if (data.find("< ") == 0)
+		data = data.substr(2);
+
+	// Convert to wide string
+	MAnsiToWide a2w(CP_UTF8, data.c_str());
+	MStringW strHeaderFile = a2w.c_str();
+
+	// If it's an absolute path, use it directly
+	if (PathIsRelativeW(strHeaderFile.c_str()) == FALSE)
+	{
+		if (PathFileExistsW(strHeaderFile.c_str()))
+			return strHeaderFile;
+		return L"";
+	}
+
+	// Build full path relative to RC file directory
+	WCHAR szDir[MAX_PATH];
+	StringCchCopyW(szDir, _countof(szDir), szRCPath);
+	PathRemoveFileSpecW(szDir);
+
+	WCHAR szFullPath[MAX_PATH];
+	PathCombineW(szFullPath, szDir, strHeaderFile.c_str());
+
+	// Check if the file exists
+	if (PathFileExistsW(szFullPath))
+		return szFullPath;
+
+	return L"";
+}
+
+BOOL IsExeOrDll(LPCWSTR pszFileName)
+{
+	BYTE ab[2] = { 0, 0 };
+	if (FILE *fp = _wfopen(pszFileName, L"rb"))
+	{
+		fread(ab, 2, 1, fp);
+		fclose(fp);
+	}
+
+	if (ab[0] == 'M' && ab[1] == 'Z')
+		return TRUE;
+	if (ab[0] == 'P' && ab[1] == 'E')
+		return TRUE;
+	return FALSE;
+}
+
+BOOL IsDotExe(LPCWSTR pszFileName)
+{
+	return lstrcmpiW(PathFindExtensionW(pszFileName), L".exe") == 0;
+}
+
+BOOL DumpTinyExeOrDll(HINSTANCE hInst, LPCWSTR pszFileName, INT nID)
+{
+	if (HRSRC hRsrc = FindResourceW(hInst, MAKEINTRESOURCEW(nID), RT_RCDATA))
+	{
+		if (HGLOBAL hGlobal = LoadResource(hInst, hRsrc))
+		{
+			if (LPVOID pvData = LockResource(hGlobal))
+			{
+				DWORD cbData = SizeofResource(hInst, hRsrc);
+				if (FILE *fp = _wfopen(pszFileName, L"wb"))
+				{
+					size_t nOK = fwrite(pvData, cbData, 1, fp);
+					fflush(fp);
+					fclose(fp);
+
+					return !!nOK;
+				}
+			}
+		}
+	}
+	return FALSE;
+}
+
+BOOL DoResetCheckSum(LPCWSTR pszExeFile)
+{
+	MByteStreamEx stream;
+	if (!stream.LoadFromFile(pszExeFile))
+	{
+		assert(0);
+		return FALSE;
+	}
+
+	if (stream.size() <= sizeof(IMAGE_DOS_SIGNATURE))
+	{
+		assert(0);
+		return FALSE;
+	}
+
+	auto dos = stream.pointer<IMAGE_DOS_HEADER>();
+	IMAGE_NT_HEADERS *nt;
+	if (dos && dos->e_magic == IMAGE_DOS_SIGNATURE && dos->e_lfanew != 0)
+		nt = stream.pointer<IMAGE_NT_HEADERS>(dos->e_lfanew);
+	else
+		nt = stream.pointer<IMAGE_NT_HEADERS>();
+
+	if (!nt || nt->Signature != IMAGE_NT_SIGNATURE)
+	{
+		assert(0);
+		return FALSE;
+	}
+
+	IMAGE_NT_HEADERS32 *nt32 = reinterpret_cast<IMAGE_NT_HEADERS32 *>(nt);
+	IMAGE_NT_HEADERS64 *nt64 = reinterpret_cast<IMAGE_NT_HEADERS64 *>(nt);
+
+	IMAGE_FILE_HEADER *file = &nt->FileHeader;
+	IMAGE_OPTIONAL_HEADER32 *optional32 = NULL;
+	IMAGE_OPTIONAL_HEADER64 *optional64 = NULL;
+
+	switch (file->SizeOfOptionalHeader)
+	{
+	case sizeof(IMAGE_OPTIONAL_HEADER32):
+		optional32 = &nt32->OptionalHeader;
+		if (optional32->Magic != IMAGE_NT_OPTIONAL_HDR32_MAGIC)
+			return FALSE;
+		optional32->CheckSum = 0;
+		break;
+
+	case sizeof(IMAGE_OPTIONAL_HEADER64):
+		optional64 = &nt64->OptionalHeader;
+		if (optional64->Magic != IMAGE_NT_OPTIONAL_HDR64_MAGIC)
+			return FALSE;
+		optional64->CheckSum = 0;
+		break;
+
+	default:
+		assert(0);
+		return FALSE;
+	}
+
+	return stream.SaveToFile(pszExeFile);
+}
+
+std::wstring generated_from(INT n)
+{
+	WCHAR szText[MAX_PATH];
+	StringCchPrintfW(szText, _countof(szText), LoadStringDx(IDS_GENERATEDFROMTEXTINCLUDE), n);
+	return szText;
+}
+
+void WriteMacroLine(MFile& file, const MStringA& name, const MStringA& definition)
+{
+	MStringA strSpace(" ");
+	if (name.size() < 35)
+		strSpace.assign(35 - name.size(), ' ');
+	file.WriteFormatA("#define %s %s%s\r\n", name.c_str(), strSpace.c_str(), definition.c_str());
 }

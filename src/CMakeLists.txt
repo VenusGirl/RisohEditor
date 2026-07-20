@@ -8,14 +8,17 @@ add_library(libRisohEditor STATIC
     MBitmapDx.cpp
     MEditMenuDlg.cpp
     MEgaDlg.cpp
-    MenuRes.cpp
     MIDListDlg.cpp
-    MMainWnd_Preview.cpp
+    MMainWnd_Command.cpp
     MMainWnd_EGA.cpp
+    MMainWnd_Preview.cpp
+    MMainWnd_Search.cpp
     MMainWnd_Tests.cpp
+    MMainWnd_Toolbar.cpp
     MOleHost.cpp
     MRadWindow.cpp
     MSplitterWnd.cpp
+    MenuRes.cpp
     PackedDIB.cpp
     Res.cpp
     ResToText.cpp
@@ -23,6 +26,7 @@ add_library(libRisohEditor STATIC
     ToolbarRes.cpp
     Utils.cpp
     VersionRes.cpp
+    idmaps.cpp
     WonResWrap.cpp)
 set_target_properties(libRisohEditor PROPERTIES PREFIX "")
 

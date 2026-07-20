@@ -9,12 +9,42 @@
 
 #include <shldisp.h>
 #include <shlguid.h>
+#include "Utils.h"
 
 class MRisohAutoComplete : public IEnumString
 {
 public:
 	INT m_type = 2;
-	MRisohAutoComplete(INT type, BOOL bUILanguage = FALSE);
+
+	MRisohAutoComplete(INT type, BOOL bUILanguage = FALSE)
+	{
+		m_type = type;
+		m_nCurrentElement = 0;
+		m_nRefCount = 1;
+		m_fBound = FALSE;
+		m_pAC = NULL;
+
+		if (type == 1) // Names
+		{
+			if (InitNames() && g_pNames)
+			{
+				for (auto& name : *g_pNames)
+				{
+					push_back(name);
+				}
+			}
+		}
+		if (type == 2) // Languages
+		{
+			for (auto& lang : g_langs)
+			{
+				if (bUILanguage && !IsValidUILang(lang.LangID))
+					continue;
+
+				push_back(lang.str);
+			}
+		}
+	}
 
 	virtual ~MRisohAutoComplete()
 	{

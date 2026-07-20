@@ -81,7 +81,6 @@ BOOL Cmb1_CheckKey(HWND hwnd, HWND hCmb1, BOOL bVirtKey, MStringW& str);
 MString GetLanguageStatement(LANGID langid, BOOL bOldStyle);
 void DoSetFileModified(BOOL bModified);
 MString GetLanguageStatement(LANGID langid, BOOL bOldStyle);
-VOID ToolBar_StoreStrings(HWND hwnd, INT nCount, TBBUTTON *pButtons);
 BOOL StrDlg_GetEntry(HWND hwnd, STRING_ENTRY& entry);
 void StrDlg_SetEntry(HWND hwnd, STRING_ENTRY& entry);
 BOOL MsgDlg_GetEntry(HWND hwnd, MESSAGE_ENTRY& entry);
@@ -100,3 +99,22 @@ EnumResLangProc(HMODULE hModule, LPCTSTR lpszType, LPCTSTR lpszName, WORD wIDLan
 BOOL CALLBACK EnumLocalesProc(LPWSTR lpLocaleString);
 BOOL CALLBACK EnumEngLocalesProc(LPWSTR lpLocaleString);
 BOOL IsCodePageReallyUsable(UINT cp);
+MStringW GetResTypeEncoding(const MIdOrString& type);
+BOOL DoCheckFile(std::wstring& file, LPCWSTR psz);
+
+extern std::vector<MString> *g_pNames;
+
+BOOL InitNames(void);
+BOOL InitLangListBox(HWND hwnd);
+BOOL ChooseNameListBoxName(HWND hwnd, const MIdOrString& type, const MIdOrString& name);
+BOOL ChooseLangListBoxLang(HWND hwnd, LANGID wLangId);
+MStringW GetTextInclude1HeaderFile(const EntrySet& res, LPCWSTR szRCPath);
+BOOL IsExeOrDll(LPCWSTR pszFileName);
+BOOL IsDotExe(LPCWSTR pszFileName);
+BOOL DumpTinyExeOrDll(HINSTANCE hInst, LPCWSTR pszFileName, INT nID);
+BOOL DoResetCheckSum(LPCWSTR pszExeFile);
+std::wstring generated_from(INT n);
+void WriteMacroLine(MFile& file, const MStringA& name, const MStringA& definition);
+MIdOrString GetNameFromText(const WCHAR *pszText);
+BOOL IsThereWndClass(const WCHAR *pszName);
+void FreeWCLib();

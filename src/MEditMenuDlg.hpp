@@ -13,6 +13,7 @@
 #include "MComboBoxAutoComplete.hpp"
 #include "MenuRes.hpp"
 #include "Common.hpp"
+#include "MResizable.hpp"
 
 class MAddMItemDlg;
 class MModifyMItemDlg;

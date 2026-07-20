@@ -8,6 +8,17 @@
 
 #include "RisohEditor.hpp"
 #include "MRisohAutoComplete.hpp"
+#include "MItemSearchDlg.hpp"
+#include "MAddResDlg.hpp"
+
+enum ResFileFilterIndex     // see also: IDS_EXERESFILTER
+{
+	RFFI_NONE = 0,
+	RFFI_EXECUTABLE = 1,
+	RFFI_RC = 2,
+	RFFI_RES = 3,
+	RFFI_ALL = 4,
+};
 
 //////////////////////////////////////////////////////////////////////////////
 // MMainWnd --- the main window

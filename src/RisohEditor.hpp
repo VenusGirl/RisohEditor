@@ -67,44 +67,13 @@ HBITMAP CreateBitmapFromIconDx(HICON hIcon, INT width, INT height, BOOL bCursor)
 
 #include "MRadWindow.hpp"
 #include "MReplaceBinDlg.hpp"
-#include "MTestMenuDlg.hpp"
-#include "MTestDialog.hpp"
-#include "MAddIconDlg.hpp"
-#include "MReplaceIconDlg.hpp"
-#include "MReplaceCursorDlg.hpp"
-#include "MAddBitmapDlg.hpp"
-#include "MReplaceBitmapDlg.hpp"
-#include "MAddCursorDlg.hpp"
-#include "MAddResDlg.hpp"
-#include "MStringsDlg.hpp"
-#include "MMessagesDlg.hpp"
-#include "MEditMenuDlg.hpp"
-#include "MEditToolbarDlg.hpp"
-#include "MEditAccelDlg.hpp"
-#include "MIdAssocDlg.hpp"
 #include "MBmpView.hpp"
 #include "MIDListDlg.hpp"
-#include "MConfigDlg.hpp"
 #include "MAdviceResHDlg.hpp"
-#include "MCloneInNewNameDlg.hpp"
-#include "MCloneInNewLangDlg.hpp"
-#include "MCopyToMultiLangDlg.hpp"
-#include "MItemSearchDlg.hpp"
-#include "MVersionInfoDlg.hpp"
-#include "MFontsDlg.hpp"
-#include "MMacrosDlg.hpp"
-#include "MPathsDlg.hpp"
-#include "MExportOptionsDlg.hpp"
-#include "MLangsDlg.hpp"
 #include "MTestParentWnd.hpp"
-#include "MDlgInitDlg.hpp"
-#include "MEncodingDlg.hpp"
-#include "MConstantDlg.hpp"
 #include "MEgaDlg.hpp"
-#include "MDialogFontSubstDlg.hpp"
 #include "MDropdownArrow.hpp"
 #include "MTabCtrl.hpp"
-#include "MDfmSettingsDlg.hpp"
 
 #include "MString.hpp"
 #include "MByteStream.hpp"
@@ -142,7 +111,20 @@ extern std::vector<LANG_ENTRY> g_langs;
 
 #include "ResToText.hpp"
 
-extern std::unordered_map<INT, MStringW> *g_pmapIDTypeToLocalized;
-extern std::unordered_map<MStringW, INT> *g_pmapLocalizedToIDType;
-MStringW MapIDType(IDTYPE_ nIDType);
-IDTYPE_ UnMapIDType(const MStringW& str);
+struct CODEPAGE_INFO
+{
+	UINT number;
+	const char *name;
+};
+
+typedef HRESULT (WINAPI *SETWINDOWTHEME)(HWND, LPCWSTR, LPCWSTR);
+
+#define CX_STATUS_PART  80      // status bar part width
+#define ERROR_LINE_COLOR RGB(255, 191, 191)
+
+#define MYWM_UPDATEARROW (WM_USER + 114)
+#define MYWM_GETDLGHEADLINES (WM_USER + 250)
+
+// the window class libraries
+typedef std::unordered_set<HMODULE> wclib_t;
+extern wclib_t s_wclib;
