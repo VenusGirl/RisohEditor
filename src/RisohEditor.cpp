@@ -7143,6 +7143,8 @@ RisohEditor_Main(
 	g_settings.ui_lang = GetUILang();
 	SetThreadUILanguage(LANGID(g_settings.ui_lang));
 
+	InitIDTypeMaps();
+
 	// register MOleSite window class
 	MOleSite::RegisterDx();
 
@@ -7216,6 +7218,8 @@ RisohEditor_Main(
 	// check object counts
 	assert(MacroParser::BaseAst::alive_count() == 0);
 
+	UnloadIDTypeMaps();
+
 #if (WINVER >= 0x0500)
 	HANDLE hProcess = GetCurrentProcess();
 	MTRACEA("Count of GDI objects: %ld\n", GetGuiResources(hProcess, GR_GDIOBJECTS));
@@ -7245,11 +7249,7 @@ wWinMain(HINSTANCE   hInstance,
 
 	HRESULT hrOleInit = OleInitialize(NULL);
 
-    InitIDTypeMaps();
-
 	INT ret = RisohEditor_Main(hInstance, hPrevInstance, lpCmdLine, nCmdShow);
-
-    UnloadIDTypeMaps();
 
 	if (g_pNames)
 		delete g_pNames;
