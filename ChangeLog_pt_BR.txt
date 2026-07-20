@@ -7,7 +7,7 @@
     - Aprimorado o manual do EGA.
     - Adicionadas funções de carregamento e salvamento ao EGA.
     - Adicionada a função `RES_extract` ao EGA.
-    - Fixed BUTTON and RICHEDIT styles.
+    - Corrigidos os estilos BUTTON e RICHEDIT.
 - v.6.0.5 (2026-07-17)
     - Habilitada a seta da *treeview* para alterar o nome do recurso.
     - Corrigido o suporte a EGA. Adicionados alguns programas EGA.

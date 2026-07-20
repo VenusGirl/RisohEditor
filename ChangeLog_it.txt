@@ -7,7 +7,7 @@
     - Migliorato manuale EGA.
     - Aggiunte funzioni caricamento/salvataggio EGA.
     - Aggiunta funzione EGA RES_extract.
-    - Fixed BUTTON and RICHEDIT styles.
+    - Corretti gli stili BUTTON e RICHEDIT.
 - v.6.0.5 (17.07.2026)
     - Abilitata la freccia della visualizzazione struttura per modificare il nome risorsa.
     - Corretto EGA. Aggiunti alcuni programmi EGA.
