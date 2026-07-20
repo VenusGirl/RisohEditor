@@ -247,13 +247,13 @@ public:
 		mstr_trim(strStyle);
 		if (!strStyle.empty())
 			flags |= F_STYLE;
-		item.m_style = mstr_parse_int(strStyle.c_str(), false, 16);
+		item.m_style = mstr_parse_int(strStyle.c_str(), false);
 
 		MString strExStyle = GetDlgItemText(edt7);
 		mstr_trim(strExStyle);
 		if (!strExStyle.empty())
 			flags |= F_EXSTYLE;
-		item.m_ex_style = mstr_parse_int(strExStyle.c_str(), false, 16);
+		item.m_ex_style = mstr_parse_int(strExStyle.c_str(), false);
 
 		flags |= F_EXTRA;
 
@@ -488,7 +488,7 @@ public:
 		if (m_flags & F_STYLE)
 		{
 			m_bUpdating = TRUE;
-			StringCchPrintf(szText, _countof(szText), TEXT("%08lX"), m_dwStyle);
+			StringCchPrintf(szText, _countof(szText), TEXT("0x%08lX"), m_dwStyle);
 			SetDlgItemText(hwnd, edt6, szText);
 			m_bUpdating = FALSE;
 		}
@@ -505,7 +505,7 @@ public:
 		if (m_flags & F_EXSTYLE)
 		{
 			m_bUpdating = TRUE;
-			StringCchPrintf(szText, _countof(szText), TEXT("%08lX"), m_dwExStyle);
+			StringCchPrintf(szText, _countof(szText), TEXT("0x%08lX"), m_dwExStyle);
 			SetDlgItemText(hwnd, edt7, szText);
 			m_bUpdating = FALSE;
 		}
@@ -643,11 +643,12 @@ public:
 
 		m_dwStyle = AnalyseStyleDiff(m_dwStyle, m_style_table,
 									 old_style_selection, m_style_selection);
+
 		ApplySelection(hLst1, m_style_table, m_style_selection, m_dwStyle);
 
 		m_bUpdating = TRUE;
 		TCHAR szText[MAX_PATH];
-		StringCchPrintf(szText, _countof(szText), TEXT("%08lX"), m_dwStyle);
+		StringCchPrintf(szText, _countof(szText), TEXT("0x%08lX"), m_dwStyle);
 		SetDlgItemText(hwnd, edt6, szText);
 		m_bUpdating = FALSE;
 	}
@@ -668,7 +669,7 @@ public:
 
 		m_bUpdating = TRUE;
 		TCHAR szText[MAX_PATH];
-		StringCchPrintf(szText, _countof(szText), TEXT("%08lX"), m_dwExStyle);
+		StringCchPrintf(szText, _countof(szText), TEXT("0x%08lX"), m_dwExStyle);
 		SetDlgItemText(hwnd, edt7, szText);
 		m_bUpdating = FALSE;
 	}
@@ -680,7 +681,7 @@ public:
 
 		MString text = GetDlgItemText(hwnd, edt6);
 		mstr_trim(text);
-		DWORD dwStyle = mstr_parse_int(text.c_str(), false, 16);
+		DWORD dwStyle = mstr_parse_int(text.c_str(), false);
 
 		GetStyleSelect(m_style_selection, m_style_table, dwStyle);
 
@@ -696,7 +697,7 @@ public:
 
 		MString text = GetDlgItemText(hwnd, edt7);
 		mstr_trim(text);
-		DWORD dwExStyle = mstr_parse_int(text.c_str(), false, 16);
+		DWORD dwExStyle = mstr_parse_int(text.c_str(), false);
 
 		GetStyleSelect(m_exstyle_selection, m_exstyle_table, dwExStyle);
 
@@ -733,7 +734,7 @@ public:
 
 		m_bUpdating = TRUE;
 		TCHAR szText[MAX_PATH];
-		StringCchPrintf(szText, _countof(szText), TEXT("%08lX"), m_dwStyle);
+		StringCchPrintf(szText, _countof(szText), TEXT("0x%08lX"), m_dwStyle);
 		SetDlgItemText(hwnd, edt6, szText);
 		m_bUpdating = FALSE;
 
