@@ -84,18 +84,22 @@ public:
 		// do centering the dialog
 		CenterWindowDx();
 
+		// select the type
+		OnCmb1(hwnd);
+
 		// move focus to help the user input
 		if (m_type == 0xFFFF)
 		{
-			SetFocus(GetDlgItem(hwnd, cmb1));
+			HWND hCmb1 = GetDlgItem(hwnd, cmb1);
+			SendMessageW(hCmb1, CB_SETEDITSEL, 0, MAKELPARAM(0, -1));
+			SetFocus(hCmb1);
 		}
 		else
 		{
-			SetFocus(GetDlgItem(hwnd, cmb2));
+			HWND hCmb2 = GetDlgItem(hwnd, cmb2);
+			SendMessageW(hCmb2, CB_SETEDITSEL, 0, MAKELPARAM(0, -1));
+			SetFocus(hCmb2);
 		}
-
-		// select the type
-		OnCmb1(hwnd);
 
 		// auto complete
 		COMBOBOXINFO info = { sizeof(info) };
@@ -139,6 +143,12 @@ public:
 			// clear the name if sz is empty
 			if (sz.empty())
 				SetDlgItemTextW(hwnd, cmb2, NULL);
+		}
+
+		if (type == RT_VERSION || type == RT_MESSAGETABLE)
+		{
+			if (GetWindowTextLengthW(GetDlgItem(hwnd, cmb2)) == 0)
+				SetDlgItemTextW(hwnd, cmb2, L"1");
 		}
 
 		// check the name combobox cmb2
@@ -368,15 +378,13 @@ public:
 			SetDlgItemText(hwnd, stc2, NULL);
 		}
 
-		if (type == RT_STRING || type == RT_VERSION)
+		if (type == RT_STRING || type == RT_VERSION || type == RT_MESSAGETABLE)
 		{
-			// the name is optional if RT_STRING or RT_VERSION
 			SetDlgItemText(hwnd, stc1, LoadStringDx(IDS_OPTIONAL));
 			InitComboBoxPlaceholder(m_cmb2, IDS_NOTEXT);
 		}
 		else
 		{
-			// otherwise the name is non-optional
 			SetDlgItemText(hwnd, stc1, NULL);
 			InitComboBoxPlaceholder(m_cmb2, IDS_INTEGERORIDENTIFIER);
 		}
