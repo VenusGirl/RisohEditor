@@ -7,7 +7,7 @@
     - Improved EGA manual.
     - Added EGA load and save functions.
     - Added EGA RES_extract function.
-    - Fixed BUTTON styles.
+    - Fixed BUTTON and RICHEDIT styles.
 - v.6.0.5 (2026-07-17)
     - Enabled the treeview arrow to change the resource name.
     - Fixed EGA. Added some EGA programs.

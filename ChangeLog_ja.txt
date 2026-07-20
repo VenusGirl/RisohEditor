@@ -7,7 +7,7 @@
     - EGA マニュアルを改良。
     - EGA load と save 関数を追加。
     - EGA RES_extract 関数を追加。
-    - BUTTON のスタイルを修正。
+    - BUTTON と RICHEDIT のスタイルを修正。
 - v.6.0.5 (2026-07-17)
     - ツリービュー矢印がリソース名を変更可能に。
     - EGAを修正。いくつかEGAプログラムを追加。
