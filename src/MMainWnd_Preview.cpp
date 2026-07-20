@@ -11,7 +11,7 @@
 #include "MStrBin.hpp"
 
 // preview the icon resource
-void MMainWnd::PreviewIcon(HWND hwnd, const EntryBase& entry)
+BOOL MMainWnd::PreviewIcon(HWND hwnd, const EntryBase& entry)
 {
 	// create a bitmap object from the entry and set it to m_hBmpView
 	BITMAP bm;
@@ -37,15 +37,18 @@ void MMainWnd::PreviewIcon(HWND hwnd, const EntryBase& entry)
 
 	// show
 	SetShowMode(SHOW_CODEANDBMP);
+
+	return TRUE;
 }
 
 // preview the cursor resource
-void MMainWnd::PreviewCursor(HWND hwnd, const EntryBase& entry)
+BOOL MMainWnd::PreviewCursor(HWND hwnd, const EntryBase& entry)
 {
 	// create a cursor object from the entry and set it to m_hBmpView
 	BITMAP bm;
 	HCURSOR hCursor = PackedDIB_CreateIcon(&entry[0], entry.size(), bm, FALSE);
-	m_hBmpView.SetBitmap(CreateBitmapFromIconDx(hCursor, bm.bmWidth, bm.bmHeight, TRUE));
+	HBITMAP hbm = CreateBitmapFromIconDx(hCursor, bm.bmWidth, bm.bmHeight, TRUE);
+	m_hBmpView.SetBitmap(hbm);
 
 	// dump info to m_hCodeEditor
 	MStringW str = DumpIconInfo(bm, FALSE);
@@ -56,13 +59,16 @@ void MMainWnd::PreviewCursor(HWND hwnd, const EntryBase& entry)
 
 	// show
 	SetShowMode(SHOW_CODEANDBMP);
+
+	return !!hbm;
 }
 
 // preview the group icon resource
-void MMainWnd::PreviewGroupIcon(HWND hwnd, const EntryBase& entry)
+BOOL MMainWnd::PreviewGroupIcon(HWND hwnd, const EntryBase& entry)
 {
 	// create a bitmap object from the entry and set it to m_hBmpView
-	m_hBmpView.SetBitmap(CreateBitmapFromIconsDx(hwnd, entry));
+	HBITMAP hbm = CreateBitmapFromIconsDx(hwnd, entry);
+	m_hBmpView.SetBitmap(hbm);
 
 	// dump the text to m_hCodeEditor
 	ResToText res2text;
@@ -71,13 +77,16 @@ void MMainWnd::PreviewGroupIcon(HWND hwnd, const EntryBase& entry)
 
 	// show
 	SetShowMode(SHOW_CODEANDBMP);
+
+	return !!hbm;
 }
 
 // preview the group cursor resource
-void MMainWnd::PreviewGroupCursor(HWND hwnd, const EntryBase& entry)
+BOOL MMainWnd::PreviewGroupCursor(HWND hwnd, const EntryBase& entry)
 {
 	// create a bitmap object from the entry and set it to m_hBmpView
-	m_hBmpView.SetBitmap(CreateBitmapFromCursorsDx(hwnd, entry));
+	HBITMAP hbm = CreateBitmapFromCursorsDx(hwnd, entry);
+	m_hBmpView.SetBitmap(hbm);
 	assert(m_hBmpView);
 
 	// dump the text to m_hCodeEditor
@@ -87,10 +96,12 @@ void MMainWnd::PreviewGroupCursor(HWND hwnd, const EntryBase& entry)
 
 	// show
 	SetShowMode(SHOW_CODEANDBMP);
+
+	return !!hbm;
 }
 
 // preview the bitmap resource
-void MMainWnd::PreviewBitmap(HWND hwnd, const EntryBase& entry)
+BOOL MMainWnd::PreviewBitmap(HWND hwnd, const EntryBase& entry)
 {
 	// create a bitmap object from the entry and set it to m_hBmpView
 	HBITMAP hbm = PackedDIB_CreateBitmapFromMemory(&entry[0], entry.size());
@@ -103,10 +114,12 @@ void MMainWnd::PreviewBitmap(HWND hwnd, const EntryBase& entry)
 
 	// show
 	SetShowMode(SHOW_CODEANDBMP);
+
+	return !!hbm;
 }
 
 // preview the image resource
-void MMainWnd::PreviewImage(HWND hwnd, const EntryBase& entry)
+BOOL MMainWnd::PreviewImage(HWND hwnd, const EntryBase& entry)
 {
 	// dump the text to m_hCodeEditor
 	ResToText res2text;
@@ -118,10 +131,12 @@ void MMainWnd::PreviewImage(HWND hwnd, const EntryBase& entry)
 
 	// show
 	SetShowMode(SHOW_CODEANDBMP);
+
+	return !!m_hBmpView.m_hBitmap;
 }
 
 // preview the WAVE resource
-void MMainWnd::PreviewWAVE(HWND hwnd, const EntryBase& entry)
+BOOL MMainWnd::PreviewWAVE(HWND hwnd, const EntryBase& entry)
 {
 	// dump the text to m_hCodeEditor
 	ResToText res2text;
@@ -133,10 +148,12 @@ void MMainWnd::PreviewWAVE(HWND hwnd, const EntryBase& entry)
 
 	// show
 	SetShowMode(SHOW_CODEANDBMP);
+
+	return TRUE;
 }
 
 // preview the MP3 resource
-void MMainWnd::PreviewMP3(HWND hwnd, const EntryBase& entry)
+BOOL MMainWnd::PreviewMP3(HWND hwnd, const EntryBase& entry)
 {
 	// dump the text to m_hCodeEditor
 	ResToText res2text;
@@ -148,10 +165,12 @@ void MMainWnd::PreviewMP3(HWND hwnd, const EntryBase& entry)
 
 	// show
 	SetShowMode(SHOW_CODEANDBMP);
+
+	return TRUE;
 }
 
 // preview the AVI resource
-void MMainWnd::PreviewAVI(HWND hwnd, const EntryBase& entry)
+BOOL MMainWnd::PreviewAVI(HWND hwnd, const EntryBase& entry)
 {
 	// dump the text to m_hCodeEditor
 	ResToText res2text;
@@ -163,10 +182,12 @@ void MMainWnd::PreviewAVI(HWND hwnd, const EntryBase& entry)
 
 	// show movie
 	SetShowMode(SHOW_MOVIE);
+
+	return TRUE;
 }
 
 // preview the RT_ACCELERATOR resource
-void MMainWnd::PreviewAccel(HWND hwnd, const EntryBase& entry)
+BOOL MMainWnd::PreviewAccel(HWND hwnd, const EntryBase& entry)
 {
 	// entry.m_data --> stream --> accel
 	AccelRes accel;
@@ -177,11 +198,13 @@ void MMainWnd::PreviewAccel(HWND hwnd, const EntryBase& entry)
 		MString str = GetLanguageStatement(entry.m_lang);
 		str += accel.Dump(entry.m_name);
 		SetWindowTextW(m_hCodeEditor, str.c_str());
+		return TRUE;
 	}
+	return FALSE;
 }
 
 // preview the message table resource
-void MMainWnd::PreviewMessage(HWND hwnd, const EntryBase& entry)
+BOOL MMainWnd::PreviewMessage(HWND hwnd, const EntryBase& entry)
 {
 	// entry.m_data --> stream --> mes
 	MessageRes mes;
@@ -192,11 +215,13 @@ void MMainWnd::PreviewMessage(HWND hwnd, const EntryBase& entry)
 		MString str = GetLanguageStatement(entry.m_lang);
 		str += mes.Dump(entry.m_name);
 		SetWindowTextW(m_hCodeEditor, str.c_str());
+		return TRUE;
 	}
+	return FALSE;
 }
 
 // preview the string resource
-void MMainWnd::PreviewString(HWND hwnd, const EntryBase& entry)
+BOOL MMainWnd::PreviewString(HWND hwnd, const EntryBase& entry)
 {
 	// entry.m_data --> stream --> str_res
 	StringRes str_res;
@@ -207,11 +232,13 @@ void MMainWnd::PreviewString(HWND hwnd, const EntryBase& entry)
 		// dump the text to m_hCodeEditor
 		MStringW str = str_res.Dump(nNameID);
 		SetWindowTextW(m_hCodeEditor, str.c_str());
+		return TRUE;
 	}
+	return FALSE;
 }
 
 // preview the HTML resource
-void MMainWnd::PreviewHtml(HWND hwnd, const EntryBase& entry)
+BOOL MMainWnd::PreviewHtml(HWND hwnd, const EntryBase& entry)
 {
 	// load a text file
 	MTextType type;
@@ -222,10 +249,12 @@ void MMainWnd::PreviewHtml(HWND hwnd, const EntryBase& entry)
 
 	// dump the text to m_hCodeEditor
 	SetWindowTextW(m_hCodeEditor, str.c_str());
+
+	return TRUE;
 }
 
 // preview the menu resource
-void MMainWnd::PreviewMenu(HWND hwnd, const EntryBase& entry)
+BOOL MMainWnd::PreviewMenu(HWND hwnd, const EntryBase& entry)
 {
 	// entry.m_data --> stream --> menu_res
 	MenuRes menu_res;
@@ -236,11 +265,13 @@ void MMainWnd::PreviewMenu(HWND hwnd, const EntryBase& entry)
 		MString str = GetLanguageStatement(entry.m_lang);
 		str += menu_res.Dump(entry.m_name);
 		SetWindowTextW(m_hCodeEditor, str.c_str());
+		return TRUE;
 	}
+	return FALSE;
 }
 
 // preview the TOOLBAR resource
-void MMainWnd::PreviewToolbar(HWND hwnd, const EntryBase& entry)
+BOOL MMainWnd::PreviewToolbar(HWND hwnd, const EntryBase& entry)
 {
 	// entry.m_data --> stream --> toolbar_res
 	ToolbarRes toolbar_res;
@@ -251,11 +282,13 @@ void MMainWnd::PreviewToolbar(HWND hwnd, const EntryBase& entry)
 		MString str = GetLanguageStatement(entry.m_lang);
 		str += toolbar_res.Dump(entry.m_name);
 		SetWindowTextW(m_hCodeEditor, str.c_str());
+		return TRUE;
 	}
+	return FALSE;
 }
 
 // preview the version resource
-void MMainWnd::PreviewVersion(HWND hwnd, const EntryBase& entry)
+BOOL MMainWnd::PreviewVersion(HWND hwnd, const EntryBase& entry)
 {
 	// entry.m_data --> ver_res
 	VersionRes ver_res;
@@ -265,19 +298,22 @@ void MMainWnd::PreviewVersion(HWND hwnd, const EntryBase& entry)
 		MString str = GetLanguageStatement(entry.m_lang);
 		str += ver_res.Dump(entry.m_name);
 		SetWindowTextW(m_hCodeEditor, str.c_str());
+		return TRUE;
 	}
+	return FALSE;
 }
 
 // preview the unknown resource
-void MMainWnd::PreviewUnknown(HWND hwnd, const EntryBase& entry)
+BOOL MMainWnd::PreviewUnknown(HWND hwnd, const EntryBase& entry)
 {
 	// dump the text to m_hCodeEditor
 	ResToText res2text;
 	MString str = res2text.DumpEntry(entry);
 	SetWindowTextW(m_hCodeEditor, str.c_str());
+	return TRUE;
 }
 
-void MMainWnd::PreviewTypeLib(HWND hwnd, const EntryBase& entry)
+BOOL MMainWnd::PreviewTypeLib(HWND hwnd, const EntryBase& entry)
 {
 	// dump the text to m_hCodeEditor
 	ResToText res2text;
@@ -285,10 +321,11 @@ void MMainWnd::PreviewTypeLib(HWND hwnd, const EntryBase& entry)
 	res2text.m_bHumanReadable = TRUE;
 	MString str = res2text.DumpEntry(entry);
 	SetWindowTextW(m_hCodeEditor, str.c_str());
+	return TRUE;
 }
 
 // preview the RT_RCDATA resource
-void MMainWnd::PreviewRCData(HWND hwnd, const EntryBase& entry)
+BOOL MMainWnd::PreviewRCData(HWND hwnd, const EntryBase& entry)
 {
 	// dump the text to m_hCodeEditor
 	ResToText res2text;
@@ -296,19 +333,21 @@ void MMainWnd::PreviewRCData(HWND hwnd, const EntryBase& entry)
 	res2text.m_bHumanReadable = TRUE;
 	MString str = res2text.DumpEntry(entry);
 	SetWindowTextW(m_hCodeEditor, str.c_str());
+	return TRUE;
 }
 
 // preview the DLGINIT resource
-void MMainWnd::PreviewDlgInit(HWND hwnd, const EntryBase& entry)
+BOOL MMainWnd::PreviewDlgInit(HWND hwnd, const EntryBase& entry)
 {
 	// dump the text to m_hCodeEditor
 	ResToText res2text;
 	MString str = res2text.DumpEntry(entry);
 	SetWindowTextW(m_hCodeEditor, str.c_str());
+	return str.size();
 }
 
 // preview the dialog template resource
-void MMainWnd::PreviewDialog(HWND hwnd, const EntryBase& entry)
+BOOL MMainWnd::PreviewDialog(HWND hwnd, const EntryBase& entry)
 {
 	// entry.m_data --> stream --> dialog_res
 	DialogRes dialog_res;
@@ -319,11 +358,13 @@ void MMainWnd::PreviewDialog(HWND hwnd, const EntryBase& entry)
 		MString str = GetLanguageStatement(entry.m_lang);
 		str += dialog_res.Dump(entry.m_name, !!g_settings.bAlwaysControl);
 		SetWindowTextW(m_hCodeEditor, str.c_str());
+		return TRUE;
 	}
+	return FALSE;
 }
 
 // preview the animation icon resource
-void MMainWnd::PreviewAniIcon(HWND hwnd, const EntryBase& entry, BOOL bIcon)
+BOOL MMainWnd::PreviewAniIcon(HWND hwnd, const EntryBase& entry, BOOL bIcon)
 {
 	HICON hIcon = NULL;
 
@@ -369,13 +410,11 @@ void MMainWnd::PreviewAniIcon(HWND hwnd, const EntryBase& entry, BOOL bIcon)
 
 	// show
 	SetShowMode(SHOW_CODEANDBMP);
-
-	// show
-	SetShowMode(SHOW_CODEANDBMP);
+	return !!hIcon;
 }
 
 // preview the string table resource
-void MMainWnd::PreviewStringTable(HWND hwnd, const EntryBase& entry)
+BOOL MMainWnd::PreviewStringTable(HWND hwnd, const EntryBase& entry)
 {
 	// search the strings
 	EntrySet found;
@@ -387,7 +426,7 @@ void MMainWnd::PreviewStringTable(HWND hwnd, const EntryBase& entry)
 	{
 		MByteStreamEx stream(e->m_data);
 		if (!str_res.LoadFromStream(stream, e->m_name.m_id))
-			return;
+			return FALSE;
 	}
 
 	// dump the text to m_hCodeEditor
@@ -397,10 +436,11 @@ void MMainWnd::PreviewStringTable(HWND hwnd, const EntryBase& entry)
 
 	// show code only
 	SetShowMode(SHOW_CODEONLY);
+	return TRUE;
 }
 
 // preview the message table resource
-void MMainWnd::PreviewMessageTable(HWND hwnd, const EntryBase& entry)
+BOOL MMainWnd::PreviewMessageTable(HWND hwnd, const EntryBase& entry)
 {
 	// search the message tables
 	EntrySet found;
@@ -415,7 +455,9 @@ void MMainWnd::PreviewMessageTable(HWND hwnd, const EntryBase& entry)
 		{
 			MByteStreamEx stream(e->m_data);
 			if (!msg_res.LoadFromStream(stream))
-				return;
+			{ 
+				return FALSE;
+			}
 		}
 
 		str += L"#ifdef MCDX_INVOKED\r\n";
@@ -427,6 +469,8 @@ void MMainWnd::PreviewMessageTable(HWND hwnd, const EntryBase& entry)
 
 	// show code only
 	SetShowMode(SHOW_CODEONLY);
+
+	return TRUE;
 }
 
 // close the preview
@@ -480,84 +524,85 @@ BOOL MMainWnd::Preview(HWND hwnd, const EntryBase *entry, STV stv)
 	SetShowMode(SHOW_CODEONLY);
 
 	// do preview the resource item
+	BOOL bCanPreview = TRUE;
 	if (entry->m_type.m_id != 0)
 	{
 		WORD wType = entry->m_type.m_id;
 		if (wType == (WORD)(UINT_PTR)RT_ICON)
 		{
-			PreviewIcon(hwnd, *entry);
+			bCanPreview = PreviewIcon(hwnd, *entry);
 		}
 		else if (wType == (WORD)(UINT_PTR)RT_CURSOR)
 		{
-			PreviewCursor(hwnd, *entry);
+			bCanPreview = PreviewCursor(hwnd, *entry);
 		}
 		else if (wType == (WORD)(UINT_PTR)RT_GROUP_ICON)
 		{
-			PreviewGroupIcon(hwnd, *entry);
+			bCanPreview = PreviewGroupIcon(hwnd, *entry);
 		}
 		else if (wType == (WORD)(UINT_PTR)RT_GROUP_CURSOR)
 		{
-			PreviewGroupCursor(hwnd, *entry);
+			bCanPreview = PreviewGroupCursor(hwnd, *entry);
 		}
 		else if (wType == (WORD)(UINT_PTR)RT_BITMAP)
 		{
-			PreviewBitmap(hwnd, *entry);
+			bCanPreview = PreviewBitmap(hwnd, *entry);
 		}
 		else if (wType == (WORD)(UINT_PTR)RT_ACCELERATOR)
 		{
-			PreviewAccel(hwnd, *entry);
+			bCanPreview = PreviewAccel(hwnd, *entry);
 		}
 		else if (wType == (WORD)(UINT_PTR)RT_STRING)
 		{
-			PreviewString(hwnd, *entry);
+			bCanPreview = PreviewString(hwnd, *entry);
 		}
 		else if (wType == (WORD)(UINT_PTR)RT_MENU)
 		{
-			PreviewMenu(hwnd, *entry);
+			bCanPreview = PreviewMenu(hwnd, *entry);
 		}
 		else if (wType == (WORD)(UINT_PTR)RT_TOOLBAR)
 		{
-			PreviewToolbar(hwnd, *entry);
+			bCanPreview = PreviewToolbar(hwnd, *entry);
 		}
 		else if (wType == (WORD)(UINT_PTR)RT_DIALOG)
 		{
-			PreviewDialog(hwnd, *entry);
+			bCanPreview = PreviewDialog(hwnd, *entry);
 		}
 		else if (wType == (WORD)(UINT_PTR)RT_ANIICON)
 		{
-			PreviewAniIcon(hwnd, *entry, TRUE);
+			bCanPreview = PreviewAniIcon(hwnd, *entry, TRUE);
 		}
 		else if (wType == (WORD)(UINT_PTR)RT_ANICURSOR)
 		{
-			PreviewAniIcon(hwnd, *entry, FALSE);
+			bCanPreview = PreviewAniIcon(hwnd, *entry, FALSE);
 		}
 		else if (wType == (WORD)(UINT_PTR)RT_MESSAGETABLE)
 		{
-			PreviewMessage(hwnd, *entry);
+			bCanPreview = PreviewMessage(hwnd, *entry);
 		}
 		else if (wType == (WORD)(UINT_PTR)RT_MANIFEST || wType == (WORD)(UINT_PTR)RT_HTML)
 		{
-			PreviewHtml(hwnd, *entry);
+			bCanPreview = PreviewHtml(hwnd, *entry);
 		}
 		else if (wType == (WORD)(UINT_PTR)RT_VERSION)
 		{
-			PreviewVersion(hwnd, *entry);
+			bCanPreview = PreviewVersion(hwnd, *entry);
 		}
 		else if (wType == (WORD)(UINT_PTR)RT_RCDATA)
 		{
-			PreviewRCData(hwnd, *entry);
+			bCanPreview = PreviewRCData(hwnd, *entry);
 		}
 		else if (wType == (WORD)(UINT_PTR)RT_DLGINIT)
 		{
-			PreviewDlgInit(hwnd, *entry);
+			bCanPreview = PreviewDlgInit(hwnd, *entry);
 		}
 		else if (wType == (WORD)(UINT_PTR)RT_MESSAGETABLE)
 		{
-			PreviewMessageTable(hwnd, *entry);
+			bCanPreview = PreviewMessageTable(hwnd, *entry);
 		}
 		else
 		{
-			PreviewUnknown(hwnd, *entry);
+			bCanPreview = PreviewUnknown(hwnd, *entry);
 		}
 	}
 	else
@@ -569,32 +614,32 @@ BOOL MMainWnd::Preview(HWND hwnd, const EntryBase *entry, STV stv)
 			entry->m_type == L"ENHMETAPICT" ||
 			entry->m_type == L"WMF" || entry->m_type == L"IMAGE")
 		{
-			PreviewImage(hwnd, *entry);
+			bCanPreview = PreviewImage(hwnd, *entry);
 		}
 		else if (entry->m_type == L"WAVE")
 		{
-			PreviewWAVE(hwnd, *entry);
+			bCanPreview = PreviewWAVE(hwnd, *entry);
 		}
 		else if (entry->m_type == L"MP3")
 		{
-			PreviewMP3(hwnd, *entry);
+			bCanPreview = PreviewMP3(hwnd, *entry);
 		}
 		else if (entry->m_type == L"AVI")
 		{
-			PreviewAVI(hwnd, *entry);
+			bCanPreview = PreviewAVI(hwnd, *entry);
 		}
 		else if (entry->m_type == L"TYPELIB")
 		{
-			PreviewTypeLib(hwnd, *entry);
+			bCanPreview = PreviewTypeLib(hwnd, *entry);
 		}
 		else
 		{
-			PreviewUnknown(hwnd, *entry);
+			bCanPreview = PreviewUnknown(hwnd, *entry);
 		}
 	}
 
 	// recalculate the splitter
 	PostMessageDx(WM_SIZE);
 
-	return IsEntryTextEditable(entry);
+	return bCanPreview && IsEntryTextEditable(entry);
 }
