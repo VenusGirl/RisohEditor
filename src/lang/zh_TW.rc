@@ -72,7 +72,7 @@ IDR_MAINMENU MENU
             MENUITEM "導出二進位制資源檔(&R)...", ID_EXTRACTBIN
         }
         MENUITEM SEPARATOR
-        MENUITEM "更改名稱/語言(&H)\tF2", ID_EDITLABEL
+        MENUITEM "更改類型/名稱/語言(&H)\tF2", ID_EDITLABEL
         MENUITEM SEPARATOR
         MENUITEM "複製為其他名稱(&N)...", ID_COPYASNEWNAME
         MENUITEM "複製為其他語言(&L)...", ID_COPYASNEWLANG
@@ -184,7 +184,7 @@ IDR_POPUPMENUS MENU
             MENUITEM "導出二進位制資源檔(&R)...", ID_EXTRACTBIN
         }
         MENUITEM SEPARATOR
-        MENUITEM "更改名稱/語言(&H)\tF2", ID_EDITLABEL
+        MENUITEM "更改類型/名稱/語言(&H)\tF2", ID_EDITLABEL
         MENUITEM SEPARATOR
         MENUITEM "複製為其他名稱(&N)...", ID_COPYASNEWNAME
         MENUITEM "複製為其他語言(&L)...", ID_COPYASNEWLANG
@@ -1567,7 +1567,7 @@ STRINGTABLE
     IDS_TOOL_COLLAPSE "全部摺疊"
     IDS_TOOL_PLUS "新增項目..."
     IDS_TOOL_MINUS "刪除項目"
-    IDS_TOOL_CHANGE "更改名稱/語言"
+    IDS_TOOL_CHANGE "更改類型/名稱/語言"
     IDS_TOOL_CLONE "複製為其他名稱/語言"
     IDS_TOOL_RECOMPILE "重新編譯"
     IDS_TOOL_CANCELEDIT "取消修改"
@@ -1677,6 +1677,8 @@ STRINGTABLE
     IDS_RCDATA_ID "RC資料ID"
     IDS_MSGTABLE_ID "訊息表ID"
     IDS_SEARCHURL "https://duckduckgo.com/?q=%s&t=h_&ia=web"
+    IDS_INVALIDTYPE "資源類型無效。"
+    IDS_CHANGETYPEWARNING "更改資源類型可能會損壞資源資料。 \r\n\r\n您仍然要更改嗎？"
 }
 
 //////////////////////////////////////////////////////////////////////////////

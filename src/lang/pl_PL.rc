@@ -72,7 +72,7 @@ IDR_MAINMENU MENU
             MENUITEM "Wypakuj Element &Zasobu Binarnego...", ID_EXTRACTBIN
         }
         MENUITEM SEPARATOR
-        MENUITEM "Z&mień Nazwę/Języka\tF2", ID_EDITLABEL
+        MENUITEM "&Zmień typ/nazwę/język\tF2", ID_EDITLABEL
         MENUITEM SEPARATOR
         MENUITEM "Klonuj w Nowej &Nazwie...", ID_COPYASNEWNAME
         MENUITEM "Klonuj w Nowym &Języku...", ID_COPYASNEWLANG
@@ -183,7 +183,7 @@ IDR_POPUPMENUS MENU
             MENUITEM "Wypakuj Element &Zasobu Binarnego...", ID_EXTRACTBIN
         }
         MENUITEM SEPARATOR
-        MENUITEM "Z&mień Nazwę/Język\tF2", ID_EDITLABEL
+        MENUITEM "&Zmień typ/nazwę/język\tF2", ID_EDITLABEL
         MENUITEM SEPARATOR
         MENUITEM "Klonuj w Nowej &Nazwie...", ID_COPYASNEWNAME
         MENUITEM "Klonuj w Nowym &Języku...", ID_COPYASNEWLANG
@@ -1568,7 +1568,7 @@ STRINGTABLE
     IDS_TOOL_COLLAPSE "Zwiń wszystko"
     IDS_TOOL_PLUS "Dodaj element..."
     IDS_TOOL_MINUS "Usuń element"
-    IDS_TOOL_CHANGE "Zmień Nazwę/Język"
+    IDS_TOOL_CHANGE "Zmień typ/nazwę/język"
     IDS_TOOL_CLONE "Klonuj w innej Nazwie/Języku"
     IDS_TOOL_RECOMPILE "Rekompiluj"
     IDS_TOOL_CANCELEDIT "Anuluj edycję"
@@ -1678,6 +1678,8 @@ STRINGTABLE
     IDS_RCDATA_ID "RCData.ID"
     IDS_MSGTABLE_ID "MsgTable.ID"
     IDS_SEARCHURL "https://duckduckgo.com/?q=%s&t=h_&ia=web"
+    IDS_INVALIDTYPE "Nieprawidłowy typ zasobu."
+    IDS_CHANGETYPEWARNING "Zmiana typu zasobu może spowodować uszkodzenie danych zasobu.\r\n\r\nCzy mimo to chcesz ją zmienić?"
 }
 
 //////////////////////////////////////////////////////////////////////////////

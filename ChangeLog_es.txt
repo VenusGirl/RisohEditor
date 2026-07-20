@@ -8,6 +8,7 @@
     - Se añadieron funciones de carga y guardado a EGA.
     - Se añadió la función `RES_extract` a EGA.
     - Se corrigieron los estilos BUTTON y RICHEDIT.
+    - Se habilitó el cambio de tipo de recurso.
 - v.6.0.5 (2026-07-17)
     - Se habilitó la flecha de la vista de árbol para cambiar el nombre del recurso.
     - Se corrigió EGA. Se añadieron algunos programas EGA.

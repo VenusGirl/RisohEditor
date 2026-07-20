@@ -72,7 +72,7 @@ IDR_MAINMENU MENU
             MENUITEM "Estrai &risorsa binaria...", ID_EXTRACTBIN
         }
         MENUITEM SEPARATOR
-        MENUITEM "&Modifica nome/Lingua\tF2", ID_EDITLABEL
+        MENUITEM "&Cambia tipo/nome/lingua\tF2", ID_EDITLABEL
         MENUITEM SEPARATOR
         MENUITEM "Clona con &nuovo nome...", ID_COPYASNEWNAME
         MENUITEM "Clona con nuova &lingua...", ID_COPYASNEWLANG
@@ -183,7 +183,7 @@ IDR_POPUPMENUS MENU
             MENUITEM "Estrai &risorsa binaria...", ID_EXTRACTBIN
         }
         MENUITEM SEPARATOR
-        MENUITEM "&Modifica nome/lingua\tF2", ID_EDITLABEL
+        MENUITEM "&Cambia tipo/nome/lingua\tF2", ID_EDITLABEL
         MENUITEM SEPARATOR
         MENUITEM "Clona con nuova &nome...", ID_COPYASNEWNAME
         MENUITEM "Clona in una nuova &lingua...", ID_COPYASNEWLANG
@@ -1568,7 +1568,7 @@ STRINGTABLE
     IDS_TOOL_COLLAPSE "Riduci tutto"
     IDS_TOOL_PLUS "Aggiungi elemento..."
     IDS_TOOL_MINUS "Elimina elemento"
-    IDS_TOOL_CHANGE "Modifica nome/lingua"
+    IDS_TOOL_CHANGE "Cambia tipo/nome/lingua"
     IDS_TOOL_CLONE "Clona con un altro nome/lingua"
     IDS_TOOL_RECOMPILE "Ricompila"
     IDS_TOOL_CANCELEDIT "Annulla modifica"
@@ -1678,6 +1678,8 @@ STRINGTABLE
     IDS_RCDATA_ID "ID RCData"
     IDS_MSGTABLE_ID "ID tabella messaggi"
     IDS_SEARCHURL "https://duckduckgo.com/?q=%s&t=h_&ia=web"
+    IDS_INVALIDTYPE "Tipo di risorsa non valido."
+    IDS_CHANGETYPEWARNING "La modifica del tipo di risorsa potrebbe corrompere i dati della risorsa.\r\n\r\nVuoi comunque modificarlo?"
 }
 
 //////////////////////////////////////////////////////////////////////////////

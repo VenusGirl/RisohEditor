@@ -72,7 +72,7 @@ IDR_MAINMENU MENU
             MENUITEM "바이너리 리소스 항목 추출(&R)...", ID_EXTRACTBIN
         }
         MENUITEM SEPARATOR
-        MENUITEM "이름/언어 변경(&H)\tF2", ID_EDITLABEL
+        MENUITEM "유형/이름/언어 변경(&H)\tF2", ID_EDITLABEL
         MENUITEM SEPARATOR
         MENUITEM "새 이름으로 복제(&N)...", ID_COPYASNEWNAME
         MENUITEM "새 언어로 복제(&L)...", ID_COPYASNEWLANG
@@ -183,7 +183,7 @@ IDR_POPUPMENUS MENU
             MENUITEM "바이너리 리소스 항목 추출(&R)...", ID_EXTRACTBIN
         }
         MENUITEM SEPARATOR
-        MENUITEM "이름/언어 변경(&H)\tF2", ID_EDITLABEL
+        MENUITEM "유형/이름/언어 변경(&H)\tF2", ID_EDITLABEL
         MENUITEM SEPARATOR
         MENUITEM "새 이름으로 복제(&N)", ID_COPYASNEWNAME
         MENUITEM "새 언어로 복제(&L)...", ID_COPYASNEWLANG
@@ -1568,7 +1568,7 @@ STRINGTABLE
     IDS_TOOL_COLLAPSE "모드 축소"
     IDS_TOOL_PLUS "항목 추가..."
     IDS_TOOL_MINUS "항목 삭제"
-    IDS_TOOL_CHANGE "이름/언어 변경"
+    IDS_TOOL_CHANGE "유형/이름/언어 변경"
     IDS_TOOL_CLONE "다른 이름/언어로 복제"
     IDS_TOOL_RECOMPILE "재컴파일"
     IDS_TOOL_CANCELEDIT "편집 취소"
@@ -1678,6 +1678,8 @@ STRINGTABLE
     IDS_RCDATA_ID "RCData ID"
     IDS_MSGTABLE_ID "메시지 테이블 ID"
     IDS_SEARCHURL "https://duckduckgo.com/?q=%s&t=h_&ia=web"
+    IDS_INVALIDTYPE "유효하지 않은 리소스 유형입니다."
+    IDS_CHANGETYPEWARNING "리소스 유형을 변경하면 리소스 데이터가 손상될 수 있습니다.\r\n\r\n그래도 변경하시겠습니까?"
 }
 
 //////////////////////////////////////////////////////////////////////////////

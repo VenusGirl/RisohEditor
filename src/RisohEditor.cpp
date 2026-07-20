@@ -321,7 +321,38 @@ LRESULT MMainWnd::OnComplement(HWND hwnd, WPARAM wParam, LPARAM lParam)
 	switch (m_arrow.m_target_type)
 	{
 	case TARGET_TYPE_TYPE:
-		return FALSE;
+		if (g_pTypes)
+		{
+			MIdOrString new_type = (*g_pTypes)[index].c_str();
+
+			auto entry = g_res.get_entry();
+			if (!entry || entry->m_et != ET_TYPE)
+				return FALSE;   // reject
+
+			WORD wID = WORD(g_db.GetValue(L"RESOURCE", new_type.c_str()));
+			if (wID)
+				new_type = wID;
+
+			auto old_type = entry->m_type;
+			if (old_type == BAD_TYPE || old_type.str() == new_type.str())
+				return FALSE;   // reject
+
+			// check if it already exists
+			if (g_res.find(ET_ANY, new_type))
+			{
+				ErrorBoxDx(IDS_ALREADYEXISTS);
+				return FALSE;   // reject
+			}
+
+			PostUpdateArrow(hwnd);
+
+			WCHAR szText[MAX_PATH];
+			StringCchCopyW(szText, _countof(szText), new_type.c_str());
+
+			DoRetypeEntry(szText, entry, old_type, new_type);
+			DoSetFileModified(TRUE);
+		}
+		return TRUE; // accepted
 
 	case TARGET_TYPE_NAME:
 		if (g_pNames)
@@ -4767,7 +4798,25 @@ void MMainWnd::OnUseIDC_STATIC(HWND hwnd)
 	SelectTV(entry, FALSE, STV_RESETTEXT);
 }
 
-// update the name of the tree control
+// update the types of the tree control
+void MMainWnd::UpdateTypes(BOOL bModified)
+{
+	EntrySet found;
+	g_res.search(found, ET_TYPE);
+
+	for (auto entry : found)
+	{
+		UpdateEntryType(entry);
+	}
+
+	auto entry = g_res.get_entry();
+	SelectTV(entry, FALSE);
+
+	if (bModified)
+		DoSetFileModified(TRUE);
+}
+
+// update the names of the tree control
 void MMainWnd::UpdateNames(BOOL bModified)
 {
 	EntrySet found;
@@ -4783,6 +4832,24 @@ void MMainWnd::UpdateNames(BOOL bModified)
 
 	if (bModified)
 		DoSetFileModified(TRUE);
+}
+
+void MMainWnd::UpdateEntryType(EntryBase *e, LPWSTR pszText)
+{
+	// update name label
+	e->m_strLabel = e->get_type_label();
+
+	// set the label text
+	TV_ITEM item;
+	ZeroMemory(&item, sizeof(item));
+	item.mask = TVIF_TEXT | TVIF_HANDLE;
+	item.hItem = e->m_hItem;
+	item.pszText = &e->m_strLabel[0];
+	TreeView_SetItem(m_hwndTV, &item);
+
+	// update pszText if any
+	if (pszText)
+		StringCchCopyW(pszText, MAX_PATH, item.pszText);
 }
 
 void MMainWnd::UpdateEntryName(EntryBase *e, LPWSTR pszText)
@@ -5209,8 +5276,22 @@ void MMainWnd::DoTVEditAutoComplete(HWND hwnd, HWND hwndEdit)
 	DoTVEditAutoCompleteRelease(hwnd);
 
 	auto entry = g_res.get_entry();
+	if (!entry)
+		return;
 
-	m_pAutoComplete = new MRisohAutoComplete((entry && entry->m_et == ET_NAME) ? 1 : 2);
+	switch (entry->m_et)
+	{
+	case ET_TYPE:
+		m_pAutoComplete = new MRisohAutoComplete(0);
+		break;
+	case ET_NAME:
+		m_pAutoComplete = new MRisohAutoComplete(1);
+		break;
+	case ET_LANG:
+	case ET_STRING:
+		m_pAutoComplete = new MRisohAutoComplete(2);
+		break;
+	}
 	if (!m_pAutoComplete)
 		return;
 
@@ -5370,7 +5451,7 @@ LRESULT MMainWnd::OnNotify(HWND hwnd, int idFrom, NMHDR *pnmhdr)
 
 				// get the selected type entry
 				auto entry = g_res.get_entry();
-				if (!entry || entry->m_et == ET_TYPE)
+				if (!entry)
 				{
 					return TRUE;
 				}
@@ -5422,9 +5503,6 @@ LRESULT MMainWnd::OnNotify(HWND hwnd, int idFrom, NMHDR *pnmhdr)
 
 			auto entry = (EntryBase *)lParam;
 
-			if (entry->m_et == ET_TYPE)
-				return TRUE;    // prevent
-
 			if (entry->m_et == ET_NAME || entry->m_et== ET_LANG)
 			{
 				if (entry->m_type == RT_STRING)
@@ -5449,7 +5527,6 @@ LRESULT MMainWnd::OnNotify(HWND hwnd, int idFrom, NMHDR *pnmhdr)
 			switch (entry->m_et)
 			{
 			case ET_TYPE:
-				break;
 			case ET_NAME:
 			case ET_LANG:
 			case ET_STRING:
@@ -5470,6 +5547,7 @@ LRESULT MMainWnd::OnNotify(HWND hwnd, int idFrom, NMHDR *pnmhdr)
 
 			switch (entry->m_et)
 			{
+			case ET_TYPE:
 			case ET_NAME:
 			case ET_LANG:
 			case ET_STRING:
@@ -5483,7 +5561,7 @@ LRESULT MMainWnd::OnNotify(HWND hwnd, int idFrom, NMHDR *pnmhdr)
 				return FALSE;   // reject
 			}
 
-			if (!entry || entry->m_et == ET_TYPE)
+			if (!entry)
 				return FALSE;   // reject
 
 			if (entry->m_et == ET_NAME || entry->m_et == ET_LANG)
@@ -5496,13 +5574,53 @@ LRESULT MMainWnd::OnNotify(HWND hwnd, int idFrom, NMHDR *pnmhdr)
 			StringCchCopyW(szNewText, _countof(szNewText), pszNewText);
 			mstr_trim(szNewText);
 
-			if (lstrcmpiW(szNewText, BAD_NAME) == 0)
-				return FALSE; // Reject
+			if (entry->m_et == ET_TYPE && (!szNewText[0] || !lstrcmpiW(szNewText, BAD_TYPE)))
+			{
+				ErrorBoxDx(IDS_INVALIDTYPE);
+				return FALSE;   // reject
+			}
 
-			if (entry->m_et == ET_NAME && !szNewText[0])
+			if (entry->m_et == ET_NAME && (!szNewText[0] || !lstrcmpiW(szNewText, BAD_NAME)))
 			{
 				ErrorBoxDx(IDS_INVALIDNAME);
 				return FALSE;   // reject
+			}
+
+			if (entry->m_et == ET_TYPE)
+			{
+				WCHAR ch = szNewText[0];
+				if (mchr_is_digit(ch) || ch == L'-' || ch == L'+')
+				{
+					INT value = mstr_parse_int(szNewText);
+					if (value < SHRT_MIN || USHRT_MAX < value)
+					{
+						ErrorBoxDx(IDS_ENTERINT);
+						return FALSE; // failure
+					}
+				}
+
+				// rename the type
+				MIdOrString old_type = GetTypeFromText(szOldText);
+				MIdOrString new_type = GetTypeFromText(szNewText);
+
+				if (old_type == new_type || new_type.empty() || new_type == BAD_TYPE)
+					return FALSE;   // reject
+
+				// check if it already exists
+				if (g_res.find(ET_TYPE, new_type))
+				{
+					ErrorBoxDx(IDS_ALREADYEXISTS);
+					return FALSE;   // reject
+				}
+
+				// Warn
+				if (MsgBoxDx(LoadStringDx(IDS_CHANGETYPEWARNING), MB_ICONWARNING | MB_YESNOCANCEL) != IDYES)
+					return FALSE; // reject
+
+				DoRetypeEntry(pszNewText, entry, old_type, new_type);
+				m_arrow.ChooseType(entry->m_type);
+				DoSetFileModified(TRUE);
+				return TRUE;   // accept
 			}
 
 			if (entry->m_et == ET_NAME)
@@ -5537,7 +5655,8 @@ LRESULT MMainWnd::OnNotify(HWND hwnd, int idFrom, NMHDR *pnmhdr)
 				DoSetFileModified(TRUE);
 				return TRUE;   // accept
 			}
-			else if (entry->m_et == ET_LANG)
+
+			if (entry->m_et == ET_LANG)
 			{
 				PostUpdateArrow(hwnd);
 
@@ -5615,6 +5734,38 @@ TreeViewCompare(LPARAM lParam1, LPARAM lParam2, LPARAM lParamSort)
 	if (*entry1 == *entry2)
 		return 0;
 	return 1;
+}
+
+// change the type of the resource entries
+void MMainWnd::DoRetypeEntry(LPWSTR pszText, EntryBase *entry, MIdOrString& old_type, MIdOrString& new_type)
+{
+	if (!entry)
+		return;
+
+	// search the old named type entries
+	EntrySet found;
+	g_res.search(found, ET_ANY, old_type);
+
+	for (auto e : found)
+	{
+		assert(e->m_type == old_type);
+		e->m_type = new_type;
+	}
+
+	// update the entry type
+	entry->m_type = new_type;
+	UpdateEntryType(entry, pszText);
+	DoRefreshIDList(m_hwnd);
+
+	// select the entry to update the text
+	SelectTV(entry, FALSE);
+
+	DoSetFileModified(TRUE);
+
+	// sort
+	HTREEITEM hParent = TreeView_GetParent(m_hwndTV, entry->m_hItem);
+	TV_SORTCB cb = { hParent, TreeViewCompare };
+	TreeView_SortChildrenCB(m_hwndTV, &cb, 0);
 }
 
 // change the name of the resource entries

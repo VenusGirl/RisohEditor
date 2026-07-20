@@ -20,6 +20,7 @@
 extern INT g_bNoGuiMode; // No-GUI mode
 extern LPWSTR g_pszLogFile;
 wclib_t s_wclib;
+std::vector<MString> *g_pTypes = NULL;
 std::vector<MString> *g_pNames = NULL;
 
 INT LogMessageBoxW(HWND hwnd, LPCWSTR text, LPCWSTR title, UINT uType)
@@ -2424,6 +2425,7 @@ void InitMessageComboBox(HWND hCmb, const MString& strString)
 // languages
 
 std::vector<LANG_ENTRY> g_langs;
+extern std::vector<MString> *g_pTypes;
 extern std::vector<MString> *g_pNames;
 
 BOOL CALLBACK
@@ -3424,6 +3426,66 @@ MIdOrString GetNameFromText(const WCHAR *pszText)
 	}
 }
 
+// get the resource type from text
+MIdOrString GetTypeFromText(const WCHAR *pszText)
+{
+	// pszText --> szText
+	WCHAR szText[MAX_PATH];
+	StringCchCopyW(szText, _countof(szText), pszText);
+	mstr_trim(szText, L" \t\r\n　");
+
+	// replace the fullwidth characters with halfwidth characters
+	ReplaceFullWithHalf(szText);
+
+	if (szText[0] == 0)
+	{
+		return (WORD)0;     // empty
+	}
+	else if (mchr_is_digit(szText[0]) || szText[0] == L'-' || szText[0] == L'+')
+	{
+		// numeric
+		return WORD(mstr_parse_int(szText));
+	}
+	else
+	{
+		// string value
+		MStringW str = szText;
+
+		// is there parenthesis?
+		size_t i = str.rfind(L'('); // ')'
+		if (i != MStringW::npos && mchr_is_digit(str[i + 1]))
+		{
+			// parse the text after the last parenthesis
+			return WORD(mstr_parse_int(&str[i + 1]));
+		}
+
+		// is it a resource type?
+		WORD wID = WORD(g_db.GetValue(L"RESOURCE", str.c_str()));
+		if (wID)
+			return wID;
+
+		// Make it Uppercase
+		if (str.size())
+			CharUpperW(&str[0]);
+
+		// Retry
+		wID = WORD(g_db.GetValue(L"RESOURCE", str.c_str()));
+		if (wID)
+			return wID;
+
+		if (str[0] == L'"') // Quoted?
+		{
+			mstr_unquote(str); // Unquote
+
+			if (str.empty() || str == BAD_TYPE)
+				return MIdOrString(BAD_TYPE);
+		}
+
+		// string
+		return MIdOrString(str.c_str());
+	}
+}
+
 // get the IDTYPE_ values by the specified prefix
 std::vector<INT> GetPrefixIndexes(const MString& prefix)
 {
@@ -3520,6 +3582,26 @@ BOOL DoCheckFile(std::wstring& file, LPCWSTR psz)
 	return FALSE;
 }
 
+BOOL InitTypes(void)
+{
+	if (g_pTypes)
+		delete g_pTypes;
+	g_pTypes = new std::vector<MString>();
+
+	auto entry = g_res.get_entry();
+	if (!entry)
+		return FALSE;   // no selection
+
+	auto table = g_db.GetTable(L"RESOURCE");
+	for (auto& table_entry : table)
+	{
+		g_pTypes->push_back(table_entry.name.c_str());
+	}
+
+	std::sort(g_pTypes->begin(), g_pTypes->end());
+	return TRUE;
+}
+
 BOOL InitNames(void)
 {
 	if (g_pNames)
@@ -3553,6 +3635,35 @@ BOOL InitLangListBox(HWND hwnd)
 	{
 		INT index = ListBox_AddString(hwnd, lang.str.c_str());
 		ListBox_SetItemData(hwnd, index, lang.LangID);
+	}
+
+	return TRUE;
+}
+
+BOOL ChooseTypeListBoxType(HWND hwnd, const MIdOrString& type)
+{
+	if (g_pTypes)
+		delete g_pTypes;
+	g_pTypes = new std::vector<MString>();
+
+	ListBox_ResetContent(hwnd);
+
+	auto table = g_db.GetTable(L"RESOURCE");
+	for (auto& table_entry : table)
+	{
+		g_pTypes->push_back(table_entry.name.c_str());
+	}
+
+	std::sort(g_pTypes->begin(), g_pTypes->end());
+
+	for (auto& item : *g_pTypes)
+	{
+		INT index = ListBox_AddString(hwnd, item.c_str());
+		if (index != LB_ERR && item == type.str())
+		{
+			ListBox_SetCurSel(hwnd, index);
+			ListBox_SetTopIndex(hwnd, index);
+		}
 	}
 
 	return TRUE;

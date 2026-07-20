@@ -72,7 +72,7 @@ IDR_MAINMENU MENU
             MENUITEM "Двоичный ресурсный элемент...", ID_EXTRACTBIN
         }
         MENUITEM SEPARATOR
-        MENUITEM "И&зменить имя/язык\tF2", ID_EDITLABEL
+        MENUITEM "&Изменить тип/название/язык\tF2", ID_EDITLABEL
         MENUITEM SEPARATOR
         MENUITEM "Клонировать с новым &именем...", ID_COPYASNEWNAME
         MENUITEM "Клонировать с новым &языком...", ID_COPYASNEWLANG
@@ -183,7 +183,7 @@ IDR_POPUPMENUS MENU
             MENUITEM "&Двоичный ресурсный элемент...", ID_EXTRACTBIN
         }
         MENUITEM SEPARATOR
-        MENUITEM "И&зменить имя/язык\tF2", ID_EDITLABEL
+        MENUITEM "&Изменить тип/название/язык\tF2", ID_EDITLABEL
         MENUITEM SEPARATOR
         MENUITEM "Клонировать с новым &именем...", ID_COPYASNEWNAME
         MENUITEM "Клонировать с новым &языком...", ID_COPYASNEWLANG
@@ -1568,7 +1568,7 @@ STRINGTABLE
     IDS_TOOL_COLLAPSE "Свернуть все"
     IDS_TOOL_PLUS "Добавить элемент..."
     IDS_TOOL_MINUS "Удалить элемент"
-    IDS_TOOL_CHANGE "Изменить имя/язык"
+    IDS_TOOL_CHANGE "Изменить тип/название/язык"
     IDS_TOOL_CLONE "Клонировать с другим именем/языком"
     IDS_TOOL_RECOMPILE "Перекомпилировать"
     IDS_TOOL_CANCELEDIT "Отмена правки"
@@ -1678,6 +1678,8 @@ STRINGTABLE
     IDS_RCDATA_ID "RCData.ID"
     IDS_MSGTABLE_ID "MsgTable.ID"
     IDS_SEARCHURL "https://duckduckgo.com/?q=%s&t=h_&ia=web"
+    IDS_INVALIDTYPE "Недопустимый тип ресурса."
+    IDS_CHANGETYPEWARNING "Изменение типа ресурса может привести к повреждению данных ресурса.\r\n\r\nВы все равно хотите его изменить?"
 }
 
 //////////////////////////////////////////////////////////////////////////////

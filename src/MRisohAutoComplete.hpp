@@ -24,6 +24,16 @@ public:
 		m_fBound = FALSE;
 		m_pAC = NULL;
 
+		if (type == 0) // Types
+		{
+			if (InitTypes() && g_pTypes)
+			{
+				for (auto& name : *g_pTypes)
+				{
+					push_back(name);
+				}
+			}
+		}
 		if (type == 1) // Names
 		{
 			if (InitNames() && g_pNames)

@@ -103,9 +103,12 @@ MStringW GetResTypeEncoding(const MIdOrString& type);
 BOOL DoCheckFile(std::wstring& file, LPCWSTR psz);
 
 extern std::vector<MString> *g_pNames;
+extern std::vector<MString> *g_pTypes;
 
+BOOL InitTypes(void);
 BOOL InitNames(void);
 BOOL InitLangListBox(HWND hwnd);
+BOOL ChooseTypeListBoxType(HWND hwnd, const MIdOrString& type);
 BOOL ChooseNameListBoxName(HWND hwnd, const MIdOrString& type, const MIdOrString& name);
 BOOL ChooseLangListBoxLang(HWND hwnd, LANGID wLangId);
 MStringW GetTextInclude1HeaderFile(const EntrySet& res, LPCWSTR szRCPath);
@@ -115,6 +118,7 @@ BOOL DumpTinyExeOrDll(HINSTANCE hInst, LPCWSTR pszFileName, INT nID);
 BOOL DoResetCheckSum(LPCWSTR pszExeFile);
 std::wstring generated_from(INT n);
 void WriteMacroLine(MFile& file, const MStringA& name, const MStringA& definition);
+MIdOrString GetTypeFromText(const WCHAR *pszText);
 MIdOrString GetNameFromText(const WCHAR *pszText);
 BOOL IsThereWndClass(const WCHAR *pszName);
 void FreeWCLib();

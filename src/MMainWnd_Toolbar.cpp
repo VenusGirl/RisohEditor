@@ -177,10 +177,8 @@ void MMainWnd::UpdateToolBarStatus()
 	auto entry = g_res.get_entry();
 	if (entry && !entry->valid())
 		entry = NULL;
-	if (!entry || entry->m_et == ET_TYPE)
-	{
+	if (!entry)
 		bCanEditLabel = FALSE;
-	}
 
 	if (bCanEditLabel)
 	{

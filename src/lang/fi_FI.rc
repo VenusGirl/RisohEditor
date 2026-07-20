@@ -72,7 +72,7 @@ IDR_MAINMENU MENU
             MENUITEM "Pura binaa&riresurssi...", ID_EXTRACTBIN
         }
         MENUITEM SEPARATOR
-        MENUITEM "Vai&hda nimi/kieli\tF2", ID_EDITLABEL
+        MENUITEM "&Vaihda tyyppiä/nimeä/kieltä\tF2", ID_EDITLABEL
         MENUITEM SEPARATOR
         MENUITEM "Klooni uudessa &nimessä...", ID_COPYASNEWNAME
         MENUITEM "Klooni uudessa kie&lessä...", ID_COPYASNEWLANG
@@ -182,7 +182,7 @@ IDR_POPUPMENUS MENU
             MENUITEM "Poimi &binaarinen resurssinimike...", ID_EXTRACTBIN
         }
         MENUITEM SEPARATOR
-        MENUITEM "Vai&hda nimi/kieli\tF2", ID_EDITLABEL
+        MENUITEM "&Vaihda tyyppiä/nimeä/kieltä\tF2", ID_EDITLABEL
         MENUITEM SEPARATOR
         MENUITEM "Klooni uudessa &nimessä...", ID_COPYASNEWNAME
         MENUITEM "Klooni uudessa kie&lessä...", ID_COPYASNEWLANG
@@ -1567,7 +1567,7 @@ STRINGTABLE
     IDS_TOOL_COLLAPSE "Tiivistä kaikki"
     IDS_TOOL_PLUS "Lisää kohde..."
     IDS_TOOL_MINUS "Poista kohde"
-    IDS_TOOL_CHANGE "Vaihda nimi/kieli"
+    IDS_TOOL_CHANGE "Vaihda tyyppiä/nimeä/kieltä"
     IDS_TOOL_CLONE "Kloonaa toisella nimellä/kielellä"
     IDS_TOOL_RECOMPILE "Käännä uudelleen"
     IDS_TOOL_CANCELEDIT "Peruuta muokkaus"
@@ -1677,6 +1677,8 @@ STRINGTABLE
     IDS_RCDATA_ID "RCData.ID"
     IDS_MSGTABLE_ID "MsgTable.ID"
     IDS_SEARCHURL "https://duckduckgo.com/?q=%s&t=h_&ia=web"
+    IDS_INVALIDTYPE "Virheellinen resurssityyppi."
+    IDS_CHANGETYPEWARNING "Resurssityypin muuttaminen voi vioittaa resurssitietoja.\r\n\r\nHaluatko silti muuttaa sitä?"
 }
 
 //////////////////////////////////////////////////////////////////////////////

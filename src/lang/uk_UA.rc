@@ -72,7 +72,7 @@ IDR_MAINMENU MENU
             MENUITEM "Двійковий ресурсний елемент...", ID_EXTRACTBIN
         }
         MENUITEM SEPARATOR
-        MENUITEM "&Змінити ім'я/мову\tF2", ID_EDITLABEL
+        MENUITEM "&Змінити тип/назву/мову\tF2", ID_EDITLABEL
         MENUITEM SEPARATOR
         MENUITEM "Клонувати з новим &ім'ям...", ID_COPYASNEWNAME
         MENUITEM "Клонувати з новою &мовою...", ID_COPYASNEWLANG
@@ -185,7 +185,7 @@ IDR_POPUPMENUS MENU
             MENUITEM "&Двійковий ресурсний елемент...", ID_EXTRACTBIN
         }
         MENUITEM SEPARATOR
-        MENUITEM "З&мінити ім'я/мову\tF2", ID_EDITLABEL
+        MENUITEM "&Змінити тип/назву/мову\tF2", ID_EDITLABEL
         MENUITEM SEPARATOR
         MENUITEM "Клонувати з новим &ім'ям...", ID_COPYASNEWNAME
         MENUITEM "Клонувати з новою мо&вою...", ID_COPYASNEWLANG
@@ -1570,7 +1570,7 @@ STRINGTABLE
     IDS_TOOL_COLLAPSE "Згорнути все"
     IDS_TOOL_PLUS "Додати елемент..."
     IDS_TOOL_MINUS "Видалити елемент"
-    IDS_TOOL_CHANGE "Змінити ім'я/мову"
+    IDS_TOOL_CHANGE "Змінити тип/назву/мову"
     IDS_TOOL_CLONE "Клонувати з іншим ім'ям/мовою"
     IDS_TOOL_RECOMPILE "Перекомпілювати"
     IDS_TOOL_CANCELEDIT "Скасування змін"
@@ -1680,6 +1680,8 @@ STRINGTABLE
     IDS_RCDATA_ID "RCData.ID"
     IDS_MSGTABLE_ID "MsgTable.ID"
     IDS_SEARCHURL "https://duckduckgo.com/?q=%s&t=h_&ia=web"
+    IDS_INVALIDTYPE "Недійсний тип ресурсу."
+    IDS_CHANGETYPEWARNING "Зміна типу ресурсу може пошкодити дані ресурсу.\r\n\r\nВи все ще хочете змінити його?"
 }
 
 //////////////////////////////////////////////////////////////////////////////

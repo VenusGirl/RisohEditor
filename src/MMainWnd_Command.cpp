@@ -684,7 +684,7 @@ void MMainWnd::OnInitMenu(HWND hwnd, HMENU hMenu)
 
 	// get the selected entry
 	auto entry = g_res.get_entry();
-	if (!entry || entry->m_et == ET_TYPE)
+	if (!entry)
 	{
 		bCanEditLabel = FALSE;
 	}
@@ -795,6 +795,7 @@ void MMainWnd::OnInitMenu(HWND hwnd, HMENU hMenu)
 		EnableMenuItem(hMenu, ID_COPYASNEWLANG, MF_GRAYED);
 		EnableMenuItem(hMenu, ID_COPYTOMULTILANG, MF_GRAYED);
 		break;
+
 	case ET_NAME:
 		EnableMenuItem(hMenu, ID_REPLACEICON, MF_GRAYED);
 		EnableMenuItem(hMenu, ID_REPLACECURSOR, MF_GRAYED);
@@ -2333,7 +2334,7 @@ void MMainWnd::OnEditLabel(HWND hwnd)
 
 	// get the selected type entry
 	auto entry = g_res.get_entry();
-	if (!entry || entry->m_et == ET_TYPE)
+	if (!entry)
 	{
 		return;
 	}

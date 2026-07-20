@@ -8,6 +8,7 @@
     - Menambahkan fungsi muat (*load*) dan simpan (*save*) pada EGA.
     - Menambahkan fungsi `RES_extract` pada EGA.
     - Memperbaiki gaya BUTTON dan RICHEDIT.
+    - Mengaktifkan perubahan jenis sumber daya.
 - v.6.0.5 (2026-07-17)
     - Mengaktifkan fitur pengubahan nama sumber daya melalui tanda panah pada *treeview*.
     - Memperbaiki dukungan EGA. Menambahkan beberapa program EGA.

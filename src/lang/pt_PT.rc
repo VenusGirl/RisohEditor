@@ -72,7 +72,7 @@ IDR_MAINMENU MENU
             MENUITEM "Extrair item de &recurso binário...", ID_EXTRACTBIN
         }
         MENUITEM SEPARATOR
-        MENUITEM "Al&terar nome/idioma\tF2", ID_EDITLABEL
+        MENUITEM "&Alterar tipo/nome/idioma\tF2", ID_EDITLABEL
         MENUITEM SEPARATOR
         MENUITEM "Clonar com novo &nome...", ID_COPYASNEWNAME
         MENUITEM "C&lonar em novo idioma...", ID_COPYASNEWLANG
@@ -183,7 +183,7 @@ IDR_POPUPMENUS MENU
             MENUITEM "Extrair Item de &recurso binário...", ID_EXTRACTBIN
         }
         MENUITEM SEPARATOR
-        MENUITEM "Al&terar nome/idioma\tF2", ID_EDITLABEL
+        MENUITEM "&Alterar tipo/nome/idioma\tF2", ID_EDITLABEL
         MENUITEM SEPARATOR
         MENUITEM "Clonar com novo &nome...", ID_COPYASNEWNAME
         MENUITEM "C&lonar em novo idioma...", ID_COPYASNEWLANG
@@ -1568,7 +1568,7 @@ STRINGTABLE
     IDS_TOOL_COLLAPSE "Colapsar todos"
     IDS_TOOL_PLUS "Adicionar item..."
     IDS_TOOL_MINUS "Eliminar item"
-    IDS_TOOL_CHANGE "Alterar Nome/Idioma"
+    IDS_TOOL_CHANGE "Alterar tipo/nome/idioma"
     IDS_TOOL_CLONE "Clonar com outro Nome/Idioma"
     IDS_TOOL_RECOMPILE "Recompilar"
     IDS_TOOL_CANCELEDIT "Cancelar edição"
@@ -1678,6 +1678,8 @@ STRINGTABLE
     IDS_RCDATA_ID "RCData.ID"
     IDS_MSGTABLE_ID "MsgTable.ID"
     IDS_SEARCHURL "https://duckduckgo.com/?q=%s&t=h_&ia=web"
+    IDS_INVALIDTYPE "Tipo de recurso inválido."
+    IDS_CHANGETYPEWARNING "Alterar o tipo de recurso pode corromper os dados do recurso. \r\n\r\nAinda pretende alterá-lo?"
 }
 
 //////////////////////////////////////////////////////////////////////////////

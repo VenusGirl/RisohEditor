@@ -71,7 +71,7 @@ IDR_MAINMENU MENU
             MENUITEM "RC dosyası olarak &Çıkart...", ID_EXTRACTRC
             MENUITEM "İkili &Kaynak Öğesini Çıkart...", ID_EXTRACTBIN
         }
-        MENUITEM "Adı/Dili &Değiştir\tF2", ID_EDITLABEL
+        MENUITEM "&Türü/adı/dili değiştir\tF2", ID_EDITLABEL
         MENUITEM SEPARATOR
         MENUITEM "Yeni &Adla Klonla...", ID_COPYASNEWNAME
         MENUITEM "Yeni &Dille Klonla...", ID_COPYASNEWLANG
@@ -183,7 +183,7 @@ IDR_POPUPMENUS MENU
             MENUITEM "İkili &Kaynak Ögesini Çıkart...", ID_EXTRACTBIN
         }
         MENUITEM SEPARATOR
-        MENUITEM "Adı/Dili &Değiştir\tF2", ID_EDITLABEL
+        MENUITEM "&Türü/adı/dili değiştir\tF2", ID_EDITLABEL
         MENUITEM SEPARATOR
         MENUITEM "Yeni &İsimle Klonla...", ID_COPYASNEWNAME
         MENUITEM "Yeni &Dil ile Klonla...", ID_COPYASNEWLANG
@@ -1568,7 +1568,7 @@ STRINGTABLE
     IDS_TOOL_COLLAPSE "Tümünü Daralt"
     IDS_TOOL_PLUS "Öğe Ekle..."
     IDS_TOOL_MINUS "Öğe Sil"
-    IDS_TOOL_CHANGE "Ad/Dil Değiştir"
+    IDS_TOOL_CHANGE "Türü/adı/dili değiştir"
     IDS_TOOL_CLONE "Başka Bir Ad/Dil ile Klonla"
     IDS_TOOL_RECOMPILE "Tekrar Derle"
     IDS_TOOL_CANCELEDIT "Düzenlemeyi İptal Et"
@@ -1678,6 +1678,8 @@ STRINGTABLE
     IDS_RCDATA_ID "RCData.ID"
     IDS_MSGTABLE_ID "MsgTable.ID"
     IDS_SEARCHURL "https://duckduckgo.com/?q=%s&t=h_&ia=web"
+    IDS_INVALIDTYPE "Geçersiz kaynak türü."
+    IDS_CHANGETYPEWARNING "Kaynak türünü değiştirmek, kaynak verilerini bozabilir.\r\n\r\nYine de değiştirmek istiyor musunuz?"
 }
 
 //////////////////////////////////////////////////////////////////////////////

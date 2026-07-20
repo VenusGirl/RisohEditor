@@ -72,7 +72,7 @@ IDR_MAINMENU MENU
             MENUITEM "&Binäres Ressourcenelement extrahieren...", ID_EXTRACTBIN
         }
         MENUITEM SEPARATOR
-        MENUITEM "&Name/Sprache ändern\tF2", ID_EDITLABEL
+        MENUITEM "&Typ/Name/Sprache ändern\tF2", ID_EDITLABEL
         MENUITEM SEPARATOR
         MENUITEM "In neuen &Namen klonen...", ID_COPYASNEWNAME
         MENUITEM "In neuer &Sprache klonen...", ID_COPYASNEWLANG
@@ -182,7 +182,7 @@ IDR_POPUPMENUS MENU
             MENUITEM "&Binäres Ressourcenelement extrahieren...", ID_EXTRACTBIN
         }
         MENUITEM SEPARATOR
-        MENUITEM "Name / Sprache ändern\tF2", ID_EDITLABEL
+        MENUITEM "Typ/Name/Sprache ändern\tF2", ID_EDITLABEL
         MENUITEM SEPARATOR
         MENUITEM "In neuen &Namen klonen...", ID_COPYASNEWNAME
         MENUITEM "In neuer &Sprache klonen...", ID_COPYASNEWLANG
@@ -1567,7 +1567,7 @@ STRINGTABLE
     IDS_TOOL_COLLAPSE "Alle reduzieren"
     IDS_TOOL_PLUS "Artikel hinzufügen..."
     IDS_TOOL_MINUS "Item löschen"
-    IDS_TOOL_CHANGE "Name / Sprache ändern"
+    IDS_TOOL_CHANGE "Typ/Name/Sprache ändern"
     IDS_TOOL_CLONE "In einen anderen Namen / eine andere Sprache klonen"
     IDS_TOOL_RECOMPILE "Neu kompilieren"
     IDS_TOOL_CANCELEDIT "Abbrechen Bearbeiten"
@@ -1677,6 +1677,8 @@ STRINGTABLE
     IDS_RCDATA_ID "RCData-ID"
     IDS_MSGTABLE_ID "Nachrichtentabellen-ID"
     IDS_SEARCHURL "https://duckduckgo.com/?q=%s&t=h_&ia=web"
+    IDS_INVALIDTYPE "Ungültiger Ressourcentyp."
+    IDS_CHANGETYPEWARNING "Das Ändern des Ressourcentyps kann die Ressourcendaten beschädigen.\r\n\r\nMöchten Sie ihn dennoch ändern?"
 }
 
 //////////////////////////////////////////////////////////////////////////////

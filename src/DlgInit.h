@@ -29,7 +29,7 @@ ExecuteDlgInitEntryDx(HWND hwnd, const UNALIGNED WORD *pw, SIZE_T& cbData)
 {
 	DWORD cb = 4 * sizeof(WORD);
 	if (cbData <= cb)
-		return NULL;
+		return nullptr;
 	cbData -= cb;
 
 	// get data
@@ -41,7 +41,7 @@ ExecuteDlgInitEntryDx(HWND hwnd, const UNALIGNED WORD *pw, SIZE_T& cbData)
 
 	cb = dwLen;
 	if (cbData <= cb)
-		return NULL;
+		return nullptr;
 	cbData -= cb;
 
 	// convert Win16 messages
@@ -56,10 +56,9 @@ ExecuteDlgInitEntryDx(HWND hwnd, const UNALIGNED WORD *pw, SIZE_T& cbData)
 	assert(msg == LB_ADDSTRING || msg == CB_ADDSTRING ||
 		   msg == CBEM_INSERTITEM);
 
-#ifndef NDEBUG
-	const BYTE *pb = reinterpret_cast<const BYTE *>(pw);
-	assert(pb[dwLen - 1] == 0);
-#endif
+	const BYTE *pb = reinterpret_cast<const BYTE*>(pw);
+	if (!dwLen || pb[dwLen - 1])
+		return nullptr;
 
 	// send the message
 	if (msg == CBEM_INSERTITEM)
@@ -72,12 +71,12 @@ ExecuteDlgInitEntryDx(HWND hwnd, const UNALIGNED WORD *pw, SIZE_T& cbData)
 		item.pszText = &text[0];
 
 		if (::SendDlgItemMessageA(hwnd, ctrl, msg, 0, LPARAM(&item)) == -1)
-			return NULL;
+			return nullptr;
 	}
 	else if (msg == LB_ADDSTRING || msg == CB_ADDSTRING)
 	{
 		if (::SendDlgItemMessageA(hwnd, ctrl, msg, 0, LPARAM(pw)) == -1)
-			return NULL;
+			return nullptr;
 	}
 
 	// go to next entry
@@ -102,7 +101,7 @@ ExecuteDlgInitDataDx(HWND hwnd, const void *pData, SIZE_T& cbData)
 	}
 
 	// NOTE: We don't send WM_INITIALUPDATE messages.
-	return pw != NULL;
+	return pw != nullptr;
 }
 
 //////////////////////////////////////////////////////////////////////////////
@@ -111,8 +110,8 @@ inline BOOL
 ExecuteDlgInitDx(HWND hwnd, HMODULE module, const TCHAR *res_name)
 {
 	BOOL bSuccess = FALSE;
-	HGLOBAL hGlobal = NULL;
-	void *pData = NULL;
+	HGLOBAL hGlobal = nullptr;
+	void *pData = nullptr;
 	SIZE_T cbData = 0;
 
 	// load from resource

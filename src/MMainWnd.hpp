@@ -285,6 +285,7 @@ public:
 	BOOL DoUpxTest(LPCWSTR pszUpx, LPCWSTR pszFile);
 	BOOL DoUpxDecompress(LPCWSTR pszUpx, LPCWSTR pszFile);
 	BOOL DoUpxCompress(LPCWSTR pszUpx, LPCWSTR pszExeFile);
+	void DoRetypeEntry(LPWSTR pszText, EntryBase *entry, MIdOrString& old_type, MIdOrString& new_type);
 	void DoRenameEntry(LPWSTR pszText, EntryBase *entry, MIdOrString& old_name, MIdOrString& new_name);
 	void DoRelangEntry(LPWSTR pszText, EntryBase *entry, LANGID old_lang, LANGID new_lang);
 	void DoRefreshTV(HWND hwnd);
@@ -510,7 +511,9 @@ protected:
 		return ::GetLanguageStatement(langid, TRUE) + L"\r\n";
 	}
 
+	void UpdateTypes(BOOL bModified = TRUE);
 	void UpdateNames(BOOL bModified = TRUE);
+	void UpdateEntryType(EntryBase *e, LPWSTR pszText = NULL);
 	void UpdateEntryName(EntryBase *e, LPWSTR pszText = NULL);
 	void UpdateEntryLang(EntryBase *e, LPWSTR pszText = NULL);
 	void DoHelp();

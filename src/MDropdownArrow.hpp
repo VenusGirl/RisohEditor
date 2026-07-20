@@ -160,6 +160,15 @@ public:
 		return TEXT("MZC4 Dropdown Arrow");
 	}
 
+	BOOL ChooseType(const MIdOrString& type)
+	{
+		m_target_type = TARGET_TYPE_TYPE;
+		m_dialog.SetTargetType(TARGET_TYPE_TYPE);
+		m_type = type;
+		m_name = BAD_TYPE;
+		return TRUE;
+	}
+
 	BOOL ChooseName(const MIdOrString& type, const MIdOrString& name)
 	{
 		m_target_type = TARGET_TYPE_NAME;
@@ -256,7 +265,7 @@ public:
 			switch (m_target_type)
 			{
 			case TARGET_TYPE_TYPE:
-				assert(0);
+				ChooseTypeListBoxType(m_dialog.m_lst1, m_type);
 				break;
 			case TARGET_TYPE_NAME:
 				ChooseNameListBoxName(m_dialog.m_lst1, m_type, m_name);
