@@ -5001,7 +5001,7 @@ void MMainWnd::OnAddBang(HWND hwnd, NMTOOLBAR *pToolBar)
 std::wstring MMainWnd::ExtractEntry(EntryBase *entry, PCWSTR filename)
 {
 	if (!entry)
-		return false;
+		return L"";
 
 	std::wstring fname;
 	if (filename && filename[0])
