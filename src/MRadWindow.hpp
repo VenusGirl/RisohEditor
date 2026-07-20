@@ -100,7 +100,10 @@ public:
 	// deselect the selection
 	static BOOL DeselectSelection();
 
-	static LRESULT DoSendMessage(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
+	static LRESULT DoSendMessage(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
+	{
+		return ::SendMessage(hwnd, uMsg, wParam, lParam);
+	}
 
 	// delete the selection
 	static void DeleteSelection();
@@ -109,7 +112,10 @@ public:
 	void Deselect();
 
 	// is it selected?
-	BOOL IsSelected() const;
+	BOOL IsSelected() const
+	{
+		return IsWindow(m_hwndRubberBand);
+	}
 
 	// select the control
 	static void Select(HWND hwnd);
@@ -140,45 +146,6 @@ public:
 	virtual LRESULT CALLBACK
 	WindowProcDx(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 
-	// MRadCtrl MYWM_REDRAW
-	LRESULT OnRedraw(HWND hwnd, WPARAM wParam, LPARAM lParam);
-
-	// MRadCtrl WM_ERASEBKGND
-	BOOL OnEraseBkgnd(HWND hwnd, HDC hdc);
-
-	// MRadCtrl WM_NCRBUTTONDOWN/WM_NCRBUTTONDBLCLK
-	void OnNCRButtonDown(HWND hwnd, BOOL fDoubleClick, int x, int y, UINT codeHitTest);
-
-	// MRadCtrl WM_NCRBUTTONUP
-	void OnNCRButtonUp(HWND hwnd, int x, int y, UINT codeHitTest);
-
-	// MRadCtrl WM_LBUTTONDOWN/WM_LBUTTONDBLCLK
-	void OnLButtonDown(HWND hwnd, BOOL fDoubleClick, int x, int y, UINT keyFlags);
-
-	// MRadCtrl WM_LBUTTONUP
-	void OnLButtonUp(HWND hwnd, int x, int y, UINT keyFlags);
-
-	// MRadCtrl WM_MOUSEMOVE
-	void OnMouseMove(HWND hwnd, int x, int y, UINT keyFlags);
-
-	// MRadCtrl WM_MOVE
-	void OnMove(HWND hwnd, int x, int y);
-
-	// MRadCtrl WM_SIZE
-	void OnSize(HWND hwnd, UINT state, int cx, int cy);
-
-	// MRadCtrl WM_KEYDOWN/WM_KEYUP
-	void OnKey(HWND hwnd, UINT vk, BOOL fDown, int cRepeat, UINT flags);
-
-	// MRadCtrl WM_NCLBUTTONDOWN/WM_NCLBUTTONDBLCLK
-	void OnNCLButtonDown(HWND hwnd, BOOL fDoubleClick, int x, int y, UINT codeHitTest);
-
-	// MRadCtrl WM_NCMOUSEMOVE
-	void OnNCMouseMove(HWND hwnd, int x, int y, UINT codeHitTest);
-
-	// MRadCtrl WM_NCLBUTTONUP
-	void OnNCLButtonUp(HWND hwnd, int x, int y, UINT codeHitTest);
-
 	struct MYHITTEST
 	{
 		HWND hParent;
@@ -191,10 +158,23 @@ public:
 	// the helper function for hittest
 	static BOOL CALLBACK EnumHitTestChildProc(HWND hwnd, LPARAM lParam);
 
-	// MRadCtrl WM_NCHITTEST
-	UINT OnNCHitTest(HWND hwnd, int x, int y);
-
 	void DoTest();
+
+protected:
+	LRESULT OnRedraw(HWND hwnd, WPARAM wParam, LPARAM lParam);
+	BOOL OnEraseBkgnd(HWND hwnd, HDC hdc);
+	void OnNCRButtonDown(HWND hwnd, BOOL fDoubleClick, int x, int y, UINT codeHitTest);
+	void OnNCRButtonUp(HWND hwnd, int x, int y, UINT codeHitTest) { /* eat */ }
+	void OnLButtonDown(HWND hwnd, BOOL fDoubleClick, int x, int y, UINT keyFlags) { /* eat */ }
+	void OnLButtonUp(HWND hwnd, int x, int y, UINT keyFlags) { /* eat */ }
+	void OnMouseMove(HWND hwnd, int x, int y, UINT keyFlags) { /* eat */ }
+	UINT OnNCHitTest(HWND hwnd, int x, int y);
+	void OnMove(HWND hwnd, int x, int y);
+	void OnSize(HWND hwnd, UINT state, int cx, int cy);
+	void OnKey(HWND hwnd, UINT vk, BOOL fDown, int cRepeat, UINT flags);
+	void OnNCLButtonDown(HWND hwnd, BOOL fDoubleClick, int x, int y, UINT codeHitTest);
+	void OnNCMouseMove(HWND hwnd, int x, int y, UINT codeHitTest);
+	void OnNCLButtonUp(HWND hwnd, int x, int y, UINT codeHitTest);
 };
 
 //////////////////////////////////////////////////////////////////////////////
@@ -251,14 +231,6 @@ public:
 
 	LRESULT DoSendMessage(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 
-	// MRadDialog WM_RBUTTONDOWN
-	void OnRButtonDown(HWND hwnd, BOOL fDoubleClick, int x, int y, UINT keyFlags);
-
-	// MRadDialog MYWM_REDRAW
-	LRESULT OnRedraw(HWND hwnd, WPARAM wParam, LPARAM lParam);
-
-	// MRadDialog MYWM_SELCHANGE
-	LRESULT OnSelChange(HWND hwnd, WPARAM wParam, LPARAM lParam);
 
 	// get the normalized rectangle from two points
 	void NormalizeRect(RECT *prc, POINT pt0, POINT pt1);
@@ -266,57 +238,9 @@ public:
 	// draw the dragging rectangle
 	void DrawDragSelect(HWND hwnd);
 
-	// MRadDialog WM_LBUTTONDOWN/WM_LBUTTONDBLCLK
-	void OnLButtonDown(HWND hwnd, BOOL fDoubleClick, int x, int y, UINT keyFlags);
-
-	// MRadDialog WM_MOUSEMOVE
-	void OnMouseMove(HWND hwnd, int x, int y, UINT keyFlags);
-
-	// MRadDialog WM_CAPTURECHANGED
-	void OnCaptureChanged(HWND hwnd);
-
-	// MRadDialog WM_LBUTTONUP
-	void OnLButtonUp(HWND hwnd, int x, int y, UINT keyFlags);
-
-	// MRadDialog WM_ERASEBKGND
-	BOOL OnEraseBkgnd(HWND hwnd, HDC hdc);
-
 	// the window procedure of MRadDialog
 	virtual LRESULT CALLBACK
 	WindowProcDx(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
-
-	// MRadDialog MYWM_RADDBLCLICK
-	LRESULT OnRadDblClick(HWND hwnd, WPARAM wParam, LPARAM lParam);
-
-	// MRadDialog WM_SIZE
-	void OnSize(HWND hwnd, UINT state, int cx, int cy);
-
-	// MRadDialog MYWM_DELETESEL
-	LRESULT OnDeleteSel(HWND hwnd, WPARAM wParam, LPARAM lParam);
-
-	// MRadDialog MYWM_CTRLMOVE
-	LRESULT OnCtrlMove(HWND hwnd, WPARAM wParam, LPARAM lParam);
-
-	// MRadDialog MYWM_CTRLSIZE
-	LRESULT OnCtrlSize(HWND hwnd, WPARAM wParam, LPARAM lParam);
-
-	// MRadDialog WM_NCLBUTTONDOWN/WM_NCLBUTTONDBLCLK
-	void OnNCLButtonDown(HWND hwnd, BOOL fDoubleClick, int x, int y, UINT codeHitTest);
-
-	// MRadDialog WM_NCLBUTTONUP
-	void OnNCLButtonUp(HWND hwnd, int x, int y, UINT codeHitTest);
-
-	// MRadDialog WM_NCRBUTTONDOWN/WM_NCRBUTTONDBLCLK
-	void OnNCRButtonDown(HWND hwnd, BOOL fDoubleClick, int x, int y, UINT codeHitTest);
-
-	// MRadDialog WM_NCRBUTTONUP
-	void OnNCRButtonUp(HWND hwnd, int x, int y, UINT codeHitTest);
-
-	// MRadDialog WM_NCMOUSEMOVE
-	void OnNCMouseMove(HWND hwnd, int x, int y, UINT codeHitTest);
-
-	// MRadDialog WM_KEYDOWN/WM_KEYUP
-	void OnKey(HWND hwnd, UINT vk, BOOL fDown, int cRepeat, UINT flags);
 
 	// NOTE: We have to do subclassing all the children controls and their descendants
 	//       to modify the hittesting.
@@ -330,14 +254,31 @@ public:
 	// create the background brush
 	BOOL ReCreateBackBrush();
 
-	// MRadDialog WM_SYSCOLORCHANGE
-	void OnSysColorChange(HWND hwnd);
-
-	// MRadDialog WM_INITDIALOG
-	BOOL OnInitDialog(HWND hwnd, HWND hwndFocus, LPARAM lParam);
-
 	// show/hide the labels
 	void ShowHideLabels(BOOL bShow = TRUE);
+
+protected:
+	void OnRButtonDown(HWND hwnd, BOOL fDoubleClick, int x, int y, UINT keyFlags);
+	LRESULT OnRedraw(HWND hwnd, WPARAM wParam, LPARAM lParam);
+	LRESULT OnSelChange(HWND hwnd, WPARAM wParam, LPARAM lParam);
+	void OnLButtonDown(HWND hwnd, BOOL fDoubleClick, int x, int y, UINT keyFlags);
+	void OnMouseMove(HWND hwnd, int x, int y, UINT keyFlags);
+	void OnCaptureChanged(HWND hwnd);
+	void OnLButtonUp(HWND hwnd, int x, int y, UINT keyFlags);
+	BOOL OnEraseBkgnd(HWND hwnd, HDC hdc);
+	LRESULT OnRadDblClick(HWND hwnd, WPARAM wParam, LPARAM lParam);
+	void OnSize(HWND hwnd, UINT state, int cx, int cy);
+	LRESULT OnDeleteSel(HWND hwnd, WPARAM wParam, LPARAM lParam);
+	LRESULT OnCtrlMove(HWND hwnd, WPARAM wParam, LPARAM lParam);
+	LRESULT OnCtrlSize(HWND hwnd, WPARAM wParam, LPARAM lParam);
+	void OnNCLButtonDown(HWND hwnd, BOOL fDoubleClick, int x, int y, UINT codeHitTest);
+	void OnNCLButtonUp(HWND hwnd, int x, int y, UINT codeHitTest);
+	void OnNCRButtonDown(HWND hwnd, BOOL fDoubleClick, int x, int y, UINT codeHitTest);
+	void OnNCRButtonUp(HWND hwnd, int x, int y, UINT codeHitTest);
+	void OnNCMouseMove(HWND hwnd, int x, int y, UINT codeHitTest);
+	void OnKey(HWND hwnd, UINT vk, BOOL fDown, int cRepeat, UINT flags);
+	void OnSysColorChange(HWND hwnd);
+	BOOL OnInitDialog(HWND hwnd, HWND hwndFocus, LPARAM lParam);
 };
 
 //////////////////////////////////////////////////////////////////////////////
@@ -377,15 +318,10 @@ public:
 
 	// convert the coordinates
 	void ClientToDialog(POINT *ppt);
-	// convert the coordinates
 	void ClientToDialog(SIZE *psiz);
-	// convert the coordinates
 	void ClientToDialog(RECT *prc);
-	// convert the coordinates
 	void DialogToClient(POINT *ppt);
-	// convert the coordinates
 	void DialogToClient(SIZE *psiz);
-	// convert the coordinates
 	void DialogToClient(RECT *prc);
 
 	static HWND GetPrimaryControl(HWND hwnd, HWND hwndDialog);
@@ -406,81 +342,15 @@ public:
 	// update the mappings
 	void update_maps();
 
-	// MRadWindow WM_CREATE
-	BOOL OnCreate(HWND hwnd, LPCREATESTRUCT lpCreateStruct);
-
-	// MRadWindow WM_DESTROY
-	void OnDestroy(HWND hwnd);
-
 	// the window procedure of MRadWindow
 	virtual LRESULT CALLBACK
 	WindowProcDx(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 
-	// MRadWindow WM_SYSCOLORCHANGE
-	void OnSysColorChange(HWND hwnd);
-
-	// MRadWindow MYWM_RADDBLCLICK
-	LRESULT OnRadDblClick(HWND hwnd, WPARAM wParam, LPARAM lParam);
-
-	// MRadWindow MYWM_GETUNITS
-	LRESULT OnGetUnits(HWND hwnd, WPARAM wParam, LPARAM lParam);
-
-	// MRadWindow WM_ACTIVATE
-	void OnActivate(HWND hwnd, UINT state, HWND hwndActDeact, BOOL fMinimized);
-
-	// MRadWindow MYWM_SELCHANGE
-	LRESULT OnSelChange(HWND hwnd, WPARAM wParam, LPARAM lParam);
-
-	// MRadWindow WM_INITMENUPOPUP
-	void OnInitMenuPopup(HWND hwnd, HMENU hMenu, UINT item, BOOL fSystemMenu);
-
-	// MRadWindow MYWM_DELETESEL
-	LRESULT OnDeleteSel(HWND hwnd, WPARAM wParam, LPARAM lParam);
-
-	// MRadWindow MYWM_CTRLMOVE
-	LRESULT OnCtrlMove(HWND hwnd, WPARAM wParam, LPARAM lParam);
-
-	// MRadWindow MYWM_CTRLSIZE
-	LRESULT OnCtrlSize(HWND hwnd, WPARAM wParam, LPARAM lParam);
-
 	// update the resource
 	void UpdateRes();
 
-	// MRadWindow MYWM_DLGSIZE
-	LRESULT OnDlgSize(HWND hwnd, WPARAM wParam, LPARAM lParam);
-
-	// called from MMainWnd WM_COMMAND ID_ADDCTRL
-	void OnAddCtrl(HWND hwnd);
-
-	// called from MMainWnd WM_COMMAND ID_CTRLPROP
-	void OnCtrlProp(HWND hwnd);
-
-	// called from MMainWnd WM_COMMAND ID_DLGPROP
-	void OnDlgProp(HWND hwnd);
-
-	// refresh
-	void OnRefresh(HWND hwnd);
-
-	// show/hide the indeces
-	void OnShowHideIndex(HWND hwnd);
-
 	// get the selected dialog items
 	BOOL GetSelectedItems(DialogItems& items);
-
-	// MRadWindow WM_COMMAND
-	void OnCommand(HWND hwnd, int id, HWND hwndCtl, UINT codeNotify);
-
-	// called from MMainWnd WM_COMMAND ID_TOPALIGN
-	void OnTopAlign(HWND hwnd);
-
-	// called from MMainWnd WM_COMMAND ID_BOTTOMALIGN
-	void OnBottomAlign(HWND hwnd);
-
-	// called from MMainWnd WM_COMMAND ID_LEFTALIGN
-	void OnLeftAlign(HWND hwnd);
-
-	// called from MMainWnd WM_COMMAND ID_RIGHTALIGN
-	void OnRightAlign(HWND hwnd);
 
 	// able to make it top index?
 	BOOL CanIndexTop() const;
@@ -506,28 +376,44 @@ public:
 	// increment the control index
 	void IndexPlus(HWND hwnd);
 
-	// MRadWindow WM_KEYDOWN/WM_KEYUP
-	void OnKey(HWND hwnd, UINT vk, BOOL fDown, int cRepeat, UINT flags);
-
 	// select all the RADical controls
 	void SelectAll(HWND hwnd);
 
-	// MRadWindow WM_CONTEXTMENU
-	void OnContextMenu(HWND hwnd, HWND hwndContext, UINT xPos, UINT yPos);
-
 	// get the dialog base units
 	BOOL GetBaseUnits(INT& xDialogBaseUnit, INT& yDialogBaseUnit);
-
-	// MRadWindow WM_MOVE
-	void OnMove(HWND hwnd, int x, int y);
-
-	// MRadWindow WM_SIZE
-	void OnSize(HWND hwnd, UINT state, int cx, int cy);
 
 	// fit the coordinates to the grid
 	void FitToGrid(POINT *ppt);
 	void FitToGrid(SIZE *psiz);
 	void FitToGrid(RECT *prc);
 
+	void OnAddCtrl(HWND hwnd);
+	void OnCtrlProp(HWND hwnd);
+	void OnDlgProp(HWND hwnd);
+	void OnShowHideIndex(HWND hwnd);
+	void OnTopAlign(HWND hwnd);
+	void OnBottomAlign(HWND hwnd);
+	void OnLeftAlign(HWND hwnd);
+	void OnRightAlign(HWND hwnd);
 	void OnFitToGrid(HWND hwnd);
+	void OnRefresh(HWND hwnd);
+
+protected:
+	BOOL OnCreate(HWND hwnd, LPCREATESTRUCT lpCreateStruct);
+	void OnDestroy(HWND hwnd);
+	void OnSysColorChange(HWND hwnd);
+	LRESULT OnRadDblClick(HWND hwnd, WPARAM wParam, LPARAM lParam);
+	LRESULT OnGetUnits(HWND hwnd, WPARAM wParam, LPARAM lParam);
+	void OnActivate(HWND hwnd, UINT state, HWND hwndActDeact, BOOL fMinimized);
+	LRESULT OnSelChange(HWND hwnd, WPARAM wParam, LPARAM lParam);
+	void OnInitMenuPopup(HWND hwnd, HMENU hMenu, UINT item, BOOL fSystemMenu);
+	LRESULT OnDeleteSel(HWND hwnd, WPARAM wParam, LPARAM lParam);
+	LRESULT OnCtrlMove(HWND hwnd, WPARAM wParam, LPARAM lParam);
+	LRESULT OnCtrlSize(HWND hwnd, WPARAM wParam, LPARAM lParam);
+	LRESULT OnDlgSize(HWND hwnd, WPARAM wParam, LPARAM lParam);
+	void OnCommand(HWND hwnd, int id, HWND hwndCtl, UINT codeNotify);
+	void OnKey(HWND hwnd, UINT vk, BOOL fDown, int cRepeat, UINT flags);
+	void OnContextMenu(HWND hwnd, HWND hwndContext, UINT xPos, UINT yPos);
+	void OnMove(HWND hwnd, int x, int y);
+	void OnSize(HWND hwnd, UINT state, int cx, int cy);
 };

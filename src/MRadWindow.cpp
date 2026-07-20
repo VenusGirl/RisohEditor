@@ -169,11 +169,6 @@ BOOL MRadCtrl::DeselectSelection()
 	return bFound;  // found or not
 }
 
-LRESULT MRadCtrl::DoSendMessage(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
-{
-	return ::SendMessage(hwnd, uMsg, wParam, lParam);
-}
-
 // delete the selection
 void MRadCtrl::DeleteSelection()
 {
@@ -199,12 +194,6 @@ void MRadCtrl::Deselect()
 
 	// clear the last selection
 	GetLastSel() = NULL;
-}
-
-// is it selected?
-BOOL MRadCtrl::IsSelected() const
-{
-	return IsWindow(m_hwndRubberBand);
 }
 
 // select the control
@@ -440,30 +429,6 @@ void MRadCtrl::OnNCRButtonDown(HWND hwnd, BOOL fDoubleClick, int x, int y, UINT 
 
 	// send WM_NCRBUTTONDOWN to the parent
 	DoSendMessage(GetParent(hwnd), WM_NCRBUTTONDOWN, (WPARAM)hwnd, MAKELPARAM(x, y));
-}
-
-// MRadCtrl WM_NCRBUTTONUP
-void MRadCtrl::OnNCRButtonUp(HWND hwnd, int x, int y, UINT codeHitTest)
-{
-	// eat
-}
-
-// MRadCtrl WM_LBUTTONDOWN/WM_LBUTTONDBLCLK
-void MRadCtrl::OnLButtonDown(HWND hwnd, BOOL fDoubleClick, int x, int y, UINT keyFlags)
-{
-	// eat
-}
-
-// MRadCtrl WM_LBUTTONUP
-void MRadCtrl::OnLButtonUp(HWND hwnd, int x, int y, UINT keyFlags)
-{
-	// eat
-}
-
-// MRadCtrl WM_MOUSEMOVE
-void MRadCtrl::OnMouseMove(HWND hwnd, int x, int y, UINT keyFlags)
-{
-	// eat
 }
 
 // MRadCtrl WM_MOVE
