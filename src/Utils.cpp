@@ -43,14 +43,17 @@ INT LogMessageBoxW(HWND hwnd, LPCWSTR text, LPCWSTR title, UINT uType)
 TCHAR g_szMP3TempFile[MAX_PATH] = TEXT("");
 TCHAR g_szAviTempFile[MAX_PATH] = TEXT("");
 
-void StopMP3(void) {
-	if (g_szMP3TempFile[0]) {
+void StopMP3(void)
+{
+	if (g_szMP3TempFile[0])
+	{
 		mciSendString(TEXT("close myaudio"), NULL, 0, 0);
 		DeleteFile(g_szMP3TempFile);
 	}
 }
 
-BOOL PlayMP3(LPCVOID ptr, size_t size) {
+BOOL PlayMP3(LPCVOID ptr, size_t size)
+{
 	StopMP3();
 
 	TCHAR szCommand[MAX_PATH + 64];
@@ -70,8 +73,10 @@ BOOL PlayMP3(LPCVOID ptr, size_t size) {
 	return TRUE;
 }
 
-void StopAvi(void) {
-	if (g_szAviTempFile[0]) {
+void StopAvi(void)
+{
+	if (g_szAviTempFile[0])
+	{
 		mciSendStringW(L"close myavi", NULL, 0, NULL);
 		DeleteFile(g_szAviTempFile);
 	}
@@ -102,7 +107,8 @@ MStringW get_type_label(const MIdOrString& type)
 	return label;
 }
 
-BOOL PlayAvi(HWND hwnd, LPCVOID ptr, size_t size) {
+BOOL PlayAvi(HWND hwnd, LPCVOID ptr, size_t size)
+{
 	StopAvi();
 
 	// Create temporary file
@@ -202,10 +208,13 @@ BOOL WaitForVirusScan(LPCWSTR pszFileName, DWORD dwTimeout)
 	return FALSE;
 }
 
-bool create_directories_recursive_win32(const std::wstring& path) {
+bool create_directories_recursive_win32(const std::wstring& path)
+{
 	DWORD attr = GetFileAttributesW(path.c_str());
-	if (attr != INVALID_FILE_ATTRIBUTES) {
-		if (attr & FILE_ATTRIBUTE_DIRECTORY) {
+	if (attr != INVALID_FILE_ATTRIBUTES)
+	{
+		if (attr & FILE_ATTRIBUTE_DIRECTORY)
+		{
 			return true;
 		}
 		SetLastError(ERROR_FILE_EXISTS);
@@ -214,19 +223,23 @@ bool create_directories_recursive_win32(const std::wstring& path) {
 
 	std::wstring parent_path = path;
 
-	if (parent_path.back() == L'\\' || parent_path.back() == L'/') {
+	if (parent_path.back() == L'\\' || parent_path.back() == L'/')
+	{
 		parent_path.pop_back();
 	}
 
 	size_t last_separator = parent_path.find_last_of(L"\\/");
-	if (last_separator != std::wstring::npos) {
+	if (last_separator != std::wstring::npos)
+	{
 		std::wstring parent_dir = parent_path.substr(0, last_separator);
-		if (!create_directories_recursive_win32(parent_dir)) {
+		if (!create_directories_recursive_win32(parent_dir))
+		{
 			return false;
 		}
 	}
 
-	if (!CreateDirectoryW(path.c_str(), NULL)) {
+	if (!CreateDirectoryW(path.c_str(), NULL))
+	{
 		DWORD error = GetLastError();
 		return (error == ERROR_ALREADY_EXISTS);
 	}
@@ -3363,7 +3376,8 @@ MStringW GetRisohTemplate(const MIdOrString& type, const MIdOrString& name, LANG
 		hRsrc = FindResourceExW(hInst, L"RISOHTEMPLATE", name0.ptr(), MAKELANGID(LangID, SUBLANG_NEUTRAL));
 	if (hRsrc == NULL)
 		hRsrc = FindResourceExW(hInst, L"RISOHTEMPLATE", name0.ptr(), MAKELANGID(LANG_ENGLISH, SUBLANG_ENGLISH_US));
-	if (hRsrc == NULL)		hRsrc = FindResourceExW(hInst, L"RISOHTEMPLATE", name0.ptr(), MAKELANGID(LANG_ENGLISH, SUBLANG_NEUTRAL));
+	if (hRsrc == NULL)
+		hRsrc = FindResourceExW(hInst, L"RISOHTEMPLATE", name0.ptr(), MAKELANGID(LANG_ENGLISH, SUBLANG_NEUTRAL));
 	if (hRsrc == NULL)
 		hRsrc = FindResourceExW(hInst, L"RISOHTEMPLATE", name0.ptr(), MAKELANGID(LANG_NEUTRAL, SUBLANG_NEUTRAL));
 	if (hRsrc == NULL)
