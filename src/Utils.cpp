@@ -3598,6 +3598,19 @@ BOOL InitTypes(void)
 		g_pTypes->push_back(table_entry.name.c_str());
 	}
 
+	static const PCWSTR str_types[] =
+	{
+		L"PNG", L"GIF", L"JPEG", L"TIFF", L"JPG", L"TIF", L"EMF", L"ENHMETAFILE",
+		L"ENHMETAPICT", L"WMF", L"IMAGE", L"WAVE", L"MP3", L"AVI", L"TYPELIB",
+	};
+	for (auto& type : str_types)
+	{
+		MStringW str = L"\"";
+		str += type;
+		str += L"\"";
+		g_pTypes->push_back(std::move(str));
+	}
+
 	std::sort(g_pTypes->begin(), g_pTypes->end());
 	return TRUE;
 }
