@@ -7402,6 +7402,8 @@ wWinMain(HINSTANCE   hInstance,
 
 	INT ret = RisohEditor_Main(hInstance, hPrevInstance, lpCmdLine, nCmdShow);
 
+	if (g_pTypes)
+		delete g_pTypes;
 	if (g_pNames)
 		delete g_pNames;
 
