@@ -1,27 +1,20 @@
 // MRadWindow.hpp --- RADical development window
 //////////////////////////////////////////////////////////////////////////////
 // RisohEditor --- Another free Win32 resource editor
-// Copyright (C) 2017-2018 Katayama Hirofumi MZ <katayama.hirofumi.mz@gmail.com>
+// Copyright (C) 2017-2026 Katayama Hirofumi MZ <katayama.hirofumi.mz@gmail.com>
 // License: GPL-3 or later
 
 #pragma once
 
-#include "resource.h"
 #include "MWindowBase.hpp"
 #include "MRubberBand.hpp"
 #include "MIndexLabels.hpp"
-#include "MAddCtrlDlg.hpp"
-#include "MDlgPropDlg.hpp"
-#include "MCtrlPropDlg.hpp"
-#include "DialogRes.hpp"
-#include "PackedDIB.hpp"
-#include "Res.hpp"
-#include "IconRes.hpp"
-#include <map>
-#include <memory>
-#include <unordered_set>     // for std::unordered_set
-#include <climits>
 #include "MOleHost.hpp"
+#include "DialogRes.hpp"
+#include "IconRes.hpp"
+#include "Res.hpp"
+#include <map>
+#include <unordered_set>     // for std::unordered_set
 
 class MRadCtrl;
 class MRadDialog;

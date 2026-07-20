@@ -1,10 +1,17 @@
 // MRadWindow.cpp --- RADical development window
 //////////////////////////////////////////////////////////////////////////////
 // RisohEditor --- Another free Win32 resource editor
-// Copyright (C) 2017-2018 Katayama Hirofumi MZ <katayama.hirofumi.mz@gmail.com>
+// Copyright (C) 2017-2026 Katayama Hirofumi MZ <katayama.hirofumi.mz@gmail.com>
 // License: GPL-3 or later
 
 #include "MRadWindow.hpp"
+#include "MAddCtrlDlg.hpp"
+#include "MDlgPropDlg.hpp"
+#include "MCtrlPropDlg.hpp"
+#include "PackedDIB.hpp"
+#include <memory>
+#include <climits>
+#include "resource.h"
 
 // constructor
 MRadCtrl::MRadCtrl()
@@ -29,8 +36,7 @@ HICON& MRadCtrl::Icon()
 // the default bitmap
 HBITMAP& MRadCtrl::Bitmap()
 {
-	static HBITMAP s_hbm = LoadBitmap(GetModuleHandle(NULL),
-									  MAKEINTRESOURCE(IDB_BMP));
+	static HBITMAP s_hbm = LoadBitmap(GetModuleHandle(NULL), MAKEINTRESOURCE(IDB_BMP));
 	return s_hbm;
 }
 
@@ -40,9 +46,8 @@ BOOL MRadCtrl::IsGroupBox(HWND hCtrl)
 	WCHAR szClass[8];
 	GetClassNameW(hCtrl, szClass, _countof(szClass));
 	if (lstrcmpiW(szClass, L"BUTTON") == 0)
-	{
 		return (GetWindowStyle(hCtrl) & BS_TYPEMASK) == BS_GROUPBOX;
-	}
+
 	return FALSE;
 }
 
