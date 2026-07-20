@@ -3056,7 +3056,7 @@ BOOL CheckNameComboBox(HWND hCmb2, const MIdOrString& type, MIdOrString& name)
 			str = std::to_wstring(wID);
 	}
 
-	if (str.empty() || str == L"*") // an empty string or an asterisk
+	if (str.empty() || str == BAD_NAME) // an empty string or an asterisk
 	{
 		ComboBox_SetEditSel(hCmb2, 0, -1);  // select all
 		SetFocus(hCmb2);	// set focus
@@ -3094,7 +3094,7 @@ BOOL CheckNameComboBox(HWND hCmb2, const MIdOrString& type, MIdOrString& name)
 			{
 				mstr_unquote(str); // Unquote
 
-				if (str.empty() || str == L"*") // an empty string or an asterisk
+				if (str.empty() || str == BAD_NAME) // an empty string or an asterisk
 				{
 					ComboBox_SetEditSel(hCmb2, 0, -1);  // select all
 					SetFocus(hCmb2);	// set focus
@@ -3415,7 +3415,7 @@ MIdOrString GetNameFromText(const WCHAR *pszText)
 		{
 			mstr_unquote(str); // Unquote
 
-			if (str.empty() || str == L"*")
+			if (str.empty() || str == BAD_NAME)
 				return MIdOrString(BAD_NAME);
 		}
 

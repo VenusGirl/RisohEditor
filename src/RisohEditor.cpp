@@ -5496,7 +5496,7 @@ LRESULT MMainWnd::OnNotify(HWND hwnd, int idFrom, NMHDR *pnmhdr)
 			StringCchCopyW(szNewText, _countof(szNewText), pszNewText);
 			mstr_trim(szNewText);
 
-			if (lstrcmpW(szNewText, L"*") == 0)
+			if (lstrcmpiW(szNewText, BAD_NAME) == 0)
 				return FALSE; // Reject
 
 			if (entry->m_et == ET_NAME && !szNewText[0])
