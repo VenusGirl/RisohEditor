@@ -96,12 +96,15 @@ public:
 	void ApplySelection(HWND hLst, std::vector<BYTE>& sel)
 	{
 		m_bUpdating = TRUE;
+		SendMessageW(hLst, WM_SETREDRAW, FALSE, 0);
 		INT iTop = ListBox_GetTopIndex(hLst);
 		for (size_t i = 0; i < sel.size(); ++i)
 		{
 			ListBox_SetSel(hLst, sel[i], (DWORD)i);
 		}
 		ListBox_SetTopIndex(hLst, iTop);
+		SendMessageW(hLst, WM_SETREDRAW, TRUE, 0);
+		InvalidateRect(hLst, NULL, TRUE);
 		m_bUpdating = FALSE;
 	}
 
@@ -109,6 +112,7 @@ public:
 						std::vector<BYTE>& sel, DWORD dwValue)
 	{
 		m_bUpdating = TRUE;
+		SendMessageW(hLst, WM_SETREDRAW, FALSE, 0);
 		INT iTop = ListBox_GetTopIndex(hLst);
 		for (size_t i = 0; i < table.size(); ++i)
 		{
@@ -116,6 +120,8 @@ public:
 			ListBox_SetSel(hLst, sel[i], (DWORD)i);
 		}
 		ListBox_SetTopIndex(hLst, iTop);
+		SendMessageW(hLst, WM_SETREDRAW, TRUE, 0);
+		InvalidateRect(hLst, NULL, TRUE);
 		m_bUpdating = FALSE;
 	}
 
