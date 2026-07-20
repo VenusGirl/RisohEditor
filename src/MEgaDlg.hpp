@@ -25,7 +25,7 @@ using namespace EGA;
 #define TIMER_ID_EGA_PRINT 1
 #define EGA_PRINT_POLL_MS  100
 
-// edt1に保持させる出力の上限。無制限にテキストを溜め込まないための
+// lst1に保持させる出力の上限。無制限にテキストを溜め込まないための
 // リングバッファのキャパシティ。どちらかに達したら古い行から
 // (必ず行単位で)捨てる。
 #define EGA_OUTPUT_MAX_LINES 5000
@@ -64,12 +64,11 @@ protected:
 	HICON m_hIcon;
 	HICON m_hIconSm;
 	MResizable m_resizable;
-	INT m_cchEdt1 = 0;
 	WNDPROC m_fnOldEditWndProc = nullptr;
+	WNDPROC m_fnOldLst1WndProc = nullptr;
 
-	// edt1の内容と1対1対応する行ベースのリングバッファ。
-	// 「文字数でざっくり先頭を削る」のではなく、常に行単位でしか
-	// 捨てないことで、表示が行の途中で千切れるのを防ぐ。
+	// lst1の内容と1対1対応する行ベースのリングバッファ。
+	// リストボックスは行単位で管理されるため、文字数上限も行単位で制御。
 	std::deque<std::wstring> m_lines;  // 確定済みの行(各行末尾に"\r\n"を含む)。古い順
 	std::wstring m_openLine;           // まだ改行されていない末尾の行
 	size_t m_cchLines = 0;             // m_lines + m_openLine の合計文字数
@@ -95,4 +94,5 @@ protected:
 	void AppendEgaOutput(HWND hwnd, const std::wstring& text);
 
 	static LRESULT CALLBACK Edt2WndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
+	static LRESULT CALLBACK Lst1WndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 };
