@@ -2996,7 +2996,7 @@ BOOL CheckTypeComboBox(HWND hCmb1, MIdOrString& type)
 		}
 		if (value < SHRT_MIN || USHRT_MAX < value)
 		{
-			value = std::min(std::max(value, SHRT_MIN), USHRT_MAX);
+			value = __min(__max(value, SHRT_MIN), USHRT_MAX);
 			ComboBox_SetText(hCmb1, std::to_wstring(value).c_str());
 			ComboBox_SetEditSel(hCmb1, 0, -1);  // select all
 			SetFocus(hCmb1);	// set focus
@@ -3019,7 +3019,7 @@ BOOL CheckTypeComboBox(HWND hCmb1, MIdOrString& type)
 			INT value = mstr_parse_int(&str[i + 1]);
 			if (value < SHRT_MIN || USHRT_MAX < value)
 			{
-				value = std::min(std::max(value, SHRT_MIN), USHRT_MAX);
+				value = __min(__max(value, SHRT_MIN), USHRT_MAX);
 				ComboBox_SetText(hCmb1, std::to_wstring(value).c_str());
 				ComboBox_SetEditSel(hCmb1, 0, -1);  // select all
 				SetFocus(hCmb1);	// set focus
@@ -3035,10 +3035,10 @@ BOOL CheckTypeComboBox(HWND hCmb1, MIdOrString& type)
 			INT value = g_db.GetValue(L"RESOURCE", str);
 			if (value != 0)
 			{
-				value = std::min(std::max(value, SHRT_MIN), USHRT_MAX);
+				value = __min(__max(value, SHRT_MIN), USHRT_MAX);
 				if (value < SHRT_MIN || USHRT_MAX < value)
 				{
-					value = std::min(std::max(value, SHRT_MIN), USHRT_MAX);
+					value = __min(__max(value, SHRT_MIN), USHRT_MAX);
 					ComboBox_SetText(hCmb1, std::to_wstring(value).c_str());
 					ComboBox_SetEditSel(hCmb1, 0, -1);  // select all
 					SetFocus(hCmb1);	// set focus
@@ -3102,7 +3102,7 @@ BOOL CheckNameComboBox(HWND hCmb2, const MIdOrString& type, MIdOrString& name)
 		INT value = mstr_parse_int(str.c_str());
 		if (value < SHRT_MIN || USHRT_MAX < value)
 		{
-			value = std::min(std::max(value, SHRT_MIN), USHRT_MAX);
+			value = __min(__max(value, SHRT_MIN), USHRT_MAX);
 			ComboBox_SetText(hCmb2, std::to_wstring(value).c_str());
 			ComboBox_SetEditSel(hCmb2, 0, -1);  // select all
 			SetFocus(hCmb2);	// set focus

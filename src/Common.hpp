@@ -6,12 +6,11 @@
 //////////////////////////////////////////////////////////////////////////////
 #pragma once
 
-#undef min
-#undef max
 #include <algorithm>
 #include <cerrno>
 #include <cstdlib>
 #include <climits>
+#include "ConstantsDB.hpp"
 
 enum LANG_TYPE
 {
