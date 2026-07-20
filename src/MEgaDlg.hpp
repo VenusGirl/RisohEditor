@@ -11,12 +11,25 @@
 #include "RisohSettings.hpp"
 #include "../EGA/ega.hpp"
 #include "EgaBridge.hpp"
+#include <deque>
 
 using namespace EGA;
 
 #define WM_EGA_DO_GETINPUT (WM_APP + 100)  // UI thread reads edt2 and clear
 // WM_EGA_DO_PRINT is defined in EgaBridge.hpp (included above), since
 // EgaBridge itself now posts it from QueuePrintText().
+
+// EGA出力バッファを定期的にpullするためのタイマーID。
+// WM_EGA_DO_PRINT (worker thread からの明示フラッシュ) と併用し、
+// タイマー側を主な取得経路とする。
+#define TIMER_ID_EGA_PRINT 1
+#define EGA_PRINT_POLL_MS  100
+
+// edt1に保持させる出力の上限。無制限にテキストを溜め込まないための
+// リングバッファのキャパシティ。どちらかに達したら古い行から
+// (必ず行単位で)捨てる。
+#define EGA_OUTPUT_MAX_LINES 5000
+#define EGA_OUTPUT_MAX_CHARS 500000
 
 class MEgaDlg;
 extern HWND s_hwndEga;
@@ -54,6 +67,13 @@ protected:
 	INT m_cchEdt1 = 0;
 	WNDPROC m_fnOldEditWndProc = nullptr;
 
+	// edt1の内容と1対1対応する行ベースのリングバッファ。
+	// 「文字数でざっくり先頭を削る」のではなく、常に行単位でしか
+	// 捨てないことで、表示が行の途中で千切れるのを防ぐ。
+	std::deque<std::wstring> m_lines;  // 確定済みの行(各行末尾に"\r\n"を含む)。古い順
+	std::wstring m_openLine;           // まだ改行されていない末尾の行
+	size_t m_cchLines = 0;             // m_lines + m_openLine の合計文字数
+
 	// History for edt2 input (command history with Up/Down arrows)
 	std::vector<std::wstring> m_history;
 	size_t m_nHistoryPos = 0;
@@ -67,10 +87,12 @@ protected:
 	void OnSize(HWND hwnd, UINT state, int cx, int cy);
 	void OnEgaGetInput(HWND hwnd);
 	void OnEgaPrint(HWND hwnd);
+	void OnTimer(HWND hwnd, UINT id);
 	void OnGetMinMaxInfo(HWND hwnd, LPMINMAXINFO lpMinMaxInfo);
 
 	void AddToHistory(const std::wstring& str);
 	void NavigateHistory(HWND hEdt2, bool bUp);
+	void AppendEgaOutput(HWND hwnd, const std::wstring& text);
 
 	static LRESULT CALLBACK Edt2WndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 };

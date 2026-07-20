@@ -208,6 +208,11 @@ BOOL MEgaDlg::OnInitDialog(HWND hwnd, HWND hwndFocus, LPARAM lParam)
 	// (see the m_cchEdt1 comment in MEgaDlg.hpp).
 	m_cchEdt1 = GetWindowTextLengthW(GetDlgItem(hwnd, edt1));
 
+	// 出力リングバッファもダイアログを開くたびにクリアする。
+	m_lines.clear();
+	m_openLine.clear();
+	m_cchLines = 0;
+
 	// Move and resize
 	if (g_settings.nEgaX != CW_USEDEFAULT && g_settings.nEgaWidth != CW_USEDEFAULT)
 	{
@@ -237,6 +242,11 @@ BOOL MEgaDlg::OnInitDialog(HWND hwnd, HWND hwndFocus, LPARAM lParam)
 
 	// Start the EGA thread
 	EgaBridge::StartInteractive();
+
+	// EGA出力バッファを定期的にpullする。worker threadのprint速度に
+	// UIの描画頻度を依存させないための仕組み(WM_EGA_DO_PRINTの乱発対策)。
+	::SetTimer(hwnd, TIMER_ID_EGA_PRINT, EGA_PRINT_POLL_MS, NULL);
+
 	::SetFocus(::GetDlgItem(hwnd, edt2));
 
 	return TRUE;
@@ -290,6 +300,8 @@ void MEgaDlg::OnCommand(HWND hwnd, int id, HWND hwndCtl, UINT codeNotify)
 void MEgaDlg::OnDestroy(HWND hwnd)
 {
 	MTRACEA("%s\n", __FUNCTION__);
+
+	::KillTimer(hwnd, TIMER_ID_EGA_PRINT);
 
 	// 終了前に特殊なメッセージを投函する。
 	PostMessageW(g_hMainWnd, WM_COMMAND, ID_EGAFINISH, 0);
@@ -377,38 +389,91 @@ void MEgaDlg::OnEgaPrint(HWND hwnd)
 	if (EgaBridge::IsStopRequested())
 		return;
 
-	static DWORD s_lastHeavyPrint = 0;
-	static int   s_skipCounter = 0;
-	DWORD now = GetTickCount();
-
-	// 出力が巨大になったら強くスキップ
-	if (m_cchEdt1 > 1'000'000)
-	{
-		if (++s_skipCounter < 50)  // 50回に1回だけ処理
-			return;
-		s_skipCounter = 0;
-	}
-	else if (m_cchEdt1 > 500'000 && (now - s_lastHeavyPrint < 200))
-	{
-		return; // 200ms以内に連続printはスキップ
-	}
-
-	s_lastHeavyPrint = now;
-
-	// 極端に巨大ならさらに削る
-	if (m_cchEdt1 > 3'000'000)
-	{
-		SendDlgItemMessageW(hwnd, edt1, EM_SETSEL, 0, 1'500'000);
-		SendDlgItemMessageW(hwnd, edt1, EM_REPLACESEL, FALSE, (LPARAM)L"[... truncated ...]\r\n");
-		m_cchEdt1 = GetWindowTextLengthW(GetDlgItem(hwnd, edt1));
-	}
-
-	SendDlgItemMessageW(hwnd, edt1, EM_SETSEL, m_cchEdt1, m_cchEdt1);
-	SendDlgItemMessageW(hwnd, edt1, EM_REPLACESEL, FALSE, (LPARAM)text.c_str());
-	SendDlgItemMessageW(hwnd, edt1, EM_SCROLLCARET, 0, 0);
-	m_cchEdt1 += (INT)text.size();
+	// EgaBridgeから取り出した時点で、このtextは必ず画面に反映する
+	// (取り出したのに条件次第で捨てるのが従来のバグだったので、
+	// ここでの分岐によるdropは行わない)。表示量の制御は
+	// AppendEgaOutput内の行ベースのリングバッファに委ねる。
+	AppendEgaOutput(hwnd, text);
 
 	::SetCursor(::LoadCursorW(NULL, IDC_ARROW));
+}
+
+// EGA出力を行ベースのリングバッファ(m_lines/m_openLine)に取り込み、
+// edt1に反映する。
+//   - 通常時: edt1の末尾にtextをそのまま追記するだけ(安価な経路)。
+//   - 保持行数/文字数が上限(EGA_OUTPUT_MAX_LINES/CHARS)を超えたとき
+//     だけ、古い行をリングバッファから行単位で捨て、edt1全体を
+//     1回のSetWindowTextWで再構築する。再構築が起きる頻度は低く、
+//     1回のコストも上限サイズで頭打ちになる。
+// これにより「行の途中で表示が切れる」問題も構造的に無くなる。
+void MEgaDlg::AppendEgaOutput(HWND hwnd, const std::wstring& text)
+{
+	// m_openLine(前回までの未確定行) + text から確定行を切り出す。
+	std::wstring combined = m_openLine + text;
+	m_cchLines -= m_openLine.size();
+	m_openLine.clear();
+
+	size_t pos = 0;
+	for (;;)
+	{
+		size_t nl = combined.find(L"\r\n", pos);
+		if (nl == std::wstring::npos)
+			break;
+
+		std::wstring line = combined.substr(pos, nl - pos + 2); // "\r\n"を含む
+		m_lines.push_back(line);
+		m_cchLines += line.size();
+		pos = nl + 2;
+	}
+	m_openLine = combined.substr(pos); // まだ改行されていない末尾
+	m_cchLines += m_openLine.size();
+
+	// 上限超過分を、行単位で古い方から捨てる。
+	bool bEvicted = false;
+	while ((m_lines.size() > EGA_OUTPUT_MAX_LINES || m_cchLines > EGA_OUTPUT_MAX_CHARS) &&
+	       !m_lines.empty())
+	{
+		m_cchLines -= m_lines.front().size();
+		m_lines.pop_front();
+		bEvicted = true;
+	}
+
+	HWND hEdt1 = GetDlgItem(hwnd, edt1);
+	SendMessageW(hEdt1, WM_SETREDRAW, FALSE, 0);
+
+	if (bEvicted)
+	{
+		// リングバッファ全体からedt1を再構築する。
+		std::wstring rebuilt = L"[... truncated ...]\r\n";
+		for (auto& line : m_lines)
+			rebuilt += line;
+		rebuilt += m_openLine;
+
+		SetWindowTextW(hEdt1, rebuilt.c_str());
+		m_cchEdt1 = GetWindowTextLengthW(hEdt1);
+	}
+	else
+	{
+		// 捨てた行がなければ末尾に追記するだけで済む。
+		SendMessageW(hEdt1, EM_SETSEL, m_cchEdt1, m_cchEdt1);
+		SendMessageW(hEdt1, EM_REPLACESEL, FALSE, (LPARAM)text.c_str());
+		m_cchEdt1 += (INT)text.size();
+	}
+
+	SendMessageW(hEdt1, EM_SETSEL, m_cchEdt1, m_cchEdt1);
+	SendMessageW(hEdt1, WM_SETREDRAW, TRUE, 0);
+	SendMessageW(hEdt1, EM_SCROLLCARET, 0, 0);
+	InvalidateRect(hEdt1, NULL, FALSE);
+}
+
+// WM_TIMER: 定期的にEGA出力バッファをpullする。
+// WM_EGA_DO_PRINT(worker threadからの明示フラッシュ、実行単位の終わり
+// など)と共存させ、こちらを主経路にする。
+void MEgaDlg::OnTimer(HWND hwnd, UINT id)
+{
+	if (id != TIMER_ID_EGA_PRINT)
+		return;
+	OnEgaPrint(hwnd);
 }
 
 // Add non-empty trimmed string to history (avoid duplicates at end)
@@ -474,6 +539,7 @@ MEgaDlg::DialogProcDx(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 	HANDLE_MSG(hwnd, WM_CTLCOLORSTATIC, OnCtlColor);
 	HANDLE_MSG(hwnd, WM_MOVE, OnMove);
 	HANDLE_MSG(hwnd, WM_SIZE, OnSize);
+	HANDLE_MSG(hwnd, WM_TIMER, OnTimer);
 	HANDLE_MSG(hwnd, WM_DESTROY, OnDestroy);
 	HANDLE_MSG(hwnd, WM_GETMINMAXINFO, OnGetMinMaxInfo);
 	case WM_EGA_DO_GETINPUT: // 入力を取得する。

@@ -8,7 +8,6 @@
 #include <windows.h>
 #include <queue>
 #include <utility>
-#include <atomic>
 #include "MMainWnd.hpp"
 #include "../EGA/ega.hpp"
 
@@ -48,15 +47,14 @@ namespace
 	static HANDLE   s_hInputDone   = NULL;   // auto-reset event
 	static std::wstring s_inputBuffer;       // protected by s_inputCs
 
-	// Coalesced print-output state. Protected by s_printCs. s_bPrintPosted
-	// tracks whether a WM_EGA_DO_PRINT flush is already sitting in the UI
-	// thread's queue, so that bursts of prints between two UI-thread pumps
-	// get merged into a single message instead of one message each.
+	// Print-output buffer. Protected by s_printCs. The UI thread now
+	// *pulls* this buffer on a WM_TIMER tick (see MEgaDlg::OnTimer)
+	// instead of the worker thread pushing a WM_EGA_DO_PRINT message per
+	// burst. This decouples the UI refresh rate from the EGA output
+	// rate, so a fast producer can never flood the message queue.
 	static CRITICAL_SECTION s_printCs; // 出力用のクリティカルセクション。
 	static bool     s_printCsReady = false; // s_printCs準備ＯＫ？
-	static std::atomic<bool> s_bPrintPosted(false); // 出力が投函されたか？
 	static std::wstring s_printBuffer; // 出力バッファ。protected by s_printCs
-	static DWORD s_lastPrintFlush = 0;
 }
 
 // EGAを実行するためのスレッド関数。
@@ -131,7 +129,6 @@ namespace EgaBridge
 		// EGA dialog session.
 		s_bEnterPressed = false;
 		s_inputBuffer.clear();
-		s_bPrintPosted = false;
 		s_printBuffer.clear();
 
 		if (!EGA_init())
@@ -177,7 +174,6 @@ namespace EgaBridge
 		s_inputBuffer.clear();
 
 		if (s_printCsReady) { DeleteCriticalSection(&s_printCs); s_printCsReady = false; }
-		s_bPrintPosted = false;
 		s_printBuffer.clear();
 
 		while (!s_fileQueue.empty())
@@ -443,42 +439,23 @@ namespace EgaBridge
 		return true;
 	}
 
-	// 出力文字列をキューに追加。
+	// 出力文字列をバッファに追加するだけ。UIスレッドへの通知は行わない
+	// (UI側がWM_TIMERで定期的に取りに来る。EGA_dialog_inputが実行単位の
+	// 終わりに明示的にWM_EGA_DO_PRINTを投函するので、そこでも即時反映される)。
 	void QueuePrintText(const std::wstring& text)
 	{
 		if (!s_printCsReady || text.empty())
 			return;
 
-		bool needPost = false;
 		EnterCriticalSection(&s_printCs);
 		s_printBuffer += text;
 
-		// バッファが大きくなりすぎたら強制フラッシュ + トリム
-		DWORD now = GetTickCount();
-		if (s_printBuffer.size() > 10000)
-		{
-			s_printBuffer.erase(0, 1000);
-			s_bPrintPosted = true;
-			needPost = true;
-			s_lastPrintFlush = now;
-		}
-		else if (!s_bPrintPosted && (now - s_lastPrintFlush > 300))
-		{
-			s_bPrintPosted = true;
-			needPost = true;
-			s_lastPrintFlush = now;
-		}
+		// UI側が何らかの理由で長時間pullしなかった場合の
+		// メモリ保護用トリム(通常は起きない)。
+		const size_t kMaxBufferedChars = 2'000'000;
+		if (s_printBuffer.size() > kMaxBufferedChars)
+			s_printBuffer.erase(0, s_printBuffer.size() - kMaxBufferedChars);
 		LeaveCriticalSection(&s_printCs);
-
-		if (needPost)
-		{
-			HWND hwnd = s_hwndEga;
-			if (!::IsWindow(hwnd) || EgaBridge::IsStopRequested() ||
-				!::PostMessageW(hwnd, WM_EGA_DO_PRINT, 0, 0))
-			{
-				s_bPrintPosted = false;
-			}
-		}
 	}
 
 	// 未処理の出力文字列を取得する。出力文字列が空か、失敗したならfalseを返す。
@@ -491,7 +468,6 @@ namespace EgaBridge
 
 		EnterCriticalSection(&s_printCs);
 		outText.swap(s_printBuffer);
-		s_bPrintPosted = false;
 		LeaveCriticalSection(&s_printCs);
 
 		return !outText.empty();
