@@ -63,8 +63,7 @@ public:
 
 		InitComboBoxPlaceholder(m_cmb2, IDS_INTEGERORIDENTIFIER);
 
-		// set 1 to the name if it's a RT_VERSION
-		if (m_type == RT_VERSION)
+		if (m_type == RT_VERSION || m_type == RT_MESSAGETABLE)
 		{
 			SetDlgItemInt(hwnd, cmb2, 1, FALSE);
 		}
@@ -140,17 +139,6 @@ public:
 			// clear the name if sz is empty
 			if (sz.empty())
 				SetDlgItemTextW(hwnd, cmb2, NULL);
-		}
-
-		// if RT_VERSION, the name is one
-		if (type == RT_VERSION)
-		{
-			SetDlgItemTextW(hwnd, cmb2, L"1");
-		}
-		// if RT_MESSAGETABLE, the name should be one
-		else if (type == RT_MESSAGETABLE)
-		{
-			SetDlgItemTextW(hwnd, cmb2, L"1");
 		}
 
 		// check the name combobox cmb2
