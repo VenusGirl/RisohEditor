@@ -160,15 +160,15 @@ BOOL PlayAvi(HWND hwnd, LPCVOID ptr, size_t size)
 // replace some fullwidth characters with halfwidth characters
 void ReplaceFullWithHalf(LPWSTR pszText)
 {
-	MStringW strFullWidth = L"０１２３４５６７８９ＡＢＣＤＥＦＧＨＩＪＫＬＭＮＯＰＱＲＳＴＵＶＷＸＹＺａｂｃｄｅｆｇｈｉｊｋｌｍｎｏｐｑｒｓｔｕｖｗｘｙｚ－＿（）．　";
-	MStringW strHalfWidth = L"0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz-_(). ";
+	static const PCWSTR szFullWidth = L"０１２３４５６７８９ＡＢＣＤＥＦＧＨＩＪＫＬＭＮＯＰＱＲＳＴＵＶＷＸＹＺａｂｃｄｅｆｇｈｉｊｋｌｍｎｏｐｑｒｓｔｕｖｗｘｙｚ－＿（）．　";
+	static const PCWSTR szHalfWidth = L"0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz-_(). ";
 
 	for (DWORD i = 0; pszText[i]; ++i)
 	{
-		size_t k = strFullWidth.find(pszText[i]);
-		if (k != MStringW::npos)
+		PCWSTR pch = wcschr(szFullWidth, pszText[i]);
+		if (pch)
 		{
-			pszText[i] = strHalfWidth[k];
+			pszText[i] = szHalfWidth[pch - szFullWidth];
 		}
 	}
 }
