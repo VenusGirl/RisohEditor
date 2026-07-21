@@ -74,9 +74,12 @@ IDR_MAINMENU MENU
         MENUITEM SEPARATOR
         MENUITEM "&Cambiar tipo/nombre/idioma\tF2", ID_EDITLABEL
         MENUITEM SEPARATOR
-        MENUITEM "Clonar con nuevo &Nombre...", ID_COPYASNEWNAME
-        MENUITEM "Clonar en nuevo &Idioma...", ID_COPYASNEWLANG
-        MENUITEM "Copiar en varios idiomas...", ID_COPYTOMULTILANG
+        POPUP "&Clon"
+        {
+            MENUITEM "Clonar con nuevo &Nombre...", ID_COPYASNEWNAME
+            MENUITEM "Clonar en nuevo &Idioma...", ID_COPYASNEWLANG
+            MENUITEM "Copiar en varios idiomas...", ID_COPYTOMULTILANG
+        }
         MENUITEM SEPARATOR
         MENUITEM "Hacer &Test", ID_TEST
         MENUITEM SEPARATOR
@@ -187,9 +190,12 @@ IDR_POPUPMENUS MENU
         MENUITEM SEPARATOR
         MENUITEM "&Cambiar tipo/nombre/idioma\tF2", ID_EDITLABEL
         MENUITEM SEPARATOR
-        MENUITEM "Clonar con nuevo &Nombre...", ID_COPYASNEWNAME
-        MENUITEM "Cloar en nuevo &Idioma...", ID_COPYASNEWLANG
-        MENUITEM "Copiar en varios idiomas...", ID_COPYTOMULTILANG
+        POPUP "&Clon"
+        {
+            MENUITEM "Clonar con nuevo &Nombre...", ID_COPYASNEWNAME
+            MENUITEM "Cloar en nuevo &Idioma...", ID_COPYASNEWLANG
+            MENUITEM "Copiar en varios idiomas...", ID_COPYTOMULTILANG
+        }
         MENUITEM SEPARATOR
         MENUITEM "Hacer &Test", ID_TEST
         MENUITEM SEPARATOR

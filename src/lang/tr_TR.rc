@@ -73,9 +73,12 @@ IDR_MAINMENU MENU
         }
         MENUITEM "&Türü/adı/dili değiştir\tF2", ID_EDITLABEL
         MENUITEM SEPARATOR
-        MENUITEM "Yeni &Adla Klonla...", ID_COPYASNEWNAME
-        MENUITEM "Yeni &Dille Klonla...", ID_COPYASNEWLANG
-        MENUITEM "Birden Çok Dile Kopyala...", ID_COPYTOMULTILANG
+        POPUP "&Klon"
+        {
+            MENUITEM "Yeni &Adla Klonla...", ID_COPYASNEWNAME
+            MENUITEM "Yeni &Dille Klonla...", ID_COPYASNEWLANG
+            MENUITEM "Birden Çok Dile Kopyala...", ID_COPYTOMULTILANG
+        }
         MENUITEM SEPARATOR
         MENUITEM "&Test Et", ID_TEST
         MENUITEM SEPARATOR
@@ -185,9 +188,12 @@ IDR_POPUPMENUS MENU
         MENUITEM SEPARATOR
         MENUITEM "&Türü/adı/dili değiştir\tF2", ID_EDITLABEL
         MENUITEM SEPARATOR
-        MENUITEM "Yeni &İsimle Klonla...", ID_COPYASNEWNAME
-        MENUITEM "Yeni &Dil ile Klonla...", ID_COPYASNEWLANG
-        MENUITEM "Birden Fazla Dile &Kopyala...", ID_COPYTOMULTILANG
+        POPUP "&Klon"
+        {
+            MENUITEM "Yeni &İsimle Klonla...", ID_COPYASNEWNAME
+            MENUITEM "Yeni &Dil ile Klonla...", ID_COPYASNEWLANG
+            MENUITEM "Birden Fazla Dile &Kopyala...", ID_COPYTOMULTILANG
+        }
         MENUITEM SEPARATOR
         MENUITEM "&Test Yap", ID_TEST
         MENUITEM SEPARATOR

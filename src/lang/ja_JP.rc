@@ -74,9 +74,12 @@ IDR_MAINMENU MENU
         MENUITEM SEPARATOR
         MENUITEM "種類/名前/言語を変更(&H)\tF2", ID_EDITLABEL
         MENUITEM SEPARATOR
-        MENUITEM "別の名前で複製(&N)...", ID_COPYASNEWNAME
-        MENUITEM "別の言語で複製(&L)...", ID_COPYASNEWLANG
-        MENUITEM "複数の言語へ複製...", ID_COPYTOMULTILANG
+        POPUP "複製(&C)"
+        {
+            MENUITEM "別の名前で複製(&N)...", ID_COPYASNEWNAME
+            MENUITEM "別の言語で複製(&L)...", ID_COPYASNEWLANG
+            MENUITEM "複数の言語へ複製...", ID_COPYTOMULTILANG
+        }
         MENUITEM SEPARATOR
         MENUITEM "テストする(&T)", ID_TEST
         MENUITEM SEPARATOR
@@ -188,9 +191,12 @@ IDR_POPUPMENUS MENU
         MENUITEM SEPARATOR
         MENUITEM "種類/名前/言語を変更(&H)\tF2", ID_EDITLABEL
         MENUITEM SEPARATOR
-        MENUITEM "別の名前で複製(&N)...", ID_COPYASNEWNAME
-        MENUITEM "別の言語で複製(&L)...", ID_COPYASNEWLANG
-        MENUITEM "複数の言語へ複製...", ID_COPYTOMULTILANG
+        POPUP "複製(&C)"
+        {
+            MENUITEM "別の名前で複製(&N)...", ID_COPYASNEWNAME
+            MENUITEM "別の言語で複製(&L)...", ID_COPYASNEWLANG
+            MENUITEM "複数の言語へ複製...", ID_COPYTOMULTILANG
+        }
         MENUITEM SEPARATOR
         MENUITEM "テストする(&T)", ID_TEST
         MENUITEM SEPARATOR

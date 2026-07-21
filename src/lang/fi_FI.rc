@@ -74,9 +74,12 @@ IDR_MAINMENU MENU
         MENUITEM SEPARATOR
         MENUITEM "&Vaihda tyyppiä/nimeä/kieltä\tF2", ID_EDITLABEL
         MENUITEM SEPARATOR
-        MENUITEM "Klooni uudessa &nimessä...", ID_COPYASNEWNAME
-        MENUITEM "Klooni uudessa kie&lessä...", ID_COPYASNEWLANG
-        MENUITEM "Kopioi useille kielille...", ID_COPYTOMULTILANG
+        POPUP "&Klooni"
+        {
+            MENUITEM "Klooni uudessa &nimessä...", ID_COPYASNEWNAME
+            MENUITEM "Klooni uudessa kie&lessä...", ID_COPYASNEWLANG
+            MENUITEM "Kopioi useille kielille...", ID_COPYTOMULTILANG
+        }
         MENUITEM SEPARATOR
         MENUITEM "&Testaa", ID_TEST
         MENUITEM SEPARATOR
@@ -184,9 +187,12 @@ IDR_POPUPMENUS MENU
         MENUITEM SEPARATOR
         MENUITEM "&Vaihda tyyppiä/nimeä/kieltä\tF2", ID_EDITLABEL
         MENUITEM SEPARATOR
-        MENUITEM "Klooni uudessa &nimessä...", ID_COPYASNEWNAME
-        MENUITEM "Klooni uudessa kie&lessä...", ID_COPYASNEWLANG
-        MENUITEM "Kopioi useille kielille...", ID_COPYTOMULTILANG
+        POPUP "&Klooni"
+        {
+            MENUITEM "Klooni uudessa &nimessä...", ID_COPYASNEWNAME
+            MENUITEM "Klooni uudessa kie&lessä...", ID_COPYASNEWLANG
+            MENUITEM "Kopioi useille kielille...", ID_COPYTOMULTILANG
+        }
         MENUITEM SEPARATOR
         MENUITEM "&Testaa", ID_TEST
         MENUITEM SEPARATOR
