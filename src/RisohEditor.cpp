@@ -5759,6 +5759,7 @@ BOOL MMainWnd::DoRetypeEntry(LPWSTR pszText, EntryBase *entry, MIdOrString& old_
 
 	// select the entry to update the text
 	SelectTV(entry, FALSE);
+	Expand(entry->m_hItem);
 
 	DoSetFileModified(TRUE);
 
