@@ -2910,7 +2910,7 @@ void MMainWnd::OnIdAssoc(HWND hwnd)
 	MIdAssocDlg dialog;
 	if (dialog.DialogBoxDx(hwnd) == IDOK)
 	{
-		DoRefreshTVEntryNames(hwnd);
+		UpdateNames(TRUE);
 		DoRefreshIDList(hwnd);
 	}
 }

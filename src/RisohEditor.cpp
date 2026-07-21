@@ -4750,7 +4750,8 @@ void MMainWnd::DoRefreshIDList(HWND hwnd)
 // refresh the treeview
 void MMainWnd::DoRefreshTV(HWND hwnd)
 {
-	DoRefreshTVEntryNames(hwnd);
+	UpdateTypes(FALSE);
+	UpdateNames(FALSE);
 
 	// hide language drop-down arrow
 	ShowWindowAsync(m_arrow, SW_HIDE);
@@ -4931,16 +4932,6 @@ void MMainWnd::ShowIDList(HWND hwnd, BOOL bShow/* = TRUE*/)
 void MMainWnd::OnIDList(HWND hwnd)
 {
 	ShowIDList(hwnd, TRUE);
-}
-
-void MMainWnd::DoRefreshTVEntryNames(HWND hwnd)
-{
-	EntrySet found;
-	g_res.search(found, ET_NAME);
-	for (auto entry : found)
-	{
-		UpdateEntryName(entry);
-	}
 }
 
 PCSTR MMainWnd::GetTreeItemHelp(EntryBase *entry)
@@ -5748,18 +5739,20 @@ BOOL MMainWnd::DoRetypeEntry(LPWSTR pszText, EntryBase *entry, MIdOrString& old_
 	if (MsgBoxDx(LoadStringDx(IDS_CHANGETYPEWARNING), MB_ICONWARNING | MB_YESNOCANCEL) != IDYES)
 		return FALSE;
 
-	// search the old named type entries
-	EntrySet found;
-	g_res.search(found, ET_ANY, old_type);
-
-	for (auto e : found)
 	{
-		assert(e->m_type == old_type);
-		e->m_type = new_type;
+		EntrySet found;
+		g_res.search(found, ET_LANG, old_type);
+		for (auto e : found)
+		{
+			assert(e->m_type == old_type);
+			g_res.add_lang_entry(new_type, e->m_name, e->m_lang, e->m_data);
+			e->mark_invalid();
+		}
 	}
+	entry->mark_invalid();
+	g_res.delete_invalid();
+	entry = g_res.find(ET_TYPE, new_type);
 
-	// update the entry type
-	entry->m_type = new_type;
 	UpdateTypes();
 	UpdateNames();
 	DoRefreshIDList(m_hwnd);
