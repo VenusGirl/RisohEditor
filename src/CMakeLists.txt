@@ -17,6 +17,7 @@ add_library(libRisohEditor STATIC
     MMainWnd_Toolbar.cpp
     MOleHost.cpp
     MRadWindow.cpp
+    MRisohAutoComplete.cpp
     MSplitterWnd.cpp
     MenuRes.cpp
     PackedDIB.cpp

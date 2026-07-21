@@ -6,6 +6,7 @@
 
 #include "RisohEditor.hpp"
 #include "MMainWnd.hpp"
+#include "Utils.h"
 
 #include "MAddBitmapDlg.hpp"
 #include "MAddCursorDlg.hpp"

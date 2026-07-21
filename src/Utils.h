@@ -5,12 +5,30 @@
 // License: GPL-3 or later
 
 #pragma once
-// Small, focused utility header for common helpers extracted from RisohEditor.cpp
 
-#include <string>
-#include <vector>
 #include <windows.h>
 #include <unordered_map>
+#include <vector>
+#include "Common.hpp"
+#include "MString.hpp"
+#include "ConstantsDB.hpp"
+#include "Res.hpp"
+#include "StringRes.hpp"
+#include "MessageRes.hpp"
+
+// structure for language information
+struct LANG_ENTRY
+{
+	LANGID LangID;    // language ID
+	MStringW str;   // string
+
+	// for sorting
+	bool operator<(const LANG_ENTRY& ent) const
+	{
+		return str < ent.str;
+	}
+};
+extern std::vector<LANG_ENTRY> g_langs;
 
 void ReplaceFullWithHalf(wchar_t* pszText);
 void ReplaceFullWithHalf(std::wstring& strText);
