@@ -139,10 +139,7 @@ IDR_MAINMENU MENU
     POPUP "&Aide"
     {
         MENUITEM "Ouvrir &README.txt", ID_OPENREADME
-        MENUITEM "Ouvrir README_&ja.txt", ID_OPENREADMEJP
-        MENUITEM "Ouvrir &HYOJUNKA.md", ID_OPENHYOJUNKA
         MENUITEM "Ouvrir Change&Log.txt", ID_OPENHISTORY
-        MENUITEM "Ouvrir ChangeLog_&ja.txt", ID_OPENHISTORYJPN
         MENUITEM "Ouvrir &LICENSE.txt", ID_OPENLICENSE
         MENUITEM SEPARATOR
         MENUITEM "Aller sur le site de &documentation", ID_GUIDE
