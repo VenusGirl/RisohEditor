@@ -1,4 +1,4 @@
-// MRisohAutoComplete.hpp --- Language auto-completion
+﻿// MRisohAutoComplete.hpp --- Language auto-completion
 //////////////////////////////////////////////////////////////////////////////
 // RisohEditor --- Another free Win32 resource editor
 // Copyright (C) 2026 Katayama Hirofumi MZ <katayama.hirofumi.mz@gmail.com>
@@ -245,13 +245,11 @@ public:
 			SubclassDx(hwndEdit);
 			m_hwndTV = hwndTV;
 			m_bHooked = TRUE;
-			SetTimer(hwndEdit, 99999, 100, NULL);
 		}
 	}
 
 	void unhook()
 	{
-		KillTimer(m_hwnd, 99999);
 		if (m_bHooked)
 		{
 			UnsubclassDx();
@@ -260,44 +258,45 @@ public:
 		m_hwndTV = NULL;
 	}
 
-	void AdjustSize()
+	void AdjustDropdown()
 	{
-		if (!m_bHooked || !m_bAdjustSize)
+		if (!m_bAdjustSize || !m_bHooked || !::IsWindow(m_hwnd) || !::IsWindow(m_hwndTV))
 			return;
 
-		RECT rc, rcTV;
-		GetWindowRect(m_hwnd, &rc);
-		MapWindowRect(NULL, m_hwndTV, &rc);
+		HWND hwndDropdown = FindWindowW(L"Auto-Suggest Dropdown", nullptr);
+		if (!IsWindowVisible(hwndDropdown))
+			return;
+
+		RECT rcEdit;
+		GetWindowRect(m_hwnd, &rcEdit);
+
+		RECT rcTV;
 		GetClientRect(m_hwndTV, &rcTV);
+		MapWindowPoints(m_hwndTV, nullptr, (PPOINT)&rcTV, 2);
 
-		INT cx = rcTV.right - rc.left;
-		INT cy = rc.bottom - rc.top;
+		RECT rcDrop;
+		GetWindowRect(hwndDropdown, &rcDrop);
 
-		if (HWND hwndDropdown = FindWindowW(L"Auto-Suggest Dropdown", NULL))
-		{
-			GetWindowRect(hwndDropdown, &rc);
-			cy = rc.bottom - rc.top;
-			MoveWindow(hwndDropdown, rc.left, rc.top, cx, cy, TRUE);
-		}
+		INT x = rcEdit.left, y = rcEdit.bottom;
+		INT width = __max(rcTV.right - x, 200);
+		SetWindowPos(hwndDropdown, HWND_TOPMOST, x, y, width, rcDrop.bottom - rcDrop.top,
+					 SWP_NOACTIVATE);
 	}
 
 protected:
 	virtual LRESULT CALLBACK
 	WindowProcDx(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 	{
-		LRESULT ret = 0;
+		LRESULT ret = DefaultProcDx(hwnd, uMsg, wParam, lParam);
 		switch (uMsg)
 		{
-		case WM_TIMER:
-			if (wParam == 99999)
-			{
-				AdjustSize();
-				break;
-			}
-			ret = DefaultProcDx(hwnd, uMsg, wParam, lParam);
+		case WM_WINDOWPOSCHANGED:
+		case WM_MOVE:
+		case WM_SIZE:
+		case WM_CHAR:
+		case WM_KEYUP:
+			AdjustDropdown();
 			break;
-		default:
-			ret = DefaultProcDx(hwnd, uMsg, wParam, lParam);
 		}
 		return ret;
 	}

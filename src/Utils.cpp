@@ -3607,6 +3607,11 @@ BOOL InitTypes(void)
 	for (auto& type : g_str_types)
 	{
 		g_pTypes->push_back(type);
+
+		MStringW str = L"\"";
+		str += type;
+		str += L"\"";
+		g_pTypes->push_back(std::move(str));
 	}
 
 	std::sort(g_pTypes->begin(), g_pTypes->end());
