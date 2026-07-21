@@ -1870,7 +1870,7 @@ void MMainWnd::OnCopyAsNewType(HWND hwnd)
 			g_res.add_lang_entry(new_type, e->m_name, e->m_lang, e->m_data);
 		}
 
-		auto new_entry = g_res.get_entry();
+		auto new_entry = g_res.find(ET_TYPE, new_type);
 		if (new_entry)
 		{
 			SelectTV(new_entry, FALSE);
