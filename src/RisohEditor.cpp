@@ -5760,7 +5760,8 @@ BOOL MMainWnd::DoRetypeEntry(LPWSTR pszText, EntryBase *entry, MIdOrString& old_
 
 	// update the entry type
 	entry->m_type = new_type;
-	UpdateEntryType(entry, pszText);
+	UpdateTypes();
+	UpdateNames();
 	DoRefreshIDList(m_hwnd);
 
 	// select the entry to update the text

@@ -3664,7 +3664,6 @@ BOOL ChooseTypeListBoxType(HWND hwnd, const MIdOrString& type)
 	for (auto& item : *g_pTypes)
 	{
 		INT index = ListBox_AddString(hwnd, item.c_str());
-		MTRACEA("%ls, %ls\n", item.c_str(), name.c_str());
 		if (index != LB_ERR && item == name)
 		{
 			ListBox_SetCurSel(hwnd, index);
@@ -3699,10 +3698,16 @@ BOOL ChooseNameListBoxName(HWND hwnd, const MIdOrString& type, const MIdOrString
 
 	std::sort(g_pNames->begin(), g_pNames->end());
 
+	MString strName;
+	if (name.is_str())
+		strName = name.c_str();
+	else
+		strName = g_db.GetNameOfResID(nIDTYPE_, name.m_id, true);
+
 	for (auto& item : *g_pNames)
 	{
 		INT index = ListBox_AddString(hwnd, item.c_str());
-		if (index != LB_ERR && item == name.str())
+		if (index != LB_ERR && item == strName)
 		{
 			ListBox_SetCurSel(hwnd, index);
 			ListBox_SetTopIndex(hwnd, index);
