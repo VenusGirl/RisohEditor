@@ -76,6 +76,7 @@ IDR_MAINMENU MENU
         MENUITEM SEPARATOR
         POPUP "&Klon"
         {
+            MENUITEM "Als neuen Typ klonen...", ID_COPYASNEWTYPE
             MENUITEM "In neuen &Namen klonen...", ID_COPYASNEWNAME
             MENUITEM "In neuer &Sprache klonen...", ID_COPYASNEWLANG
             MENUITEM "In mehrere Sprachen kopieren...", ID_COPYTOMULTILANG
@@ -189,6 +190,7 @@ IDR_POPUPMENUS MENU
         MENUITEM SEPARATOR
         POPUP "&Klon"
         {
+            MENUITEM "Als neuen Typ klonen...", ID_COPYASNEWTYPE
             MENUITEM "In neuen &Namen klonen...", ID_COPYASNEWNAME
             MENUITEM "In neuer &Sprache klonen...", ID_COPYASNEWLANG
             MENUITEM "In mehrere Sprachen kopieren...", ID_COPYTOMULTILANG
@@ -1370,6 +1372,19 @@ FONT 9, "MS Shell Dlg", 0, 0, 0 // ANSI_CHARSET
     PUSHBUTTON "Stornieren", IDCANCEL, 70, 25, 60, 15
 }
 
+IDD_CLONEINNEWTYPE DIALOGEX 0, 0, 215, 75
+CAPTION "Als neuen Typ klonen"
+STYLE DS_MODALFRAME | WS_POPUPWINDOW | WS_CAPTION
+FONT 9, "MS Shell Dlg", 0, 0, 0 // ANSI_CHARSET
+{
+    LTEXT "&Alte Bauart:", -1, 5, 7, 70, 12
+    COMBOBOX cmb1, 75, 5, 135, 200, CBS_HASSTRINGS | CBS_AUTOHSCROLL | CBS_DROPDOWN | WS_DISABLED | WS_BORDER | WS_VSCROLL | WS_TABSTOP
+    LTEXT "&Neuer Typ:", -1, 5, 32, 70, 12
+    COMBOBOX cmb2, 75, 30, 120, 200, CBS_HASSTRINGS | CBS_AUTOHSCROLL | CBS_DROPDOWN | WS_BORDER | WS_VSCROLL | WS_TABSTOP
+    DEFPUSHBUTTON "OK", IDOK, 35, 55, 60, 14
+    PUSHBUTTON "Stornieren", IDCANCEL, 115, 55, 60, 14
+}
+
 //////////////////////////////////////////////////////////////////////////////
 // RT_VERSION
 
@@ -1574,7 +1589,7 @@ STRINGTABLE
     IDS_TOOL_PLUS "Artikel hinzufügen..."
     IDS_TOOL_MINUS "Item löschen"
     IDS_TOOL_CHANGE "Typ/Name/Sprache ändern"
-    IDS_TOOL_CLONE "In einen anderen Namen / eine andere Sprache klonen"
+    IDS_TOOL_CLONE "In einen anderen Typ / unter anderem Namen / in eine andere Sprache klonen"
     IDS_TOOL_RECOMPILE "Neu kompilieren"
     IDS_TOOL_CANCELEDIT "Abbrechen Bearbeiten"
     IDS_TOOL_IMPORT "Importieren..."
@@ -1685,6 +1700,7 @@ STRINGTABLE
     IDS_SEARCHURL "https://duckduckgo.com/?q=%s&t=h_&ia=web"
     IDS_INVALIDTYPE "Ungültiger Ressourcentyp."
     IDS_CHANGETYPEWARNING "Das Ändern des Ressourcentyps kann die Ressourcendaten beschädigen.\r\n\r\nMöchten Sie ihn dennoch ändern?"
+    IDS_SAMETYPE "Es handelt sich um denselben Ressourcentyp."
 }
 
 //////////////////////////////////////////////////////////////////////////////

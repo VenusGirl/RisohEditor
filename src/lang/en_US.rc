@@ -76,6 +76,7 @@ IDR_MAINMENU MENU
         MENUITEM SEPARATOR
         POPUP "&Clone"
         {
+            MENUITEM "Clone in new &type...", ID_COPYASNEWTYPE
             MENUITEM "Clone in new &name...", ID_COPYASNEWNAME
             MENUITEM "Clone in new &language...", ID_COPYASNEWLANG
             MENUITEM "Copy to multiple languages...", ID_COPYTOMULTILANG
@@ -190,6 +191,7 @@ IDR_POPUPMENUS MENU
         MENUITEM SEPARATOR
         POPUP "&Clone"
         {
+            MENUITEM "Clone in new &type...", ID_COPYASNEWTYPE
             MENUITEM "Clone in new &name...", ID_COPYASNEWNAME
             MENUITEM "Clone in new &language...", ID_COPYASNEWLANG
             MENUITEM "Copy to multiple languages...", ID_COPYTOMULTILANG
@@ -1371,6 +1373,19 @@ FONT 9, "MS Shell Dlg", 0, 0, 0 // ANSI_CHARSET
     PUSHBUTTON "Cancel", IDCANCEL, 70, 25, 60, 15
 }
 
+IDD_CLONEINNEWTYPE DIALOGEX 0, 0, 215, 75
+CAPTION "Clone In New Type"
+STYLE DS_MODALFRAME | WS_POPUPWINDOW | WS_CAPTION
+FONT 9, "MS Shell Dlg", 0, 0, 0 // ANSI_CHARSET
+{
+    LTEXT "&Old Type:", -1, 5, 7, 70, 12
+    COMBOBOX cmb1, 75, 5, 135, 200, CBS_HASSTRINGS | CBS_AUTOHSCROLL | CBS_DROPDOWN | WS_DISABLED | WS_BORDER | WS_VSCROLL | WS_TABSTOP
+    LTEXT "&New Type:", -1, 5, 32, 70, 12
+    COMBOBOX cmb2, 75, 30, 120, 200, CBS_HASSTRINGS | CBS_AUTOHSCROLL | CBS_DROPDOWN | WS_BORDER | WS_VSCROLL | WS_TABSTOP
+    DEFPUSHBUTTON "OK", IDOK, 35, 55, 60, 14
+    PUSHBUTTON "Cancel", IDCANCEL, 115, 55, 60, 14
+}
+
 //////////////////////////////////////////////////////////////////////////////
 // RT_VERSION
 
@@ -1575,7 +1590,7 @@ STRINGTABLE
     IDS_TOOL_PLUS "Add Item..."
     IDS_TOOL_MINUS "Delete Item"
     IDS_TOOL_CHANGE "Change Type/Name/Language"
-    IDS_TOOL_CLONE "Clone In Another Name/Language"
+    IDS_TOOL_CLONE "Clone in another type/name/language"
     IDS_TOOL_RECOMPILE "Recompile"
     IDS_TOOL_CANCELEDIT "Cancel Edit"
     IDS_TOOL_IMPORT "Import..."
@@ -1686,6 +1701,7 @@ STRINGTABLE
     IDS_SEARCHURL "https://duckduckgo.com/?q=%s&t=h_&ia=web"
     IDS_INVALIDTYPE "Invalid resource type."
     IDS_CHANGETYPEWARNING "Changing the resource type may corrupt the resource data.\r\n\r\nDo you still want to change it?"
+    IDS_SAMETYPE "It's the same resource type."
 }
 
 //////////////////////////////////////////////////////////////////////////////

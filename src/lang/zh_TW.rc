@@ -76,6 +76,7 @@ IDR_MAINMENU MENU
         MENUITEM SEPARATOR
         POPUP "複製(&C)"
         {
+            MENUITEM "克隆新類型(&T)...", ID_COPYASNEWTYPE
             MENUITEM "複製為其他名稱(&N)...", ID_COPYASNEWNAME
             MENUITEM "複製為其他語言(&L)...", ID_COPYASNEWLANG
             MENUITEM "複製到多種語言...", ID_COPYTOMULTILANG
@@ -191,6 +192,7 @@ IDR_POPUPMENUS MENU
         MENUITEM SEPARATOR
         POPUP "複製(&C)"
         {
+            MENUITEM "克隆新類型(&T)...", ID_COPYASNEWTYPE
             MENUITEM "複製為其他名稱(&N)...", ID_COPYASNEWNAME
             MENUITEM "複製為其他語言(&L)...", ID_COPYASNEWLANG
             MENUITEM "複製到多種語言...", ID_COPYTOMULTILANG
@@ -1370,6 +1372,19 @@ FONT 9, "宋體", 0, 0, 136 // CHINESEBIG5_CHARSET
     PUSHBUTTON "取消", IDCANCEL, 70, 25, 60, 15
 }
 
+IDD_CLONEINNEWTYPE DIALOGEX 0, 0, 215, 75
+CAPTION "克隆新類型"
+STYLE DS_MODALFRAME | WS_POPUPWINDOW | WS_CAPTION
+FONT 9, "宋體", 0, 0, 136 // CHINESEBIG5_CHARSET
+{
+    LTEXT "舊式(&O):", -1, 5, 7, 70, 12
+    COMBOBOX cmb1, 75, 5, 135, 200, CBS_HASSTRINGS | CBS_AUTOHSCROLL | CBS_DROPDOWN | WS_DISABLED | WS_BORDER | WS_VSCROLL | WS_TABSTOP
+    LTEXT "新型(&O)", -1, 5, 32, 70, 12
+    COMBOBOX cmb2, 75, 30, 120, 200, CBS_HASSTRINGS | CBS_AUTOHSCROLL | CBS_DROPDOWN | WS_BORDER | WS_VSCROLL | WS_TABSTOP
+    DEFPUSHBUTTON "OK", IDOK, 35, 55, 60, 14
+    PUSHBUTTON "取消", IDCANCEL, 115, 55, 60, 14
+}
+
 //////////////////////////////////////////////////////////////////////////////
 // RT_VERSION
 
@@ -1574,7 +1589,7 @@ STRINGTABLE
     IDS_TOOL_PLUS "新增項目..."
     IDS_TOOL_MINUS "刪除項目"
     IDS_TOOL_CHANGE "更改類型/名稱/語言"
-    IDS_TOOL_CLONE "複製為其他名稱/語言"
+    IDS_TOOL_CLONE "克隆成另一種類型/名稱/語言"
     IDS_TOOL_RECOMPILE "重新編譯"
     IDS_TOOL_CANCELEDIT "取消修改"
     IDS_TOOL_IMPORT "導入..."
@@ -1685,6 +1700,7 @@ STRINGTABLE
     IDS_SEARCHURL "https://duckduckgo.com/?q=%s&t=h_&ia=web"
     IDS_INVALIDTYPE "資源類型無效。"
     IDS_CHANGETYPEWARNING "更改資源類型可能會損壞資源資料。 \r\n\r\n您仍然要更改嗎？"
+    IDS_SAMETYPE "資源類型相同。"
 }
 
 //////////////////////////////////////////////////////////////////////////////

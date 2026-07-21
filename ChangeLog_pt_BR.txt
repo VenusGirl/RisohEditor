@@ -9,6 +9,7 @@
     - Adicionada a função `RES_extract` ao EGA.
     - Corrigidos os estilos BUTTON e RICHEDIT.
     - Habilitada a alteração do tipo de recurso.
+    - Habilitado o tipo de recurso de clonagem.
 - v.6.0.5 (2026-07-17)
     - Habilitada a seta da *treeview* para alterar o nome do recurso.
     - Corrigido o suporte a EGA. Adicionados alguns programas EGA.

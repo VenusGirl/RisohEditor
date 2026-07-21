@@ -76,6 +76,7 @@ IDR_MAINMENU MENU
         MENUITEM SEPARATOR
         POPUP "복제(&C)"
         {
+            MENUITEM "새 유형으로 복제(&T)...", ID_COPYASNEWTYPE
             MENUITEM "새 이름으로 복제(&N)...", ID_COPYASNEWNAME
             MENUITEM "새 언어로 복제(&L)...", ID_COPYASNEWLANG
             MENUITEM "여러 언어로 복사...", ID_COPYTOMULTILANG
@@ -190,6 +191,7 @@ IDR_POPUPMENUS MENU
         MENUITEM SEPARATOR
         POPUP "복제(&C)"
         {
+            MENUITEM "새 유형으로 복제(&T)...", ID_COPYASNEWTYPE
             MENUITEM "새 이름으로 복제(&N)", ID_COPYASNEWNAME
             MENUITEM "새 언어로 복제(&L)...", ID_COPYASNEWLANG
             MENUITEM "여러 언어로 복사...", ID_COPYTOMULTILANG
@@ -1371,6 +1373,19 @@ FONT 9, "Malgun Gothic", 0, 0, 129 // HANGEUL_CHARSET
     PUSHBUTTON "취소", IDCANCEL, 70, 25, 60, 15
 }
 
+IDD_CLONEINNEWTYPE DIALOGEX 0, 0, 215, 75
+CAPTION "새로운 유형으로 복제"
+STYLE DS_MODALFRAME | WS_POPUPWINDOW | WS_CAPTION
+FONT 9, "Malgun Gothic", 0, 0, 129 // HANGEUL_CHARSET
+{
+    LTEXT "구형(&O):", -1, 5, 7, 70, 12
+    COMBOBOX cmb1, 75, 5, 135, 200, CBS_HASSTRINGS | CBS_AUTOHSCROLL | CBS_DROPDOWN | WS_DISABLED | WS_BORDER | WS_VSCROLL | WS_TABSTOP
+    LTEXT "새로운 유형(&N):", -1, 5, 32, 70, 12
+    COMBOBOX cmb2, 75, 30, 120, 200, CBS_HASSTRINGS | CBS_AUTOHSCROLL | CBS_DROPDOWN | WS_BORDER | WS_VSCROLL | WS_TABSTOP
+    DEFPUSHBUTTON "확인", IDOK, 35, 55, 60, 14
+    PUSHBUTTON "취소", IDCANCEL, 115, 55, 60, 14
+}
+
 //////////////////////////////////////////////////////////////////////////////
 // RT_VERSION
 
@@ -1575,7 +1590,7 @@ STRINGTABLE
     IDS_TOOL_PLUS "항목 추가..."
     IDS_TOOL_MINUS "항목 삭제"
     IDS_TOOL_CHANGE "유형/이름/언어 변경"
-    IDS_TOOL_CLONE "다른 이름/언어로 복제"
+    IDS_TOOL_CLONE "다른 유형/이름/언어로 복제"
     IDS_TOOL_RECOMPILE "재컴파일"
     IDS_TOOL_CANCELEDIT "편집 취소"
     IDS_TOOL_IMPORT "가져오기..."
@@ -1686,6 +1701,7 @@ STRINGTABLE
     IDS_SEARCHURL "https://duckduckgo.com/?q=%s&t=h_&ia=web"
     IDS_INVALIDTYPE "유효하지 않은 리소스 유형입니다."
     IDS_CHANGETYPEWARNING "리소스 유형을 변경하면 리소스 데이터가 손상될 수 있습니다.\r\n\r\n그래도 변경하시겠습니까?"
+    IDS_SAMETYPE "동일한 리소스 유형입니다."
 }
 
 //////////////////////////////////////////////////////////////////////////////

@@ -76,6 +76,7 @@ IDR_MAINMENU MENU
         MENUITEM SEPARATOR
         POPUP "&Klon"
         {
+            MENUITEM "Kloning dalam &tipe baru...", ID_COPYASNEWTYPE
             MENUITEM "Duplikat dengan &Nama Baru...", ID_COPYASNEWNAME
             MENUITEM "Duplikat dengan &Bahasa Baru...", ID_COPYASNEWLANG
             MENUITEM "Salin ke beberapa bahasa...", ID_COPYTOMULTILANG
@@ -192,6 +193,7 @@ IDR_POPUPMENUS MENU
         MENUITEM SEPARATOR
         POPUP "&Klon"
         {
+            MENUITEM "Kloning dalam &tipe baru...", ID_COPYASNEWTYPE
             MENUITEM "Duplikat dengan &Nama Baru...", ID_COPYASNEWNAME
             MENUITEM "Duplikat dengan &Bahasa Baru...", ID_COPYASNEWLANG
             MENUITEM "Salin ke beberapa bahasa...", ID_COPYTOMULTILANG
@@ -1373,6 +1375,19 @@ FONT 9, "MS Shell Dlg", 0, 0, 0 // ANSI_CHARSET
     PUSHBUTTON "Batal", IDCANCEL, 70, 25, 60, 15
 }
 
+IDD_CLONEINNEWTYPE DIALOGEX 0, 0, 215, 75
+CAPTION "Kloning dalam Tipe Baru"
+STYLE DS_MODALFRAME | WS_POPUPWINDOW | WS_CAPTION
+FONT 9, "MS Shell Dlg", 0, 0, 0 // ANSI_CHARSET
+{
+    LTEXT "&Tipe Lama:", -1, 5, 7, 70, 12
+    COMBOBOX cmb1, 75, 5, 135, 200, CBS_HASSTRINGS | CBS_AUTOHSCROLL | CBS_DROPDOWN | WS_DISABLED | WS_BORDER | WS_VSCROLL | WS_TABSTOP
+    LTEXT "&Tipe Baru:", -1, 5, 32, 70, 12
+    COMBOBOX cmb2, 75, 30, 120, 200, CBS_HASSTRINGS | CBS_AUTOHSCROLL | CBS_DROPDOWN | WS_BORDER | WS_VSCROLL | WS_TABSTOP
+    DEFPUSHBUTTON "OK", IDOK, 35, 55, 60, 14
+    PUSHBUTTON "Batal", IDCANCEL, 115, 55, 60, 14
+}
+
 //////////////////////////////////////////////////////////////////////////////
 // RT_VERSION
 
@@ -1577,7 +1592,7 @@ STRINGTABLE
     IDS_TOOL_PLUS "Tambah Item..."
     IDS_TOOL_MINUS "Hapus Item"
     IDS_TOOL_CHANGE "Ubah tipe/nama/bahasa"
-    IDS_TOOL_CLONE "Duplikat dalam Nama/Bahasa Lain"
+    IDS_TOOL_CLONE "Kloning dalam Tipe/Nama/Bahasa Lain"
     IDS_TOOL_RECOMPILE "Susun kembali"
     IDS_TOOL_CANCELEDIT "Batal Edit"
     IDS_TOOL_IMPORT "Impor..."
@@ -1688,6 +1703,7 @@ STRINGTABLE
     IDS_SEARCHURL "https://duckduckgo.com/?q=%s&t=h_&ia=web"
     IDS_INVALIDTYPE "Tipe sumber daya tidak valid."
     IDS_CHANGETYPEWARNING "Mengubah jenis sumber daya dapat merusak data sumber daya.\r\n\r\nApakah Anda tetap ingin mengubahnya?"
+    IDS_SAMETYPE "Ini adalah jenis sumber daya yang sama."
 }
 
 //////////////////////////////////////////////////////////////////////////////

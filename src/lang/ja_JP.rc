@@ -76,6 +76,7 @@ IDR_MAINMENU MENU
         MENUITEM SEPARATOR
         POPUP "複製(&C)"
         {
+            MENUITEM "別の種類で複製(&T)...", ID_COPYASNEWTYPE
             MENUITEM "別の名前で複製(&N)...", ID_COPYASNEWNAME
             MENUITEM "別の言語で複製(&L)...", ID_COPYASNEWLANG
             MENUITEM "複数の言語へ複製...", ID_COPYTOMULTILANG
@@ -193,6 +194,7 @@ IDR_POPUPMENUS MENU
         MENUITEM SEPARATOR
         POPUP "複製(&C)"
         {
+            MENUITEM "別の種類で複製(&T)...", ID_COPYASNEWTYPE
             MENUITEM "別の名前で複製(&N)...", ID_COPYASNEWNAME
             MENUITEM "別の言語で複製(&L)...", ID_COPYASNEWLANG
             MENUITEM "複数の言語へ複製...", ID_COPYTOMULTILANG
@@ -1374,6 +1376,19 @@ FONT 9, "MS UI Gothic", 0, 0, 128 // SHIFTJIS_CHARSET
     PUSHBUTTON "キャンセル", IDCANCEL, 70, 25, 60, 15
 }
 
+IDD_CLONEINNEWTYPE DIALOGEX 0, 0, 215, 75
+CAPTION "別の種類で複製"
+STYLE DS_MODALFRAME | WS_POPUPWINDOW | WS_CAPTION
+FONT 9, "MS UI Gothic", 0, 0, 128 // SHIFTJIS_CHARSET
+{
+    LTEXT "古い種類(&O):", -1, 5, 7, 70, 12
+    COMBOBOX cmb1, 75, 5, 135, 200, CBS_HASSTRINGS | CBS_AUTOHSCROLL | CBS_DROPDOWN | WS_DISABLED | WS_BORDER | WS_VSCROLL | WS_TABSTOP
+    LTEXT "新しい種類(&N):", -1, 5, 32, 70, 12
+    COMBOBOX cmb2, 75, 30, 120, 200, CBS_HASSTRINGS | CBS_AUTOHSCROLL | CBS_DROPDOWN | WS_BORDER | WS_VSCROLL | WS_TABSTOP
+    DEFPUSHBUTTON "OK", IDOK, 35, 55, 60, 14
+    PUSHBUTTON "キャンセル", IDCANCEL, 115, 55, 60, 14
+}
+
 //////////////////////////////////////////////////////////////////////////////
 // RT_VERSION
 
@@ -1578,7 +1593,7 @@ STRINGTABLE
     IDS_TOOL_PLUS "項目の追加..."
     IDS_TOOL_MINUS "項目の削除"
     IDS_TOOL_CHANGE "種類/名前/言語を変更"
-    IDS_TOOL_CLONE "別の名前/言語で複製"
+    IDS_TOOL_CLONE "別の種類/名前/言語で複製"
     IDS_TOOL_RECOMPILE "再コンパイル"
     IDS_TOOL_CANCELEDIT "編集をキャンセル"
     IDS_TOOL_IMPORT "インポート..."
@@ -1689,6 +1704,7 @@ STRINGTABLE
     IDS_SEARCHURL "https://duckduckgo.com/?q=%s&t=h_&ia=web"
     IDS_INVALIDTYPE "無効なリソースの種類です。"
     IDS_CHANGETYPEWARNING "リソースの種類の変更はリソースデータを壊すかもしれません。それでも変更しますか？"
+    IDS_SAMETYPE "同じリソースの種類です。"
 }
 
 //////////////////////////////////////////////////////////////////////////////

@@ -76,6 +76,7 @@ IDR_MAINMENU MENU
         MENUITEM SEPARATOR
         POPUP "&Klooni"
         {
+            MENUITEM "Klooni uuteen &tyyppiin...", ID_COPYASNEWTYPE
             MENUITEM "Klooni uudessa &nimessä...", ID_COPYASNEWNAME
             MENUITEM "Klooni uudessa kie&lessä...", ID_COPYASNEWLANG
             MENUITEM "Kopioi useille kielille...", ID_COPYTOMULTILANG
@@ -189,6 +190,7 @@ IDR_POPUPMENUS MENU
         MENUITEM SEPARATOR
         POPUP "&Klooni"
         {
+            MENUITEM "Klooni uuteen &tyyppiin...", ID_COPYASNEWTYPE
             MENUITEM "Klooni uudessa &nimessä...", ID_COPYASNEWNAME
             MENUITEM "Klooni uudessa kie&lessä...", ID_COPYASNEWLANG
             MENUITEM "Kopioi useille kielille...", ID_COPYTOMULTILANG
@@ -1370,6 +1372,19 @@ FONT 9, "MS Shell Dlg", 0, 0, 0 // ANSI_CHARSET
     PUSHBUTTON "Peruuta", IDCANCEL, 70, 25, 60, 15
 }
 
+IDD_CLONEINNEWTYPE DIALOGEX 0, 0, 215, 75
+CAPTION "Klooni uuteen tyyppiin"
+STYLE DS_MODALFRAME | WS_POPUPWINDOW | WS_CAPTION
+FONT 9, "MS Shell Dlg", 0, 0, 0 // ANSI_CHARSET
+{
+    LTEXT "&Vanha tyyppi:", -1, 5, 7, 70, 12
+    COMBOBOX cmb1, 75, 5, 135, 200, CBS_HASSTRINGS | CBS_AUTOHSCROLL | CBS_DROPDOWN | WS_DISABLED | WS_BORDER | WS_VSCROLL | WS_TABSTOP
+    LTEXT "&Uusi tyyppi:", -1, 5, 32, 70, 12
+    COMBOBOX cmb2, 75, 30, 120, 200, CBS_HASSTRINGS | CBS_AUTOHSCROLL | CBS_DROPDOWN | WS_BORDER | WS_VSCROLL | WS_TABSTOP
+    DEFPUSHBUTTON "OK", IDOK, 35, 55, 60, 14
+    PUSHBUTTON "Peruuta", IDCANCEL, 115, 55, 60, 14
+}
+
 //////////////////////////////////////////////////////////////////////////////
 // RT_VERSION
 
@@ -1574,7 +1589,7 @@ STRINGTABLE
     IDS_TOOL_PLUS "Lisää kohde..."
     IDS_TOOL_MINUS "Poista kohde"
     IDS_TOOL_CHANGE "Vaihda tyyppiä/nimeä/kieltä"
-    IDS_TOOL_CLONE "Kloonaa toisella nimellä/kielellä"
+    IDS_TOOL_CLONE "Kloonaa toisella tyypillä/nimellä/kielellä"
     IDS_TOOL_RECOMPILE "Käännä uudelleen"
     IDS_TOOL_CANCELEDIT "Peruuta muokkaus"
     IDS_TOOL_IMPORT "Tuo..."
@@ -1685,6 +1700,7 @@ STRINGTABLE
     IDS_SEARCHURL "https://duckduckgo.com/?q=%s&t=h_&ia=web"
     IDS_INVALIDTYPE "Virheellinen resurssityyppi."
     IDS_CHANGETYPEWARNING "Resurssityypin muuttaminen voi vioittaa resurssitietoja.\r\n\r\nHaluatko silti muuttaa sitä?"
+    IDS_SAMETYPE "Se on sama resurssityyppi."
 }
 
 //////////////////////////////////////////////////////////////////////////////

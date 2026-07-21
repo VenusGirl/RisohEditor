@@ -76,6 +76,7 @@ IDR_MAINMENU MENU
         MENUITEM SEPARATOR
         POPUP "&Clone"
         {
+            MENUITEM "Clonar em novo &tipo...", ID_COPYASNEWTYPE
             MENUITEM "Clonar com novo &nome...", ID_COPYASNEWNAME
             MENUITEM "C&lonar em novo idioma...", ID_COPYASNEWLANG
             MENUITEM "Copiar para vários idiomas...", ID_COPYTOMULTILANG
@@ -190,6 +191,7 @@ IDR_POPUPMENUS MENU
         MENUITEM SEPARATOR
         POPUP "&Clone"
         {
+            MENUITEM "Clonar em novo &tipo...", ID_COPYASNEWTYPE
             MENUITEM "Clonar com novo &nome...", ID_COPYASNEWNAME
             MENUITEM "C&lonar em novo idioma...", ID_COPYASNEWLANG
             MENUITEM "Copiar para vários idiomas...", ID_COPYTOMULTILANG
@@ -1371,6 +1373,19 @@ FONT 9, "MS Shell Dlg", 0, 0, 0 // ANSI_CHARSET
     PUSHBUTTON "Cancelar", IDCANCEL, 70, 25, 60, 15
 }
 
+IDD_CLONEINNEWTYPE DIALOGEX 0, 0, 215, 75
+CAPTION "Clonar em Novo Tipo"
+STYLE DS_MODALFRAME | WS_POPUPWINDOW | WS_CAPTION
+FONT 9, "MS Shell Dlg", 0, 0, 0 // ANSI_CHARSET
+{
+    LTEXT "&Tipo antigo:", -1, 5, 7, 70, 12
+    COMBOBOX cmb1, 75, 5, 135, 200, CBS_HASSTRINGS | CBS_AUTOHSCROLL | CBS_DROPDOWN | WS_DISABLED | WS_BORDER | WS_VSCROLL | WS_TABSTOP
+    LTEXT "&Novo tipo:", -1, 5, 32, 70, 12
+    COMBOBOX cmb2, 75, 30, 120, 200, CBS_HASSTRINGS | CBS_AUTOHSCROLL | CBS_DROPDOWN | WS_BORDER | WS_VSCROLL | WS_TABSTOP
+    DEFPUSHBUTTON "OK", IDOK, 35, 55, 60, 14
+    PUSHBUTTON "Cancelar", IDCANCEL, 115, 55, 60, 14
+}
+
 //////////////////////////////////////////////////////////////////////////////
 // RT_VERSION
 
@@ -1575,7 +1590,7 @@ STRINGTABLE
     IDS_TOOL_PLUS "Adicionar item..."
     IDS_TOOL_MINUS "Eliminar item"
     IDS_TOOL_CHANGE "Alterar tipo/nome/idioma"
-    IDS_TOOL_CLONE "Clonar com outro Nome/Idioma"
+    IDS_TOOL_CLONE "Clonar noutro tipo/nome/idioma"
     IDS_TOOL_RECOMPILE "Recompilar"
     IDS_TOOL_CANCELEDIT "Cancelar edição"
     IDS_TOOL_IMPORT "Importar..."
@@ -1686,6 +1701,7 @@ STRINGTABLE
     IDS_SEARCHURL "https://duckduckgo.com/?q=%s&t=h_&ia=web"
     IDS_INVALIDTYPE "Tipo de recurso inválido."
     IDS_CHANGETYPEWARNING "Alterar o tipo de recurso pode corromper os dados do recurso. \r\n\r\nAinda pretende alterá-lo?"
+    IDS_SAMETYPE "É o mesmo tipo de recurso."
 }
 
 //////////////////////////////////////////////////////////////////////////////

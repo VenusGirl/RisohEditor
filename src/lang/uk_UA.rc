@@ -76,6 +76,7 @@ IDR_MAINMENU MENU
         MENUITEM SEPARATOR
         POPUP "&Клон"
         {
+            MENUITEM "Клонувати в новому &типі...", ID_COPYASNEWTYPE
             MENUITEM "Клонувати з новим &ім'ям...", ID_COPYASNEWNAME
             MENUITEM "Клонувати з новою &мовою...", ID_COPYASNEWLANG
             MENUITEM "Копиювати на декілька мов ......", ID_COPYTOMULTILANG
@@ -192,6 +193,7 @@ IDR_POPUPMENUS MENU
         MENUITEM SEPARATOR
         POPUP "&Клон"
         {
+            MENUITEM "Клонувати в новому &типі...", ID_COPYASNEWTYPE
             MENUITEM "Клонувати з новим &ім'ям...", ID_COPYASNEWNAME
             MENUITEM "Клонувати з новою мо&вою...", ID_COPYASNEWLANG
             MENUITEM "Копіювати на кілька мов...", ID_COPYTOMULTILANG
@@ -1373,6 +1375,19 @@ FONT 9, "MS Shell Dlg", 0, 0, 204 // RUSSIAN_CHARSET
     PUSHBUTTON "Скасувати", IDCANCEL, 70, 25, 60, 15
 }
 
+IDD_CLONEINNEWTYPE DIALOGEX 0, 0, 215, 75
+CAPTION "以新类型克隆"
+STYLE DS_MODALFRAME | WS_POPUPWINDOW | WS_CAPTION
+FONT 9, "MS Shell Dlg", 0, 0, 204 // RUSSIAN_CHARSET
+{
+    LTEXT "&Старий тип:", -1, 5, 7, 70, 12
+    COMBOBOX cmb1, 75, 5, 135, 200, CBS_HASSTRINGS | CBS_AUTOHSCROLL | CBS_DROPDOWN | WS_DISABLED | WS_BORDER | WS_VSCROLL | WS_TABSTOP
+    LTEXT "&Новий тип:", -1, 5, 32, 70, 12
+    COMBOBOX cmb2, 75, 30, 120, 200, CBS_HASSTRINGS | CBS_AUTOHSCROLL | CBS_DROPDOWN | WS_BORDER | WS_VSCROLL | WS_TABSTOP
+    DEFPUSHBUTTON "OK", IDOK, 35, 55, 60, 14
+    PUSHBUTTON "Скасувати", IDCANCEL, 115, 55, 60, 14
+}
+
 //////////////////////////////////////////////////////////////////////////////
 // RT_VERSION
 
@@ -1577,7 +1592,7 @@ STRINGTABLE
     IDS_TOOL_PLUS "Додати елемент..."
     IDS_TOOL_MINUS "Видалити елемент"
     IDS_TOOL_CHANGE "Змінити тип/назву/мову"
-    IDS_TOOL_CLONE "Клонувати з іншим ім'ям/мовою"
+    IDS_TOOL_CLONE "Клонувати іншим типом/ім'ям/мовою"
     IDS_TOOL_RECOMPILE "Перекомпілювати"
     IDS_TOOL_CANCELEDIT "Скасування змін"
     IDS_TOOL_IMPORT "Імпорт..."
@@ -1688,6 +1703,7 @@ STRINGTABLE
     IDS_SEARCHURL "https://duckduckgo.com/?q=%s&t=h_&ia=web"
     IDS_INVALIDTYPE "Недійсний тип ресурсу."
     IDS_CHANGETYPEWARNING "Зміна типу ресурсу може пошкодити дані ресурсу.\r\n\r\nВи все ще хочете змінити його?"
+    IDS_SAMETYPE "Це той самий тип ресурсу."
 }
 
 //////////////////////////////////////////////////////////////////////////////

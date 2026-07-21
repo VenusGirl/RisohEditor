@@ -14,6 +14,7 @@
 #include "MChooseLangDlg.hpp"
 #include "MCloneInNewLangDlg.hpp"
 #include "MCloneInNewNameDlg.hpp"
+#include "MCloneInNewTypeDlg.hpp"
 #include "MConfigDlg.hpp"
 #include "MConstantDlg.hpp"
 #include "MCopyToMultiLangDlg.hpp"
@@ -364,6 +365,9 @@ void MMainWnd::OnCommand(HWND hwnd, int id, HWND hwndCtl, UINT codeNotify)
 		break;
 	case ID_ADDACCEL:
 		OnAddAccel(hwnd);
+		break;
+	case ID_COPYASNEWTYPE:
+		OnCopyAsNewType(hwnd);
 		break;
 	case ID_COPYASNEWNAME:
 		OnCopyAsNewName(hwnd);
@@ -751,6 +755,7 @@ void MMainWnd::OnInitMenu(HWND hwnd, HMENU hMenu)
 		EnableMenuItem(hMenu, ID_TEST, MF_GRAYED);
 		EnableMenuItem(hMenu, ID_EDIT, MF_GRAYED);
 		EnableMenuItem(hMenu, ID_GUIEDIT, MF_GRAYED);
+	    EnableMenuItem(hMenu, ID_COPYASNEWTYPE, MF_GRAYED);
 		EnableMenuItem(hMenu, ID_COPYASNEWNAME, MF_GRAYED);
 		EnableMenuItem(hMenu, ID_COPYASNEWLANG, MF_GRAYED);
 		EnableMenuItem(hMenu, ID_COPYTOMULTILANG, MF_GRAYED);
@@ -792,6 +797,7 @@ void MMainWnd::OnInitMenu(HWND hwnd, HMENU hMenu)
 		EnableMenuItem(hMenu, ID_EXTRACTBIN, MF_ENABLED);
 		EnableMenuItem(hMenu, ID_DELETERES, MF_ENABLED);
 		EnableMenuItem(hMenu, ID_TEST, MF_GRAYED);
+	    EnableMenuItem(hMenu, ID_COPYASNEWTYPE, MF_ENABLED);
 		EnableMenuItem(hMenu, ID_COPYASNEWNAME, MF_GRAYED);
 		EnableMenuItem(hMenu, ID_COPYASNEWLANG, MF_GRAYED);
 		EnableMenuItem(hMenu, ID_COPYTOMULTILANG, MF_GRAYED);
@@ -808,6 +814,7 @@ void MMainWnd::OnInitMenu(HWND hwnd, HMENU hMenu)
 		EnableMenuItem(hMenu, ID_EXTRACTBIN, MF_ENABLED);
 		EnableMenuItem(hMenu, ID_DELETERES, MF_ENABLED);
 		EnableMenuItem(hMenu, ID_TEST, MF_GRAYED);
+	    EnableMenuItem(hMenu, ID_COPYASNEWTYPE, MF_GRAYED);
 		EnableMenuItem(hMenu, ID_COPYASNEWNAME, MF_ENABLED);
 		EnableMenuItem(hMenu, ID_COPYASNEWLANG, MF_GRAYED);
 		EnableMenuItem(hMenu, ID_COPYTOMULTILANG, MF_GRAYED);
@@ -873,6 +880,7 @@ void MMainWnd::OnInitMenu(HWND hwnd, HMENU hMenu)
 		EnableMenuItem(hMenu, ID_REPLACEBIN, MF_ENABLED);
 		EnableMenuItem(hMenu, ID_EXTRACTBIN, MF_ENABLED);
 		EnableMenuItem(hMenu, ID_DELETERES, MF_ENABLED);
+	    EnableMenuItem(hMenu, ID_COPYASNEWTYPE, MF_GRAYED);
 		EnableMenuItem(hMenu, ID_COPYASNEWNAME, MF_GRAYED);
 		if (entry->m_type == RT_STRING)
 		{
@@ -897,6 +905,7 @@ void MMainWnd::OnInitMenu(HWND hwnd, HMENU hMenu)
 		EnableMenuItem(hMenu, ID_EXTRACTBIN, MF_ENABLED);
 		EnableMenuItem(hMenu, ID_DELETERES, MF_ENABLED);
 		EnableMenuItem(hMenu, ID_TEST, MF_GRAYED);
+	    EnableMenuItem(hMenu, ID_COPYASNEWTYPE, MF_GRAYED);
 		EnableMenuItem(hMenu, ID_COPYASNEWNAME, MF_GRAYED);
 		EnableMenuItem(hMenu, ID_COPYASNEWLANG, MF_ENABLED);
 		EnableMenuItem(hMenu, ID_COPYTOMULTILANG, MF_GRAYED);
@@ -912,6 +921,7 @@ void MMainWnd::OnInitMenu(HWND hwnd, HMENU hMenu)
 		EnableMenuItem(hMenu, ID_EXTRACTBITMAP, MF_GRAYED);
 		EnableMenuItem(hMenu, ID_EXTRACTBIN, MF_GRAYED);
 		EnableMenuItem(hMenu, ID_DELETERES, MF_GRAYED);
+	    EnableMenuItem(hMenu, ID_COPYASNEWTYPE, MF_GRAYED);
 		EnableMenuItem(hMenu, ID_COPYASNEWNAME, MF_GRAYED);
 		EnableMenuItem(hMenu, ID_COPYASNEWLANG, MF_GRAYED);
 		EnableMenuItem(hMenu, ID_COPYTOMULTILANG, MF_GRAYED);
@@ -1377,6 +1387,7 @@ void MMainWnd::OnClone(HWND hwnd)
 	switch (entry->m_et)
 	{
 	case ET_TYPE:
+		OnCopyAsNewType(hwnd);
 		break;
 
 	case ET_NAME:
@@ -1822,6 +1833,49 @@ void MMainWnd::OnAddManifest(HWND hwnd)
 	{
 		// add a resource item
 		DoAddRes(hwnd, dialog);
+
+		DoSetFileModified(TRUE);
+	}
+}
+
+// ID_COPYASNEWTYPE
+void MMainWnd::OnCopyAsNewType(HWND hwnd)
+{
+	// compile if necessary
+	if (!CompileIfNecessary(FALSE))
+		return;
+
+	// get the selected name entry
+	auto entry = g_res.get_entry();
+	if (!entry || entry->m_et != ET_TYPE)
+		return;
+
+	// show the dialog
+	MCloneInNewTypeDlg dialog(entry);
+	if (dialog.DialogBoxDx(hwnd) == IDOK)
+	{
+		auto old_type = dialog.m_old_type;
+		auto new_type = dialog.m_new_type;
+
+		// Warn
+		if (MsgBoxDx(LoadStringDx(IDS_CHANGETYPEWARNING), MB_ICONWARNING | MB_YESNOCANCEL) != IDYES)
+			return;
+
+		// Clone
+		EntrySet found;
+		g_res.search(found, ET_LANG, old_type);
+		for (auto e : found)
+		{
+			assert(e->m_type == old_type);
+			g_res.add_lang_entry(new_type, e->m_name, e->m_lang, e->m_data);
+		}
+
+		auto new_entry = g_res.get_entry();
+		if (new_entry)
+		{
+			SelectTV(new_entry, FALSE);
+			Expand(new_entry->m_hItem);
+		}
 
 		DoSetFileModified(TRUE);
 	}

@@ -76,6 +76,7 @@ IDR_MAINMENU MENU
         MENUITEM SEPARATOR
         POPUP "&Klonuj"
         {
+            MENUITEM "Klonuj w nowym &typie...", ID_COPYASNEWTYPE
             MENUITEM "Klonuj w Nowej &Nazwie...", ID_COPYASNEWNAME
             MENUITEM "Klonuj w Nowym &Języku...", ID_COPYASNEWLANG
             MENUITEM "Kopiuj do wielu języków...", ID_COPYTOMULTILANG
@@ -190,6 +191,7 @@ IDR_POPUPMENUS MENU
         MENUITEM SEPARATOR
         POPUP "&Klonuj"
         {
+            MENUITEM "Klonuj w nowym &typie...", ID_COPYASNEWTYPE
             MENUITEM "Klonuj w Nowej &Nazwie...", ID_COPYASNEWNAME
             MENUITEM "Klonuj w Nowym &Języku...", ID_COPYASNEWLANG
             MENUITEM "Kopiuj do wielu języków...", ID_COPYTOMULTILANG
@@ -1371,6 +1373,19 @@ FONT 9, "MS Shell Dlg", 0, 0, 238 // EASTEUROPE_CHARSET
     PUSHBUTTON "Anuluj", IDCANCEL, 70, 25, 60, 15
 }
 
+IDD_CLONEINNEWTYPE DIALOGEX 0, 0, 215, 75
+CAPTION "Klonuj w nowym typie"
+STYLE DS_MODALFRAME | WS_POPUPWINDOW | WS_CAPTION
+FONT 9, "MS Shell Dlg", 0, 0, 238 // EASTEUROPE_CHARSET
+{
+    LTEXT "&Styl tradycyjny:", -1, 5, 7, 70, 12
+    COMBOBOX cmb1, 75, 5, 135, 200, CBS_HASSTRINGS | CBS_AUTOHSCROLL | CBS_DROPDOWN | WS_DISABLED | WS_BORDER | WS_VSCROLL | WS_TABSTOP
+    LTEXT "&Nowy typ:", -1, 5, 32, 70, 12
+    COMBOBOX cmb2, 75, 30, 120, 200, CBS_HASSTRINGS | CBS_AUTOHSCROLL | CBS_DROPDOWN | WS_BORDER | WS_VSCROLL | WS_TABSTOP
+    DEFPUSHBUTTON "OK", IDOK, 35, 55, 60, 14
+    PUSHBUTTON "Anuluj", IDCANCEL, 115, 55, 60, 14
+}
+
 //////////////////////////////////////////////////////////////////////////////
 // RT_VERSION
 
@@ -1575,7 +1590,7 @@ STRINGTABLE
     IDS_TOOL_PLUS "Dodaj element..."
     IDS_TOOL_MINUS "Usuń element"
     IDS_TOOL_CHANGE "Zmień typ/nazwę/język"
-    IDS_TOOL_CLONE "Klonuj w innej Nazwie/Języku"
+    IDS_TOOL_CLONE "Klonuj jako inny typ / pod inną nazwą / w innym języku"
     IDS_TOOL_RECOMPILE "Rekompiluj"
     IDS_TOOL_CANCELEDIT "Anuluj edycję"
     IDS_TOOL_IMPORT "Importuj..."
@@ -1686,6 +1701,7 @@ STRINGTABLE
     IDS_SEARCHURL "https://duckduckgo.com/?q=%s&t=h_&ia=web"
     IDS_INVALIDTYPE "Nieprawidłowy typ zasobu."
     IDS_CHANGETYPEWARNING "Zmiana typu zasobu może spowodować uszkodzenie danych zasobu.\r\n\r\nCzy mimo to chcesz ją zmienić?"
+    IDS_SAMETYPE "To ten sam typ zasobu."
 }
 
 //////////////////////////////////////////////////////////////////////////////
