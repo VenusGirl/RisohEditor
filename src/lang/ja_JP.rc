@@ -23,13 +23,13 @@ IDR_MAINMENU MENU
         MENUITEM "エクスポート(&E)...\tCtrl+P", ID_EXPORT
         MENUITEM SEPARATOR
         MENUITEM "&resource.h の再読み込み...\tCtrl+R", ID_LOADRESH
-        MENUITEM "resource.h を保存する(&S)...", ID_UPDATERESHBANG
+        MENUITEM "resource.h を保存する(&H)...", ID_UPDATERESHBANG
         MENUITEM "resource.h の変更を助言する(&V)...", ID_ADVICERESH
         MENUITEM "resource.h のアンロード(&U)", ID_UNLOADRESH
         MENUITEM SEPARATOR
         MENUITEM "ウィンドウ クラス ライブラリを読み込む(&W)...", ID_LOADWCLIB
         MENUITEM SEPARATOR
-        POPUP "最近使ったファイル(&R)"
+        POPUP "最近使ったファイル(&L)"
         {
             MENUITEM "(なし)", -1, GRAYED
         }
@@ -94,7 +94,7 @@ IDR_MAINMENU MENU
         MENUITEM "&UI Language Select (UI语言选择)...", ID_CHOOSEUILANG
         MENUITEM SEPARATOR
         MENUITEM "Delphi DFM の設定(&S)...", ID_DFMSETTINGS
-        MENUITEM "設定(&C)...\tAlt+Enter", ID_CONFIG
+        MENUITEM "設定(&O)...\tAlt+Enter", ID_CONFIG
     }
     POPUP "検索(&S)"
     {
@@ -128,7 +128,7 @@ IDR_MAINMENU MENU
         MENUITEM "リソース項目のエンコーディング(&E)...", ID_ENCODING
         MENUITEM "ダイアログ フォント代替(&F)...", ID_DIALOG_FONT_SUBSTITUTES
         MENUITEM SEPARATOR
-        MENUITEM "最新の情報に更新(&F)", ID_REFRESHALL
+        MENUITEM "最新の情報に更新(&U)", ID_REFRESHALL
     }
     POPUP "自動化(&A)"
     {
@@ -226,7 +226,7 @@ IDR_POPUPMENUS MENU
             MENUITEM SEPARATOR
             MENUITEM "表示の切り替え(&S)\tCtrl+D", ID_SHOWHIDEINDEX
         }
-        POPUP "位置そろえ(&A)"
+        POPUP "位置そろえ(&G)"
         {
             MENUITEM "上そろえ(&T)", ID_TOPALIGN
             MENUITEM "下そろえ(&B)", ID_BOTTOMALIGN
@@ -238,7 +238,7 @@ IDR_POPUPMENUS MENU
         MENUITEM SEPARATOR
         MENUITEM "再描画(&R)", ID_REFRESHDIALOG
         MENUITEM SEPARATOR
-        MENUITEM "コントロールのプロパティ(&P)...", ID_CTRLPROP
+        MENUITEM "コントロールのプロパティ(&V)...", ID_CTRLPROP
         MENUITEM "ダイアログのプロパティ(&O)...", ID_DLGPROP
     }
     POPUP "ポップアップ #2"
@@ -254,11 +254,11 @@ IDR_POPUPMENUS MENU
         MENUITEM SEPARATOR
         MENUITEM "名前をコピー(&N)", ID_COPYRESIDNAME
         MENUITEM "値をコピー(&V)", ID_COPYRESIDVALUE
-        MENUITEM "定義をコピー(&D)\tCtrl+C", ID_COPYIDDEF
+        MENUITEM "定義をコピー(&C)\tCtrl+C", ID_COPYIDDEF
         MENUITEM SEPARATOR
         MENUITEM "削除(&D)\tDel", ID_DELETERESID
         MENUITEM SEPARATOR
-        MENUITEM "10進数(&D)", ID_BASE10
+        MENUITEM "10進数(&T)", ID_BASE10
         MENUITEM "16進数(&H)", ID_BASE16
         MENUITEM SEPARATOR
         MENUITEM "再読み込み(&R)", ID_LOADRESH
@@ -371,7 +371,7 @@ CAPTION "ビットマップの追加"
 STYLE DS_MODALFRAME | WS_POPUPWINDOW | WS_CAPTION
 FONT 9, "MS UI Gothic", 0, 0, 128 // SHIFTJIS_CHARSET
 {
-    LTEXT "ビットマップ ファイル(&B):", -1, 5, 7, 100, 12
+    LTEXT "ビットマップ ファイル(&M):", -1, 5, 7, 100, 12
     EDITTEXT edt1, 5, 18, 205, 14, ES_AUTOHSCROLL
     PUSHBUTTON "参照(&B)...", psh1, 150, 35, 60, 14
     LTEXT "リソースの名前(&N):", -1, 5, 67, 70, 12
@@ -388,7 +388,7 @@ CAPTION "ビットマップの置き換え"
 STYLE DS_MODALFRAME | WS_POPUPWINDOW | WS_CAPTION
 FONT 9, "MS UI Gothic", 0, 0, 128 // SHIFTJIS_CHARSET
 {
-    LTEXT "ビットマップ ファイル(&B):", -1, 5, 7, 100, 12
+    LTEXT "ビットマップ ファイル(&M):", -1, 5, 7, 100, 12
     EDITTEXT edt1, 5, 18, 205, 14, ES_AUTOHSCROLL
     PUSHBUTTON "参照(&B)...", psh1, 150, 35, 60, 14
     LTEXT "リソースの名前(&N):", -1, 5, 67, 70, 12
@@ -505,7 +505,7 @@ CAPTION "アクセラレータの編集"
 STYLE WS_POPUPWINDOW | WS_CAPTION | WS_THICKFRAME
 FONT 9, "MS UI Gothic", 0, 0, 128 // SHIFTJIS_CHARSET
 {
-    LTEXT "キーリスト(&L):", -1, 5, 7, 100, 12
+    LTEXT "キーリスト(&K):", -1, 5, 7, 100, 12
     CONTROL "", lst1, "SysListView32", LVS_NOSORTHEADER | LVS_AUTOARRANGE | LVS_NOLABELWRAP | LVS_SHOWSELALWAYS | LVS_SINGLESEL | LVS_REPORT | WS_BORDER | WS_VSCROLL | WS_HSCROLL | WS_TABSTOP, 5, 20, 210, 120
     PUSHBUTTON "追加(&A)...", psh1, 220, 20, 60, 14
     PUSHBUTTON "変更(&M)...", psh2, 220, 40, 60, 14
@@ -577,7 +577,7 @@ FONT 9, "MS UI Gothic", 0, 0, 128 // SHIFTJIS_CHARSET
     AUTOCHECKBOX "&OWNERDRAW", chx4, 5, 80, 65, 14
     AUTOCHECKBOX "&CHECKED", chx5, 75, 80, 60, 14
     AUTOCHECKBOX "SE&PARATOR", chx6, 140, 80, 60, 14
-    AUTOCHECKBOX "MENU&BARBREAK", chx7, 5, 100, 75, 14
+    AUTOCHECKBOX "MENUBARBR&EAK", chx7, 5, 100, 75, 14
     AUTOCHECKBOX "MENUB&REAK", chx8, 85, 100, 70, 14
     AUTOCHECKBOX "&DEFAULT", chx9, 5, 120, 60, 14
     AUTOCHECKBOX "&HILITE", chx10, 70, 120, 60, 14
@@ -605,7 +605,7 @@ FONT 9, "MS UI Gothic", 0, 0, 128 // SHIFTJIS_CHARSET
     AUTOCHECKBOX "&OWNERDRAW", chx4, 5, 80, 65, 14
     AUTOCHECKBOX "&CHECKED", chx5, 75, 80, 60, 14
     AUTOCHECKBOX "SE&PARATOR", chx6, 140, 80, 60, 14
-    AUTOCHECKBOX "MENU&BARBREAK", chx7, 5, 100, 75, 14
+    AUTOCHECKBOX "MENUBARBR&EAK", chx7, 5, 100, 75, 14
     AUTOCHECKBOX "MENUB&REAK", chx8, 85, 100, 70, 14
     AUTOCHECKBOX "&DEFAULT", chx9, 5, 120, 60, 14
     AUTOCHECKBOX "&HILITE", chx10, 70, 120, 60, 14
@@ -691,7 +691,7 @@ FONT 9, "MS UI Gothic", 0, 0, 128 // SHIFTJIS_CHARSET
     CONTROL "", ctl1, "ToolbarWindow32", TBSTYLE_FLAT | TBSTYLE_WRAPABLE | TBSTYLE_TOOLTIPS | CCS_NODIVIDER | CCS_NORESIZE, 5, 22, 185, 30
     LTEXT "キャプション(&A):", -1, 5, 55, 75, 12
     COMBOBOX cmb2, 5, 65, 195, 300, CBS_HASSTRINGS | CBS_AUTOHSCROLL | CBS_DROPDOWN | WS_BORDER | WS_VSCROLL | WS_TABSTOP
-    PUSHBUTTON "&OLE...", psh2, 205, 65, 25, 14
+    PUSHBUTTON "OLE(&V)...", psh2, 205, 65, 25, 14
     LTEXT "左(&L):", -1, 5, 85, 33, 11
     EDITTEXT edt1, 5, 99, 30, 14, ES_NUMBER | ES_AUTOHSCROLL | ES_RIGHT
     CONTROL "", scr1, "msctls_updown32", UDS_NOTHOUSANDS | UDS_ARROWKEYS | UDS_AUTOBUDDY | UDS_ALIGNRIGHT | UDS_SETBUDDYINT, 20, 99, 12, 20
@@ -719,7 +719,7 @@ FONT 9, "MS UI Gothic", 0, 0, 128 // SHIFTJIS_CHARSET
     DEFPUSHBUTTON "OK", IDOK, 170, 293, 60, 14
     PUSHBUTTON "キャンセル", IDCANCEL, 170, 309, 60, 14
     PUSHBUTTON "&DATA...", psh1, 5, 293, 90, 14
-    PUSHBUTTON "文字列リスト(&I)...", psh3, 5, 309, 90, 14
+    PUSHBUTTON "文字列リスト(&R)...", psh3, 5, 309, 90, 14
 }
 
 IDD_ADDCTRL DIALOGEX 0, 0, 235, 330
@@ -732,7 +732,7 @@ FONT 9, "MS UI Gothic", 0, 0, 128 // SHIFTJIS_CHARSET
     CONTROL "", ctl1, "ToolbarWindow32", TBSTYLE_FLAT | TBSTYLE_WRAPABLE | TBSTYLE_TOOLTIPS | CCS_NODIVIDER | CCS_NORESIZE, 5, 22, 185, 30
     LTEXT "キャプション(&A):", -1, 5, 55, 75, 12
     COMBOBOX cmb2, 5, 65, 195, 300, CBS_HASSTRINGS | CBS_AUTOHSCROLL | CBS_DROPDOWN | WS_BORDER | WS_VSCROLL | WS_TABSTOP
-    PUSHBUTTON "&OLE...", psh2, 205, 65, 25, 14
+    PUSHBUTTON "OLE(&V)...", psh2, 205, 65, 25, 14
     LTEXT "左(&L):", -1, 5, 85, 33, 11
     EDITTEXT edt1, 5, 99, 30, 14, ES_NUMBER | ES_AUTOHSCROLL | ES_RIGHT
     CONTROL "", scr1, "msctls_updown32", UDS_NOTHOUSANDS | UDS_ARROWKEYS | UDS_AUTOBUDDY | UDS_ALIGNRIGHT | UDS_SETBUDDYINT, 20, 99, 12, 20
@@ -760,7 +760,7 @@ FONT 9, "MS UI Gothic", 0, 0, 128 // SHIFTJIS_CHARSET
     DEFPUSHBUTTON "OK", IDOK, 170, 293, 60, 14
     PUSHBUTTON "キャンセル", IDCANCEL, 170, 309, 60, 14
     PUSHBUTTON "&DATA...", psh1, 5, 293, 90, 14
-    PUSHBUTTON "文字列リスト(&I)...", psh3, 5, 309, 90, 14
+    PUSHBUTTON "文字列リスト(&R)...", psh3, 5, 309, 90, 14
 }
 
 IDD_IDASSOC DIALOGEX 0, 0, 200, 220
@@ -804,17 +804,17 @@ CAPTION "設定"
 STYLE DS_MODALFRAME | WS_POPUPWINDOW | WS_CAPTION
 FONT 9, "MS UI Gothic", 0, 0, 128 // SHIFTJIS_CHARSET
 {
-    AUTOCHECKBOX "タイトルバーにフルパスを表示する(&F)", chx1, 5, 5, 200, 14
-    AUTOCHECKBOX "IDマクロを使わない(&M)", chx2, 5, 25, 200, 14
+    AUTOCHECKBOX "タイトルバーにフルパスを表示する(&H)", chx1, 5, 5, 200, 14
+    AUTOCHECKBOX "IDマクロを使わない(&I)", chx2, 5, 25, 200, 14
     AUTOCHECKBOX "次回、ウィンドウ位置を復元する(&P)", chx3, 5, 45, 200, 14
     AUTOCHECKBOX "近くの""&resource.h""を自動的に読み込む", chx4, 5, 65, 200, 14
     AUTOCHECKBOX "自動的にリソースIDの一覧を表示する(&L)", chx5, 5, 85, 200, 14
     AUTOCHECKBOX "ダイアログ編集に点々を表示する(&D)", chx6, 5, 105, 200, 14
-    RTEXT "コンボボックスの高さ(&B):", -1, 10, 127, 75, 12
+    RTEXT "コンボボックスの高さ(&C):", -1, 10, 127, 75, 12
     EDITTEXT edt1, 90, 125, 34, 14, ES_NUMBER | ES_AUTOHSCROLL | ES_RIGHT
     CONTROL "", scr1, "msctls_updown32", UDS_NOTHOUSANDS | UDS_ARROWKEYS | UDS_AUTOBUDDY | UDS_ALIGNRIGHT | UDS_SETBUDDYINT, 129, 49, 12, 20
     AUTOCHECKBOX "行の折り返し(&W)", chx9, 135, 125, 70, 14
-    AUTOCHECKBOX """&resource.h"" の更新を尋ねる", chx7, 5, 145, 200, 14
+    AUTOCHECKBOX """resourc&e.h"" の更新を尋ねる", chx7, 5, 145, 200, 14
     AUTOCHECKBOX "EXE保存時に&UPXで圧縮する", chx8, 5, 165, 200, 14
     PUSHBUTTON "フォント設定(&F)...", psh4, 5, 185, 200, 14
     PUSHBUTTON "定義済みマクロ(&M)...", psh1, 5, 205, 93, 14
@@ -826,7 +826,7 @@ FONT 9, "MS UI Gothic", 0, 0, 128 // SHIFTJIS_CHARSET
     COMBOBOX cmb2, 159, 245, 45, 300, CBS_HASSTRINGS | CBS_AUTOHSCROLL | CBS_DROPDOWN | WS_VSCROLL | WS_TABSTOP
     LTEXT "リソース言語(&A):", -1, 5, 265, 110, 10
     COMBOBOX cmb3, 120, 265, 85, 300, CBS_HASSTRINGS | CBS_AUTOHSCROLL | CBS_DROPDOWN | WS_VSCROLL | WS_TABSTOP
-    AUTOCHECKBOX "&WonRes (オリジナルのリソース操作ツール) を使う", chx11, 5, 285, 200, 14
+    AUTOCHECKBOX "Wo&nRes (オリジナルのリソース操作ツール) を使う", chx11, 5, 285, 200, 14
     DEFPUSHBUTTON "OK", IDOK, 100, 305, 50, 14
     PUSHBUTTON "キャンセル", IDCANCEL, 155, 305, 50, 14
     PUSHBUTTON "すべてリセット(&S)", psh3, 5, 305, 75, 14
@@ -1465,7 +1465,7 @@ STRINGTABLE
     IDS_CANTEXTRACTBMP "ビットマップの抽出ができませんでした。"
     IDS_CANTREPLACECUR "カーソルの置き換えができませんでした。"
     IDS_CANNOTADDCUR "カーソルの追加ができませんでした。"
-    IDS_CURFILTER "カーソル ファイル (*.cur)|*.cur|アニメカーソル (*.ani)|*.ani|すべてのファイル (*.*)|*.*|"
+    IDS_CURFILTER "カーソル ファイル (*.cur)|*.cur|アニメ カーソル (*.ani)|*.ani|すべてのファイル (*.*)|*.*|"
     IDS_ADDCUR "カーソルの追加"
     IDS_REPLACECUR "カーソルの置き換え"
     IDS_EXTRACTICO "アイコンの抽出"
@@ -1515,8 +1515,8 @@ STRINGTABLE
     IDS_IDTYPE "IDの種類"
     IDS_IDPREFIX "IDの接頭辞"
     IDS_EMPTYSTR "文字列を入力して下さい。"
-    IDS_ANICURSOR "(アニメーション カーソル)\r\n"
-    IDS_ANIICON "(アニメーション アイコン)\r\n"
+    IDS_ANICURSOR "(アニメ カーソル)\r\n"
+    IDS_ANIICON "(アニメ アイコン)\r\n"
     IDS_HEADFILTER "ヘッダー ファイル (*.h)|*.h|すべてのファイル (*.*)|*.*|"
     IDS_LOADRESH "ファイル ""resource.h"" を読み込む"
     IDS_NAME "名前"
