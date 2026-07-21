@@ -3582,6 +3582,12 @@ BOOL DoCheckFile(std::wstring& file, LPCWSTR psz)
 	return FALSE;
 }
 
+static const PCWSTR g_str_types[] =
+{
+	L"PNG", L"GIF", L"JPEG", L"TIFF", L"JPG", L"TIF", L"EMF", L"ENHMETAFILE",
+	L"ENHMETAPICT", L"WMF", L"IMAGE", L"WAVE", L"MP3", L"AVI", L"TYPELIB",
+};
+
 BOOL InitTypes(void)
 {
 	if (g_pTypes)
@@ -3598,17 +3604,9 @@ BOOL InitTypes(void)
 		g_pTypes->push_back(table_entry.name.c_str());
 	}
 
-	static const PCWSTR str_types[] =
+	for (auto& type : g_str_types)
 	{
-		L"PNG", L"GIF", L"JPEG", L"TIFF", L"JPG", L"TIF", L"EMF", L"ENHMETAFILE",
-		L"ENHMETAPICT", L"WMF", L"IMAGE", L"WAVE", L"MP3", L"AVI", L"TYPELIB",
-	};
-	for (auto& type : str_types)
-	{
-		MStringW str = L"\"";
-		str += type;
-		str += L"\"";
-		g_pTypes->push_back(std::move(str));
+		g_pTypes->push_back(type);
 	}
 
 	std::sort(g_pTypes->begin(), g_pTypes->end());
@@ -3655,24 +3653,19 @@ BOOL InitLangListBox(HWND hwnd)
 
 BOOL ChooseTypeListBoxType(HWND hwnd, const MIdOrString& type)
 {
-	if (g_pTypes)
-		delete g_pTypes;
-	g_pTypes = new std::vector<MString>();
+	InitTypes();
 
 	ListBox_ResetContent(hwnd);
 
-	auto table = g_db.GetTable(L"RESOURCE");
-	for (auto& table_entry : table)
-	{
-		g_pTypes->push_back(table_entry.name.c_str());
-	}
-
-	std::sort(g_pTypes->begin(), g_pTypes->end());
+	auto name = g_db.GetName(L"RESOURCE", _wtoi(type.c_str()));
+	if (name.empty())
+		name = type.c_str();
 
 	for (auto& item : *g_pTypes)
 	{
 		INT index = ListBox_AddString(hwnd, item.c_str());
-		if (index != LB_ERR && item == type.str())
+		MTRACEA("%ls, %ls\n", item.c_str(), name.c_str());
+		if (index != LB_ERR && item == name)
 		{
 			ListBox_SetCurSel(hwnd, index);
 			ListBox_SetTopIndex(hwnd, index);

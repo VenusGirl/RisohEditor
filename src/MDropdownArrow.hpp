@@ -42,8 +42,6 @@ public:
 
 	void SetTargetType(ARROW_TARGET_TYPE target_type)
 	{
-		if (m_target_type == target_type)
-			return;
 		if (m_target_type == TARGET_TYPE_LANG)
 			InitLangListBox(m_lst1);
 		else

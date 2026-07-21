@@ -349,7 +349,9 @@ LRESULT MMainWnd::OnComplement(HWND hwnd, WPARAM wParam, LPARAM lParam)
 			WCHAR szText[MAX_PATH];
 			StringCchCopyW(szText, _countof(szText), new_type.c_str());
 
-			DoRetypeEntry(szText, entry, old_type, new_type);
+			if (!DoRetypeEntry(szText, entry, old_type, new_type))
+				return FALSE; // reject
+
 			DoSetFileModified(TRUE);
 		}
 		return TRUE; // accepted
@@ -5168,17 +5170,17 @@ void MMainWnd::UpdateArrow()
 
 	switch (entry->m_et)
 	{
-	case ET_LANG:
-		ShowTreeViewArrow((entry->m_type != RT_STRING), hItem);
+	case ET_TYPE:
+		ShowTreeViewArrow(TRUE, hItem);
 		break;
 	case ET_NAME:
 		ShowTreeViewArrow((entry->m_type != RT_STRING), hItem);
 		break;
+	case ET_LANG:
+		ShowTreeViewArrow((entry->m_type != RT_STRING), hItem);
+		break;
 	case ET_STRING:
 		ShowTreeViewArrow(TRUE, hItem);
-		break;
-	default:
-		ShowTreeViewArrow(FALSE, hItem);
 		break;
 	}
 }
@@ -5238,12 +5240,15 @@ BOOL MMainWnd::ShowTreeViewArrow(BOOL bShow, HTREEITEM hItem)
 		ShowWindowAsync(m_arrow, SW_SHOWNOACTIVATE);
 		switch (entry->m_et)
 		{
-		case ET_LANG:
-		case ET_STRING:
-			m_arrow.ChooseLang(entry->m_lang);
+		case ET_TYPE:
+			m_arrow.ChooseType(entry->m_type);
 			break;
 		case ET_NAME:
 			m_arrow.ChooseName(entry->m_type, entry->m_name);
+			break;
+		case ET_LANG:
+		case ET_STRING:
+			m_arrow.ChooseLang(entry->m_lang);
 			break;
 		}
 	}
@@ -5613,12 +5618,9 @@ LRESULT MMainWnd::OnNotify(HWND hwnd, int idFrom, NMHDR *pnmhdr)
 					return FALSE;   // reject
 				}
 
-				// Warn
-				if (MsgBoxDx(LoadStringDx(IDS_CHANGETYPEWARNING), MB_ICONWARNING | MB_YESNOCANCEL) != IDYES)
+				if (!DoRetypeEntry(pszNewText, entry, old_type, new_type))
 					return FALSE; // reject
-
-				DoRetypeEntry(pszNewText, entry, old_type, new_type);
-				m_arrow.ChooseType(entry->m_type);
+				m_arrow.ChooseType(new_type);
 				DoSetFileModified(TRUE);
 				return TRUE;   // accept
 			}
@@ -5737,10 +5739,14 @@ TreeViewCompare(LPARAM lParam1, LPARAM lParam2, LPARAM lParamSort)
 }
 
 // change the type of the resource entries
-void MMainWnd::DoRetypeEntry(LPWSTR pszText, EntryBase *entry, MIdOrString& old_type, MIdOrString& new_type)
+BOOL MMainWnd::DoRetypeEntry(LPWSTR pszText, EntryBase *entry, MIdOrString& old_type, MIdOrString& new_type)
 {
 	if (!entry)
-		return;
+		return FALSE;
+
+	// Warn
+	if (MsgBoxDx(LoadStringDx(IDS_CHANGETYPEWARNING), MB_ICONWARNING | MB_YESNOCANCEL) != IDYES)
+		return FALSE;
 
 	// search the old named type entries
 	EntrySet found;
@@ -5766,6 +5772,10 @@ void MMainWnd::DoRetypeEntry(LPWSTR pszText, EntryBase *entry, MIdOrString& old_
 	HTREEITEM hParent = TreeView_GetParent(m_hwndTV, entry->m_hItem);
 	TV_SORTCB cb = { hParent, TreeViewCompare };
 	TreeView_SortChildrenCB(m_hwndTV, &cb, 0);
+
+	m_arrow.ChooseType(new_type);
+
+	return TRUE;
 }
 
 // change the name of the resource entries
@@ -5805,6 +5815,8 @@ void MMainWnd::DoRenameEntry(LPWSTR pszText, EntryBase *entry, MIdOrString& old_
 	HTREEITEM hParent = TreeView_GetParent(m_hwndTV, entry->m_hItem);
 	TV_SORTCB cb = { hParent, TreeViewCompare };
 	TreeView_SortChildrenCB(m_hwndTV, &cb, 0);
+
+	m_arrow.ChooseName(entry->m_type, new_name);
 }
 
 // change the language of the resource entries
