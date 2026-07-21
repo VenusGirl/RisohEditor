@@ -3657,14 +3657,14 @@ BOOL ChooseTypeListBoxType(HWND hwnd, const MIdOrString& type)
 
 	ListBox_ResetContent(hwnd);
 
-	auto name = g_db.GetName(L"RESOURCE", _wtoi(type.c_str()));
-	if (name.empty())
-		name = type.c_str();
+	auto strName = g_db.GetName(L"RESOURCE", _wtoi(type.c_str()));
+	if (strName.empty())
+		strName = type.c_str();
 
 	for (auto& item : *g_pTypes)
 	{
 		INT index = ListBox_AddString(hwnd, item.c_str());
-		if (index != LB_ERR && item == name)
+		if (index != LB_ERR && item == strName)
 		{
 			ListBox_SetCurSel(hwnd, index);
 			ListBox_SetTopIndex(hwnd, index);
