@@ -221,7 +221,7 @@ IDR_POPUPMENUS MENU
             MENUITEM SEPARATOR
             MENUITEM "Go &Bottom", ID_CTRLINDEXBOTTOM
             MENUITEM SEPARATOR
-            MENUITEM "Show/Hide Indeces\tCtrl+D", ID_SHOWHIDEINDEX
+            MENUITEM "Show/Hide Indices\tCtrl+D", ID_SHOWHIDEINDEX
         }
         POPUP "&Alignment"
         {
@@ -356,9 +356,9 @@ FONT 9, "MS Shell Dlg", 0, 0, 0 // ANSI_CHARSET
     PUSHBUTTON "&Browse...", psh1, 150, 35, 60, 14
     ICON 0, ico1, 5, 35, 0, 0
     LTEXT "Resource &Name:", -1, 5, 67, 70, 12
-    COMBOBOX cmb2, 75, 65, 135, 13, CBS_HASSTRINGS | CBS_AUTOHSCROLL | CBS_DROPDOWN | WS_DISABLED | WS_BORDER | WS_VSCROLL | WS_TABSTOP
+    COMBOBOX cmb2, 75, 65, 135, 200, CBS_HASSTRINGS | CBS_AUTOHSCROLL | CBS_DROPDOWN | WS_DISABLED | WS_BORDER | WS_VSCROLL | WS_TABSTOP
     LTEXT "Resource &Language:", -1, 5, 92, 70, 12
-    COMBOBOX cmb3, 75, 90, 135, 13, CBS_HASSTRINGS | CBS_AUTOHSCROLL | CBS_DROPDOWN | WS_DISABLED | WS_BORDER | WS_VSCROLL | WS_TABSTOP
+    COMBOBOX cmb3, 75, 90, 135, 200, CBS_HASSTRINGS | CBS_AUTOHSCROLL | CBS_DROPDOWN | WS_DISABLED | WS_BORDER | WS_VSCROLL | WS_TABSTOP
     DEFPUSHBUTTON "OK", IDOK, 35, 115, 60, 14
     PUSHBUTTON "Cancel", IDCANCEL, 115, 115, 60, 14
 }
@@ -620,7 +620,7 @@ CAPTION "Edit Menu Resource"
 STYLE WS_POPUPWINDOW | WS_CAPTION | WS_THICKFRAME
 FONT 9, "MS Shell Dlg", 0, 0, 0 // ANSI_CHARSET
 {
-    LTEXT "Menu Re&souce:", -1, 5, 7, 85, 12
+    LTEXT "Menu Re&source:", -1, 5, 7, 85, 12
     CONTROL "", lst1, "SysListView32", LVS_NOSORTHEADER | LVS_AUTOARRANGE | LVS_NOLABELWRAP | LVS_SHOWSELALWAYS | LVS_SINGLESEL | LVS_REPORT | WS_BORDER | WS_VSCROLL | WS_HSCROLL | WS_TABSTOP, 5, 20, 315, 115
     PUSHBUTTON "&Add...", psh1, 95, 3, 50, 14
     PUSHBUTTON "&Modify...", psh2, 150, 3, 50, 14
@@ -765,7 +765,7 @@ CAPTION "ID Association"
 STYLE DS_MODALFRAME | WS_POPUPWINDOW | WS_CAPTION
 FONT 9, "MS Shell Dlg", 0, 0, 0 // ANSI_CHARSET
 {
-    LTEXT "ID &Assocation:", -1, 5, 5, 116, 12
+    LTEXT "ID &Association:", -1, 5, 5, 116, 12
     CONTROL "", lst1, "SysListView32", LVS_SHOWSELALWAYS | LVS_SINGLESEL | LVS_REPORT | WS_BORDER | WS_TABSTOP, 5, 20, 190, 150
     PUSHBUTTON "&Reset All", psh2, 5, 175, 85, 14
     PUSHBUTTON "&Modify", psh1, 135, 175, 60, 14
@@ -867,7 +867,7 @@ CAPTION "Advice of modification of file ""resource.h"""
 STYLE DS_MODALFRAME | WS_POPUPWINDOW | WS_CAPTION
 FONT 9, "MS Shell Dlg", 0, 0, 0 // ANSI_CHARSET
 {
-    LTEXT "Please modify the file ""resource.h"" As Follows:", -1, 10, 10, 195, 20
+    LTEXT "Please modify the file ""resource.h"" as follows:", -1, 10, 10, 195, 20
     EDITTEXT edt1, 10, 30, 190, 130, ES_READONLY | ES_MULTILINE
     DEFPUSHBUTTON "OK", IDOK, 140, 165, 60, 14
     PUSHBUTTON "&Clear modification", psh1, 10, 165, 90, 14
@@ -925,7 +925,7 @@ FONT 12, "MS Shell Dlg", 0, 0, 0 // ANSI_CHARSET
 {
     ICON IDI_MAIN, -1, 5, 5, 0, 0
     LTEXT "...", stc1, 30, 5, 140, 50
-    CTEXT "https://katahiromz.web.fc2.com", stc2, 5, 60, 165, 12, SS_CENTERIMAGE | SS_NOTIFY | NOT WS_GROUP
+    CTEXT "https://katahiromz.web.fc2.com/re/en/", stc2, 5, 60, 165, 12, SS_CENTERIMAGE | SS_NOTIFY | NOT WS_GROUP
     CONTROL "...", edt1, "EDIT", ES_READONLY | ES_AUTOHSCROLL | ES_AUTOVSCROLL | ES_MULTILINE | WS_BORDER | WS_VSCROLL | WS_HSCROLL, 5, 75, 165, 50
     DEFPUSHBUTTON "OK", IDOK, 55, 130, 60, 14
 }
@@ -1081,11 +1081,11 @@ FONT 9, "MS Shell Dlg", 0, 0, 0 // ANSI_CHARSET
     AUTOCHECKBOX "Use B&EGIN/END keywords", chx2, 5, 80, 240, 14
     AUTOCHECKBOX "Make language selectable by LANGUAGE_* macro", chx3, 5, 100, 240, 14
     AUTOCHECKBOX "Create &backup", chx4, 5, 120, 110, 14
-    RTEXT "Backup-Suffix:", -1, 120, 122, 75, 12
+    RTEXT "Backup Suffix:", -1, 120, 122, 75, 12
     COMBOBOX cmb1, 200, 120, 45, 300, CBS_HASSTRINGS | CBS_AUTOHSCROLL | CBS_DROPDOWN | WS_VSCROLL | WS_TABSTOP
     AUTOCHECKBOX "Output redundant &comments", chx5, 5, 140, 240, 14
     AUTOCHECKBOX "Wrap the ma&nifest statements by #ifndef MSVC ... #endif", chx6, 5, 160, 240, 14
-    RTEXT "Code&page:", -1, 7, 181, 78, 14
+    RTEXT "Code &page:", -1, 7, 181, 78, 14
     COMBOBOX cmb2, 95, 180, 155, 300, CBS_HASSTRINGS | CBS_AUTOHSCROLL | CBS_DROPDOWN | WS_VSCROLL | WS_TABSTOP
     AUTOCHECKBOX "Byte Order Mark (BOM)", chx9, 5, 200, 100, 15
     DEFPUSHBUTTON "OK", IDOK, 120, 205, 60, 14
@@ -1186,7 +1186,7 @@ FONT 9, "MS Shell Dlg", 0, 0, 0 // ANSI_CHARSET
     COMBOBOX cmb1, 200, 120, 45, 300, CBS_HASSTRINGS | CBS_AUTOHSCROLL | CBS_DROPDOWN | WS_VSCROLL | WS_TABSTOP
     AUTOCHECKBOX "Output redundant &comments", chx5, 5, 140, 240, 14
     AUTOCHECKBOX "Wrap the ma&nifest statements by #ifndef MSVC ... #endif", chx6, 5, 160, 240, 14
-    RTEXT "Code&page:", -1, 7, 181, 78, 14
+    RTEXT "Code &page:", -1, 7, 181, 78, 14
     COMBOBOX cmb2, 95, 180, 155, 300, CBS_HASSTRINGS | CBS_AUTOHSCROLL | CBS_DROPDOWN | WS_VSCROLL | WS_TABSTOP
     AUTOCHECKBOX "Byte Order Mark (BOM)", chx9, 5, 200, 100, 15
     DEFPUSHBUTTON "OK", IDOK, 120, 205, 60, 14
@@ -1303,7 +1303,7 @@ FONT 9, "MS Shell Dlg", 0, 0, 0 // ANSI_CHARSET
 }
 
 IDD_COPYTOMULTILANG DIALOGEX 0, 0, 200, 195
-CAPTION "Copy to multple languages"
+CAPTION "Copy to multiple languages"
 STYLE DS_MODALFRAME | WS_POPUPWINDOW | WS_CAPTION
 FONT 9, "MS Shell Dlg", 0, 0, 0 // ANSI_CHARSET
 {
@@ -1317,7 +1317,7 @@ FONT 9, "MS Shell Dlg", 0, 0, 0 // ANSI_CHARSET
 }
 
 IDD_TOOLBARRES DIALOGEX 0, 0, 230, 195
-CAPTION "Toolbar resource"
+CAPTION "Toolbar Resource"
 STYLE DS_MODALFRAME | WS_POPUPWINDOW | WS_CAPTION
 FONT 9, "MS Shell Dlg", 0, 0, 0 // ANSI_CHARSET
 {
@@ -1339,7 +1339,7 @@ FONT 9, "MS Shell Dlg", 0, 0, 0 // ANSI_CHARSET
 }
 
 IDD_ADDTBBTN DIALOGEX 0, 0, 177, 92
-CAPTION "Add Toolbar button"
+CAPTION "Add Toolbar Button"
 STYLE DS_MODALFRAME | WS_POPUPWINDOW | WS_CAPTION
 FONT 9, "MS Shell Dlg", 0, 0, 0 // ANSI_CHARSET
 {
@@ -1351,7 +1351,7 @@ FONT 9, "MS Shell Dlg", 0, 0, 0 // ANSI_CHARSET
 }
 
 IDD_MODIFYTBBTN DIALOGEX 0, 0, 177, 92
-CAPTION "Modify Toolbar button"
+CAPTION "Modify Toolbar Button"
 STYLE DS_MODALFRAME | WS_POPUPWINDOW | WS_CAPTION
 FONT 9, "MS Shell Dlg", 0, 0, 0 // ANSI_CHARSET
 {
@@ -1363,7 +1363,7 @@ FONT 9, "MS Shell Dlg", 0, 0, 0 // ANSI_CHARSET
 }
 
 IDD_GOTOLINE DIALOGEX 0, 0, 134, 47
-CAPTION "Go to specified line"
+CAPTION "Go to Specified Line"
 STYLE DS_MODALFRAME | WS_POPUPWINDOW | WS_CAPTION
 FONT 9, "MS Shell Dlg", 0, 0, 0 // ANSI_CHARSET
 {
@@ -1443,7 +1443,7 @@ STRINGTABLE
     IDS_SAVEAS "Save As"
     IDS_CANNOTADDICON "Unable to add the icon."
     IDS_ADDICON "Add Icon"
-    IDS_ICOFILTER "Icon Files (*.ico)|*.ico|All Files (*.*)|*.*|"
+    IDS_ICOFILTER "Icon Files (*.ico)|*.ico|Animation Icon (*.ani)|*.ani|All Files (*.*)|*.*|"
     IDS_REPLACEICO "Replace Icon"
     IDS_CANTREPLACEICO "Unable to replace icon."
     IDS_EXISTSOVERWRITE "The item already exists. Overwrite?"
@@ -1581,7 +1581,7 @@ STRINGTABLE
     IDS_RUSSIAN "Russian"
     IDS_WANNAGENRESH "Do you wanna generate file 'resource.h'?"
     IDS_EXEFILTER "Executables (*.exe;*.dll;*.ocx;*.cpl;*.scr;*.mui;*.ime)|*.exe;*.dll;*.ocx;*.cpl;*.scr;*.mui;*.ime|All Files (*.*)|*.*|"
-    IDS_SAVEASCOMPRESS "Save With Compressed"
+    IDS_SAVEASCOMPRESS "Save With Compression"
     IDS_TOOL_NEW "New"
     IDS_TOOL_OPEN "Open..."
     IDS_TOOL_SAVE "Save As..."
