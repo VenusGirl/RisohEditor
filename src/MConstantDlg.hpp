@@ -36,6 +36,13 @@ public:
 		auto pThis = (MConstantDlg*)GetWindowLongPtrW(hwnd, GWLP_USERDATA);
 		switch (uMsg)
 		{
+		case WM_SETFOCUS:
+			{
+				LRESULT ret = ::CallWindowProcW(pThis->m_fnOldEdt2WndProc, hwnd, uMsg, wParam, lParam);
+				PostMessageW(hwnd, EM_SETSEL, 0, -1); // Select all
+				return ret;
+			}
+			break;
 		case WM_LBUTTONUP:
 			{
 				LRESULT ret = ::CallWindowProcW(pThis->m_fnOldEdt2WndProc, hwnd, uMsg, wParam, lParam);
@@ -59,6 +66,13 @@ public:
 		auto pThis = (MConstantDlg*)GetWindowLongPtrW(hwnd, GWLP_USERDATA);
 		switch (uMsg)
 		{
+		case WM_SETFOCUS:
+			{
+				LRESULT ret = ::CallWindowProcW(pThis->m_fnOldEdt2WndProc, hwnd, uMsg, wParam, lParam);
+				PostMessageW(hwnd, EM_SETSEL, 0, -1); // Select all
+				return ret;
+			}
+			break;
 		case WM_LBUTTONUP:
 			{
 				LRESULT ret = ::CallWindowProcW(pThis->m_fnOldEdt2WndProc, hwnd, uMsg, wParam, lParam);
