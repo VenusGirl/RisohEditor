@@ -257,15 +257,11 @@ void mstr_upper(std::wstring& str);
 void mstr_lower(std::string& str);
 void mstr_lower(std::wstring& str);
 
-template <size_t siz>
-void mstr_upper(char (&str)[siz]);
-template <size_t siz>
-void mstr_lower(char (&str)[siz]);
+void mstr_upper(char* str);
+void mstr_lower(char* str);
 
-template <size_t siz>
-void mstr_upper(wchar_t (&str)[siz]);
-template <size_t siz>
-void mstr_lower(wchar_t (&str)[siz]);
+void mstr_upper(wchar_t* str);
+void mstr_lower(wchar_t* str);
 
 ////////////////////////////////////////////////////////////////////////////
 // binary
@@ -1010,26 +1006,22 @@ inline void mstr_lower(std::wstring& str)
 		_wcslwr(&str[0]);
 }
 
-template <size_t siz>
-inline void mstr_upper(char (&str)[siz])
+inline void mstr_upper(char* str)
 {
 	_strupr(str);
 }
 
-template <size_t siz>
-inline void mstr_lower(char (&str)[siz])
+inline void mstr_lower(char* str)
 {
 	_strlwr(str);
 }
 
-template <size_t siz>
-inline void mstr_upper(wchar_t (&str)[siz])
+inline void mstr_upper(wchar_t* str)
 {
 	_wcsupr(str);
 }
 
-template <size_t siz>
-inline void mstr_lower(wchar_t (&str)[siz])
+inline void mstr_lower(wchar_t* str)
 {
 	_wcslwr(str);
 }

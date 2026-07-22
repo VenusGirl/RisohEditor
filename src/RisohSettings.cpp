@@ -559,7 +559,7 @@ BOOL MMainWnd::LoadSettings(HWND hwnd)
 				{
 					*pch = 0;
 					++pch;
-					::CharLowerW(pch);
+					mstr_lower(pch);
 					if (lstrcmpW(pch, L"ansi") == 0 ||
 						lstrcmpW(pch, L"wide") == 0 ||
 						lstrcmpW(pch, L"utf8") == 0 ||
