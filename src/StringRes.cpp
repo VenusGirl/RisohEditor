@@ -27,7 +27,7 @@ StringRes::LoadFromStream(const MByteStreamEx& stream, WORD wName)
 		{
 			string_type str(wLen, 0);
 			if (!stream.ReadData(&str[0], wLen * sizeof(WCHAR)))
-				break;
+				return false;
 
 			m_map[(wName - 1) * 16 + i] = std::move(str);
 		}

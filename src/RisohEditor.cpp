@@ -831,7 +831,7 @@ void MMainWnd::SelectTV(EntryBase *entry, BOOL bDoubleClick, STV stv)
 	m_name = entry->m_name;
 	m_lang = entry->m_lang;
 
-	BOOL bEditable;
+	BOOL bEditable = TRUE;
 	switch (entry->m_et)
 	{
 	case ET_LANG:
@@ -846,14 +846,11 @@ void MMainWnd::SelectTV(EntryBase *entry, BOOL bDoubleClick, STV stv)
 		if (stv != STV_DONTRESET)
 		{
 			// show the string table
-			PreviewStringTable(m_hwnd, *entry);
+			bEditable = PreviewStringTable(m_hwnd, *entry);
 		}
 
 		// hide the binary EDIT control
 		SetWindowTextW(m_hHexViewer, NULL);
-
-		// it's editable
-		bEditable = TRUE;
 		break;
 
 	default:
