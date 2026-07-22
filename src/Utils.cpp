@@ -2055,6 +2055,15 @@ void InitResTypeComboBox(HWND hCmb1, const MIdOrString& type)
 		{
 			ComboBox_SetCurSel(hCmb1, k);
 		}
+
+		MStringW str = L"\"";
+		str += table_entry.name;
+		str += L"\"";
+		k = ComboBox_AddString(hCmb1, str.c_str());
+		if (type == str.c_str())
+		{
+			ComboBox_SetCurSel(hCmb1, k);
+		}
 	}
 }
 
@@ -3588,12 +3597,6 @@ BOOL DoCheckFile(std::wstring& file, LPCWSTR psz)
 	return FALSE;
 }
 
-static const PCWSTR g_str_types[] =
-{
-	L"PNG", L"GIF", L"JPEG", L"TIFF", L"JPG", L"TIF", L"EMF", L"ENHMETAFILE",
-	L"ENHMETAPICT", L"WMF", L"IMAGE", L"WAVE", L"MP3", L"AVI", L"TYPELIB",
-};
-
 BOOL InitTypes(void)
 {
 	if (g_pTypes)
@@ -3604,18 +3607,19 @@ BOOL InitTypes(void)
 	if (!entry)
 		return FALSE;   // no selection
 
-	auto table = g_db.GetTable(L"RESOURCE");
-	for (auto& table_entry : table)
+	auto table1 = g_db.GetTable(L"RESOURCE");
+	for (auto& entry : table1)
 	{
-		g_pTypes->push_back(table_entry.name.c_str());
+		g_pTypes->push_back(entry.name.c_str());
 	}
 
-	for (auto& type : g_str_types)
+	auto table2 = g_db.GetTable(L"RESOURCE.STRING.TYPE");
+	for (auto& entry : table2)
 	{
-		g_pTypes->push_back(type);
+		g_pTypes->push_back(entry.name);
 
 		MStringW str = L"\"";
-		str += type;
+		str += entry.name;
 		str += L"\"";
 		g_pTypes->push_back(std::move(str));
 	}

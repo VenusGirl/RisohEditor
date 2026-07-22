@@ -315,14 +315,14 @@ LRESULT MMainWnd::OnComplement(HWND hwnd, WPARAM wParam, LPARAM lParam)
 {
 	INT index = (INT)wParam;
 
-	if (index >= (INT)g_langs.size())
-		return FALSE; // reject
-
 	switch (m_arrow.m_target_type)
 	{
 	case TARGET_TYPE_TYPE:
 		if (g_pTypes)
 		{
+			if (index >= (INT)(*g_pTypes).size())
+				return FALSE; // reject
+
 			MIdOrString new_type = (*g_pTypes)[index].c_str();
 
 			auto entry = g_res.get_entry();
@@ -333,8 +333,25 @@ LRESULT MMainWnd::OnComplement(HWND hwnd, WPARAM wParam, LPARAM lParam)
 			if (wID)
 				new_type = wID;
 
+			if (new_type.is_str())
+			{
+				MStringW str = new_type.c_str();
+				if (str.size() && str[0] == L'"')
+				{
+					mstr_unquote(str);
+					new_type = str.c_str();
+				}
+			}
+
+			wID = WORD(g_db.GetValue(L"RESOURCE", new_type.c_str()));
+			if (wID)
+				new_type = wID;
+
 			auto old_type = entry->m_type;
 			if (old_type == BAD_TYPE || old_type.str() == new_type.str())
+				return FALSE;   // reject
+
+			if (new_type.is_str() && !new_type.c_str()[0])
 				return FALSE;   // reject
 
 			// check if it already exists
@@ -359,18 +376,36 @@ LRESULT MMainWnd::OnComplement(HWND hwnd, WPARAM wParam, LPARAM lParam)
 	case TARGET_TYPE_NAME:
 		if (g_pNames)
 		{
+			if (index >= (INT)(*g_pNames).size())
+				return FALSE; // reject
+
 			MIdOrString new_name = (*g_pNames)[index].c_str();
 
 			auto entry = g_res.get_entry();
 			if (!entry || entry->m_et != ET_NAME)
 				return FALSE;   // reject
 
-			// A resource ID?
+			if (g_db.HasResID(new_name.str()))
+				new_name = (WORD)g_db.GetResIDValue(new_name.str());
+
+			if (new_name.is_str())
+			{
+				MStringW str = new_name.c_str();
+				if (str.size() && str[0] == L'"')
+				{
+					mstr_unquote(str);
+					new_name = str.c_str();
+				}
+			}
+
 			if (g_db.HasResID(new_name.str()))
 				new_name = (WORD)g_db.GetResIDValue(new_name.str());
 
 			auto old_name = entry->m_name;
 			if (old_name == BAD_NAME || old_name.str() == new_name.str())
+				return FALSE;   // reject
+
+			if (new_name.is_str() && !new_name.c_str()[0])
 				return FALSE;   // reject
 
 			// check if it already exists
@@ -392,6 +427,8 @@ LRESULT MMainWnd::OnComplement(HWND hwnd, WPARAM wParam, LPARAM lParam)
 
 	case TARGET_TYPE_LANG:
 		{
+			if (index >= (INT)g_langs.size())
+				return FALSE; // reject
 			LANGID wNewLang = g_langs[index].LangID;
 
 			auto entry = g_res.get_entry();
