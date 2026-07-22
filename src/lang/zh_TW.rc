@@ -1615,7 +1615,7 @@ STRINGTABLE
     IDS_EXTRACTTLB "擷取 TypeLib 資料"
     IDS_CANTEXTRACTTLB "無法擷取 TypeLib 資料。"
     IDS_TLBRESBINFILTER "TYPELIB 資料 (*.tlb)|*.tlb|二進位資源檔 (*.res)|*.res|文字檔案 (*.txt)|*.txt|MIDL 檔案 (*.idl)|*.idl|所有檔案 (*.*)|*.*|"
-    IDS_USAGE "用法: RisohEditor [選項 | \"檔案\"]\n\n選項:\n--help  顯示此說明。\n--version  顯示版本資訊。\n--load \"檔案.rc\"  無 GUI 載入檔案\n--save \"檔案.res\"  無 GUI 儲存檔案\n--log-file \"log.txt\"  指定記錄檔。\n--load-options OPTIONS  設定載入選項。\n--save-options OPTIONS  設定儲存選項。\n\n載入選項: (no-load-res-h)\n儲存選項: (idc-static)(compress)(sep-lang)(no-res-folder)(lang-macro)(less-comments)(wrap-manifest)(begin-end)(utf-16)(bom)(backup)(ms-msgtbl)"
+    IDS_USAGE "用法: RisohEditor [選項 | ""檔案""]\n\n選項:\n--help  顯示此說明。\n--version  顯示版本資訊。\n--load ""檔案.rc""  無 GUI 載入檔案\n--save ""檔案.res""  無 GUI 儲存檔案\n--log-file ""log.txt""  指定記錄檔。\n--load-options OPTIONS  設定載入選項。\n--save-options OPTIONS  設定儲存選項。\n\n載入選項: (no-load-res-h)\n儲存選項: (idc-static)(compress)(sep-lang)(no-res-folder)(lang-macro)(less-comments)(wrap-manifest)(begin-end)(utf-16)(bom)(backup)(ms-msgtbl)"
     IDS_NOSELECTION "未選取任何項目。"
     IDS_TRANSLATORS "[翻譯者]\r\n英文: 片山博文MZ\r\n芬蘭文: Veikko Muurikainen\r\n印尼文: Mas Ahmad Muhammad\r\n義大利文: R.B.\r\n日文: 片山博文MZ\r\n韓文: VenusGirl (비너스걸)\r\n波蘭文: Piotr Hetnarowicz\r\n葡萄牙文（巴西）: JNylson\r\n葡萄牙文（葡萄牙）: Luis Neves\r\n俄文: Dmitry Yerokhin\r\n簡體中文: 林鴻湘\r\n西班牙文: Cristobal Prieto\r\n土耳其文: OnurGVNGL\r\n烏克蘭文: Volodymyr Paliy"
     IDS_EXPORTFILTER "RC 檔案 (*.rc;*.rc2)|*.rc;*.rc2|二進位資源檔 (*.res)|*.res|"
