@@ -94,7 +94,7 @@ public:
 					SetDlgItemInt(hwnd, edt2, value, FALSE);
 
 					WCHAR szText[MAX_PATH];
-					StringCbPrintfW(szText, sizeof(szText), L"0x%08lX", value);
+					StringCbPrintfW(szText, sizeof(szText), L"0x%lX", value);
 					SetDlgItemText(hwnd, edt3, szText);
 				}
 				else
