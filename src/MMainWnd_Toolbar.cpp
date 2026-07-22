@@ -275,6 +275,9 @@ void MMainWnd::UpdateToolBarStatus()
 // update the toolbar buttons
 void MMainWnd::UpdateOurToolBarButtons(INT iType)
 {
+	// Stop redrawing
+	::SendMessageW(m_hToolBar, WM_SETREDRAW, FALSE, 0);
+
 	// delete all the buttons of toolbar
 	while (SendMessageW(m_hToolBar, TB_DELETEBUTTON, 0, 0))
 		;
@@ -306,4 +309,8 @@ void MMainWnd::UpdateOurToolBarButtons(INT iType)
 		ShowWindow(m_hToolBar, SW_SHOWNOACTIVATE);
 	else
 		ShowWindow(m_hToolBar, SW_HIDE);
+
+	// Redraw
+	::SendMessageW(m_hToolBar, WM_SETREDRAW, TRUE, 0);
+	::InvalidateRect(m_hToolBar, NULL, TRUE);
 }
