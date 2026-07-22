@@ -1530,7 +1530,7 @@ STRINGTABLE
     IDS_RUSSIA "Russie"
     IDS_RUSSIAN "Russe"
     IDS_WANNAGENRESH "Générer également le fichier 'resource.h' ?"
-    IDS_EXEFILTER "Fichiers exécutables (*.exe;*.dll;*.ocx;*.cpl;*.scr;*.mui;*.ime)|*.exe;*.dll;*.ocx;*.cpl;*.scr;*.mui;*.ime||Tous les fichiers (*.*)|*.*|"
+    IDS_EXEFILTER "Fichiers exécutables (*.exe;*.dll;*.ocx;*.cpl;*.scr;*.mui;*.ime)|*.exe;*.dll;*.ocx;*.cpl;*.scr;*.mui;*.ime|Tous les fichiers (*.*)|*.*|"
     IDS_SAVEASCOMPRESS "Enregistrer avec compression"
     IDS_TOOL_NEW "Nouveau"
     IDS_TOOL_OPEN "Ouvrir..."
