@@ -170,14 +170,12 @@ public:
 		for (it = table2.begin(); it != end; ++it)
 		{
 			if (it->name.find(prefix) == 0)
-			{
 				table1.push_back(*it);
-			}
 		}
 		return table1;
 	}
 
-	TableType GetWholeTable() const
+	TableType GetConstantTable() const
 	{
 		TableType table;
 		for (auto& pair : m_map)
@@ -192,7 +190,7 @@ public:
 
 	BOOL GetValueOfName(const NameType& name, ValueType& value) const
 	{
-		TableType table = GetWholeTable();
+		TableType table = GetConstantTable();
 		for (const auto& table_entry : table)
 		{
 			if (table_entry.name == name)
