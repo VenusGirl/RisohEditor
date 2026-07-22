@@ -335,9 +335,9 @@ bool ConstantsDB::LoadFromFile(LPCWSTR FileName)
 		return false;
 
 	CategoryType category;
-	char buf[MAX_PATH];
+	char buf[512];
 	bool first = true;
-	while (fgets(buf, MAX_PATH, fp))
+	while (fgets(buf, _countof(buf), fp))
 	{
 		if (first)
 		{
