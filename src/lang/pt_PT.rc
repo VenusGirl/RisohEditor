@@ -89,7 +89,7 @@ IDR_MAINMENU MENU
         MENUITEM "&Definições de tipo de letra...", ID_FONTS
         MENUITEM "Definir ca&minhos...", ID_SETPATHS
         MENUITEM SEPARATOR
-        MENUITEM "Seleccionar idioma da I&U...", ID_CHOOSEUILANG
+        MENUITEM "&UI Language Select (UI语言选择)...", ID_CHOOSEUILANG
         MENUITEM SEPARATOR
         MENUITEM "Definiçõe&s DFM Delphi...", ID_DFMSETTINGS
         MENUITEM "&Configuração...\tAlt+Enter", ID_CONFIG
@@ -1554,7 +1554,7 @@ STRINGTABLE
     IDS_GERMANY "Alemanha"
     IDS_GERMAN "Alemão"
     IDS_SPAIN "Espanha"
-    IDS_SPANISH "Espqnhol"
+    IDS_SPANISH "Espanhol"
     IDS_INVALIDLANG "Idioma irreconhecível."
     IDS_INVALIDNAME "Nome de recurso inválido."
     IDS_PNGRESBINFILTER "Imagem PNG (*.png)|*.png|Recursos binários (*.res)|*.res|Ficheiros binários (*.bin)|*.bin|Todos os ficheiros (*.*)|*.*|"
