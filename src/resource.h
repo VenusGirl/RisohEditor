@@ -379,6 +379,7 @@
 #define IDS_INVALIDTYPE                     380
 #define IDS_CHANGETYPEWARNING               381
 #define IDS_SAMETYPE                        382
+#define IDS_ADDCTRL                         383
 
 #define ID_NEW                              100
 #define ID_OPEN                             101

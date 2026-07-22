@@ -45,7 +45,7 @@ public:
 	std::vector<MStringA> m_str_list;
 
 	MAddCtrlDlg(DialogRes& dialog_res, POINT pt)
-		: MDialogBase(IDD_ADDCTRL), m_dialog_res(dialog_res),
+		: MDialogBase(IDD_CTRLPROP), m_dialog_res(dialog_res),
 		  m_bUpdating(FALSE), m_pt(pt)
 	{
 		m_himlControls = NULL;
@@ -160,6 +160,8 @@ public:
 
 	BOOL OnInitDialog(HWND hwnd, HWND hwndFocus, LPARAM lParam)
 	{
+		::SetWindowTextW(hwnd, LoadStringDx(IDS_ADDCTRL));
+
 		SendDlgItemMessageW(hwnd, cmb1, CB_LIMITTEXT, MAX_PATH - 1, 0);
 		SendDlgItemMessageW(hwnd, cmb2, CB_LIMITTEXT, MAX_PATH - 1, 0);
 		SendDlgItemMessageW(hwnd, cmb3, CB_LIMITTEXT, MAX_PATH - 1, 0);
