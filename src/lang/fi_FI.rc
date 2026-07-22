@@ -24,7 +24,7 @@ IDR_MAINMENU MENU
         MENUITEM SEPARATOR
         MENUITEM "Lataa resource.h uudelleen...\tCtrl+R", ID_LOADRESH
         MENUITEM "Tallenna re&source.h...", ID_UPDATERESHBANG
-        MENUITEM "Neu&voja resource.h muuttamiseen...", ID_ADVICERESH
+        MENUITEM "resource.h-muutosten &neuvoja...", ID_ADVICERESH
         MENUITEM "&Poista resource.h muistista", ID_UNLOADRESH
         MENUITEM SEPARATOR
         MENUITEM "Lataa &Windowsin luokkakirjasto...", ID_LOADWCLIB
@@ -34,7 +34,7 @@ IDR_MAINMENU MENU
             MENUITEM "(Ei mitään)", -1, GRAYED
         }
         MENUITEM SEPARATOR
-        MENUITEM "P&oistu\tAlt+F4", ID_EXIT
+        MENUITEM "L&opeta\tAlt+F4", ID_EXIT
     }
     POPUP "&Muokkaus"
     {
