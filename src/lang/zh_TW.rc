@@ -76,10 +76,8 @@ IDR_MAINMENU MENU
         MENUITEM SEPARATOR
         POPUP "複製(&C)"
         {
-            MENUITEM "克隆新類型(&T)...", ID_COPYASNEWTYPE
-            MENUITEM "複製為其他名稱(&N)...", ID_COPYASNEWNAME
-            MENUITEM "複製為其他語言(&L)...", ID_COPYASNEWLANG
-            MENUITEM "複製到多種語言...", ID_COPYTOMULTILANG
+            MENUITEM "複製(&C)...", ID_CLONE
+            MENUITEM "複製到多種語言(&M)...", ID_COPYTOMULTILANG
         }
         MENUITEM SEPARATOR
         MENUITEM "效果測試(&T)", ID_TEST

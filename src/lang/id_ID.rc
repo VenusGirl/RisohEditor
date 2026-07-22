@@ -76,10 +76,8 @@ IDR_MAINMENU MENU
         MENUITEM SEPARATOR
         POPUP "&Klon"
         {
-            MENUITEM "Kloning dalam &tipe baru...", ID_COPYASNEWTYPE
-            MENUITEM "Duplikat dengan &Nama Baru...", ID_COPYASNEWNAME
-            MENUITEM "Duplikat dengan &Bahasa Baru...", ID_COPYASNEWLANG
-            MENUITEM "Salin ke beberapa bahasa...", ID_COPYTOMULTILANG
+            MENUITEM "&Klon...", ID_CLONE
+            MENUITEM "Salin ke &beberapa bahasa...", ID_COPYTOMULTILANG
         }
         MENUITEM SEPARATOR
         MENUITEM "Lakukan &Tes", ID_TEST

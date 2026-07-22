@@ -658,6 +658,7 @@ void MMainWnd::OnInitMenu(HWND hwnd, HMENU hMenu)
 		EnableMenuItem(hMenu, ID_FINDUPWARD, MF_GRAYED);
 		EnableMenuItem(hMenu, ID_FINDDOWNWARD, MF_GRAYED);
 		EnableMenuItem(hMenu, ID_REPLACE, MF_GRAYED);
+		EnableMenuItem(hMenu, ID_CLONE, MF_GRAYED);
 	}
 	else
 	{
@@ -668,6 +669,7 @@ void MMainWnd::OnInitMenu(HWND hwnd, HMENU hMenu)
 		EnableMenuItem(hMenu, ID_FINDUPWARD, MF_ENABLED);
 		EnableMenuItem(hMenu, ID_FINDDOWNWARD, MF_ENABLED);
 		EnableMenuItem(hMenu, ID_REPLACE, MF_ENABLED);
+		EnableMenuItem(hMenu, ID_CLONE, MF_ENABLED);
 	}
 
 	if (g_settings.bShowToolBar)

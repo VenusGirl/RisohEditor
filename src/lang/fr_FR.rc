@@ -76,10 +76,8 @@ IDR_MAINMENU MENU
         MENUITEM SEPARATOR
         POPUP "&Dupliquer"
         {
-            MENUITEM "Dupliquer dans un nouveau &type...", ID_COPYASNEWTYPE
-            MENUITEM "Dupliquer sous un nouveau &nom...", ID_COPYASNEWNAME
-            MENUITEM "Dupliquer dans une nouvelle &langue...", ID_COPYASNEWLANG
-            MENUITEM "Dupliquer dans plusieurs &langues...", ID_COPYTOMULTILANG
+            MENUITEM "&Dupliquer...", ID_CLONE
+            MENUITEM "Dupliquer dans &plusieurs langues...", ID_COPYTOMULTILANG
         }
         MENUITEM SEPARATOR
         MENUITEM "&Tester", ID_TEST

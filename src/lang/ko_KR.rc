@@ -76,10 +76,8 @@ IDR_MAINMENU MENU
         MENUITEM SEPARATOR
         POPUP "복제(&C)"
         {
-            MENUITEM "새 유형으로 복제(&T)...", ID_COPYASNEWTYPE
-            MENUITEM "새 이름으로 복제(&N)...", ID_COPYASNEWNAME
-            MENUITEM "새 언어로 복제(&L)...", ID_COPYASNEWLANG
-            MENUITEM "여러 언어로 복사...", ID_COPYTOMULTILANG
+            MENUITEM "복제(&C)...", ID_CLONE
+            MENUITEM "여러 언어로 복사(&M)...", ID_COPYTOMULTILANG
         }
         MENUITEM SEPARATOR
         MENUITEM "테스트(&T)", ID_TEST

@@ -76,10 +76,8 @@ IDR_MAINMENU MENU
         MENUITEM SEPARATOR
         POPUP "&Clone"
         {
-            MENUITEM "Clonar em novo &tipo...", ID_COPYASNEWTYPE
-            MENUITEM "Clonar com novo &nome...", ID_COPYASNEWNAME
-            MENUITEM "C&lonar em novo idioma...", ID_COPYASNEWLANG
-            MENUITEM "Copiar para vários idiomas...", ID_COPYTOMULTILANG
+            MENUITEM "&Clone...", ID_CLONE
+            MENUITEM "Copiar para &vários idiomas...", ID_COPYTOMULTILANG
         }
         MENUITEM SEPARATOR
         MENUITEM "Fazer &teste", ID_TEST

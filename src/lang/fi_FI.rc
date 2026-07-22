@@ -76,10 +76,8 @@ IDR_MAINMENU MENU
         MENUITEM SEPARATOR
         POPUP "&Klooni"
         {
-            MENUITEM "Klooni uuteen &tyyppiin...", ID_COPYASNEWTYPE
-            MENUITEM "Klooni uudessa &nimessä...", ID_COPYASNEWNAME
-            MENUITEM "Klooni uudessa kie&lessä...", ID_COPYASNEWLANG
-            MENUITEM "Kopioi useille kielille...", ID_COPYTOMULTILANG
+            MENUITEM "&Klooni...", ID_CLONE
+            MENUITEM "Kopioi &useille kielille...", ID_COPYTOMULTILANG
         }
         MENUITEM SEPARATOR
         MENUITEM "&Testaa", ID_TEST

@@ -75,10 +75,8 @@ IDR_MAINMENU MENU
         MENUITEM SEPARATOR
         POPUP "&Klon"
         {
-            MENUITEM "Yeni &türde klonla...", ID_COPYASNEWTYPE
-            MENUITEM "Yeni &Adla Klonla...", ID_COPYASNEWNAME
-            MENUITEM "Yeni &Dille Klonla...", ID_COPYASNEWLANG
-            MENUITEM "Birden Çok Dile Kopyala...", ID_COPYTOMULTILANG
+            MENUITEM "&Klon....", ID_CLONE
+            MENUITEM "&Birden Çok Dile Kopyala...", ID_COPYTOMULTILANG
         }
         MENUITEM SEPARATOR
         MENUITEM "&Test Et", ID_TEST
