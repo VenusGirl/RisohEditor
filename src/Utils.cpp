@@ -2029,6 +2029,12 @@ void InitResTypeComboBox(HWND hCmb1, const MIdOrString& type)
 	InitComboBoxPlaceholder(hCmb1, IDS_INTEGERORIDENTIFIER);
 
 	auto table = g_db.GetTable(L"RESOURCE");
+
+	using entry_t = ConstantsDB::EntryType;
+	std::sort(table.begin(), table.end(), [](const entry_t& x, const entry_t& y){
+		return x.name < y.name;
+	});
+
 	for (auto& table_entry : table)
 	{
 		WCHAR sz[MAX_PATH];

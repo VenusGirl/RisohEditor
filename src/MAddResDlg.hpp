@@ -120,19 +120,8 @@ public:
 		MIdOrString type;
 
 		// cmb1 --> (iType, type)
-		auto table = g_db.GetTable(L"RESOURCE");
-		INT iType = ComboBox_GetCurSel(m_cmb1);
-		if (iType != CB_ERR && iType < INT(table.size()))
-		{
-			type = WORD(table[iType].value);
-		}
-		else
-		{
-			if (!CheckTypeComboBox(m_cmb1, type))
-			{
-				return;
-			}
-		}
+		if (!CheckTypeComboBox(m_cmb1, type))
+			return;
 
 		if (type == RT_STRING)
 		{

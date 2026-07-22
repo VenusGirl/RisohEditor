@@ -96,16 +96,8 @@ public:
 
 		MIdOrString type;
 		HWND hCmb1 = GetDlgItem(hwnd, cmb1);
-		INT iType = ComboBox_GetCurSel(hCmb1);
-		if (iType != CB_ERR && iType < INT(table.size()))
-		{
-			type = WORD(table[iType].value);
-		}
-		else
-		{
-			if (!CheckTypeComboBox(hCmb1, type))
-				return;
-		}
+		if (!CheckTypeComboBox(hCmb1, type))
+			return;
 
 		HWND hCmb2 = GetDlgItem(hwnd, cmb2);
 		MIdOrString name;
