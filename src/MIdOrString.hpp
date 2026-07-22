@@ -121,11 +121,6 @@ struct MIdOrString
 		return m_id == 0 && m_str.empty();
 	}
 
-	bool is_null() const
-	{
-		return is_zero();
-	}
-
 	bool empty() const
 	{
 		return is_zero();

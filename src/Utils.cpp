@@ -2134,7 +2134,7 @@ void InitResNameComboBox(HWND hCmb, const MIdOrString& id, IDTYPE_ nIDTYPE_)
 	}
 
 	MIdOrString rt = ResourceTypeFromIDType(nIDTYPE_);
-	if (!rt.is_null())
+	if (!rt.is_zero())
 	{
 		EntrySet found;
 		g_res.search(found, ET_LANG, rt, BAD_NAME, BAD_LANG);
@@ -2212,7 +2212,7 @@ void InitResNameComboBoxDword(HWND hCmb, const DWORD& id, IDTYPE_ nIDTYPE_)
 	}
 
 	MIdOrString rt = ResourceTypeFromIDType(nIDTYPE_);
-	if (!rt.is_null())
+	if (!rt.is_zero())
 	{
 		EntrySet found;
 		g_res.search(found, ET_LANG, rt, BAD_NAME, BAD_LANG);
