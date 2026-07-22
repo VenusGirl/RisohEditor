@@ -104,6 +104,8 @@ public:
 	void OnDestroy(HWND hwnd)
 	{
 		// Un-subclassing
+		HWND hEdt2 = GetDlgItem(hwnd, edt2);
+		HWND hEdt3 = GetDlgItem(hwnd, edt3);
 		SetWindowLongPtrW(hEdt2, GWLP_WNDPROC, (LONG_PTR)m_fnOldEdt2WndProc);
 		SetWindowLongPtrW(hEdt3, GWLP_WNDPROC, (LONG_PTR)m_fnOldEdt3WndProc);
 	}
