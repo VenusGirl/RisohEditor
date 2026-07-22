@@ -23,7 +23,7 @@ IDR_MAINMENU MENU
         MENUITEM "导出(&E)...\tCtrl+P", ID_EXPORT
         MENUITEM SEPARATOR
         MENUITEM "重新加载 &resource.h...\tCtrl+R", ID_LOADRESH
-        MENUITEM "保存 resource.h(&S)...", ID_UPDATERESHBANG
+        MENUITEM "保存 resource.h(&H)...", ID_UPDATERESHBANG
         MENUITEM "修改记录(&V) resource.h ...", ID_ADVICERESH
         MENUITEM "卸载 resource.h (&U)", ID_UNLOADRESH
         MENUITEM SEPARATOR
@@ -93,8 +93,8 @@ IDR_MAINMENU MENU
         MENUITEM SEPARATOR
         MENUITEM "&UI Language Select (UI语言选择)...", ID_CHOOSEUILANG
         MENUITEM SEPARATOR
-        MENUITEM "Delphi DFM 设置...", ID_DFMSETTINGS
-        MENUITEM "设置(&C)...\tAlt+Enter", ID_CONFIG
+        MENUITEM "Delphi DFM 设置(&S)...", ID_DFMSETTINGS
+        MENUITEM "设置(&O)...\tAlt+Enter", ID_CONFIG
     }
     POPUP "搜索(&S)"
     {
@@ -126,9 +126,9 @@ IDR_MAINMENU MENU
         MENUITEM "使用BE&GIN/END", ID_USEBEGINEND
         MENUITEM SEPARATOR
         MENUITEM "资源项的编码(&E)...", ID_ENCODING
-        MENUITEM "Dialog &font substitutes...", ID_DIALOG_FONT_SUBSTITUTES
+        MENUITEM "对话框字体替代(&F)...", ID_DIALOG_FONT_SUBSTITUTES
         MENUITEM SEPARATOR
-        MENUITEM "更新到最新信息(&F)", ID_REFRESHALL
+        MENUITEM "更新到最新信息(&U)", ID_REFRESHALL
     }
     POPUP "自动化(&A)"
     {
@@ -139,6 +139,7 @@ IDR_MAINMENU MENU
     POPUP "帮助(&H)"
     {
         MENUITEM "打开英文 &README.txt", ID_OPENREADME
+        MENUITEM "打开更新日志 ChangeLog.txt(&C)", ID_OPENHISTORY
         MENUITEM "打开 &LICENSE.txt", ID_OPENLICENSE
         MENUITEM SEPARATOR
         MENUITEM "RisohEditor指南(&G)", ID_GUIDE
@@ -222,7 +223,7 @@ IDR_POPUPMENUS MENU
             MENUITEM SEPARATOR
             MENUITEM "切换显示模式(&S)\tCtrl+D", ID_SHOWHIDEINDEX
         }
-        POPUP "排列方式(&A)"
+        POPUP "排列方式(&G)"
         {
             MENUITEM "向上对齐(&T)", ID_TOPALIGN
             MENUITEM "向下对齐(&B)", ID_BOTTOMALIGN
@@ -234,7 +235,7 @@ IDR_POPUPMENUS MENU
         MENUITEM SEPARATOR
         MENUITEM "刷新(&R)", ID_REFRESHDIALOG
         MENUITEM SEPARATOR
-        MENUITEM "控件属性(&P)...", ID_CTRLPROP
+        MENUITEM "控件属性(&V)...", ID_CTRLPROP
         MENUITEM "对话框属性(&O)...", ID_DLGPROP
     }
     POPUP "Popup #2"
@@ -250,11 +251,11 @@ IDR_POPUPMENUS MENU
         MENUITEM SEPARATOR
         MENUITEM "复制名称(&N)", ID_COPYRESIDNAME
         MENUITEM "复制值(&V)", ID_COPYRESIDVALUE
-        MENUITEM "复制定义(&D)\tCtrl+C", ID_COPYIDDEF
+        MENUITEM "复制定义(&C)\tCtrl+C", ID_COPYIDDEF
         MENUITEM SEPARATOR
         MENUITEM "删除ID(&D) \tDel", ID_DELETERESID
         MENUITEM SEPARATOR
-        MENUITEM "十进制数字(&D)", ID_BASE10
+        MENUITEM "十进制数字(&T)", ID_BASE10
         MENUITEM "十六进制数字(&H)", ID_BASE16
         MENUITEM SEPARATOR
         MENUITEM "重新加载(&R)", ID_LOADRESH
@@ -355,9 +356,9 @@ FONT 9, "宋体", 0, 0, 134 // GB2312_CHARSET
     PUSHBUTTON "浏览(&B)...", psh1, 150, 35, 60, 14
     ICON 0, ico1, 5, 35, 0, 0
     LTEXT "资源名称(&N):", -1, 5, 67, 70, 12
-    COMBOBOX cmb2, 75, 65, 135, 13, CBS_HASSTRINGS | CBS_AUTOHSCROLL | CBS_DROPDOWN | WS_DISABLED | WS_BORDER | WS_VSCROLL | WS_TABSTOP
+    COMBOBOX cmb2, 75, 65, 135, 200, CBS_HASSTRINGS | CBS_AUTOHSCROLL | CBS_DROPDOWN | WS_DISABLED | WS_BORDER | WS_VSCROLL | WS_TABSTOP
     LTEXT "资源语言(&L):", -1, 5, 92, 70, 12
-    COMBOBOX cmb3, 75, 90, 135, 13, CBS_HASSTRINGS | CBS_AUTOHSCROLL | CBS_DROPDOWN | WS_DISABLED | WS_BORDER | WS_VSCROLL | WS_TABSTOP
+    COMBOBOX cmb3, 75, 90, 135, 200, CBS_HASSTRINGS | CBS_AUTOHSCROLL | CBS_DROPDOWN | WS_DISABLED | WS_BORDER | WS_VSCROLL | WS_TABSTOP
     DEFPUSHBUTTON "OK", IDOK, 35, 115, 60, 14
     PUSHBUTTON "取消", IDCANCEL, 115, 115, 60, 14
 }
@@ -367,7 +368,7 @@ CAPTION "添加位图"
 STYLE DS_MODALFRAME | WS_POPUPWINDOW | WS_CAPTION
 FONT 9, "宋体", 0, 0, 134 // GB2312_CHARSET
 {
-    LTEXT "位图文件(&B):", -1, 5, 7, 100, 12
+    LTEXT "位图文件(&M):", -1, 5, 7, 100, 12
     EDITTEXT edt1, 5, 18, 205, 14, ES_AUTOHSCROLL
     PUSHBUTTON "浏览(&B)...", psh1, 150, 35, 60, 14
     LTEXT "资源名称(&N):", -1, 5, 67, 70, 12
@@ -384,7 +385,7 @@ CAPTION "替换位图"
 STYLE DS_MODALFRAME | WS_POPUPWINDOW | WS_CAPTION
 FONT 9, "宋体", 0, 0, 134 // GB2312_CHARSET
 {
-    LTEXT "位图文件(&B):", -1, 5, 7, 100, 12
+    LTEXT "位图文件(&M):", -1, 5, 7, 100, 12
     EDITTEXT edt1, 5, 18, 205, 14, ES_AUTOHSCROLL
     PUSHBUTTON "浏览(&B)...", psh1, 150, 35, 60, 14
     LTEXT "资源名称(&N):", -1, 5, 67, 70, 12
@@ -573,7 +574,7 @@ FONT 9, "宋体", 0, 0, 134 // GB2312_CHARSET
     AUTOCHECKBOX "&OWNERDRAW", chx4, 5, 80, 65, 14
     AUTOCHECKBOX "勾择(&C)", chx5, 75, 80, 60, 14
     AUTOCHECKBOX "分离(&P)", chx6, 140, 80, 60, 14
-    AUTOCHECKBOX "菜单&BARBREAK", chx7, 5, 100, 75, 14
+    AUTOCHECKBOX "菜单BARBR&EAK", chx7, 5, 100, 75, 14
     AUTOCHECKBOX "菜单B&REAK", chx8, 85, 100, 70, 14
     AUTOCHECKBOX "设置(&D)", chx9, 5, 120, 60, 14
     AUTOCHECKBOX "标亮(&H)", chx10, 70, 120, 60, 14
@@ -601,7 +602,7 @@ FONT 9, "宋体", 0, 0, 134 // GB2312_CHARSET
     AUTOCHECKBOX "&OWNERDRAW", chx4, 5, 80, 65, 14
     AUTOCHECKBOX "勾择(&C)", chx5, 75, 80, 60, 14
     AUTOCHECKBOX "分离(&P)", chx6, 140, 80, 60, 14
-    AUTOCHECKBOX "菜单&BARBREAK", chx7, 5, 100, 75, 14
+    AUTOCHECKBOX "菜单BARBR&EAK", chx7, 5, 100, 75, 14
     AUTOCHECKBOX "菜单B&REAK", chx8, 85, 100, 70, 14
     AUTOCHECKBOX "设置(&D)", chx9, 5, 120, 60, 14
     AUTOCHECKBOX "标亮(&H)", chx10, 70, 120, 60, 14
@@ -715,7 +716,7 @@ FONT 9, "宋体", 0, 0, 134 // GB2312_CHARSET
     DEFPUSHBUTTON "OK", IDOK, 170, 293, 60, 14
     PUSHBUTTON "取消", IDCANCEL, 170, 309, 60, 14
     PUSHBUTTON "数据(&D)...", psh1, 5, 293, 90, 14
-    PUSHBUTTON "字符串列表(&I)...", psh3, 5, 309, 90, 14
+    PUSHBUTTON "字符串列表(&R)...", psh3, 5, 309, 90, 14
 }
 
 IDD_ADDCTRL DIALOGEX 0, 0, 235, 330
@@ -756,7 +757,7 @@ FONT 9, "宋体", 0, 0, 134 // GB2312_CHARSET
     DEFPUSHBUTTON "OK", IDOK, 170, 293, 60, 14
     PUSHBUTTON "取消", IDCANCEL, 170, 309, 60, 14
     PUSHBUTTON "数据(&D)...", psh1, 5, 293, 90, 14
-    PUSHBUTTON "字符串列表(&I)...", psh3, 5, 309, 90, 14
+    PUSHBUTTON "字符串列表(&R)...", psh3, 5, 309, 90, 14
 }
 
 IDD_IDASSOC DIALOGEX 0, 0, 200, 220
@@ -800,28 +801,29 @@ CAPTION "配置"
 STYLE DS_MODALFRAME | WS_POPUPWINDOW | WS_CAPTION
 FONT 9, "宋体", 0, 0, 134 // GB2312_CHARSET
 {
-    AUTOCHECKBOX "在标题栏显示完整路径(&F)", chx1, 5, 5, 200, 14
-    AUTOCHECKBOX "不使用ID宏定义(&M)", chx2, 5, 25, 200, 14
+    AUTOCHECKBOX "在标题栏显示完整路径(&H)", chx1, 5, 5, 200, 14
+    AUTOCHECKBOX "不使用ID宏定义(&I)", chx2, 5, 25, 200, 14
     AUTOCHECKBOX "恢复以前的窗口位置(&P)", chx3, 5, 45, 200, 14
     AUTOCHECKBOX "自动加载最近的""&resource.h""", chx4, 5, 65, 200, 14
     AUTOCHECKBOX "自动显示资源ID列表(&L)", chx5, 5, 85, 200, 14
     AUTOCHECKBOX "在对话框编辑上显示点阵(&D)", chx6, 5, 105, 200, 14
-    RTEXT "Combo&Box的高度(&B):", -1, 10, 127, 75, 12
+    RTEXT "组合框高度(&C):", -1, 10, 127, 75, 12
     EDITTEXT edt1, 90, 125, 34, 14, ES_NUMBER | ES_AUTOHSCROLL | ES_RIGHT
     CONTROL "", scr1, "msctls_updown32", UDS_NOTHOUSANDS | UDS_ARROWKEYS | UDS_AUTOBUDDY | UDS_ALIGNRIGHT | UDS_SETBUDDYINT, 129, 49, 12, 20
     AUTOCHECKBOX "自动换行(&W)", chx9, 135, 125, 70, 14
-    AUTOCHECKBOX "询问""&resource.h""的更新", chx7, 5, 145, 200, 14
+    AUTOCHECKBOX "询问""resourc&e.h""的更新", chx7, 5, 145, 200, 14
     AUTOCHECKBOX "保存EXE文件时用&UPX压缩", chx8, 5, 165, 200, 14
     PUSHBUTTON "字体(&F)...", psh4, 5, 185, 200, 14
     PUSHBUTTON "预定义的宏(&M)...", psh1, 5, 205, 93, 14
     PUSHBUTTON "设置PATH(&T)...", psh2, 107, 205, 98, 14
     RTEXT "&OLE控件的名称:", -1, 5, 227, 80, 12
     COMBOBOX cmb1, 90, 225, 75, 300, CBS_HASSTRINGS | CBS_AUTOHSCROLL | CBS_DROPDOWN | WS_VSCROLL | WS_TABSTOP
-    AUTOCHECKBOX "创建备份(&B)  后缀:", chx10, 5, 245, 123, 14
-    COMBOBOX cmb2, 134, 245, 45, 300, CBS_HASSTRINGS | CBS_AUTOHSCROLL | CBS_DROPDOWN | WS_VSCROLL | WS_TABSTOP
-    LTEXT "资源语言：", -1, 5, 265, 110, 10
+    AUTOCHECKBOX "创建备份(&B)", chx10, 5, 245, 89, 14
+    RTEXT "后缀:", -1, 110, 248, 45, 9
+    COMBOBOX cmb2, 159, 245, 45, 300, CBS_HASSTRINGS | CBS_AUTOHSCROLL | CBS_DROPDOWN | WS_VSCROLL | WS_TABSTOP
+    LTEXT "资源语言(&A)：", -1, 5, 265, 110, 10
     COMBOBOX cmb3, 120, 265, 85, 300, CBS_HASSTRINGS | CBS_AUTOHSCROLL | CBS_DROPDOWN | WS_VSCROLL | WS_TABSTOP
-    AUTOCHECKBOX "使用 &WonRes（原始资源操作器）", chx11, 5, 285, 200, 14
+    AUTOCHECKBOX "使用 Wo&nRes（原始资源操作器）", chx11, 5, 285, 200, 14
     DEFPUSHBUTTON "OK", IDOK, 100, 305, 50, 14
     PUSHBUTTON "取消", IDCANCEL, 155, 305, 50, 14
     PUSHBUTTON "全部重置(&S)", psh3, 5, 305, 75, 14
@@ -861,11 +863,11 @@ FONT 9, "宋体", 0, 0, 134 // GB2312_CHARSET
 }
 
 IDD_ADVICERESH DIALOGEX 0, 0, 209, 184
-CAPTION "文件的修改情况 ""resource.h"""
+CAPTION "对文件 'resource.h' 的修改建议"
 STYLE DS_MODALFRAME | WS_POPUPWINDOW | WS_CAPTION
 FONT 9, "宋体", 0, 0, 134 // GB2312_CHARSET
 {
-    LTEXT "请修改文件 ""resource.h"" As Follows:", -1, 10, 10, 195, 20
+    LTEXT "请按下列方式修改文件 'resource.h'。", -1, 10, 10, 195, 20
     EDITTEXT edt1, 10, 30, 190, 130, ES_READONLY | ES_MULTILINE
     DEFPUSHBUTTON "OK", IDOK, 140, 165, 60, 14
     PUSHBUTTON "清除修改(&C)", psh1, 10, 165, 90, 14
@@ -1050,11 +1052,11 @@ FONT 9, "宋体", 0, 0, 134 // GB2312_CHARSET
 {
     LTEXT "&Include Directories:", -1, 5, 5, 102, 12
     LISTBOX lst1, 5, 20, 220, 105, LBS_NOINTEGRALHEIGHT | LBS_HASSTRINGS | LBS_SORT | WS_VSCROLL | WS_HSCROLL | WS_TABSTOP
-    PUSHBUTTON "加(&A)...", psh1, 230, 5, 60, 14
-    PUSHBUTTON "编辑(&E)...", psh2, 230, 25, 60, 14
-    PUSHBUTTON "删除(&D)", psh3, 230, 45, 60, 14
-    PUSHBUTTON "上(&U)", psh4, 230, 65, 60, 14
-    PUSHBUTTON "下(&O)", psh5, 230, 85, 60, 14
+    PUSHBUTTON "添加(&A)...", psh1, 230, 20, 60, 14
+    PUSHBUTTON "编辑(&E)...", psh2, 230, 40, 60, 14
+    PUSHBUTTON "删除(&D)", psh3, 230, 60, 60, 14
+    PUSHBUTTON "↑(&U)", psh4, 230, 80, 60, 14
+    PUSHBUTTON "↓(&O)", psh5, 230, 100, 60, 14
     PUSHBUTTON "全部删除(&L)", psh6, 5, 130, 95, 14
     RTEXT "&windres.exe:", stc1, 5, 157, 55, 12
     COMBOBOX cmb1, 70, 155, 155, 300, CBS_HASSTRINGS | CBS_AUTOHSCROLL | CBS_DROPDOWN | WS_VSCROLL | WS_TABSTOP
@@ -1626,7 +1628,7 @@ STRINGTABLE
     IDS_RESTYPE "资源类型"
     IDS_ENCODING "编码"
     IDS_INVALIDRESTYPE "资源类型无效。"
-    IDS_PATHSPACEERROR "您错误地使用空格字符安装了该位置！ 资源编译器不能接受空间。\n\n请避免使用“C:\\Program Files”。"
+    IDS_PATHSPACEERROR "安装路径中含有空格字符，资源编译器无法处理带空格的路径。\n\n请避免使用 ""C:\\Program Files"" 这样的路径。"
     IDS_LOADEGAPROGRAM "加载EGA程序..."
     IDS_EGAFILTER "EGA 计划 (*.ega)|*.ega|全部文件 (*.*)|*.*|"
     IDS_QUERYSAVECHANGE "该文件已被修改. 您要立即保存更改吗？"
