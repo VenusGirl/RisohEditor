@@ -254,6 +254,12 @@ IDR_POPUPMENUS MENU
         MENUITEM SEPARATOR
         MENUITEM "&Видалити\tDel", ID_DELETE
     }
+    POPUP "Popup #9"
+    {
+        MENUITEM "&Копіювати\tCtrl+C", ID_COPY
+        MENUITEM SEPARATOR
+        MENUITEM "&Вибрати все\tCtrl+A", ID_SELECTALL
+    }
 }
 
 //////////////////////////////////////////////////////////////////////////////

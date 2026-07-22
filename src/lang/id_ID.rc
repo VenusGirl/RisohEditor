@@ -254,6 +254,12 @@ IDR_POPUPMENUS MENU
         MENUITEM SEPARATOR
         MENUITEM "&Hapus\tDel", ID_DELETE
     }
+    POPUP "Popup #9"
+    {
+        MENUITEM "&Salinan\tCtrl+C", ID_COPY
+        MENUITEM SEPARATOR
+        MENUITEM "&Pilih Semua\tCtrl+A", ID_SELECTALL
+    }
 }
 
 //////////////////////////////////////////////////////////////////////////////

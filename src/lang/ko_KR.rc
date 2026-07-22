@@ -252,6 +252,12 @@ IDR_POPUPMENUS MENU
         MENUITEM SEPARATOR
         MENUITEM "삭제(&D)\tDel", ID_DELETE
     }
+    POPUP "Popup #9"
+    {
+        MENUITEM "복사(&C)\tCtrl+C", ID_COPY
+        MENUITEM SEPARATOR
+        MENUITEM "모두 선택(&A)\tCtrl+A", ID_SELECTALL
+    }
 }
 
 //////////////////////////////////////////////////////////////////////////////

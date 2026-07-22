@@ -252,6 +252,12 @@ IDR_POPUPMENUS MENU
         MENUITEM SEPARATOR
         MENUITEM "&Delete\tDel", ID_DELETE
     }
+    POPUP "Popup #9"
+    {
+        MENUITEM "&Copy\tCtrl+C", ID_COPY
+        MENUITEM SEPARATOR
+        MENUITEM "Select &all\tCtrl+A", ID_SELECTALL
+    }
 }
 
 //////////////////////////////////////////////////////////////////////////////

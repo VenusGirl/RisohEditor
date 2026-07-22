@@ -255,6 +255,12 @@ IDR_POPUPMENUS MENU
         MENUITEM SEPARATOR
         MENUITEM "削除(&D)\tDel", ID_DELETE
     }
+    POPUP "ポップアップ #9"
+    {
+        MENUITEM "コピー(&C)\tCtrl+C", ID_COPY
+        MENUITEM SEPARATOR
+        MENUITEM "すべて選択(&A)\tCtrl+A", ID_SELECTALL
+    }
 }
 
 //////////////////////////////////////////////////////////////////////////////

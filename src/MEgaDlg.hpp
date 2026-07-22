@@ -88,10 +88,13 @@ protected:
 	void OnEgaPrint(HWND hwnd);
 	void OnTimer(HWND hwnd, UINT id);
 	void OnGetMinMaxInfo(HWND hwnd, LPMINMAXINFO lpMinMaxInfo);
+	void OnContextMenu(HWND hwnd, HWND hwndContext, UINT xPos, UINT yPos);
 
 	void AddToHistory(const std::wstring& str);
 	void NavigateHistory(HWND hEdt2, bool bUp);
 	void AppendEgaOutput(HWND hwnd, const std::wstring& text);
+	void DoCopyList(HWND hwndList);
+	void DoSelectAll(HWND hwndList);
 
 	static LRESULT CALLBACK Edt2WndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 	static LRESULT CALLBACK Lst1WndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);

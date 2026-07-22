@@ -252,6 +252,12 @@ IDR_POPUPMENUS MENU
         MENUITEM SEPARATOR
         MENUITEM "&Sil\tDel", ID_DELETE
     }
+    POPUP "Açılır Pencere #9"
+    {
+        MENUITEM "&Kopyala\tCtrl+C", ID_COPY
+        MENUITEM SEPARATOR
+        MENUITEM "&Tümünü Seç\tCtrl+A", ID_SELECTALL
+    }
 }
 
 //////////////////////////////////////////////////////////////////////////////

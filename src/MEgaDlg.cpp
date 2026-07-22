@@ -8,6 +8,7 @@
 #include "Res.hpp"
 #include <vector>
 #include <string>
+#include "resource.h"
 
 // EGA入力関数。EGA_set_input_fnに渡される。
 // この関数がfalseを返せば、EGAの実行単位が終了する。
@@ -183,51 +184,12 @@ MEgaDlg::Lst1WndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 			break;
 		if (wParam == 'A') // Ctrl+A
 		{
-			SendMessageW(hwnd, LB_SETSEL, TRUE, -1);
+			pThis->DoSelectAll(hwnd);
 			return 0;
 		}
 		if (wParam == 'C') // Ctrl+C
 		{
-			int nSelCount = (int)SendMessageW(hwnd, LB_GETSELCOUNT, 0, 0);
-			if (nSelCount <= 0)
-				return 0;
-
-			std::vector<int> selItems(nSelCount);
-			SendMessageW(hwnd, LB_GETSELITEMS, nSelCount, (LPARAM)selItems.data());
-
-			std::wstring text;
-			for (int i = 0; i < nSelCount; ++i)
-			{
-				int idx = selItems[i];
-				int len = (int)SendMessageW(hwnd, LB_GETTEXTLEN, idx, 0);
-				if (len > 0)
-				{
-					std::wstring line;
-					line.resize(len + 1);
-					SendMessageW(hwnd, LB_GETTEXT, idx, (LPARAM)&line[0]);
-					line.resize(len);
-					text += line;
-					text += L"\r\n";
-				}
-			}
-
-			if (!text.empty())
-			{
-				if (OpenClipboard(hwnd))
-				{
-					EmptyClipboard();
-					HGLOBAL hMem = GlobalAlloc(GMEM_MOVEABLE, (text.size() + 1) * sizeof(WCHAR));
-					if (hMem)
-					{
-						LPWSTR pMem = (LPWSTR)GlobalLock(hMem);
-						StringCchCopyW(pMem, text.size() + 1, text.c_str());
-						GlobalUnlock(hMem);
-						SetClipboardData(CF_UNICODETEXT, hMem);
-						SendMessageW(hwnd, LB_SETSEL, FALSE, -1);
-					}
-					CloseClipboard();
-				}
-			}
+			pThis->DoCopyList(hwnd);
 			return 0;
 		}
 	}
@@ -616,6 +578,96 @@ void MEgaDlg::OnGetMinMaxInfo(HWND hwnd, LPMINMAXINFO lpMinMaxInfo)
 	lpMinMaxInfo->ptMinTrackSize.y = 250;
 }
 
+void MEgaDlg::DoSelectAll(HWND hwndList)
+{
+	SendMessageW(hwndList, LB_SETSEL, TRUE, -1);
+}
+
+void MEgaDlg::DoCopyList(HWND hwndList)
+{
+	INT nSelCount = (INT)SendMessageW(hwndList, LB_GETSELCOUNT, 0, 0);
+	if (nSelCount <= 0)
+		return;
+
+	std::vector<int> selItems(nSelCount);
+	SendMessageW(hwndList, LB_GETSELITEMS, nSelCount, (LPARAM)selItems.data());
+
+	std::wstring text;
+	for (INT i = 0; i < nSelCount; ++i)
+	{
+		INT idx = selItems[i];
+		INT len = (INT)SendMessageW(hwndList, LB_GETTEXTLEN, idx, 0);
+		if (len > 0)
+		{
+			std::wstring line;
+			line.resize(len + 1);
+			SendMessageW(hwndList, LB_GETTEXT, idx, (LPARAM)&line[0]);
+			line.resize(len);
+			text += line;
+			text += L"\r\n";
+		}
+	}
+
+	if (text.empty())
+		return;
+
+	if (OpenClipboard(hwndList))
+	{
+		EmptyClipboard();
+		HGLOBAL hMem = GlobalAlloc(GMEM_MOVEABLE, (text.size() + 1) * sizeof(WCHAR));
+		if (hMem)
+		{
+			LPWSTR pMem = (LPWSTR)GlobalLock(hMem);
+			StringCchCopyW(pMem, text.size() + 1, text.c_str());
+			GlobalUnlock(hMem);
+			SetClipboardData(CF_UNICODETEXT, hMem);
+			SendMessageW(hwndList, LB_SETSEL, FALSE, -1);
+		}
+		CloseClipboard();
+	}
+}
+
+// WM_CONTEXTMENU
+void MEgaDlg::OnContextMenu(HWND hwnd, HWND hwndContext, UINT xPos, UINT yPos)
+{
+	if (hwndContext == GetDlgItem(hwnd, lst1))
+	{
+		HMENU hMenu = LoadMenuW(GetModuleHandleW(NULL), MAKEINTRESOURCEW(IDR_POPUPMENUS));
+		if (!hMenu)
+			return;
+
+		HMENU hSubMenu = GetSubMenu(hMenu, 9);
+
+		if (ListBox_GetSelCount(hwndContext) == 0)
+			EnableMenuItem(hSubMenu, ID_COPY, MF_GRAYED);
+
+		if (xPos == -1 && yPos == -1)
+		{
+			RECT rc;
+			GetWindowRect(hwndContext, &rc);
+			xPos = rc.left;
+			yPos = rc.top;
+		}
+
+		::SetForegroundWindow(hwnd);
+		UINT cmd = (UINT)TrackPopupMenu(hSubMenu,
+			                            TPM_LEFTALIGN | TPM_RIGHTBUTTON | TPM_RETURNCMD,
+			                            xPos, yPos, 0, hwnd, nullptr);
+		::PostMessageW(hwnd, WM_NULL, 0, 0);
+
+		if (cmd == ID_COPY)
+		{
+			DoCopyList(GetDlgItem(hwnd, lst1));
+			return;
+		}
+		if (cmd == ID_SELECTALL)
+		{
+			DoSelectAll(GetDlgItem(hwnd, lst1));
+			return;
+		}
+	}
+}
+
 INT_PTR CALLBACK
 MEgaDlg::DialogProcDx(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
@@ -631,6 +683,7 @@ MEgaDlg::DialogProcDx(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 	HANDLE_MSG(hwnd, WM_TIMER, OnTimer);
 	HANDLE_MSG(hwnd, WM_DESTROY, OnDestroy);
 	HANDLE_MSG(hwnd, WM_GETMINMAXINFO, OnGetMinMaxInfo);
+	HANDLE_MSG(hwnd, WM_CONTEXTMENU, OnContextMenu);
 	case WM_EGA_DO_GETINPUT: // 入力を取得する。
 		OnEgaGetInput(hwnd);
 		break;

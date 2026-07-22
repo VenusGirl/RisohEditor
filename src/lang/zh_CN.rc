@@ -252,6 +252,12 @@ IDR_POPUPMENUS MENU
         MENUITEM SEPARATOR
         MENUITEM "删除(&T)\tDel", ID_DELETE
     }
+    POPUP "Popup #9"
+    {
+        MENUITEM "复制(&C)\tCtrl+C", ID_COPY
+        MENUITEM SEPARATOR
+        MENUITEM "全选(&A)\tCtrl+A", ID_SELECTALL
+    }
 }
 
 //////////////////////////////////////////////////////////////////////////////

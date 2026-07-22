@@ -249,7 +249,13 @@ IDR_POPUPMENUS MENU
         MENUITEM "&Lisää...", ID_ADD
         MENUITEM "&Muokkaa...", ID_MODIFY
         MENUITEM SEPARATOR
-        MENUITEM "&&Poista\tDel", ID_DELETE
+        MENUITEM "&Poista\tDel", ID_DELETE
+    }
+    POPUP "Popup #9"
+    {
+        MENUITEM "&Kopio\tCtrl+C", ID_COPY
+        MENUITEM SEPARATOR
+        MENUITEM "&Valitse kaikki\tCtrl+A", ID_SELECTALL
     }
 }
 
