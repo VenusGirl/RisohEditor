@@ -31,7 +31,7 @@ IDR_MAINMENU MENU
         MENUITEM SEPARATOR
         POPUP "File usati recentemente"
         {
-            MENUITEM "(None)", -1, GRAYED
+            MENUITEM "(Nessuno)", -1, GRAYED
         }
         MENUITEM SEPARATOR
         MENUITEM "E&sci\tAlt+F4", ID_EXIT
@@ -186,7 +186,7 @@ IDR_POPUPMENUS MENU
         MENUITEM "&Aggiorna", ID_REFRESHDIALOG
         MENUITEM SEPARATOR
         MENUITEM "&Proprietà controllo...", ID_CTRLPROP
-        MENUITEM "Pr&oprietà finestra...", ID_DLGPROP
+        MENUITEM "Proprietà della &finestra di dialogo...", ID_DLGPROP
     }
     POPUP "Popup #2"
     {
@@ -1629,7 +1629,7 @@ STRINGTABLE
     IDS_INVALIDCODEPAGE "Codifica non valida."
     IDS_UNKNOWN_ID "ID sconosciuto"
     IDS_CURSOR_ID "ID cursore"
-    IDS_BITMAP_ID "UD bitmap"
+    IDS_BITMAP_ID "ID bitmap"
     IDS_MENU_ID "ID menu"
     IDS_DIALOG_ID "ID finestra dialogo"
     IDS_STRING_ID "ID stringa"
@@ -1642,7 +1642,7 @@ STRINGTABLE
     IDS_COMMAND_ID "ID comando"
     IDS_CONTROL_ID "ID controllo"
     IDS_RESOURCE_ID "ID risorsa"
-    IDS_MESSAGE_ID "ID messaggia"
+    IDS_MESSAGE_ID "ID messaggio"
     IDS_WINDOW_ID "ID finestra"
     IDS_NEWCOMMAND_ID "ID nuovo comando"
     IDS_PROMPT_ID "ID prompt"
