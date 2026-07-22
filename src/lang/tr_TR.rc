@@ -17,15 +17,15 @@ IDR_MAINMENU MENU
         MENUITEM "&Aç...\tCtrl+O", ID_OPEN
         MENUITEM "&Kaydet...\tCtrl+S", ID_SAVE
         MENUITEM "&Farklı Kaydet...\tShift+Ctrl+S", ID_SAVEAS
-        MENUITEM "Sıkıştırarak Kaydet...", ID_SAVEASCOMPRESS
+        MENUITEM "Sıkıştırarak Kayd&et...", ID_SAVEASCOMPRESS
         MENUITEM SEPARATOR
         MENUITEM "&İçe Aktar...\tCtrl+I", ID_IMPORT
         MENUITEM "&Dışa Aktar...\tCtrl+P", ID_EXPORT
         MENUITEM SEPARATOR
         MENUITEM "&resource.h Kaynağını Yeniden Yükle ...\tCtrl+R", ID_LOADRESH
-        MENUITEM "&resource.h Kaynağını Kaydet...", ID_UPDATERESHBANG
+        MENUITEM "resource.h Kaynağın&ı Kaydet...", ID_UPDATERESHBANG
         MENUITEM "Resource.h Değişikliği İçin &Tavsiye...", ID_ADVICERESH
-        MENUITEM "&resource.h'yi Boşalt", ID_UNLOADRESH
+        MENUITEM "resource.h'yi &Boşalt", ID_UNLOADRESH
         MENUITEM SEPARATOR
         MENUITEM "&Pencere Sınıfı Kütüphanesini Yükle...", ID_LOADWCLIB
         MENUITEM SEPARATOR
