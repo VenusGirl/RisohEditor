@@ -56,7 +56,7 @@ std::basic_string<T_CHAR> mstr_dec_dword(DWORD value)
 }
 
 MString mstr_dec(int value);
-MString mstr_hex(int value);
+MString mstr_hex(unsigned int value);
 MString mstr_hex_word(WORD value);
 bool mstr_unquote(std::string& str);
 bool mstr_unquote(MStringW& str);
@@ -526,7 +526,7 @@ inline MString mstr_dec(int value)
 	return ret;
 }
 
-inline MString mstr_hex(int value)
+inline MString mstr_hex(unsigned int value)
 {
 	MString ret, str;
 	if (value == 0)
