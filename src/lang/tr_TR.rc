@@ -1393,7 +1393,7 @@ STRINGTABLE
     IDS_SAVEAS "Farklı Kaydet"
     IDS_CANNOTADDICON "Simge eklenemiyor."
     IDS_ADDICON "Simge Ekle"
-    IDS_ICOFILTER "Simge Dosyaları (*.ico)|*.ico|Tüm Dosyalar (*.*)|*.*|"
+    IDS_ICOFILTER "Simge Dosyaları (*.ico)|*.ico|Animasyonlu Simge Dosyaları (*.ani)|*.ani|Tüm Dosyalar (*.*)|*.*|"
     IDS_REPLACEICO "Simgeyi Değiştir"
     IDS_CANTREPLACEICO "Simge değiştirilemiyor."
     IDS_EXISTSOVERWRITE "Öğe zaten mevcut. Üzerine yazılsın mı?"

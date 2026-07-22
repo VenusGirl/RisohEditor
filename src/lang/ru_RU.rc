@@ -1393,7 +1393,7 @@ STRINGTABLE
     IDS_SAVEAS "Сохранить как"
     IDS_CANNOTADDICON "Невозможно добавить значок."
     IDS_ADDICON "Добавить значок"
-    IDS_ICOFILTER "Значки (*.ico)|*.ico|Все файлы (*.*)|*.*|"
+    IDS_ICOFILTER "Значки (*.ico)|*.ico|Анимированные значки (*.ani)|*.ani|Все файлы (*.*)|*.*|"
     IDS_REPLACEICO "Заменить значок"
     IDS_CANTREPLACEICO "Невозможно заменить значок."
     IDS_EXISTSOVERWRITE "Элемент уже существует. Перезаписать?"

@@ -1393,7 +1393,7 @@ STRINGTABLE
     IDS_SAVEAS "다른 이름으로 저장"
     IDS_CANNOTADDICON "아이콘을 추가할 수 없습니다."
     IDS_ADDICON "아이콘 추가"
-    IDS_ICOFILTER "아이콘 파일 (*.ico)|*.ico|모든 파일 (*.*)|*.*|"
+    IDS_ICOFILTER "아이콘 파일 (*.ico)|*.ico|애니메이션 아이콘 (*.ani)|*.ani|모든 파일 (*.*)|*.*|"
     IDS_REPLACEICO "아이콘 바꾸기"
     IDS_CANTREPLACEICO "아이콘을 바꿀 수 없습니다."
     IDS_EXISTSOVERWRITE "항목이 이미 있습니다. 덮어쓰시겠습니까?"

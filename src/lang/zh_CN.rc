@@ -1393,7 +1393,7 @@ STRINGTABLE
     IDS_SAVEAS "另存为"
     IDS_CANNOTADDICON "加载图标失败。"
     IDS_ADDICON "加图标"
-    IDS_ICOFILTER "图标文件 (*.ico)|*.ico|全部文件 (*.*)|*.*|"
+    IDS_ICOFILTER "图标文件 (*.ico)|*.ico|动画图标 (*.ani)|*.ani|全部文件 (*.*)|*.*|"
     IDS_REPLACEICO "替换图标"
     IDS_CANTREPLACEICO "替换图标失败。"
     IDS_EXISTSOVERWRITE "文件已经存在，替换掉?"

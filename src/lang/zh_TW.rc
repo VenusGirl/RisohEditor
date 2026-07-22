@@ -1392,7 +1392,7 @@ STRINGTABLE
     IDS_SAVEAS "另存新檔"
     IDS_CANNOTADDICON "無法載入圖示。"
     IDS_ADDICON "新增圖示"
-    IDS_ICOFILTER "圖示檔案 (*.ico)|*.ico|所有檔案 (*.*)|*.*|"
+    IDS_ICOFILTER "圖示檔案 (*.ico)|*.ico|動畫圖示 (*.ani)|*.ani|所有檔案 (*.*)|*.*|"
     IDS_REPLACEICO "取代圖示"
     IDS_CANTREPLACEICO "取代圖示失敗。"
     IDS_EXISTSOVERWRITE "檔案已存在，要覆寫嗎？"

@@ -1392,7 +1392,7 @@ STRINGTABLE
     IDS_SAVEAS "Tallenna nimellä"
     IDS_CANNOTADDICON "Kuvaketta ei voi lisätä."
     IDS_ADDICON "Lisää kuvake"
-    IDS_ICOFILTER "Kuvaketiedostot (*.ico)|*.ico|Kaikki tiedostot (*.*)|*.*|"
+    IDS_ICOFILTER "Kuvaketiedostot (*.ico)|*.ico|Animoitujen kuvakkeiden tiedostot (*.ani)|*.ani|Kaikki tiedostot (*.*)|*.*|"
     IDS_REPLACEICO "Korvaa kuvake"
     IDS_CANTREPLACEICO "Kuvaketta ei voi korvata."
     IDS_EXISTSOVERWRITE "Kohde on jo olemassa. Korvataanko?"

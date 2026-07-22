@@ -1395,7 +1395,7 @@ STRINGTABLE
     IDS_SAVEAS "Simpan Sebagai"
     IDS_CANNOTADDICON "Tidak bisa menambahkan ikon."
     IDS_ADDICON "Tambah ikon"
-    IDS_ICOFILTER "Berkas Ikon (*.ico)|*.ico|Semua Berkas (*.*)|*.*|"
+    IDS_ICOFILTER "Berkas Ikon (*.ico)|*.ico|Berkas Ikon Animasi (*.ani)|*.ani|Semua Berkas (*.*)|*.*|"
     IDS_REPLACEICO "Ganti Ikon"
     IDS_CANTREPLACEICO "Tidak bisa mengganti ikon."
     IDS_EXISTSOVERWRITE "Item telah tersedia. Timpa?"

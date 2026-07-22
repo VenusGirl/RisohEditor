@@ -1393,7 +1393,7 @@ STRINGTABLE
     IDS_SAVEAS "Guardar como"
     IDS_CANNOTADDICON "Não foi possível adicionar o ícone."
     IDS_ADDICON "Adicionar ícone"
-    IDS_ICOFILTER "Ficheiro de ícone (*.ico)|*.ico|Todos os ficheiros (*.*)|*.*|"
+    IDS_ICOFILTER "Ficheiro de ícone (*.ico)|*.ico|Ficheiro de ícone animado (*.ani)|*.ani|Todos os ficheiros (*.*)|*.*|"
     IDS_REPLACEICO "Substituir ícone"
     IDS_CANTREPLACEICO "Não foi possível substituir o ícone."
     IDS_EXISTSOVERWRITE "O item já existe. Sobrescrever?"

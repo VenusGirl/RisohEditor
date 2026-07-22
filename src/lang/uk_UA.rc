@@ -1395,7 +1395,7 @@ STRINGTABLE
     IDS_SAVEAS "Зберегти як"
     IDS_CANNOTADDICON "Неможливо додати піктограму."
     IDS_ADDICON "Додати піктограму"
-    IDS_ICOFILTER "Піктограми (*.ico)|*.ico|Усі файли (*.*)|*.*|"
+    IDS_ICOFILTER "Піктограми (*.ico)|*.ico|Анімовані піктограми (*.ani)|*.ani|Усі файли (*.*)|*.*|"
     IDS_REPLACEICO "Замінити піктограму"
     IDS_CANTREPLACEICO "Неможливо замінити піктограму."
     IDS_EXISTSOVERWRITE "Елемент вже існує. Перезаписати?"
