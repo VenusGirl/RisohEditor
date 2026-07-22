@@ -4383,3 +4383,29 @@ void MMainWnd::OnRefreshAll(HWND hwnd)
 
 	PostUpdateArrow(hwnd);
 }
+
+// ID_DEBUGTREENODE: for debugging purpose
+void MMainWnd::OnDebugTreeNode(HWND hwnd)
+{
+	// get the selected entry
+	auto entry = g_res.get_entry();
+	if (!entry)
+		return;
+
+	static const LPCWSTR apszI_[] =
+	{
+		L"ET_ANY",
+		L"ET_TYPE",
+		L"ET_STRING",
+		L"ET_NAME",
+		L"ET_LANG"
+	};
+
+	MStringW type = entry->m_type.str();
+	MStringW name = entry->m_name.str();
+	WCHAR text[MAX_PATH * 2 + 32];
+	StringCchPrintfW(text, _countof(text),
+		L"%s: type:%s, name:%s, lang:0x%04X, entry:%p, hItem:%p, strLabel:%s", apszI_[entry->m_et],
+		type.c_str(), name.c_str(), entry->m_lang, entry, entry->m_hItem, entry->m_strLabel.c_str());
+	MsgBoxDx(text, MB_ICONINFORMATION);
+}

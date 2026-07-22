@@ -616,37 +616,6 @@ BOOL MMainWnd::DoUpxDecompress(LPCWSTR pszUpx, LPCWSTR pszFile)
 	return bOK;
 }
 
-// for debugging purpose
-void MMainWnd::OnDebugTreeNode(HWND hwnd)
-{
-	WCHAR sz[MAX_PATH * 2 + 32];
-
-	// show the file paths
-	StringCchPrintfW(sz, _countof(sz), L"%s\n\n%s", m_szFile, m_szResourceH);
-	MsgBoxDx(sz, MB_ICONINFORMATION);
-
-	// get the selected entry
-	auto entry = g_res.get_entry();
-	if (!entry)
-		return;
-
-	static const LPCWSTR apszI_[] =
-	{
-		L"ET_ANY",
-		L"ET_TYPE",
-		L"ET_STRING",
-		L"ET_NAME",
-		L"ET_LANG"
-	};
-
-	MStringW type = entry->m_type.str();
-	MStringW name = entry->m_name.str();
-	StringCchPrintfW(sz, _countof(sz),
-		L"%s: type:%s, name:%s, lang:0x%04X, entry:%p, hItem:%p, strLabel:%s", apszI_[entry->m_et],
-		type.c_str(), name.c_str(), entry->m_lang, entry, entry->m_hItem, entry->m_strLabel.c_str());
-	MsgBoxDx(sz, MB_ICONINFORMATION);
-}
-
 void MMainWnd::SetShowMode(SHOW_MODE mode, BOOL bShowBinary)
 {
 	m_bShowBinEdit = bShowBinary;
