@@ -1653,7 +1653,7 @@ STRINGTABLE
     IDS_MSGTABLE_ID "メッセージ テーブルID"
     IDS_SEARCHURL "https://duckduckgo.com/?q=%s&t=h_&ia=web"
     IDS_INVALIDTYPE "無効なリソース型です。"
-    IDS_CHANGETYPEWARNING "リソース型の変更はリソースデータを壊すかもしれません。それでも変更しますか？"
+    IDS_CHANGETYPEWARNING "リソース型の変更はリソースデータを壊すかもしれません。\r\n\r\nそれでも変更しますか？"
     IDS_SAMETYPE "同じリソース型です。"
 }
 
