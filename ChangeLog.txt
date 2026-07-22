@@ -10,6 +10,7 @@
     - Fixed BUTTON and RICHEDIT styles.
     - Enabled changing resource type.
     - Enabled cloning resource type.
+    - Fixed DIALOG style dumping.
 - v.6.0.5 (2026-07-17)
     - Enabled the treeview arrow to change the resource name.
     - Fixed EGA. Added some EGA programs.

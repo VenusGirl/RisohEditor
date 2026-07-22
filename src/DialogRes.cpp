@@ -202,6 +202,12 @@ bool DialogItem::SaveToStream(MByteStreamEx& stream, bool extended) const
 	if (!stream.WriteString(m_title.ptr()))
 		return false;
 
+	if (m_extra.size() > 0xFF)
+	{
+		assert(0);
+		return false;
+	}
+
 	BYTE b = BYTE(m_extra.size());
 	if (!stream.WriteRaw(b))
 		return false;
@@ -255,6 +261,12 @@ bool DialogItem::SaveToStreamEx(MByteStreamEx& stream) const
 
 	if (m_extra.size() > 0)
 	{
+		if (m_extra.size() > 0xFFFF)
+		{
+			assert(0);
+			return false;
+		}
+
 		WORD ExtraSize = WORD(m_extra.size());
 		if (!stream.WriteData(&m_extra[0], ExtraSize))
 			return false;
@@ -946,7 +958,7 @@ MStringW DialogRes::Dump(const MIdOrString& id_or_str, bool bAlwaysControl)
 		if ((value & WS_CAPTION) == WS_CAPTION)
 		{
 #ifndef NO_CONSTANTS_DB
-			str = g_db.DumpBitField(L"DIALOG", L"PARENT.STYLE", value);
+			str = g_db.DumpBitFieldOrZero(L"DIALOG", L"PARENT.STYLE", value);
 #else
 			str = mstr_hex(value);
 #endif
@@ -954,7 +966,7 @@ MStringW DialogRes::Dump(const MIdOrString& id_or_str, bool bAlwaysControl)
 		else if ((value & WS_CAPTION) == WS_BORDER)
 		{
 #ifndef NO_CONSTANTS_DB
-			str = g_db.DumpBitField(L"DIALOG", L"PARENT.STYLE", value, WS_DLGFRAME);
+			str = g_db.DumpBitFieldOrZero(L"DIALOG", L"PARENT.STYLE", value, WS_DLGFRAME);
 #else
 			str = mstr_hex(value);
 #endif
@@ -962,7 +974,7 @@ MStringW DialogRes::Dump(const MIdOrString& id_or_str, bool bAlwaysControl)
 		else if ((value & WS_CAPTION) == WS_DLGFRAME)
 		{
 #ifndef NO_CONSTANTS_DB
-			str = g_db.DumpBitField(L"DIALOG", L"PARENT.STYLE", value, WS_BORDER);
+			str = g_db.DumpBitFieldOrZero(L"DIALOG", L"PARENT.STYLE", value, WS_BORDER);
 #else
 			str = mstr_hex(value);
 #endif
@@ -970,22 +982,10 @@ MStringW DialogRes::Dump(const MIdOrString& id_or_str, bool bAlwaysControl)
 		else
 		{
 #ifndef NO_CONSTANTS_DB
-			str = g_db.DumpBitField(L"DIALOG", L"PARENT.STYLE", value, WS_CAPTION);
+			str = g_db.DumpBitFieldOrZero(L"DIALOG", L"PARENT.STYLE", value, WS_CAPTION);
 #else
 			str = mstr_hex(value);
 #endif
-		}
-		if (value)
-		{
-			if (!str.empty())
-				str += L" | ";
-
-			str = mstr_hex(value);
-		}
-		else
-		{
-			if (str.empty())
-				str += L"0";
 		}
 		ret += L"STYLE ";
 		ret += str;
@@ -996,22 +996,10 @@ MStringW DialogRes::Dump(const MIdOrString& id_or_str, bool bAlwaysControl)
 	{
 		DWORD value = m_ex_style;
 #ifndef NO_CONSTANTS_DB
-		MStringW str = g_db.DumpBitField(L"EXSTYLE", L"", value);
+		MStringW str = g_db.DumpBitFieldOrZero(L"EXSTYLE", L"", value);
 #else
 		MStringW str = mstr_hex(value);
 #endif
-		if (value)
-		{
-			if (!str.empty())
-				str += L" | ";
-
-			str = mstr_hex(value);
-		}
-		else
-		{
-			if (str.empty())
-				str += L"0";
-		}
 		ret += L"EXSTYLE ";
 		ret += str;
 		ret += L"\r\n";
@@ -1188,8 +1176,7 @@ INT DialogRes::GetBaseUnits(INT& y) const
 		else
 		{
 			// check existence of "MS Shell Dlg 2"
-			INT ret = TRUE;
-			ret = EnumFontFamilies(hDC, L"MS Shell Dlg 2", (FONTENUMPROC)EnumFontFamProc, 0);
+			INT ret = EnumFontFamilies(hDC, L"MS Shell Dlg 2", (FONTENUMPROC)EnumFontFamProc, 0);
 
 			LOGFONTW lf;
 			ZeroMemory(&lf, sizeof(lf));
@@ -1455,7 +1442,8 @@ bool DialogItemClipboard::Copy(HWND hwndRad, const DialogItems& items)
 	{
 		if (LPVOID pv = GlobalLock(hGlobal))
 		{
-			CopyMemory(pv, &stream[0], stream.size());
+			if (stream.size())
+				CopyMemory(pv, &stream[0], stream.size());
 			GlobalUnlock(hGlobal);
 
 			if (OpenClipboard(hwndRad))
@@ -1487,7 +1475,8 @@ bool DialogItemClipboard::Paste(HWND hwndRad, DialogItems& items) const
 		if (LPVOID pv = GlobalLock(hGlobal))
 		{
 			MByteStreamEx stream(siz);
-			CopyMemory(&stream[0], pv, siz);
+			if (siz)
+				CopyMemory(&stream[0], pv, siz);
 
 			DialogItem item;
 			while (item.LoadFromStream(stream, m_dialog_res.IsExtended()))

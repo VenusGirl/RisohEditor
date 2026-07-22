@@ -10,6 +10,7 @@
     - Corretti gli stili BUTTON e RICHEDIT.
     - Abilitata modifica tipo risorsa.
     - Abilitata clonazione tipo risorsa.
+    - Corretto il dump in stile DIALOG.
 - v.6.0.5 (17.07.2026)
     - Abilitata la freccia della visualizzazione struttura per modificare il nome risorsa.
     - Corretto EGA. Aggiunti alcuni programmi EGA.

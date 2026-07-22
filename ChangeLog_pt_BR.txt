@@ -10,6 +10,7 @@
     - Corrigidos os estilos BUTTON e RICHEDIT.
     - Habilitada a alteração do tipo de recurso.
     - Habilitado o tipo de recurso de clonagem.
+    - Corrigido o despejo de dados no estilo DIALOG.
 - v.6.0.5 (2026-07-17)
     - Habilitada a seta da *treeview* para alterar o nome do recurso.
     - Corrigido o suporte a EGA. Adicionados alguns programas EGA.

@@ -531,7 +531,9 @@ ConstantsDB::DumpBitField(const CategoryType& cat1, const CategoryType& cat2,
 
 	if (value)
 	{
-		if (!ret.empty())
+		if (ret == L"0")
+			ret.clear();
+		else if (!ret.empty())
 			ret += L" | ";
 
 		ret += mstr_hex(value);

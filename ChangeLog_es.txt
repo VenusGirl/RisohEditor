@@ -10,6 +10,7 @@
     - Se corrigieron los estilos BUTTON y RICHEDIT.
     - Se habilitó el cambio de tipo de recurso.
     - Se habilitó el tipo de recurso de clonación.
+    - Se ha corregido el volcado de estilo DIALOG.
 - v.6.0.5 (2026-07-17)
     - Se habilitó la flecha de la vista de árbol para cambiar el nombre del recurso.
     - Se corrigió EGA. Se añadieron algunos programas EGA.
