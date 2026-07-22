@@ -37,7 +37,7 @@ MStringW EntryBase::get_name_label() const
 		return L"0";
 
 	// get an IDTYPE_ value
-	IDTYPE_ nIDTYPE_ = g_db.IDTypeFromResType(m_type);
+	IDTYPE_ nIDTYPE_ = IDTypeFromResType(m_type);
 
 	// RT_DLGINIT uses dialog name
 	if (m_type == RT_DLGINIT)

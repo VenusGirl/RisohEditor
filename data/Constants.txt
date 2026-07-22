@@ -1,3 +1,6 @@
+﻿; Constants.txt
+; セクション名にドット(".")を含むものは定数を意味しない。
+
 [CLASS_STYLE]
 CS_VREDRAW, 0x1
 CS_HREDRAW, 0x2

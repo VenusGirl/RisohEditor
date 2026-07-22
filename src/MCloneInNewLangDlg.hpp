@@ -50,7 +50,7 @@ public:
 		InitResTypeComboBox(hCmb1, m_type);
 
 		// for Names
-		auto nIDTYPE_ = g_db.IDTypeFromResType(m_type);
+		auto nIDTYPE_ = IDTypeFromResType(m_type);
 		HWND hCmb2 = GetDlgItem(hwnd, cmb2);
 		InitResNameComboBox(hCmb2, m_name, nIDTYPE_);
 

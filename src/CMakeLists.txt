@@ -1,6 +1,7 @@
 # libRisohEditor.a
 add_library(libRisohEditor STATIC
     AccelRes.cpp
+    ConstantsDB.cpp
     DialogRes.cpp
     DlgInitRes.cpp
     EgaBridge.cpp

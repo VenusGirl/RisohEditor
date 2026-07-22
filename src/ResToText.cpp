@@ -1379,7 +1379,7 @@ MString ResToText::DumpName(const MIdOrString& type, const MIdOrString& name)
 	}
 	else
 	{
-		ret += g_db.GetNameOfResID(g_db.IDTypeFromResType(type), name.m_id);
+		ret += g_db.GetNameOfResID(IDTypeFromResType(type), name.m_id);
 	}
 	return ret;
 }

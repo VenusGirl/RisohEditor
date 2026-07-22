@@ -26,6 +26,101 @@ std::vector<LPCWSTR> g_idtype_strings =
 #undef DEFINE_IDTYPE
 };
 
+bool IsEntityIDType(IDTYPE_ nIDTYPE_)
+{
+	switch (nIDTYPE_)
+	{
+	case IDTYPE_CURSOR:
+	case IDTYPE_BITMAP:
+	case IDTYPE_MENU:
+	case IDTYPE_DIALOG:
+	case IDTYPE_ACCEL:
+	case IDTYPE_ICON:
+	case IDTYPE_ANICURSOR:
+	case IDTYPE_ANIICON:
+	case IDTYPE_HTML:
+	case IDTYPE_RESOURCE:
+	case IDTYPE_RCDATA:
+	case IDTYPE_MSGTABLE:
+		return true;
+	default:
+		return false;
+	}
+}
+
+IDTYPE_ IDTypeFromResType(const MIdOrString& type)
+{
+	if (type == RT_CURSOR)
+	{
+		return IDTYPE_UNKNOWN;
+	}
+	if (type == RT_BITMAP)
+	{
+		return IDTYPE_BITMAP;
+	}
+	if (type == RT_ICON)
+	{
+		return IDTYPE_UNKNOWN;
+	}
+	if (type == RT_MENU)
+	{
+		return IDTYPE_MENU;
+	}
+	if (type == RT_DIALOG)
+	{
+		return IDTYPE_DIALOG;
+	}
+	if (type == RT_STRING)
+	{
+		return IDTYPE_STRING;
+	}
+	if (type == RT_ACCELERATOR)
+	{
+		return IDTYPE_ACCEL;
+	}
+	if (type == RT_GROUP_CURSOR)
+	{
+		return IDTYPE_CURSOR;
+	}
+	if (type == RT_GROUP_ICON)
+	{
+		return IDTYPE_ICON;
+	}
+	if (type == RT_VERSION)
+	{
+		return IDTYPE_UNKNOWN;
+	}
+	if (type == RT_DLGINCLUDE)
+	{
+		return IDTYPE_UNKNOWN;
+	}
+	if (type == RT_ANICURSOR)
+	{
+		return IDTYPE_ANICURSOR;
+	}
+	if (type == RT_ANIICON)
+	{
+		return IDTYPE_ANIICON;
+	}
+	if (type == RT_HTML)
+	{
+		return IDTYPE_HTML;
+	}
+	if (type == RT_MANIFEST)
+	{
+		return IDTYPE_UNKNOWN;
+	}
+	if (type == RT_MESSAGETABLE)
+	{
+		return IDTYPE_MSGTABLE;
+	}
+	if (type == RT_RCDATA)
+	{
+		return IDTYPE_RCDATA;
+	}
+	return IDTYPE_RESOURCE;
+}
+
 MStringW MapIDTypeToPrefix(IDTYPE_ idtype)
 {
 	auto localized = MapIDType(idtype);

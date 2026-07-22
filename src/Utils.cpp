@@ -1941,7 +1941,7 @@ MString GetAssoc(const MString& name)
 		EntrySet found;
 		g_res.search(found, ET_LANG, type, name_or_id);
 
-		if (found.size() && g_db.IsEntityIDType(nIDTYPE_))
+		if (found.size() && IsEntityIDType(nIDTYPE_))
 		{
 			for (auto e : found)	// enumerate the found entries
 			{
@@ -2109,7 +2109,7 @@ void InitResNameComboBox(HWND hCmb, const MIdOrString& id, IDTYPE_ nIDTYPE_)
 	}
 
 	if (k == -1 &&
-		nIDTYPE_ != IDTYPE_RESOURCE && g_db.IsEntityIDType(nIDTYPE_))
+		nIDTYPE_ != IDTYPE_RESOURCE && IsEntityIDType(nIDTYPE_))
 	{
 		// not found
 
@@ -2187,7 +2187,7 @@ void InitResNameComboBoxDword(HWND hCmb, const DWORD& id, IDTYPE_ nIDTYPE_)
 	}
 
 	if (k == -1 &&
-		nIDTYPE_ != IDTYPE_RESOURCE && g_db.IsEntityIDType(nIDTYPE_))
+		nIDTYPE_ != IDTYPE_RESOURCE && IsEntityIDType(nIDTYPE_))
 	{
 		// not found
 
@@ -2297,7 +2297,7 @@ void InitResNameComboBox(HWND hCmb, const MIdOrString& id, IDTYPE_ nIDTYPE_1, ID
 	}
 
 	if (k == -1 &&
-		nIDTYPE_1 != IDTYPE_RESOURCE && g_db.IsEntityIDType(nIDTYPE_1))
+		nIDTYPE_1 != IDTYPE_RESOURCE && IsEntityIDType(nIDTYPE_1))
 	{
 		// not found
 
@@ -3638,7 +3638,7 @@ BOOL InitNames(void)
 	if (!entry)
 		return FALSE;   // no selection
 
-	auto nIDTYPE_ = g_db.IDTypeFromResType(entry->m_type);
+	auto nIDTYPE_ = IDTypeFromResType(entry->m_type);
 	if (entry->m_type == RT_DLGINIT)
 		nIDTYPE_ = IDTYPE_DIALOG;
 	auto prefix = MapIDTypeToPrefix(nIDTYPE_);
@@ -3700,7 +3700,7 @@ BOOL ChooseNameListBoxName(HWND hwnd, const MIdOrString& type, const MIdOrString
 	if (g_settings.bHideID)
 		return TRUE;
 
-	auto nIDTYPE_ = g_db.IDTypeFromResType(type);
+	auto nIDTYPE_ = IDTypeFromResType(type);
 	if (type == RT_DLGINIT)
 		nIDTYPE_ = IDTYPE_DIALOG;
 	auto prefix = MapIDTypeToPrefix(nIDTYPE_);

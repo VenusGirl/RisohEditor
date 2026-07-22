@@ -183,7 +183,7 @@ void MIDListDlg::AddOrMergeRow(const MString& text1, const MString& type, const 
 
 MString MIDListDlg::GetTypeTextFromEntry(const EntryBase *entry) const
 {
-	auto nIDTYPE_ = g_db.IDTypeFromResType(entry->m_type);
+	auto nIDTYPE_ = IDTypeFromResType(entry->m_type);
 	if (nIDTYPE_ != IDTYPE_UNKNOWN && nIDTYPE_ != IDTYPE_RESOURCE)
 	{
 		auto it = m_map1.find(nIDTYPE_);
@@ -257,7 +257,7 @@ void MIDListDlg::AddResourceRow(const EntryBase *entry)
 	}
 
 	MString text1, text3;
-	auto nIDTYPE_ = g_db.IDTypeFromResType(entry->m_type);
+	auto nIDTYPE_ = IDTypeFromResType(entry->m_type);
 	if (!entry->m_name.is_str())
 	{
 		if (g_settings.bHideID)

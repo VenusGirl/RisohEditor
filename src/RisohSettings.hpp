@@ -11,12 +11,18 @@
 #include <vector>
 #include <map>
 
+//////////////////////////////////////////////////////////////////////////////
+// IDTYPE_
+
 enum IDTYPE_
 {
 #define DEFINE_IDTYPE(index, idtype, str, wstr, ids, prefix) idtype = index,
 #include "idtypes.h"
 #undef DEFINE_IDTYPE
 };
+
+bool IsEntityIDType(IDTYPE_ nIDTYPE_);
+IDTYPE_ IDTypeFromResType(const MIdOrString& type);
 
 //////////////////////////////////////////////////////////////////////////////
 

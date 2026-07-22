@@ -338,7 +338,7 @@ public:
 		// the resource type (RT_*) --> (type, iType)
 		MIdOrString type;
 		WORD nRT_ = (WORD)g_db.GetValue(L"RESOURCE", strIDType);
-		INT iType = g_db.IDTypeFromResType(nRT_);
+		INT iType = IDTypeFromResType(nRT_);
 		if (nRT_ != 0)
 		{
 			type = nRT_;
