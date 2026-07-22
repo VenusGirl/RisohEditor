@@ -254,13 +254,12 @@ mstr_join(const T_STR_CONTAINER& container,
 
 void mstr_upper(std::string& str);
 void mstr_upper(std::wstring& str);
+void mstr_upper(char* str);
+void mstr_upper(wchar_t* str);
+
 void mstr_lower(std::string& str);
 void mstr_lower(std::wstring& str);
-
-void mstr_upper(char* str);
 void mstr_lower(char* str);
-
-void mstr_upper(wchar_t* str);
 void mstr_lower(wchar_t* str);
 
 ////////////////////////////////////////////////////////////////////////////
