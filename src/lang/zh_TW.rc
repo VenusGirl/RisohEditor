@@ -10,26 +10,26 @@ LANGUAGE LANG_CHINESE, SUBLANG_DEFAULT
 
 IDR_MAINMENU MENU
 {
-    POPUP "文件(&F)"
+    POPUP "檔案(&F)"
     {
-        MENUITEM "新建(&N)\tCtrl+N", ID_NEW
+        MENUITEM "新增(&N)\tCtrl+N", ID_NEW
         MENUITEM SEPARATOR
         MENUITEM "開啟(&O)...\tCtrl+O", ID_OPEN
-        MENUITEM "覆寫(&S)...\tCtrl+S", ID_SAVE
-        MENUITEM "另存為(&A)...\tShift+Ctrl+S", ID_SAVEAS
-        MENUITEM "另存壓縮(&M)...", ID_SAVEASCOMPRESS
+        MENUITEM "覆寫儲存(&S)...\tCtrl+S", ID_SAVE
+        MENUITEM "另存新檔(&A)...\tShift+Ctrl+S", ID_SAVEAS
+        MENUITEM "另存為壓縮檔(&M)...", ID_SAVEASCOMPRESS
         MENUITEM SEPARATOR
-        MENUITEM "導入(&I)...\tCtrl+I", ID_IMPORT
-        MENUITEM "導出(&E)...\tCtrl+P", ID_EXPORT
+        MENUITEM "匯入(&I)...\tCtrl+I", ID_IMPORT
+        MENUITEM "匯出(&E)...\tCtrl+P", ID_EXPORT
         MENUITEM SEPARATOR
-        MENUITEM "重新載入 &resource.h...\tCtrl+R", ID_LOADRESH
-        MENUITEM "保存 resource.h(&S)...", ID_UPDATERESHBANG
-        MENUITEM "修改記錄(&V) resource.h ...", ID_ADVICERESH
+        MENUITEM "重新載入 resource.h (&R)...\tCtrl+R", ID_LOADRESH
+        MENUITEM "儲存 resource.h(&H)...", ID_UPDATERESHBANG
+        MENUITEM "resource.h 修改建議(&V)...", ID_ADVICERESH
         MENUITEM "卸載 resource.h (&U)", ID_UNLOADRESH
         MENUITEM SEPARATOR
-        MENUITEM "載入視窗類DLL(&W)...", ID_LOADWCLIB
+        MENUITEM "載入視窗類別函式庫(&W)...", ID_LOADWCLIB
         MENUITEM SEPARATOR
-        POPUP "最近使用的資料夾"
+        POPUP "最近使用的檔案"
         {
             MENUITEM "(無)", -1, GRAYED
         }
@@ -38,41 +38,41 @@ IDR_MAINMENU MENU
     }
     POPUP "編輯(&E)"
     {
-        MENUITEM "&GUI模式編輯...\tCtrl+U", ID_GUIEDIT
+        MENUITEM "GUI 編輯(&G)...\tCtrl+U", ID_GUIEDIT
         MENUITEM SEPARATOR
         POPUP "新增(&A)"
         {
             MENUITEM "新增圖示(&I)...", ID_ADDICON
             MENUITEM "新增游標(&C)...", ID_ADDCURSOR
             MENUITEM "新增點陣圖(&B)...", ID_ADDBITMAP
-            MENUITEM "新增對話(&D)...", ID_ADDDIALOG
+            MENUITEM "新增對話方塊(&D)...", ID_ADDDIALOG
             MENUITEM "新增選單(&M)...", ID_ADDMENU
             MENUITEM "新增字串表(&S)...", ID_ADDSTRINGTABLE
             MENUITEM "新增訊息表(&E)...", ID_ADDMESSAGETABLE
-            MENUITEM "新增&HTML...", ID_ADDHTML
-            MENUITEM "新增加速器(&A)...", ID_ADDACCEL
+            MENUITEM "新增 &HTML...", ID_ADDHTML
+            MENUITEM "新增加速鍵(&A)...", ID_ADDACCEL
             MENUITEM "新增版本資訊(&V)...", ID_ADDVERINFO
             MENUITEM "新增清單(&F)...", ID_ADDMANIFEST
-            MENUITEM "新增工具欄(&T)...", ID_ADDTOOLBAR
+            MENUITEM "新增工具列(&T)...", ID_ADDTOOLBAR
             MENUITEM "新增資源項目(&R)...", ID_ADDRES
         }
-        POPUP "替換(&R)"
+        POPUP "取代(&R)"
         {
-            MENUITEM "替換圖示(&I)...", ID_REPLACEICON
-            MENUITEM "替換游標(&C)...", ID_REPLACECURSOR
-            MENUITEM "替換點陣圖文件(&B)...", ID_REPLACEBITMAP
-            MENUITEM "替換二進位制資源項目(&R)...", ID_REPLACEBIN
+            MENUITEM "取代圖示(&I)...", ID_REPLACEICON
+            MENUITEM "取代游標(&C)...", ID_REPLACECURSOR
+            MENUITEM "取代點陣圖(&B)...", ID_REPLACEBITMAP
+            MENUITEM "取代二進位資源項目(&R)...", ID_REPLACEBIN
         }
-        POPUP "導出(&E)"
+        POPUP "匯出(&E)"
         {
-            MENUITEM "導出圖示(&I)...", ID_EXTRACTICON
-            MENUITEM "導出游標(&C)...", ID_EXTRACTCURSOR
-            MENUITEM "導出點陣圖文件(&B)...", ID_EXTRACTBITMAP
-            MENUITEM "導出 RC 文件(&A)...", ID_EXTRACTRC
-            MENUITEM "導出二進位制資源檔(&R)...", ID_EXTRACTBIN
+            MENUITEM "匯出圖示(&I)...", ID_EXTRACTICON
+            MENUITEM "匯出游標(&C)...", ID_EXTRACTCURSOR
+            MENUITEM "匯出點陣圖(&B)...", ID_EXTRACTBITMAP
+            MENUITEM "匯出為 RC 檔案(&A)...", ID_EXTRACTRC
+            MENUITEM "匯出二進位資源檔(&R)...", ID_EXTRACTBIN
         }
         MENUITEM SEPARATOR
-        MENUITEM "更改類型/名稱/語言(&H)\tF2", ID_EDITLABEL
+        MENUITEM "變更類型/名稱/語言(&H)\tF2", ID_EDITLABEL
         MENUITEM SEPARATOR
         POPUP "複製(&C)"
         {
@@ -84,67 +84,66 @@ IDR_MAINMENU MENU
         MENUITEM SEPARATOR
         MENUITEM "刪除(&D)\tDel", ID_DELETERES
         MENUITEM SEPARATOR
-        MENUITEM "&ID關聯列表...", ID_IDASSOC
-        MENUITEM "預定義的巨集(&M)...", ID_PREDEFMACROS
-        MENUITEM "字型設置(&F)...", ID_FONTS
-        MENUITEM "設置PATH(&P)...", ID_SETPATHS
+        MENUITEM "ID 關聯列表(&I)...", ID_IDASSOC
+        MENUITEM "預定義巨集(&M)...", ID_PREDEFMACROS
+        MENUITEM "字型設定(&F)...", ID_FONTS
+        MENUITEM "設定 PATH(&P)...", ID_SETPATHS
         MENUITEM SEPARATOR
-        MENUITEM "&UI Language Select (UI語言選擇)...", ID_CHOOSEUILANG
+        MENUITEM "UI 語言選擇(&L)...", ID_CHOOSEUILANG
         MENUITEM SEPARATOR
-        MENUITEM "Delphi DFM 設置...", ID_DFMSETTINGS
-        MENUITEM "設置(&C)...\tAlt+Enter", ID_CONFIG
+        MENUITEM "Delphi DFM 設定(&S)...", ID_DFMSETTINGS
+        MENUITEM "設定(&O)...\tAlt+Enter", ID_CONFIG
     }
-    POPUP "搜索(&S)"
+    POPUP "搜尋(&S)"
     {
-        MENUITEM "查詢(&F)...\tCtrl+F", ID_FIND
+        MENUITEM "尋找(&F)...\tCtrl+F", ID_FIND
         MENUITEM SEPARATOR
-        MENUITEM "向上搜索(&U)\tShift+F3", ID_FINDUPWARD
-        MENUITEM "向下搜索(&D)\tF3", ID_FINDDOWNWARD
+        MENUITEM "向上搜尋(&U)\tShift+F3", ID_FINDUPWARD
+        MENUITEM "向下搜尋(&D)\tF3", ID_FINDDOWNWARD
         MENUITEM SEPARATOR
-        MENUITEM "查詢常量(&Q)...", ID_QUERYCONSTANT
+        MENUITEM "查詢常數(&Q)...", ID_QUERYCONSTANT
         MENUITEM SEPARATOR
         MENUITEM "跳到指定行(&G)...\tCtrl+G", ID_GOTOLINE
     }
-    POPUP "界面顯示(&V)"
+    POPUP "檢視(&V)"
     {
-        MENUITEM "狀態欄(&S)", ID_STATUSBAR
-        MENUITEM "工具欄(&T)", ID_SHOWHIDETOOLBAR
-        MENUITEM "二進位制模式(&B)", ID_BINARYPANE
+        MENUITEM "狀態列(&S)", ID_STATUSBAR
+        MENUITEM "工具列(&T)", ID_SHOWHIDETOOLBAR
+        MENUITEM "二進位模式(&B)", ID_BINARYPANE
         MENUITEM SEPARATOR
         MENUITEM "全部展開(&X)\tCtrl+K", ID_EXPAND_ALL
         MENUITEM "全部摺疊(&O)\tCtrl+L", ID_COLLAPSE_ALL
         MENUITEM SEPARATOR
-        MENUITEM "資源ID列表(&R)", ID_IDLIST
-        MENUITEM "語言列表(&L)...", ID_SHOWLANGS
+        MENUITEM "資源 ID 清單(&R)", ID_IDLIST
+        MENUITEM "語言清單(&L)...", ID_SHOWLANGS
         MENUITEM SEPARATOR
-        MENUITEM "使用&CONTROL欄位", ID_ALWAYSCONTROL
-        MENUITEM "不使用&ID巨集定義", ID_HIDEIDMACROS
-        MENUITEM "使用IDC_ST&ATIC", ID_USEIDC_STATIC
+        MENUITEM "總是使用 &CONTROL 欄位", ID_ALWAYSCONTROL
+        MENUITEM "不使用 ID 巨集定義", ID_HIDEIDMACROS
+        MENUITEM "使用 IDC_ST&ATIC", ID_USEIDC_STATIC
         MENUITEM "自動換行(&W)", ID_WORD_WRAP
-        MENUITEM "使用BE&GIN/END", ID_USEBEGINEND
+        MENUITEM "使用 BEGIN/END(&G)", ID_USEBEGINEND
         MENUITEM SEPARATOR
-        MENUITEM "資源項的編碼(&E)...", ID_ENCODING
-        MENUITEM "對話框字型替換(&F)...", ID_DIALOG_FONT_SUBSTITUTES
+        MENUITEM "資源項目的編碼(&E)...", ID_ENCODING
+        MENUITEM "對話方塊字型替換(&F)...", ID_DIALOG_FONT_SUBSTITUTES
         MENUITEM SEPARATOR
-        MENUITEM "更新到最新資訊(&F)", ID_REFRESHALL
+        MENUITEM "重新整理(&U)", ID_REFRESHALL
     }
     POPUP "自動化(&A)"
     {
-        MENUITEM "電腦語言 &EGA...", ID_EGA
-        MENUITEM "運行EGA程序(&R)...", ID_EGA_PROGRAM
-        MENUITEM "手動 (EGA)", ID_OPEN_EGA_MANUAL
+        MENUITEM "程式語言 EGA(&E)...", ID_EGA
+        MENUITEM "執行 EGA 程式(&R)...", ID_EGA_PROGRAM
+        MENUITEM "開啟 EGA 手冊(&M)", ID_OPEN_EGA_MANUAL
     }
-    POPUP "幫助(&H)"
+    POPUP "說明(&H)"
     {
         MENUITEM "開啟 README.txt(&R)", ID_OPENREADME
-        MENUITEM "開啟 HYOJUNKA.md(&H)", ID_OPENHYOJUNKA
         MENUITEM "開啟 ChangeLog.txt", ID_OPENHISTORY
         MENUITEM "開啟 LICENSE.txt(&L)", ID_OPENLICENSE
         MENUITEM SEPARATOR
-        MENUITEM "RisohEditor指南(&G)", ID_GUIDE
-        MENUITEM "檢查 RisohEditor 是否更新(&U)...", ID_CHECKUPDATE
+        MENUITEM "RisohEditor 使用指南(&G)", ID_GUIDE
+        MENUITEM "檢查更新(&U)...", ID_CHECKUPDATE
         MENUITEM SEPARATOR
-        MENUITEM "關於(&A)...", ID_ABOUT
+        MENUITEM "關於 RisohEditor(&A)...", ID_ABOUT
     }
 }
 
@@ -156,38 +155,38 @@ IDR_POPUPMENUS MENU
     }
     POPUP "Popup #1"
     {
-        MENUITEM "增加控制項(&A)...", ID_ADDCTRL
+        MENUITEM "新增控制項(&A)...", ID_ADDCTRL
         MENUITEM SEPARATOR
-        MENUITEM "剪切(&T)\tCtrl+X", ID_CUT
+        MENUITEM "剪下(&T)\tCtrl+X", ID_CUT
         MENUITEM "複製(&C)\tCtrl+C", ID_COPY
-        MENUITEM "黏貼(&P)\tCtrl+V", ID_PASTE
+        MENUITEM "貼上(&P)\tCtrl+V", ID_PASTE
         MENUITEM "刪除(&D)\tDel", ID_DELCTRL
         MENUITEM SEPARATOR
         POPUP "索引位置(&I)"
         {
-            MENUITEM "置頂(&T)", ID_CTRLINDEXTOP
+            MENUITEM "移到最上層(&T)", ID_CTRLINDEXTOP
             MENUITEM SEPARATOR
-            MENUITEM "減1(&D)", ID_CTRLINDEXMINUS
-            MENUITEM "增1(&I)", ID_CTRLINDEXPLUS
+            MENUITEM "往上移一層(&D)", ID_CTRLINDEXMINUS
+            MENUITEM "往下移一層(&I)", ID_CTRLINDEXPLUS
             MENUITEM SEPARATOR
-            MENUITEM "置底(&B)", ID_CTRLINDEXBOTTOM
+            MENUITEM "移到最下層(&B)", ID_CTRLINDEXBOTTOM
             MENUITEM SEPARATOR
             MENUITEM "切換顯示模式(&S)\tCtrl+D", ID_SHOWHIDEINDEX
         }
-        POPUP "排列方式(&A)"
+        POPUP "對齊方式(&G)"
         {
-            MENUITEM "向上對齊(&T)", ID_TOPALIGN
-            MENUITEM "向下對齊(&B)", ID_BOTTOMALIGN
-            MENUITEM "左對齊(&L)", ID_LEFTALIGN
-            MENUITEM "右對齊(&R)", ID_RIGHTALIGN
+            MENUITEM "置頂對齊(&T)", ID_TOPALIGN
+            MENUITEM "置底對齊(&B)", ID_BOTTOMALIGN
+            MENUITEM "靠左對齊(&L)", ID_LEFTALIGN
+            MENUITEM "靠右對齊(&R)", ID_RIGHTALIGN
             MENUITEM SEPARATOR
-            MENUITEM "適應網格(&G)", ID_FITTOGRID
+            MENUITEM "符合格線(&G)", ID_FITTOGRID
         }
         MENUITEM SEPARATOR
-        MENUITEM "刷新(&R)", ID_REFRESHDIALOG
+        MENUITEM "重新繪製(&R)", ID_REFRESHDIALOG
         MENUITEM SEPARATOR
         MENUITEM "控制項屬性(&P)...", ID_CTRLPROP
-        MENUITEM "對話框屬性(&O)...", ID_DLGPROP
+        MENUITEM "對話方塊屬性(&O)...", ID_DLGPROP
     }
     POPUP "Popup #2"
     {
@@ -197,26 +196,26 @@ IDR_POPUPMENUS MENU
     {
         MENUITEM "跳轉(&J)!", ID_IDJUMP
         MENUITEM SEPARATOR
-        MENUITEM "增加ID(&A)...", ID_ADDRESID
-        MENUITEM "修改ID(&M)...", ID_MODIFYRESID
+        MENUITEM "新增 ID(&A)...", ID_ADDRESID
+        MENUITEM "修改 ID(&M)...", ID_MODIFYRESID
         MENUITEM SEPARATOR
         MENUITEM "複製名稱(&N)", ID_COPYRESIDNAME
         MENUITEM "複製值(&V)", ID_COPYRESIDVALUE
-        MENUITEM "複制定義(&D)\tCtrl+C", ID_COPYIDDEF
+        MENUITEM "複製定義(&D)\tCtrl+C", ID_COPYIDDEF
         MENUITEM SEPARATOR
-        MENUITEM "刪除ID(&D) \tDel", ID_DELETERESID
+        MENUITEM "刪除 ID(&D) \tDel", ID_DELETERESID
         MENUITEM SEPARATOR
-        MENUITEM "十進位制數位(&D)", ID_BASE10
-        MENUITEM "十六進位制數位(&H)", ID_BASE16
+        MENUITEM "十進位(&D)", ID_BASE10
+        MENUITEM "十六進位(&H)", ID_BASE16
         MENUITEM SEPARATOR
         MENUITEM "重新載入(&R)", ID_LOADRESH
     }
     POPUP "Popup #4"
     {
-        MENUITEM "增加(&A)...", ID_ADD
+        MENUITEM "新增(&A)...", ID_ADD
         MENUITEM SEPARATOR
-        MENUITEM "名稱修改(&N)...\tF2", ID_RENAME
-        MENUITEM "值修改(&V)...", ID_MODIFY
+        MENUITEM "重新命名(&N)...\tF2", ID_RENAME
+        MENUITEM "修改值(&V)...", ID_MODIFY
         MENUITEM SEPARATOR
         MENUITEM "刪除(&D)\tDel", ID_DELETE
     }
@@ -229,10 +228,10 @@ IDR_POPUPMENUS MENU
         MENUITEM "新增(&A)...", psh1
         MENUITEM "修改(&M)...", psh2
         MENUITEM SEPARATOR
-        MENUITEM "上(&U)", psh4
-        MENUITEM "下(&D)", psh5
-        MENUITEM "左(&L)", psh6
-        MENUITEM "右(&R)", psh7
+        MENUITEM "上移(&U)", psh4
+        MENUITEM "下移(&D)", psh5
+        MENUITEM "左移(&L)", psh6
+        MENUITEM "右移(&R)", psh7
         MENUITEM SEPARATOR
         MENUITEM "刪除(&T)\tDel", psh3
     }
@@ -241,8 +240,8 @@ IDR_POPUPMENUS MENU
         MENUITEM "新增(&A)...", psh1
         MENUITEM "修改(&M)...", psh2
         MENUITEM SEPARATOR
-        MENUITEM "上(&U)", psh4
-        MENUITEM "下(&D)", psh5
+        MENUITEM "上移(&U)", psh4
+        MENUITEM "下移(&D)", psh5
         MENUITEM SEPARATOR
         MENUITEM "刪除(&T)\tDel", psh3
     }
@@ -251,7 +250,7 @@ IDR_POPUPMENUS MENU
         MENUITEM "新增(&A)...", ID_ADD
         MENUITEM "修改(&M)...", ID_MODIFY
         MENUITEM SEPARATOR
-        MENUITEM "刪除(&T)\tDel", ID_DELETE
+        MENUITEM "刪除(&D)\tDel", ID_DELETE
     }
 }
 
@@ -259,7 +258,7 @@ IDR_POPUPMENUS MENU
 // RT_DIALOG
 
 IDD_REPLACERES DIALOGEX 0, 0, 215, 170
-CAPTION "替換資源"
+CAPTION "取代資源"
 STYLE DS_MODALFRAME | WS_POPUPWINDOW | WS_CAPTION
 FONT 9, "宋體", 0, 0, 136 // CHINESEBIG5_CHARSET
 {
@@ -269,10 +268,10 @@ FONT 9, "宋體", 0, 0, 136 // CHINESEBIG5_CHARSET
     COMBOBOX cmb2, 75, 30, 135, 200, CBS_HASSTRINGS | CBS_AUTOHSCROLL | CBS_DROPDOWN | WS_DISABLED | WS_BORDER | WS_VSCROLL | WS_TABSTOP
     LTEXT "資源語言(&L):", -1, 5, 57, 70, 12
     COMBOBOX cmb3, 75, 55, 135, 200, CBS_HASSTRINGS | CBS_AUTOHSCROLL | CBS_DROPDOWN | WS_DISABLED | WS_BORDER | WS_VSCROLL | WS_TABSTOP
-    LTEXT "二進位制文件(&F):", -1, 5, 85, 100, 12
+    LTEXT "二進位檔案(&F):", -1, 5, 85, 100, 12
     EDITTEXT edt1, 5, 97, 205, 14, ES_AUTOHSCROLL
     PUSHBUTTON "瀏覽(&B)...", psh1, 150, 115, 60, 14
-    DEFPUSHBUTTON "OK", IDOK, 35, 150, 60, 14
+    DEFPUSHBUTTON "確定", IDOK, 35, 150, 60, 14
     PUSHBUTTON "取消", IDCANCEL, 115, 150, 60, 14
     {
         0x1234, 0x5678, 0x0011
@@ -284,7 +283,7 @@ CAPTION "新增圖示"
 STYLE DS_MODALFRAME | WS_POPUPWINDOW | WS_CAPTION
 FONT 9, "宋體", 0, 0, 136 // CHINESEBIG5_CHARSET
 {
-    LTEXT "圖示文件(&I):", -1, 5, 7, 100, 12
+    LTEXT "圖示檔案(&I):", -1, 5, 7, 100, 12
     EDITTEXT edt1, 5, 18, 205, 14, ES_AUTOHSCROLL
     PUSHBUTTON "瀏覽(&B)...", psh1, 150, 35, 60, 14
     ICON 0, ico1, 5, 35, 0, 0
@@ -293,24 +292,24 @@ FONT 9, "宋體", 0, 0, 136 // CHINESEBIG5_CHARSET
     PUSHBUTTON "&...", psh2, 195, 65, 15, 14
     LTEXT "資源語言(&L):", -1, 5, 92, 70, 12
     COMBOBOX cmb3, 75, 90, 135, 200, CBS_HASSTRINGS | CBS_AUTOHSCROLL | CBS_DROPDOWN | WS_BORDER | WS_VSCROLL | WS_TABSTOP
-    DEFPUSHBUTTON "OK", IDOK, 35, 115, 60, 14
+    DEFPUSHBUTTON "確定", IDOK, 35, 115, 60, 14
     PUSHBUTTON "取消", IDCANCEL, 115, 115, 60, 14
 }
 
 IDD_REPLACEICON DIALOGEX 0, 0, 215, 135
-CAPTION "替換圖示"
+CAPTION "取代圖示"
 STYLE DS_MODALFRAME | WS_POPUPWINDOW | WS_CAPTION
 FONT 9, "宋體", 0, 0, 136 // CHINESEBIG5_CHARSET
 {
-    LTEXT "圖示文件(&I):", -1, 5, 7, 100, 12
+    LTEXT "圖示檔案(&I):", -1, 5, 7, 100, 12
     EDITTEXT edt1, 5, 18, 205, 14, ES_AUTOHSCROLL
     PUSHBUTTON "瀏覽(&B)...", psh1, 150, 35, 60, 14
     ICON 0, ico1, 5, 35, 0, 0
     LTEXT "資源名稱(&N):", -1, 5, 67, 70, 12
-    COMBOBOX cmb2, 75, 65, 135, 13, CBS_HASSTRINGS | CBS_AUTOHSCROLL | CBS_DROPDOWN | WS_DISABLED | WS_BORDER | WS_VSCROLL | WS_TABSTOP
+    COMBOBOX cmb2, 75, 65, 135, 200, CBS_HASSTRINGS | CBS_AUTOHSCROLL | CBS_DROPDOWN | WS_DISABLED | WS_BORDER | WS_VSCROLL | WS_TABSTOP
     LTEXT "資源語言(&L):", -1, 5, 92, 70, 12
-    COMBOBOX cmb3, 75, 90, 135, 13, CBS_HASSTRINGS | CBS_AUTOHSCROLL | CBS_DROPDOWN | WS_DISABLED | WS_BORDER | WS_VSCROLL | WS_TABSTOP
-    DEFPUSHBUTTON "OK", IDOK, 35, 115, 60, 14
+    COMBOBOX cmb3, 75, 90, 135, 200, CBS_HASSTRINGS | CBS_AUTOHSCROLL | CBS_DROPDOWN | WS_DISABLED | WS_BORDER | WS_VSCROLL | WS_TABSTOP
+    DEFPUSHBUTTON "確定", IDOK, 35, 115, 60, 14
     PUSHBUTTON "取消", IDCANCEL, 115, 115, 60, 14
 }
 
@@ -319,30 +318,31 @@ CAPTION "新增點陣圖"
 STYLE DS_MODALFRAME | WS_POPUPWINDOW | WS_CAPTION
 FONT 9, "宋體", 0, 0, 136 // CHINESEBIG5_CHARSET
 {
-    LTEXT "點陣圖文件(&B):", -1, 5, 7, 100, 12
+    LTEXT "點陣圖檔案(&B):", -1, 5, 7, 100, 12
     EDITTEXT edt1, 5, 18, 205, 14, ES_AUTOHSCROLL
     PUSHBUTTON "瀏覽(&B)...", psh1, 150, 35, 60, 14
     LTEXT "資源名稱(&N):", -1, 5, 67, 70, 12
-    COMBOBOX cmb2, 75, 65, 135, 200, CBS_HASSTRINGS | CBS_AUTOHSCROLL | CBS_DROPDOWN | WS_DISABLED | WS_BORDER | WS_VSCROLL | WS_TABSTOP
+    COMBOBOX cmb2, 75, 65, 120, 300, CBS_HASSTRINGS | CBS_AUTOHSCROLL | CBS_DROPDOWN | WS_BORDER | WS_VSCROLL | WS_TABSTOP
+    PUSHBUTTON "&...", psh2, 195, 65, 15, 14
     LTEXT "資源語言(&L):", -1, 5, 92, 70, 12
-    COMBOBOX cmb3, 75, 90, 135, 200, CBS_HASSTRINGS | CBS_AUTOHSCROLL | CBS_DROPDOWN | WS_DISABLED | WS_BORDER | WS_VSCROLL | WS_TABSTOP
-    DEFPUSHBUTTON "OK", IDOK, 35, 115, 60, 14
+    COMBOBOX cmb3, 75, 90, 135, 200, CBS_HASSTRINGS | CBS_AUTOHSCROLL | CBS_DROPDOWN | WS_BORDER | WS_VSCROLL | WS_TABSTOP
+    DEFPUSHBUTTON "確定", IDOK, 35, 115, 60, 14
     PUSHBUTTON "取消", IDCANCEL, 115, 115, 60, 14
 }
 
 IDD_REPLACEBMP DIALOGEX 0, 0, 215, 135
-CAPTION "替換點陣圖"
+CAPTION "取代點陣圖"
 STYLE DS_MODALFRAME | WS_POPUPWINDOW | WS_CAPTION
 FONT 9, "宋體", 0, 0, 136 // CHINESEBIG5_CHARSET
 {
-    LTEXT "點陣圖文件(&B):", -1, 5, 7, 100, 12
+    LTEXT "點陣圖檔案(&B):", -1, 5, 7, 100, 12
     EDITTEXT edt1, 5, 18, 205, 14, ES_AUTOHSCROLL
     PUSHBUTTON "瀏覽(&B)...", psh1, 150, 35, 60, 14
     LTEXT "資源名稱(&N):", -1, 5, 67, 70, 12
     COMBOBOX cmb2, 75, 65, 135, 200, CBS_HASSTRINGS | CBS_AUTOHSCROLL | CBS_DROPDOWN | WS_DISABLED | WS_BORDER | WS_VSCROLL | WS_TABSTOP
     LTEXT "資源語言(&L):", -1, 5, 92, 70, 12
     COMBOBOX cmb3, 75, 90, 135, 200, CBS_HASSTRINGS | CBS_AUTOHSCROLL | CBS_DROPDOWN | WS_DISABLED | WS_BORDER | WS_VSCROLL | WS_TABSTOP
-    DEFPUSHBUTTON "OK", IDOK, 35, 115, 60, 14
+    DEFPUSHBUTTON "確定", IDOK, 35, 115, 60, 14
     PUSHBUTTON "取消", IDCANCEL, 115, 115, 60, 14
 }
 
@@ -359,11 +359,11 @@ FONT 9, "宋體", 0, 0, 136 // CHINESEBIG5_CHARSET
     LTEXT "", stc1, 75, 43, 115, 10
     LTEXT "資源語言(&L):", -1, 5, 57, 70, 12
     COMBOBOX cmb3, 75, 55, 135, 200, CBS_HASSTRINGS | CBS_AUTOHSCROLL | CBS_DROPDOWN | WS_BORDER | WS_VSCROLL | WS_TABSTOP
-    LTEXT "二進位制文件(&F):", -1, 5, 85, 100, 12
+    LTEXT "二進位檔案(&F):", -1, 5, 85, 100, 12
     EDITTEXT edt1, 5, 97, 205, 14, ES_AUTOHSCROLL
     PUSHBUTTON "瀏覽(&B)...", psh1, 150, 115, 60, 14
     LTEXT "", stc2, 5, 112, 100, 10
-    DEFPUSHBUTTON "OK", IDOK, 35, 150, 60, 14
+    DEFPUSHBUTTON "確定", IDOK, 35, 150, 60, 14
     PUSHBUTTON "取消", IDCANCEL, 115, 150, 60, 14
 }
 
@@ -372,25 +372,25 @@ CAPTION "新增游標"
 STYLE DS_MODALFRAME | WS_POPUPWINDOW | WS_CAPTION
 FONT 9, "宋體", 0, 0, 136 // CHINESEBIG5_CHARSET
 {
-    LTEXT "游標文件(&C):", -1, 5, 7, 100, 12
+    LTEXT "游標檔案(&C):", -1, 5, 7, 100, 12
     EDITTEXT edt1, 5, 18, 205, 14, ES_AUTOHSCROLL
     PUSHBUTTON "瀏覽(&B)...", psh1, 150, 35, 60, 14
     ICON 0, ico1, 5, 35, 0, 0
-    LTEXT "資源名稱(&N)：", -1, 5, 67, 70, 12
+    LTEXT "資源名稱(&N):", -1, 5, 67, 70, 12
     COMBOBOX cmb2, 75, 65, 120, 200, CBS_HASSTRINGS | CBS_AUTOHSCROLL | CBS_DROPDOWN | WS_BORDER | WS_VSCROLL | WS_TABSTOP
     PUSHBUTTON "&...", psh2, 195, 65, 15, 14
     LTEXT "資源語言(&L):", -1, 5, 92, 70, 12
     COMBOBOX cmb3, 75, 90, 135, 200, CBS_HASSTRINGS | CBS_AUTOHSCROLL | CBS_DROPDOWN | WS_BORDER | WS_VSCROLL | WS_TABSTOP
-    DEFPUSHBUTTON "OK", IDOK, 35, 115, 60, 14
+    DEFPUSHBUTTON "確定", IDOK, 35, 115, 60, 14
     PUSHBUTTON "取消", IDCANCEL, 115, 115, 60, 14
 }
 
 IDD_REPLACECUR DIALOGEX 0, 0, 215, 135
-CAPTION "替換游標"
+CAPTION "取代游標"
 STYLE DS_MODALFRAME | WS_POPUPWINDOW | WS_CAPTION
 FONT 9, "宋體", 0, 0, 136 // CHINESEBIG5_CHARSET
 {
-    LTEXT "游標文件(&C):", -1, 5, 7, 100, 12
+    LTEXT "游標檔案(&C):", -1, 5, 7, 100, 12
     EDITTEXT edt1, 5, 18, 205, 14, ES_AUTOHSCROLL
     PUSHBUTTON "瀏覽(&B)...", psh1, 150, 35, 60, 14
     ICON 0, ico1, 5, 35, 0, 0
@@ -398,7 +398,7 @@ FONT 9, "宋體", 0, 0, 136 // CHINESEBIG5_CHARSET
     COMBOBOX cmb2, 75, 65, 135, 200, CBS_HASSTRINGS | CBS_AUTOHSCROLL | CBS_DROPDOWN | WS_DISABLED | WS_BORDER | WS_VSCROLL | WS_TABSTOP
     LTEXT "資源語言(&L):", -1, 5, 92, 70, 12
     COMBOBOX cmb3, 75, 90, 135, 200, CBS_HASSTRINGS | CBS_AUTOHSCROLL | CBS_DROPDOWN | WS_DISABLED | WS_BORDER | WS_VSCROLL | WS_TABSTOP
-    DEFPUSHBUTTON "OK", IDOK, 35, 115, 60, 14
+    DEFPUSHBUTTON "確定", IDOK, 35, 115, 60, 14
     PUSHBUTTON "取消", IDCANCEL, 115, 115, 60, 14
 }
 
@@ -410,11 +410,11 @@ FONT 9, "宋體", 0, 0, 136 // CHINESEBIG5_CHARSET
 }
 
 IDD_ADDKEY DIALOGEX 0, 0, 190, 120
-CAPTION "新增鍵"
+CAPTION "新增按鍵"
 STYLE DS_MODALFRAME | WS_POPUPWINDOW | WS_CAPTION
 FONT 9, "宋體", 0, 0, 136 // CHINESEBIG5_CHARSET
 {
-    RTEXT "鍵(&K):", -1, 5, 12, 60, 14
+    RTEXT "按鍵(&K):", -1, 5, 12, 60, 14
     COMBOBOX cmb1, 70, 10, 110, 200, CBS_DROPDOWN | WS_BORDER | WS_VSCROLL | WS_TABSTOP
     RTEXT "命令 &ID:", -1, 5, 37, 60, 14
     COMBOBOX cmb2, 70, 35, 95, 300, CBS_DROPDOWN | WS_BORDER | WS_VSCROLL | WS_TABSTOP
@@ -424,16 +424,16 @@ FONT 9, "宋體", 0, 0, 136 // CHINESEBIG5_CHARSET
     AUTOCHECKBOX "&CONTROL", chx3, 5, 75, 60, 14
     AUTOCHECKBOX "&SHIFT", chx4, 70, 75, 60, 14
     AUTOCHECKBOX "&ALT", chx5, 140, 75, 45, 14
-    DEFPUSHBUTTON "OK", IDOK, 60, 100, 60, 14
+    DEFPUSHBUTTON "確定", IDOK, 60, 100, 60, 14
     PUSHBUTTON "取消", IDCANCEL, 125, 100, 60, 14
 }
 
 IDD_MODIFYKEY DIALOGEX 0, 0, 190, 120
-CAPTION "修改鍵"
+CAPTION "修改按鍵"
 STYLE DS_MODALFRAME | WS_POPUPWINDOW | WS_CAPTION
 FONT 9, "宋體", 0, 0, 136 // CHINESEBIG5_CHARSET
 {
-    RTEXT "鍵(&K):", -1, 5, 12, 60, 14
+    RTEXT "按鍵(&K):", -1, 5, 12, 60, 14
     COMBOBOX cmb1, 70, 10, 110, 200, CBS_DROPDOWN | WS_BORDER | WS_VSCROLL | WS_TABSTOP
     RTEXT "命令 &ID:", -1, 5, 37, 60, 14
     COMBOBOX cmb2, 70, 35, 95, 200, CBS_DROPDOWN | WS_BORDER | WS_VSCROLL | WS_TABSTOP
@@ -443,29 +443,29 @@ FONT 9, "宋體", 0, 0, 136 // CHINESEBIG5_CHARSET
     AUTOCHECKBOX "&CONTROL", chx3, 5, 75, 60, 14
     AUTOCHECKBOX "&SHIFT", chx4, 70, 75, 60, 14
     AUTOCHECKBOX "&ALT", chx5, 140, 75, 45, 14
-    DEFPUSHBUTTON "OK", IDOK, 60, 100, 60, 14
+    DEFPUSHBUTTON "確定", IDOK, 60, 100, 60, 14
     PUSHBUTTON "取消", IDCANCEL, 125, 100, 60, 14
 }
 
 IDD_EDITACCEL DIALOGEX 0, 0, 285, 165
-CAPTION "編輯快捷鍵"
+CAPTION "編輯加速鍵"
 STYLE WS_POPUPWINDOW | WS_CAPTION | WS_THICKFRAME
 FONT 9, "宋體", 0, 0, 136 // CHINESEBIG5_CHARSET
 {
-    LTEXT "鍵列表(&K):", -1, 5, 7, 100, 12
+    LTEXT "按鍵清單(&K):", -1, 5, 7, 100, 12
     CONTROL "", lst1, "SysListView32", LVS_NOSORTHEADER | LVS_AUTOARRANGE | LVS_NOLABELWRAP | LVS_SHOWSELALWAYS | LVS_SINGLESEL | LVS_REPORT | WS_BORDER | WS_VSCROLL | WS_HSCROLL | WS_TABSTOP, 5, 20, 210, 120
     PUSHBUTTON "新增(&A)...", psh1, 220, 20, 60, 14
     PUSHBUTTON "修改(&M)...", psh2, 220, 40, 60, 14
     PUSHBUTTON "刪除(&D)", psh3, 220, 60, 60, 14
-    PUSHBUTTON "上(&U)", psh4, 220, 100, 60, 14
-    PUSHBUTTON "下(&O)", psh5, 220, 120, 60, 14
-    DEFPUSHBUTTON "OK", IDOK, 155, 145, 60, 14
+    PUSHBUTTON "上移(&U)", psh4, 220, 100, 60, 14
+    PUSHBUTTON "下移(&O)", psh5, 220, 120, 60, 14
+    DEFPUSHBUTTON "確定", IDOK, 155, 145, 60, 14
     PUSHBUTTON "取消", IDCANCEL, 220, 145, 60, 14
-    PUSHBUTTON "刪除所有(&L)", psh6, 5, 145, 79, 14
+    PUSHBUTTON "全部刪除(&L)", psh6, 5, 145, 79, 14
 }
 
 IDD_ADDSTR DIALOGEX 0, 0, 255, 115
-CAPTION "新增字串項"
+CAPTION "新增字串項目"
 STYLE WS_POPUPWINDOW | WS_CAPTION | WS_THICKFRAME
 FONT 9, "宋體", 0, 0, 136 // CHINESEBIG5_CHARSET
 {
@@ -474,13 +474,13 @@ FONT 9, "宋體", 0, 0, 136 // CHINESEBIG5_CHARSET
     PUSHBUTTON "&...", psh1, 195, 5, 15, 14
     LTEXT "字串值(&V):", -1, 5, 27, 54, 12
     EDITTEXT edt1, 60, 25, 190, 45, ES_WANTRETURN | ES_AUTOVSCROLL | ES_MULTILINE | WS_VSCROLL
-    AUTOCHECKBOX "用 ""\\n"" 替換 ""\\r\\n""(&R)", chx1, 60, 75, 190, 14
-    DEFPUSHBUTTON "OK", IDOK, 125, 95, 60, 14
+    AUTOCHECKBOX "將 ""\\r\\n"" 取代為 ""\\n""(&R)", chx1, 60, 75, 190, 14
+    DEFPUSHBUTTON "確定", IDOK, 125, 95, 60, 14
     PUSHBUTTON "取消", IDCANCEL, 190, 95, 60, 14
 }
 
 IDD_MODIFYSTR DIALOGEX 0, 0, 255, 115
-CAPTION "修改字串項"
+CAPTION "修改字串項目"
 STYLE WS_POPUPWINDOW | WS_CAPTION | WS_THICKFRAME
 FONT 9, "宋體", 0, 0, 136 // CHINESEBIG5_CHARSET
 {
@@ -489,8 +489,8 @@ FONT 9, "宋體", 0, 0, 136 // CHINESEBIG5_CHARSET
     PUSHBUTTON "&...", psh1, 195, 5, 15, 14
     LTEXT "字串值(&V):", -1, 5, 27, 54, 12
     EDITTEXT edt1, 60, 25, 190, 45, ES_WANTRETURN | ES_AUTOVSCROLL | ES_MULTILINE | WS_VSCROLL
-    AUTOCHECKBOX "用 ""\\n"" 替換 ""\\r\\n""(&R)", chx1, 60, 75, 190, 14
-    DEFPUSHBUTTON "OK", IDOK, 125, 95, 60, 14
+    AUTOCHECKBOX "將 ""\\r\\n"" 取代為 ""\\n""(&R)", chx1, 60, 75, 190, 14
+    DEFPUSHBUTTON "確定", IDOK, 125, 95, 60, 14
     PUSHBUTTON "取消", IDCANCEL, 190, 95, 60, 14
 }
 
@@ -499,69 +499,69 @@ CAPTION "字串表"
 STYLE WS_POPUPWINDOW | WS_CAPTION | WS_THICKFRAME
 FONT 9, "宋體", 0, 0, 136 // CHINESEBIG5_CHARSET
 {
-    LTEXT "字串的條目(&E):", -1, 5, 7, 100, 12
+    LTEXT "字串項目(&E):", -1, 5, 7, 100, 12
     CONTROL "", lst1, "SysListView32", LVS_NOSORTHEADER | LVS_AUTOARRANGE | LVS_NOLABELWRAP | LVS_SHOWSELALWAYS | LVS_SINGLESEL | LVS_REPORT | WS_BORDER | WS_VSCROLL | WS_HSCROLL | WS_TABSTOP, 5, 20, 315, 115
     PUSHBUTTON "新增(&A)...", psh1, 130, 3, 60, 14
     PUSHBUTTON "修改(&M)...", psh2, 195, 3, 60, 14
     PUSHBUTTON "刪除(&D)", psh3, 260, 3, 60, 14
-    DEFPUSHBUTTON "OK", IDOK, 195, 140, 60, 14
+    DEFPUSHBUTTON "確定", IDOK, 195, 140, 60, 14
     PUSHBUTTON "取消", IDCANCEL, 260, 140, 60, 14
-    PUSHBUTTON "刪除所有(&L)", psh4, 5, 140, 75, 14
+    PUSHBUTTON "全部刪除(&L)", psh4, 5, 140, 75, 14
 }
 
 IDD_ADDMITEM DIALOGEX 0, 0, 210, 200
-CAPTION "增加選單欄"
+CAPTION "新增選單項目"
 STYLE DS_MODALFRAME | WS_POPUPWINDOW | WS_CAPTION
 FONT 9, "宋體", 0, 0, 136 // CHINESEBIG5_CHARSET
 {
     LTEXT "標題(&A):", -1, 5, 7, 55, 12
     COMBOBOX cmb1, 65, 6, 140, 200, CBS_AUTOHSCROLL | CBS_DROPDOWN | WS_BORDER | WS_VSCROLL | WS_TABSTOP
-    LTEXT "命令(&M) ID:", -1, 5, 32, 55, 12
+    LTEXT "命令 ID(&M):", -1, 5, 32, 55, 12
     COMBOBOX cmb2, 65, 30, 125, 200, CBS_AUTOHSCROLL | CBS_DROPDOWN | WS_BORDER | WS_VSCROLL | WS_TABSTOP
     PUSHBUTTON "&...", psh1, 190, 30, 15, 14
-    AUTOCHECKBOX "呈灰(&G)", chx1, 5, 60, 60, 14
+    AUTOCHECKBOX "灰階(&G)", chx1, 5, 60, 60, 14
     AUTOCHECKBOX "點陣圖(&B)", chx3, 135, 60, 60, 14
-    AUTOCHECKBOX "&OWNERDRAW", chx4, 5, 80, 65, 14
-    AUTOCHECKBOX "勾擇(&C)", chx5, 75, 80, 60, 14
-    AUTOCHECKBOX "分離(&P)", chx6, 140, 80, 60, 14
-    AUTOCHECKBOX "選單&BARBREAK", chx7, 5, 100, 75, 14
-    AUTOCHECKBOX "選單B&REAK", chx8, 85, 100, 70, 14
-    AUTOCHECKBOX "設置(&D)", chx9, 5, 120, 60, 14
-    AUTOCHECKBOX "標亮(&H)", chx10, 70, 120, 60, 14
-    AUTOCHECKBOX "單選按鈕選擇(&K)", chx11, 135, 120, 60, 14
-    AUTOCHECKBOX "RIGH&TORDER", chx12, 5, 139, 60, 14
-    AUTOCHECKBOX "RIGHT&JUSTIFY", chx13, 70, 140, 70, 14
-    LTEXT "幫助 ID(&L):", -1, 5, 162, 45, 12
+    AUTOCHECKBOX "自訂繪製(&O)", chx4, 5, 80, 65, 14
+    AUTOCHECKBOX "已勾選(&C)", chx5, 75, 80, 60, 14
+    AUTOCHECKBOX "分隔線(&P)", chx6, 140, 80, 60, 14
+    AUTOCHECKBOX "選單列換行(&B)", chx7, 5, 100, 75, 14
+    AUTOCHECKBOX "選單換行(&R)", chx8, 85, 100, 70, 14
+    AUTOCHECKBOX "預設(&D)", chx9, 5, 120, 60, 14
+    AUTOCHECKBOX "醒目提示(&H)", chx10, 70, 120, 60, 14
+    AUTOCHECKBOX "單選按鈕(&K)", chx11, 135, 120, 60, 14
+    AUTOCHECKBOX "從右至左排序(&T)", chx12, 5, 139, 60, 14
+    AUTOCHECKBOX "靠右對齊(&J)", chx13, 70, 140, 70, 14
+    LTEXT "說明 ID(&L):", -1, 5, 162, 45, 12
     COMBOBOX cmb3, 55, 160, 100, 300, CBS_AUTOHSCROLL | CBS_DROPDOWN | WS_BORDER | WS_VSCROLL | WS_TABSTOP
-    DEFPUSHBUTTON "OK", IDOK, 80, 180, 60, 14
+    DEFPUSHBUTTON "確定", IDOK, 80, 180, 60, 14
     PUSHBUTTON "取消", IDCANCEL, 145, 180, 60, 14
 }
 
 IDD_MODIFYMITEM DIALOGEX 0, 0, 210, 200
-CAPTION "修改選單欄"
+CAPTION "修改選單項目"
 STYLE DS_MODALFRAME | WS_POPUPWINDOW | WS_CAPTION
 FONT 9, "宋體", 0, 0, 136 // CHINESEBIG5_CHARSET
 {
     LTEXT "標題(&A):", -1, 5, 7, 55, 12
     COMBOBOX cmb1, 65, 6, 140, 200, CBS_AUTOHSCROLL | CBS_DROPDOWN | WS_BORDER | WS_VSCROLL | WS_TABSTOP
-    LTEXT "命令(&M) ID:", -1, 5, 32, 55, 12
+    LTEXT "命令 ID(&M):", -1, 5, 32, 55, 12
     COMBOBOX cmb2, 65, 30, 125, 200, CBS_AUTOHSCROLL | CBS_DROPDOWN | WS_BORDER | WS_VSCROLL | WS_TABSTOP
     PUSHBUTTON "&...", psh1, 190, 30, 15, 14
-    AUTOCHECKBOX "呈灰(&G)", chx1, 5, 60, 60, 14
+    AUTOCHECKBOX "灰階(&G)", chx1, 5, 60, 60, 14
     AUTOCHECKBOX "點陣圖(&B)", chx3, 135, 60, 60, 14
-    AUTOCHECKBOX "自繪(&O)", chx4, 5, 80, 65, 14
-    AUTOCHECKBOX "勾擇(&C)", chx5, 75, 80, 60, 14
-    AUTOCHECKBOX "分離(&P)", chx6, 140, 80, 60, 14
+    AUTOCHECKBOX "自訂繪製(&O)", chx4, 5, 80, 65, 14
+    AUTOCHECKBOX "已勾選(&C)", chx5, 75, 80, 60, 14
+    AUTOCHECKBOX "分隔線(&P)", chx6, 140, 80, 60, 14
     AUTOCHECKBOX "選單列換行(&B)", chx7, 5, 100, 75, 14
     AUTOCHECKBOX "選單換行(&R)", chx8, 85, 100, 70, 14
-    AUTOCHECKBOX "設置(&D)", chx9, 5, 120, 60, 14
-    AUTOCHECKBOX "標亮(&H)", chx10, 70, 120, 60, 14
-    AUTOCHECKBOX "單選按鈕選擇(&K)", chx11, 135, 120, 60, 14
-    AUTOCHECKBOX "從右至左排列(&T)", chx12, 5, 139, 60, 14
-    AUTOCHECKBOX "向右對齊(&J)", chx13, 70, 140, 70, 14
-    LTEXT "幫助 ID(&L):", -1, 5, 162, 45, 12
+    AUTOCHECKBOX "預設(&D)", chx9, 5, 120, 60, 14
+    AUTOCHECKBOX "醒目提示(&H)", chx10, 70, 120, 60, 14
+    AUTOCHECKBOX "單選按鈕(&K)", chx11, 135, 120, 60, 14
+    AUTOCHECKBOX "從右至左排序(&T)", chx12, 5, 139, 60, 14
+    AUTOCHECKBOX "靠右對齊(&J)", chx13, 70, 140, 70, 14
+    LTEXT "說明 ID(&L):", -1, 5, 162, 45, 12
     COMBOBOX cmb3, 55, 160, 100, 300, CBS_AUTOHSCROLL | CBS_DROPDOWN | WS_BORDER | WS_VSCROLL | WS_TABSTOP
-    DEFPUSHBUTTON "OK", IDOK, 80, 180, 60, 14
+    DEFPUSHBUTTON "確定", IDOK, 80, 180, 60, 14
     PUSHBUTTON "取消", IDCANCEL, 145, 180, 60, 14
 }
 
@@ -575,23 +575,23 @@ FONT 9, "宋體", 0, 0, 136 // CHINESEBIG5_CHARSET
     PUSHBUTTON "新增(&A)...", psh1, 95, 3, 50, 14
     PUSHBUTTON "修改(&M)...", psh2, 150, 3, 50, 14
     PUSHBUTTON "刪除(&T)", psh3, 205, 3, 50, 14
-    PUSHBUTTON "上(&U)", psh4, 5, 140, 40, 14
-    PUSHBUTTON "下(&D)", psh5, 50, 140, 40, 14
-    PUSHBUTTON "左(&L)", psh6, 95, 140, 40, 14
-    PUSHBUTTON "右(&R)", psh7, 140, 140, 41, 14
+    PUSHBUTTON "上移(&U)", psh4, 5, 140, 40, 14
+    PUSHBUTTON "下移(&D)", psh5, 50, 140, 40, 14
+    PUSHBUTTON "左移(&L)", psh6, 95, 140, 40, 14
+    PUSHBUTTON "右移(&R)", psh7, 140, 140, 41, 14
     AUTOCHECKBOX "擴展(&X)", chx1, 260, 3, 60, 14
-    DEFPUSHBUTTON "OK", IDOK, 195, 140, 60, 14
+    DEFPUSHBUTTON "確定", IDOK, 195, 140, 60, 14
     PUSHBUTTON "取消", IDCANCEL, 260, 140, 60, 14
 }
 
 IDD_DLGPROP DIALOGEX 0, 0, 235, 315
-CAPTION "對話框屬性"
+CAPTION "對話方塊屬性"
 STYLE DS_MODALFRAME | WS_POPUPWINDOW | WS_CAPTION
 FONT 9, "宋體", 0, 0, 136 // CHINESEBIG5_CHARSET
 {
     LTEXT "標題(&A):", -1, 5, 7, 85, 11
     COMBOBOX cmb1, 5, 20, 225, 300, CBS_HASSTRINGS | CBS_AUTOHSCROLL | CBS_DROPDOWN | WS_BORDER | WS_VSCROLL | WS_TABSTOP
-    AUTOCHECKBOX "擴展類型(&X)", chx1, 100, 5, 86, 14
+    AUTOCHECKBOX "擴展對話方塊(&X)", chx1, 100, 5, 86, 14
     LTEXT "左(&L):", -1, 5, 40, 33, 10
     EDITTEXT edt1, 5, 53, 30, 14, ES_NUMBER | ES_AUTOHSCROLL | ES_RIGHT
     CONTROL "", scr1, "msctls_updown32", UDS_NOTHOUSANDS | UDS_ARROWKEYS | UDS_AUTOBUDDY | UDS_ALIGNRIGHT | UDS_SETBUDDYINT, 23, 53, 12, 20
@@ -604,27 +604,27 @@ FONT 9, "宋體", 0, 0, 136 // CHINESEBIG5_CHARSET
     LTEXT "高度(&H):", -1, 142, 40, 33, 10
     EDITTEXT edt4, 142, 53, 30, 14, ES_NUMBER | ES_AUTOHSCROLL | ES_RIGHT
     CONTROL "", scr4, "msctls_updown32", UDS_NOTHOUSANDS | UDS_ARROWKEYS | UDS_AUTOBUDDY | UDS_ALIGNRIGHT | UDS_SETBUDDYINT, 162, 53, 12, 20
-    LTEXT "類名(&S):", -1, 5, 73, 85, 11
+    LTEXT "類別名稱(&S):", -1, 5, 73, 85, 11
     COMBOBOX cmb2, 5, 88, 115, 200, CBS_HASSTRINGS | CBS_AUTOHSCROLL | CBS_DROPDOWN | WS_BORDER | WS_VSCROLL | WS_TABSTOP
-    LTEXT "幫助 ID(&P):", -1, 125, 73, 64, 11
+    LTEXT "說明 ID(&P):", -1, 125, 73, 64, 11
     COMBOBOX cmb3, 125, 88, 65, 200, CBS_HASSTRINGS | CBS_AUTOHSCROLL | CBS_DROPDOWN | WS_BORDER | WS_VSCROLL | WS_TABSTOP
-    LTEXT "文字樣式(&F):", -1, 5, 105, 80, 11
+    LTEXT "字型名稱(&F):", -1, 5, 105, 80, 11
     COMBOBOX cmb4, 6, 118, 100, 200, CBS_HASSTRINGS | CBS_SORT | CBS_AUTOHSCROLL | CBS_DROPDOWN | WS_BORDER | WS_VSCROLL | WS_TABSTOP
     LTEXT "大小(&Z):", -1, 110, 105, 38, 12
     EDITTEXT edt5, 110, 118, 25, 14, ES_NUMBER | ES_AUTOHSCROLL | ES_RIGHT
     AUTOCHECKBOX "&B", chx2, 140, 118, 20, 14
     AUTOCHECKBOX "&I", chx3, 165, 118, 20, 14
-    LTEXT "字型類型(&R):", -1, 5, 138, 80, 11
+    LTEXT "字元集(&R):", -1, 5, 138, 80, 11
     COMBOBOX cmb5, 5, 148, 100, 100, CBS_AUTOHSCROLL | CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
     LTEXT "選單名稱(&M):", -1, 110, 138, 55, 11
     COMBOBOX cmb6, 110, 148, 99, 300, CBS_HASSTRINGS | CBS_AUTOHSCROLL | CBS_DROPDOWN | WS_BORDER | WS_VSCROLL | WS_TABSTOP
     LTEXT "樣式(&T):", -1, 5, 168, 45, 11
     EDITTEXT edt6, 67, 165, 45, 14, ES_AUTOHSCROLL
     LISTBOX lst1, 5, 183, 110, 110, LBS_DISABLENOSCROLL | LBS_NOINTEGRALHEIGHT | LBS_HASSTRINGS | LBS_MULTIPLESEL | WS_VSCROLL | WS_HSCROLL | WS_TABSTOP
-    LTEXT "擴展類型(&E):", -1, 120, 168, 48, 11
+    LTEXT "擴展樣式(&E):", -1, 120, 168, 48, 11
     EDITTEXT edt7, 185, 165, 45, 14, ES_AUTOHSCROLL
     LISTBOX lst2, 120, 183, 110, 110, LBS_DISABLENOSCROLL | LBS_NOINTEGRALHEIGHT | LBS_HASSTRINGS | LBS_MULTIPLESEL | WS_VSCROLL | WS_HSCROLL | WS_TABSTOP
-    DEFPUSHBUTTON "OK", IDOK, 106, 298, 60, 14
+    DEFPUSHBUTTON "確定", IDOK, 106, 298, 60, 14
     PUSHBUTTON "取消", IDCANCEL, 171, 298, 60, 14
 }
 
@@ -633,16 +633,16 @@ CAPTION "控制項屬性"
 STYLE DS_MODALFRAME | WS_POPUPWINDOW | WS_CAPTION
 FONT 9, "宋體", 0, 0, 136 // CHINESEBIG5_CHARSET
 {
-    LTEXT "定義&Ctrl:", -1, 5, 7, 68, 12
+    LTEXT "預定義 &Control:", -1, 5, 7, 68, 12
     COMBOBOX cmb1, 75, 5, 120, 55, CBS_HASSTRINGS | CBS_AUTOHSCROLL | CBS_DROPDOWN | WS_BORDER | WS_VSCROLL | WS_TABSTOP
     CONTROL "", ctl1, "ToolbarWindow32", TBSTYLE_FLAT | TBSTYLE_WRAPABLE | TBSTYLE_TOOLTIPS | CCS_NODIVIDER | CCS_NORESIZE, 5, 22, 185, 30
     LTEXT "標題(&A):", -1, 5, 55, 75, 12
     COMBOBOX cmb2, 5, 65, 195, 300, CBS_HASSTRINGS | CBS_AUTOHSCROLL | CBS_DROPDOWN | WS_BORDER | WS_VSCROLL | WS_TABSTOP
-    PUSHBUTTON "&OLE...", psh2, 205, 65, 25, 14
+    PUSHBUTTON "OLE(&V)...", psh2, 205, 65, 25, 14
     LTEXT "左(&L):", -1, 5, 85, 33, 11
     EDITTEXT edt1, 5, 99, 30, 14, ES_NUMBER | ES_AUTOHSCROLL | ES_RIGHT
     CONTROL "", scr1, "msctls_updown32", UDS_NOTHOUSANDS | UDS_ARROWKEYS | UDS_AUTOBUDDY | UDS_ALIGNRIGHT | UDS_SETBUDDYINT, 20, 99, 12, 20
-    LTEXT "上(&U):", -1, 40, 85, 33, 11
+    LTEXT "上(&O):", -1, 40, 85, 33, 11
     EDITTEXT edt2, 40, 99, 30, 14, ES_NUMBER | ES_AUTOHSCROLL | ES_RIGHT
     CONTROL "", scr2, "msctls_updown32", UDS_NOTHOUSANDS | UDS_ARROWKEYS | UDS_AUTOBUDDY | UDS_ALIGNRIGHT | UDS_SETBUDDYINT, 55, 99, 12, 20
     LTEXT "寬度(&W):", -1, 75, 85, 33, 11
@@ -653,18 +653,18 @@ FONT 9, "宋體", 0, 0, 136 // CHINESEBIG5_CHARSET
     CONTROL "", scr4, "msctls_updown32", UDS_NOTHOUSANDS | UDS_ARROWKEYS | UDS_AUTOBUDDY | UDS_ALIGNRIGHT | UDS_SETBUDDYINT, 125, 99, 12, 20
     LTEXT "&ID:", -1, 150, 85, 70, 12
     COMBOBOX cmb3, 150, 99, 80, 300, CBS_HASSTRINGS | CBS_AUTOHSCROLL | CBS_DROPDOWN | WS_BORDER | WS_VSCROLL | WS_TABSTOP
-    LTEXT "Window類名(&S):", -1, 5, 119, 100, 12
+    LTEXT "視窗類別名稱(&S):", -1, 5, 119, 100, 12
     COMBOBOX cmb4, 5, 133, 115, 200, CBS_HASSTRINGS | CBS_AUTOHSCROLL | CBS_DROPDOWN | WS_BORDER | WS_VSCROLL | WS_TABSTOP
-    LTEXT "幫助 ID(&P):", -1, 125, 119, 70, 12
+    LTEXT "說明 ID(&P):", -1, 125, 119, 70, 12
     COMBOBOX cmb5, 125, 133, 65, 200, CBS_HASSTRINGS | CBS_AUTOHSCROLL | CBS_DROPDOWN | WS_BORDER | WS_VSCROLL | WS_TABSTOP
     LTEXT "樣式(&T):", -1, 5, 153, 45, 12
     EDITTEXT edt6, 70, 151, 45, 14, ES_AUTOHSCROLL
     LISTBOX lst1, 5, 167, 110, 120, LBS_DISABLENOSCROLL | LBS_NOINTEGRALHEIGHT | LBS_HASSTRINGS | LBS_MULTIPLESEL | WS_VSCROLL | WS_HSCROLL | WS_TABSTOP
-    LTEXT "擴展類型(&E)", -1, 120, 153, 50, 12
+    LTEXT "擴展樣式(&E)", -1, 120, 153, 50, 12
     EDITTEXT edt7, 185, 151, 45, 14, ES_AUTOHSCROLL
     LISTBOX lst2, 120, 167, 110, 120, LBS_DISABLENOSCROLL | LBS_NOINTEGRALHEIGHT | LBS_HASSTRINGS | LBS_MULTIPLESEL | WS_VSCROLL | WS_HSCROLL | WS_TABSTOP
-    DEFPUSHBUTTON "OK", IDOK, 170, 293, 60, 14
-    PUSHBUTTON "取消", IDCANCEL, 170, 309, 60, 14
+    DEFPUSHBUTTON "確定", IDOK, 106, 298, 60, 14
+    PUSHBUTTON "取消", IDCANCEL, 171, 298, 60, 14
     PUSHBUTTON "數據(&D)...", psh1, 5, 293, 90, 14
     PUSHBUTTON "字串列表(&I)...", psh3, 5, 309, 90, 14
 }
@@ -1351,7 +1351,7 @@ FILETYPE        VFT_APP
             VALUE "CompanyName", "片山博文MZ"
             VALUE "FileDescription", "RisohEditor"
             VALUE "FileVersion", "6.0.6"
-            VALUE "LegalCopyright", "© 2017-2026 片山博文MZ and 林鸿湘. 版权所有."
+            VALUE "LegalCopyright", "© 2017-2026 片山博文MZ and 林鴻湘. 版權所有."
             VALUE "ProductName", "RisohEditor"
             VALUE "ProductVersion", "6.0.6"
         }
@@ -1376,280 +1376,280 @@ FILETYPE        VFT_APP
 
 STRINGTABLE
 {
-    IDS_APPNAME "RisohEditor 6.0.6 by 片山博文MZ"
-    IDS_TITLEWITHFILE "RisohEditor 6.0.6 - 文件: %s"
-    IDS_EXTRACTRES "導出資源"
-    IDS_RESBINFILTER "二進位制資源檔 (*.res)|*.res|二進位制文件 (*.bin)|*.bin|所有檔案 (*.*)|*.*|"
-    IDS_CANNOTSAVE "無法保存。"
-    IDS_REPLACERES "替換資源"
+    IDS_APPNAME "RisohEditor 6.0.6 - 片山博文MZ"
+    IDS_TITLEWITHFILE "RisohEditor 6.0.6 - 檔案: %s"
+    IDS_EXTRACTRES "匯出資源"
+    IDS_RESBINFILTER "二進位資源檔 (*.res)|*.res|二進位檔案 (*.bin)|*.bin|所有檔案 (*.*)|*.*|"
+    IDS_CANNOTSAVE "無法儲存。"
+    IDS_REPLACERES "取代資源"
     IDS_ALLFILES "所有檔案 (*.*)|*.*|"
-    IDS_ENTERTYPE "請選擇資源類型。"
+    IDS_ENTERTYPE "請輸入資源類型。"
     IDS_ENTERNAME "請輸入資源名稱。"
-    IDS_ENTERLANG "請輸入資源語言類型。"
-    IDS_FILENOTFOUND "未找到文件。"
-    IDS_CANNOTREPLACE "替換失敗。"
-    IDS_EXERESFILTER "資源配置文件 (*.exe;*.dll;*.ocx;*.cpl;*.scr;*.mui;*.ime)|*.exe;*.dll;*.ocx;*.cpl;*.scr;*.mui;*.ime|RC 文件 (*.rc;*.rc2)|*.rc;*.rc2|二進位制資源檔 (*.res)|*.res|所有檔案 (*.*)|*.*|"
-    IDS_SAVEAS "另存為"
-    IDS_CANNOTADDICON "載入圖示失敗。"
-    IDS_ADDICON "加圖示"
-    IDS_ICOFILTER "圖示文件 (*.ico)|*.ico|所有檔案 (*.*)|*.*|"
-    IDS_REPLACEICO "替換圖示"
-    IDS_CANTREPLACEICO "替換圖示失敗。"
-    IDS_EXISTSOVERWRITE "文件已經存在，替換掉?"
+    IDS_ENTERLANG "請輸入資源語言。"
+    IDS_FILENOTFOUND "找不到檔案。"
+    IDS_CANNOTREPLACE "取代失敗。"
+    IDS_EXERESFILTER "可執行檔 (*.exe;*.dll;*.ocx;*.cpl;*.scr;*.mui;*.ime)|*.exe;*.dll;*.ocx;*.cpl;*.scr;*.mui;*.ime|RC 檔案 (*.rc;*.rc2)|*.rc;*.rc2|二進位資源檔 (*.res)|*.res|所有檔案 (*.*)|*.*|"
+    IDS_SAVEAS "另存新檔"
+    IDS_CANNOTADDICON "無法載入圖示。"
+    IDS_ADDICON "新增圖示"
+    IDS_ICOFILTER "圖示檔案 (*.ico)|*.ico|所有檔案 (*.*)|*.*|"
+    IDS_REPLACEICO "取代圖示"
+    IDS_CANTREPLACEICO "取代圖示失敗。"
+    IDS_EXISTSOVERWRITE "檔案已存在，要覆寫嗎？"
     IDS_OPEN "開啟"
-    IDS_CANNOTOPEN "開啟失敗。"
-    IDS_ADDBMP "加點陣圖"
-    IDS_BMPFILTER "點陣圖文件 (*.bmp)|*.bmp|PNG 圖片 (*.png)|*.png|所有檔案 (*.*)|*.*|"
-    IDS_CANTREPLACEBMP "點陣圖開啟失敗！"
-    IDS_REPLACEBMP "替換點陣圖"
+    IDS_CANNOTOPEN "無法開啟。"
+    IDS_ADDBMP "新增點陣圖"
+    IDS_BMPFILTER "點陣圖檔案 (*.bmp)|*.bmp|PNG 圖片 (*.png)|*.png|所有檔案 (*.*)|*.*|"
+    IDS_CANTREPLACEBMP "無法取代點陣圖。"
+    IDS_REPLACEBMP "取代點陣圖"
     IDS_ERRORCODE "錯誤碼 %d"
-    IDS_VERSIONINFO "RisohEditor 版本 6.0.6\r\n\r\n片山博文MZ\r\nKatayama Hirofumi MZ\r\n\r\nLicense: GPLv3 (free software)"
-    IDS_ADDRES "增加資源"
+    IDS_VERSIONINFO "RisohEditor 版本 6.0.6\r\n\r\n片山博文MZ\r\nKatayama Hirofumi MZ\r\n\r\n授權: GPLv3 (自由軟體)"
+    IDS_ADDRES "新增資源"
     IDS_CANNOTADDRES "新增資源失敗。"
     IDS_CANTADDBMP "新增點陣圖失敗。"
-    IDS_EXTRACTBMP "導出點陣圖"
-    IDS_CANTEXTRACTBMP "不能導出點陣圖。"
-    IDS_CANTREPLACECUR "不能導出游標。"
-    IDS_CANNOTADDCUR "不能新增游標。"
-    IDS_CURFILTER "游標文件(*.cur)|*.cur|動態游標 (*.ani)|*.ani|所有檔案 (*.*)|*.*|"
-    IDS_ADDCUR "增加游標"
-    IDS_REPLACECUR "替換游標"
-    IDS_EXTRACTICO "導出圖示"
-    IDS_CANTEXTRACTICO "導出圖示失敗。"
-    IDS_EXTRACTCUR "導出游標"
-    IDS_CANTEXTRACTCUR "導出游標失敗。"
-    IDS_RESFILTER "二進位制資源 (*.res)|*.res|所有檔案 (*.*)|*.*|"
-    IDS_NEUTRAL "無指定"
-    IDS_IMPORTRES "導入"
-    IDS_CANNOTIMPORT "導入資源失敗。"
+    IDS_EXTRACTBMP "匯出點陣圖"
+    IDS_CANTEXTRACTBMP "無法匯出點陣圖。"
+    IDS_CANTREPLACECUR "無法取代游標。"
+    IDS_CANNOTADDCUR "無法新增游標。"
+    IDS_CURFILTER "游標檔案 (*.cur)|*.cur|動畫游標 (*.ani)|*.ani|所有檔案 (*.*)|*.*|"
+    IDS_ADDCUR "新增游標"
+    IDS_REPLACECUR "取代游標"
+    IDS_EXTRACTICO "匯出圖示"
+    IDS_CANTEXTRACTICO "無法匯出圖示。"
+    IDS_EXTRACTCUR "匯出游標"
+    IDS_CANTEXTRACTCUR "無法匯出游標。"
+    IDS_RESFILTER "二進位資源檔 (*.res)|*.res|所有檔案 (*.*)|*.*|"
+    IDS_NEUTRAL "中性"
+    IDS_IMPORTRES "匯入"
+    IDS_CANNOTIMPORT "匯入失敗。"
     IDS_COMPILE "編譯 (F8)"
     IDS_CANCELEDIT "取消編輯 (Ctrl+E)"
-    IDS_GUIEDIT "GUI編輯模式 (Ctrl+G)"
-    IDS_CANNOTSTARTUP "編譯器啟動失敗。"
-    IDS_RESMISMATCH "資源類型不匹配。"
-    IDS_SAMPLETEXT "這是一個模板"
+    IDS_GUIEDIT "GUI 編輯模式 (Ctrl+U)"
+    IDS_CANNOTSTARTUP "無法啟動資源編譯器。"
+    IDS_RESMISMATCH "資源類型不符。"
+    IDS_SAMPLETEXT "這是範例文字"
     IDS_ALREADYEXISTS "已存在。"
-    IDS_KEY "鍵"
-    IDS_FLAGS "標識"
-    IDS_COMMANDID "控制項 ID"
-    IDS_INVALIDKEY "無效的鍵。"
+    IDS_KEY "按鍵"
+    IDS_FLAGS "旗標"
+    IDS_COMMANDID "命令 ID"
+    IDS_INVALIDKEY "無效的按鍵。"
     IDS_COMPILEERROR "編譯失敗。"
-    IDS_STRINGID "字元型 ID"
-    IDS_STRINGVALUE "字元的值"
+    IDS_STRINGID "字串 ID"
+    IDS_STRINGVALUE "字串值"
     IDS_CAPTION "標題"
-    IDS_HELPID "幫助 ID"
+    IDS_HELPID "說明 ID"
     IDS_INDENT "» "
-    IDS_DATAISEMPTY "數據為空。"
-    IDS_TEST "測試一下效果"
+    IDS_DATAISEMPTY "資料為空。"
+    IDS_TEST "測試效果"
     IDS_SEPARATOR "---"
-    IDS_COMPILENOW "文件已經改變，編譯?"
-    IDS_RADWINDOW "編輯對話框"
-    IDS_ENTERCLASS "請輸入有效的window類名。"
-    IDS_TEXTEDIT "由Text編輯 (Ctrl+T)"
-    IDS_CURSORINFO "圖片 #%u: 寬度 %u, 高度 %u, bit像素點 %u, xHotSpot %u, yHotSpot %u, ID %u\r\n"
+    IDS_COMPILENOW "檔案已變更，要編譯嗎？"
+    IDS_RADWINDOW "編輯對話方塊"
+    IDS_ENTERCLASS "請輸入有效的視窗類別名稱。"
+    IDS_TEXTEDIT "文字編輯 (Ctrl+T)"
+    IDS_CURSORINFO "圖片 #%u: 寬度 %u, 高度 %u, 位元深度 %u, xHotSpot %u, yHotSpot %u, ID %u\r\n"
     IDS_IMAGECOUNT "圖片數量: %u\r\n"
-    IDS_ICONINFO "圖片 #%u: 寬度 %u, 高度 %u, bit像素點 %u, ID %u\r\n"
-    IDS_READY "準備"
-    IDS_EXECUTINGCMD "導出命令..."
-    IDS_EDITINGBYGUI "正由GUI編輯..."
+    IDS_ICONINFO "圖片 #%u: 寬度 %u, 高度 %u, 位元深度 %u, ID %u\r\n"
+    IDS_READY "準備就緒"
+    IDS_EXECUTINGCMD "正在執行命令..."
+    IDS_EDITINGBYGUI "正在進行 GUI 編輯..."
     IDS_COORD "%d, %d, %d, %d"
-    IDS_STARTING "開始..."
-    IDS_COMPILING "編譯..."
+    IDS_STARTING "啟動中..."
+    IDS_COMPILING "編譯中..."
     IDS_CANNOTLOAD "載入失敗。"
-    IDS_NONE "(空)"
-    IDS_WAVESOUND "(聲波)\r\n"
+    IDS_NONE "(無)"
+    IDS_WAVESOUND "(WAVE 音效)\r\n"
     IDS_IDTYPE "ID 類型"
     IDS_IDPREFIX "ID 前綴"
-    IDS_EMPTYSTR "輸入字元。"
-    IDS_ANICURSOR "(動態游標)\r\n"
-    IDS_ANIICON "(動態圖示)\r\n"
-    IDS_HEADFILTER "頭文件 (*.h)|*.h|所有檔案 (*.*)|*.*|"
-    IDS_LOADRESH "載入 ""resource.h"" 文件"
+    IDS_EMPTYSTR "請輸入字串。"
+    IDS_ANICURSOR "(動畫游標)\r\n"
+    IDS_ANIICON "(動畫圖示)\r\n"
+    IDS_HEADFILTER "標頭檔 (*.h)|*.h|所有檔案 (*.*)|*.*|"
+    IDS_LOADRESH "載入 resource.h 檔案"
     IDS_NAME "名稱"
     IDS_VALUE "值"
-    IDS_NOSUCHID "沒有該ID。"
-    IDS_IMAGEINFO "寬度 %u, 高度 %u, 二進位制像素 %u\r\n"
+    IDS_NOSUCHID "找不到該 ID。"
+    IDS_IMAGEINFO "寬度 %u, 高度 %u, 位元深度 %u\r\n"
     IDS_ENTERINT "請輸入有效整數。"
-    IDS_ENTERTEXT "請輸入有效文本。"
+    IDS_ENTERTEXT "請輸入有效文字。"
     IDS_ENTERID "請輸入有效 ID。"
-    IDS_ADDNEXTIDS "請將下述資源ID 新增至 ""resource.h"":\r\n\r\n"
-    IDS_DELETENEXTIDS "請從""resource.h""刪除下述資源ID:\r\n\r\n"
-    IDS_NOCHANGE "資源ID沒有改變。"
+    IDS_ADDNEXTIDS "請將以下資源 ID 新增至 resource.h：\r\n\r\n"
+    IDS_DELETENEXTIDS "請從 resource.h 刪除以下資源 ID：\r\n\r\n"
+    IDS_NOCHANGE "資源 ID 沒有變更。"
     IDS_DLGFAIL "建立 RAD 對話方塊失敗。"
-    IDS_LOADWCLIB "載入Window類資源"
+    IDS_LOADWCLIB "載入視窗類別函式庫"
     IDS_AVIMOVIE "(AVI 影片)\r\n"
-    IDS_NOMOREITEM "沒有更多的項目了。"
-    IDS_INVALIDDATA "(無效數據)\r\n"
-    IDS_UPDATERESH "確定更新 ""resource.h"" 嗎?"
-    IDS_CANTWRITERESH "無法寫入 ""resource.h""。"
-    IDS_SAVERESH "保存 ""resource.h"" 文件"
-    IDS_DLLFILTER "DLL 文件 (*.dll;*.ocx;*.mui)|*.dll;*.ocx;*.mui|所有檔案 (*.*)|*.*|"
-    IDS_EXERESRCFILTER "可讀文件 (*.exe;*.dll;*.ocx;*.cpl;*.scr;*.mui;*.ime;*.res;*.rc;*.rc2)|*.exe;*.dll;*.ocx;*.cpl;*.scr;*.mui;*.ime;*.res;*.rc;*.rc2|資源配置文件 (*.exe;*.dll;*.ocx;*.cpl;*.scr;*.mui;*.ime)|*.exe;*.dll;*.ocx;*.cpl;*.scr;*.mui;*.ime|二進位制文件 (*.res)|*.res|資源檔 (*.rc;*.rc2)|*.rc;*.rc2|所有檔案 (*.*)|*.*|"
-    IDS_CANTTESTCHILDWND "因為對話框是子視窗，所以無法測試。"
-    IDS_CANTTESTCLASSDLG "由於對話被分類, 所以不能被測試。"
-    IDS_FILEISUPXED "文件\r\n\r\n'%s'\r\n\r\n被UPX壓縮. 你想使用臨時文件解壓縮嗎?\r\n\r\n如果你沒有擴展它, 閱讀可能會失敗。"
-    IDS_CANTUPXEXTRACT "無法由UPX提取。"
-    IDS_CANTSAVEUPXED "無法保存文件, 因為它是由UPX壓縮的。"
+    IDS_NOMOREITEM "沒有更多項目。"
+    IDS_INVALIDDATA "(無效資料)\r\n"
+    IDS_UPDATERESH "確定要更新 resource.h 嗎？"
+    IDS_CANTWRITERESH "無法寫入 resource.h。"
+    IDS_SAVERESH "儲存 resource.h 檔案"
+    IDS_DLLFILTER "DLL 檔案 (*.dll;*.ocx;*.mui)|*.dll;*.ocx;*.mui|所有檔案 (*.*)|*.*|"
+    IDS_EXERESRCFILTER "可讀取檔案 (*.exe;*.dll;*.ocx;*.cpl;*.scr;*.mui;*.ime;*.res;*.rc;*.rc2)|*.exe;*.dll;*.ocx;*.cpl;*.scr;*.mui;*.ime;*.res;*.rc;*.rc2|可執行檔 (*.exe;*.dll;*.ocx;*.cpl;*.scr;*.mui;*.ime)|*.exe;*.dll;*.ocx;*.cpl;*.scr;*.mui;*.ime|二進位資源 (*.res)|*.res|RC 檔案 (*.rc;*.rc2)|*.rc;*.rc2|所有檔案 (*.*)|*.*|"
+    IDS_CANTTESTCHILDWND "子視窗對話方塊無法測試。"
+    IDS_CANTTESTCLASSDLG "已分類的對話方塊無法測試。"
+    IDS_FILEISUPXED "檔案\r\n\r\n'%s'\r\n\r\n已被 UPX 壓縮。要使用暫存檔案解壓縮嗎？\r\n\r\n若不解壓縮，可能無法正確讀取。"
+    IDS_CANTUPXEXTRACT "無法使用 UPX 解壓縮。"
+    IDS_CANTSAVEUPXED "UPX 壓縮檔案無法儲存。"
     IDS_MESSAGEID "訊息 ID"
     IDS_MESSAGEVALUE "訊息值"
-    IDS_RCFILTER "RC 文件 (*.rc;*.rc2)|*.rc;*.rc2|"
-    IDS_EXPORT "導出"
-    IDS_CANTEXPORT "導出失敗。"
-    IDS_MUSTBEEMPTYDIR "如果有任何外部文件，則導出目標必須是空資料夾。"
+    IDS_RCFILTER "RC 檔案 (*.rc;*.rc2)|*.rc;*.rc2|"
+    IDS_EXPORT "匯出"
+    IDS_CANTEXPORT "匯出失敗。"
+    IDS_MUSTBEEMPTYDIR "若有外部檔案，匯出目標必須是空資料夾。"
     IDS_MACRONAME "巨集名稱"
     IDS_MACROVALUE "巨集值"
-    IDS_OPTIONAL "(可選的)"
+    IDS_OPTIONAL "(選用)"
     IDS_ADDINCLUDE "新增包含目錄"
     IDS_EDITINCLUDE "編輯包含目錄"
     IDS_WINDRESEXE "windres.exe|windres.exe|"
     IDS_CPPEXE "cpp.exe|cpp.exe|"
-    IDS_INVALIDPATH "該路徑無效。"
-    IDS_DATATOOLONG "數據太長。"
-    IDS_ALL "(所有)"
-    IDS_UNKNOWNFORMAT "(未知的數據格式)\r\n"
+    IDS_INVALIDPATH "路徑無效。"
+    IDS_DATATOOLONG "資料過長。"
+    IDS_ALL "(全部)"
+    IDS_UNKNOWNFORMAT "(未知資料格式)\r\n"
     IDS_LANGUAGE "語言"
     IDS_INTVALUE "整數值"
     IDS_PARENTWND "父測試視窗"
-    IDS_CHOOSE_OLE_CLSID "選擇OLE CLSID"
-    IDS_CONTROL "控制"
-    IDS_MESSAGE "資訊"
+    IDS_CHOOSE_OLE_CLSID "選擇 OLE CLSID"
+    IDS_CONTROL "控制項"
+    IDS_MESSAGE "訊息"
     IDS_STRING "字串"
-    IDS_DATAISINVALID "數據無效。"
-    IDS_DLGINIT1 "您可以透過在與對話框同名的RT_DLGINIT資源數據中設置初始化數據來指定組合框和列表框的初始化。"
-    IDS_DLGINIT2 "當WM_INITDIALOG訊息到達時, 您可以透過調用附加文件“DlgInit/DlgInit.h”的ExecuteDlgInitDx函數來初始化對話框。\r\n\r\n"
-    IDS_DLGINIT3 "請指定用換行符分隔的RT_DLGINIT字串列表。"
-    IDS_SAMELANG "這是相同的語言。"
-    IDS_SAMENAME "這是相同的資源名稱。"
-    IDS_CANTSAVETOEXE "無法從非可執行文件保存為EXE。"
-    IDS_CANTSTARTSEARCH "無法開始搜索。"
+    IDS_DATAISINVALID "資料無效。"
+    IDS_DLGINIT1 "您可以在與對話方塊同名的 RT_DLGINIT 資源中設定初始化資料，以初始化下拉式清單與清單方塊。"
+    IDS_DLGINIT2 "當 WM_INITDIALOG 訊息到達時，可呼叫附屬檔案 DlgInit/DlgInit.h 中的 ExecuteDlgInitDx 函式來初始化對話方塊。\r\n\r\n"
+    IDS_DLGINIT3 "請指定以換行分隔的 RT_DLGINIT 字串清單。"
+    IDS_SAMELANG "語言相同。"
+    IDS_SAMENAME "資源名稱相同。"
+    IDS_CANTSAVETOEXE "非可執行檔無法儲存為 EXE。"
+    IDS_CANTSTARTSEARCH "無法開始搜尋。"
     IDS_AMERICA "美國"
-    IDS_ENGLISH "英語"
+    IDS_ENGLISH "英文"
     IDS_CHINA "中國"
     IDS_CHINESE "中文"
-    IDS_RUSSIA "俄國"
-    IDS_RUSSIAN "俄語"
-    IDS_WANNAGENRESH "你想生成文件 'resource.h' 嗎?"
-    IDS_EXEFILTER "資源配置文件 (*.exe;*.dll;*.ocx;*.cpl;*.scr;*.mui;*.ime)|*.exe;*.dll;*.ocx;*.cpl;*.scr;*.mui;*.ime|所有檔案 (*.*)|*.*|"
-    IDS_SAVEASCOMPRESS "另存壓縮"
-    IDS_TOOL_NEW "新建"
+    IDS_RUSSIA "俄羅斯"
+    IDS_RUSSIAN "俄文"
+    IDS_WANNAGENRESH "是否要產生 resource.h 檔案？"
+    IDS_EXEFILTER "可執行檔 (*.exe;*.dll;*.ocx;*.cpl;*.scr;*.mui;*.ime)|*.exe;*.dll;*.ocx;*.cpl;*.scr;*.mui;*.ime|所有檔案 (*.*)|*.*|"
+    IDS_SAVEASCOMPRESS "另存為壓縮檔"
+    IDS_TOOL_NEW "新增"
     IDS_TOOL_OPEN "開啟..."
-    IDS_TOOL_SAVE "另存為..."
+    IDS_TOOL_SAVE "儲存"
     IDS_TOOL_EXPAND "全部展開"
     IDS_TOOL_COLLAPSE "全部摺疊"
     IDS_TOOL_PLUS "新增項目..."
     IDS_TOOL_MINUS "刪除項目"
-    IDS_TOOL_CHANGE "更改類型/名稱/語言"
-    IDS_TOOL_CLONE "克隆成另一種類型/名稱/語言"
+    IDS_TOOL_CHANGE "變更類型/名稱/語言"
+    IDS_TOOL_CLONE "複製為其他類型/名稱/語言"
     IDS_TOOL_RECOMPILE "重新編譯"
     IDS_TOOL_CANCELEDIT "取消修改"
-    IDS_TOOL_IMPORT "導入..."
-    IDS_TOOL_EXTRACT "導出..."
-    IDS_TOOL_GUIEDIT "GUI編輯"
+    IDS_TOOL_IMPORT "匯入..."
+    IDS_TOOL_EXTRACT "匯出..."
+    IDS_TOOL_GUIEDIT "GUI 編輯"
     IDS_UNITEDKINGDOM "英國"
     IDS_GREATBRITAIN "大不列顛"
-    IDS_BRITISH "英國的"
+    IDS_BRITISH "英式"
     IDS_FRANCE "法國"
-    IDS_FRENCH "法語"
+    IDS_FRENCH "法文"
     IDS_GERMANY "德國"
-    IDS_GERMAN "德語"
+    IDS_GERMAN "德文"
     IDS_SPAIN "西班牙"
-    IDS_SPANISH "西班牙語"
+    IDS_SPANISH "西班牙文"
     IDS_INVALIDLANG "無法識別的語言。"
-    IDS_INVALIDNAME "資源名稱無效。"
-    IDS_PNGRESBINFILTER "PNG圖片 (*.png)|*.png|資源檔(*.res)|*.res|二進位制文件 (*.bin)|*.bin|所有檔案 (*.*)|*.*|"
-    IDS_JPEGRESBINFILTER "JPEG圖片 (*.jpg;*.jpeg;*.jpe;*.jfif)|*.jpg;*.jpeg;*.jpe;*.jfif|資源檔(*.res)|*.res|二進位制文件 (*.bin)|*.bin|所有檔案 (*.*)|*.*|"
-    IDS_GIFRESBINFILTER "GIF圖片 (*.gif)|*.gif|資源檔(*.res)|*.res|二進位制文件 (*.bin)|*.bin|所有檔案 (*.*)|*.*|"
-    IDS_TIFFRESBINFILTER "TIFF圖片 (*.tif;*.tiff)|*.tif;*.tiff|資源檔(*.res)|*.res|二進位制文件 (*.bin)|*.bin|所有檔案 (*.*)|*.*|"
-    IDS_AVIRESBINFILTER "AVI影片 (*.avi)|*.avi|資源檔(*.res)|*.res|二進位制文件 (*.bin)|*.bin|所有檔案 (*.*)|*.*|"
-    IDS_WAVERESBINFILTER "WAVE聲音 (*.wav)|*.wav|資源檔(*.res)|*.res|二進位制文件 (*.bin)|*.bin|所有檔案 (*.*)|*.*|"
+    IDS_INVALIDNAME "無效的資源名稱。"
+    IDS_PNGRESBINFILTER "PNG 圖片 (*.png)|*.png|資源檔 (*.res)|*.res|二進位檔案 (*.bin)|*.bin|所有檔案 (*.*)|*.*|"
+    IDS_JPEGRESBINFILTER "JPEG 圖片 (*.jpg;*.jpeg;*.jpe;*.jfif)|*.jpg;*.jpeg;*.jpe;*.jfif|資源檔 (*.res)|*.res|二進位檔案 (*.bin)|*.bin|所有檔案 (*.*)|*.*|"
+    IDS_GIFRESBINFILTER "GIF 圖片 (*.gif)|*.gif|資源檔 (*.res)|*.res|二進位檔案 (*.bin)|*.bin|所有檔案 (*.*)|*.*|"
+    IDS_TIFFRESBINFILTER "TIFF 圖片 (*.tif;*.tiff)|*.tif;*.tiff|資源檔 (*.res)|*.res|二進位檔案 (*.bin)|*.bin|所有檔案 (*.*)|*.*|"
+    IDS_AVIRESBINFILTER "AVI 影片 (*.avi)|*.avi|資源檔 (*.res)|*.res|二進位檔案 (*.bin)|*.bin|所有檔案 (*.*)|*.*|"
+    IDS_WAVERESBINFILTER "WAVE 音效 (*.wav)|*.wav|資源檔 (*.res)|*.res|二進位檔案 (*.bin)|*.bin|所有檔案 (*.*)|*.*|"
     IDS_COMMENT_SEP "//////////////////////////////////////////////////////////////////////////////\r\n"
     IDS_NEWLINE "\r\n"
     IDS_NOTICE "// 此檔案由 RisohEditor 6.0.6 自動產生。\r\n"
-    IDS_DAGGER "// † <-- 這個匕首符號有助於偵測 UTF-8 編碼。\r\n"
-    IDS_IMPORTFILTER "可導入文件|*.rc;*.res;*.dfm;*.html;*.htm;*.manifest;*.ico;*.cur;*.ani;*.wav;*.mp3;*.bmp;*.dib;*.png;*.gif;*.jpg;*.jpeg;*.jpe;*.jfif;*.tif;*.tiff;*.avi;*.wmf;*.emf|RC 文件 (*.rc;*.rc2)|*.rc;*.rc2|二進位制資源檔 (*.res)|*.res|圖片文件|*.bmp;*.dib;*.png;*.gif;*.jpg;*.jpeg;*.jpe;*.jfif;*.tif;*.tiff;*.wmf;*.emf;*.tlb|游標文件(*.cur;*.ani)|*.cur;*.ani|圖示文件 (*.ico)|*.ico|WAVE聲音 (*.wav)|*.wav|MP3聲音 (*.mp3)|*.mp3|HTML文件 (*.html;*.htm)|*.html;*.htm|清單文件 (*.manifest)|*.manifest|Delphi DFM Files (*.dfm)|*.dfm|Delphi DFM 文件 (*.dfm)|*.dfm|TYPELIB Files (*.tlb)|*.tlb|所有檔案 (*.*)|*.*|"
-    IDS_CANTWRITEBYLOCK "無法寫入檔案, 因為以下文件已被鎖定。\r\n\r\n%s"
+    IDS_DAGGER "// † <-- 這個匕首符號有助於偵測 UTF-8。\r\n"
+    IDS_IMPORTFILTER "可匯入檔案|*.rc;*.res;*.dfm;*.html;*.htm;*.manifest;*.ico;*.cur;*.ani;*.wav;*.mp3;*.bmp;*.dib;*.png;*.gif;*.jpg;*.jpeg;*.jpe;*.jfif;*.tif;*.tiff;*.avi;*.wmf;*.emf|RC 檔案 (*.rc;*.rc2)|*.rc;*.rc2|二進位資源檔 (*.res)|*.res|圖片檔案|*.bmp;*.dib;*.png;*.gif;*.jpg;*.jpeg;*.jpe;*.jfif;*.tif;*.tiff;*.wmf;*.emf;*.tlb|游標檔案 (*.cur;*.ani)|*.cur;*.ani|圖示檔案 (*.ico)|*.ico|WAVE 音效 (*.wav)|*.wav|MP3 音效 (*.mp3)|*.mp3|HTML 檔案 (*.html;*.htm)|*.html;*.htm|清單檔案 (*.manifest)|*.manifest|Delphi DFM 檔案 (*.dfm)|*.dfm|TYPELIB 檔案 (*.tlb)|*.tlb|所有檔案 (*.*)|*.*|"
+    IDS_CANTWRITEBYLOCK "以下檔案已被鎖定，無法寫入。\r\n\r\n%s"
     IDS_ANSI "ANSI"
     IDS_WIDE "Unicode"
-    IDS_UTF8 "UTF-8 (with BOM)"
-    IDS_UTF8N "UTF-8 (without BOM)"
+    IDS_UTF8 "UTF-8 (含 BOM)"
+    IDS_UTF8N "UTF-8 (不含 BOM)"
     IDS_SJIS "Shift_JIS"
-    IDS_BINARY "(二進位制數據)"
+    IDS_BINARY "(二進位資料)"
     IDS_RESTYPE "資源類型"
     IDS_ENCODING "編碼"
-    IDS_INVALIDRESTYPE "資源類型無效。"
-    IDS_PATHSPACEERROR "您錯誤地使用空格字元安裝了該位置！ 資源編譯器不能接受空間。\n\n請避免使用“C:\\Program Files”。"
-    IDS_LOADEGAPROGRAM "載入EGA程序..."
-    IDS_EGAFILTER "EGA 計劃 (*.ega)|*.ega|所有檔案 (*.*)|*.*|"
-    IDS_QUERYSAVECHANGE "該文件已被修改. 您要立即保存更改嗎？"
-    IDS_DFMFILTER "DFM 文件 (*.dfm)|*.dfm|文字檔案 (*.txt)|*.txt|所有檔案 (*.*)|*.*|"
-    IDS_CANTEXTRACTDFM "無法提取DFM數據。"
-    IDS_EXTRACTDFM "提取DFM數據"
-    IDS_ENTERNONZERONAME "請輸入不為零的資源名稱。"
-    IDS_ENTERNONZEROTYPE "請輸入不為零的資源類型名稱。"
+    IDS_INVALIDRESTYPE "無效的資源類型。"
+    IDS_PATHSPACEERROR "安裝路徑中含有空格，資源編譯器無法接受。\n\n請避免使用「C:\\Program Files」之類的路徑。"
+    IDS_LOADEGAPROGRAM "載入 EGA 程式..."
+    IDS_EGAFILTER "EGA 程式 (*.ega)|*.ega|所有檔案 (*.*)|*.*|"
+    IDS_QUERYSAVECHANGE "檔案已修改，要儲存變更嗎？"
+    IDS_DFMFILTER "DFM 檔案 (*.dfm)|*.dfm|文字檔案 (*.txt)|*.txt|所有檔案 (*.*)|*.*|"
+    IDS_CANTEXTRACTDFM "無法擷取 DFM 資料。"
+    IDS_EXTRACTDFM "擷取 DFM 資料"
+    IDS_ENTERNONZERONAME "請輸入非零的資源名稱。"
+    IDS_ENTERNONZEROTYPE "請輸入非零的資源類型。"
     IDS_HOMEPAGE "https://katahiromz.web.fc2.com/re/ch/"
-    IDS_FILESAVED "文件保存確定。"
-    IDS_RECOMPILEOK "重新編譯。"
+    IDS_FILESAVED "檔案已儲存。"
+    IDS_RECOMPILEOK "重新編譯完成。"
     IDS_RECOMPILEFAILED "重新編譯失敗 (語法錯誤)。"
-    IDS_TOOL_EXPORT "導出..."
-    IDS_CODEEDITOR "代碼編輯器"
-    IDS_HEXVIEWER "十六進位制檢視器"
+    IDS_TOOL_EXPORT "匯出..."
+    IDS_CODEEDITOR "程式碼編輯器"
+    IDS_HEXVIEWER "十六進位檢視器"
     IDS_INTEGERORIDENTIFIER "(請輸入整數或識別碼)"
     IDS_NOTEXT " "
-    IDS_NOUPDATE "您正使用最新版本。"
-    IDS_THEREISUPDATE "有一個可以更新的 RisohEditor %s。 您想立即下載更新嗎？"
+    IDS_NOUPDATE "您使用的是最新版本。"
+    IDS_THEREISUPDATE "有新版 RisohEditor %s 可供更新。要立即下載嗎？"
     IDS_CANTCHECKUPDATE "檢查更新失敗。"
-    IDS_CODEPAGE1252 "1252 (拉丁1)"
-    IDS_CODEPAGE1250 "1250 (拉丁2)"
-    IDS_CODEPAGE1251 "1251 (西里爾)"
-    IDS_CODEPAGE1253 "1253 (希臘語)"
-    IDS_CODEPAGE1254 "1254 (土耳其)"
-    IDS_CODEPAGE1255 "1255 (希伯來語)"
-    IDS_CODEPAGE1256 "1256 (阿拉伯)"
+    IDS_CODEPAGE1252 "1252 (拉丁文1)"
+    IDS_CODEPAGE1250 "1250 (拉丁文2)"
+    IDS_CODEPAGE1251 "1251 (斯拉夫文)"
+    IDS_CODEPAGE1253 "1253 (希臘文)"
+    IDS_CODEPAGE1254 "1254 (土耳其文)"
+    IDS_CODEPAGE1255 "1255 (希伯來文)"
+    IDS_CODEPAGE1256 "1256 (阿拉伯文)"
     IDS_CODEPAGE1257 "1257 (波羅的海)"
-    IDS_CODEPAGE874 "874 (泰語)"
-    IDS_CODEPAGE932 "932 (日本語)"
+    IDS_CODEPAGE874 "874 (泰文)"
+    IDS_CODEPAGE932 "932 (日文)"
     IDS_CODEPAGE936 "936 (簡體中文)"
-    IDS_CODEPAGE949 "949 (韓語)"
+    IDS_CODEPAGE949 "949 (韓文)"
     IDS_CODEPAGE950 "950 (繁體中文)"
     IDS_CODEPAGE65001 "65001 (UTF-8)"
-    IDS_EXTRACTTLB "TypeLib 資料提取"
-    IDS_CANTEXTRACTTLB "無法提取 TypeLib數據。"
-    IDS_TLBRESBINFILTER "TYPELIB data (*.tlb)|*.tlb|二進位制資源檔 (*.res)|*.res|Text 檔案 (*.txt)|*.txt|MIDL 檔案 (*.idl)|*.idl|所有檔案 (*.*)|*.*|"
-    IDS_USAGE "Usage: RisohEditor [options | ""file""]\n\nOptions:\n--help  Show this message.\n--version  Show version info.\n--load ""your-file.rc""  Load the file (without GUI)\n--save ""your-file.res""  Save the file (without GUI)\n--log-file ""log-file.txt""  Specify the log file.\n--load-options OPTIONS  Set load options.\n--save-options OPTIONS  Set save options.\n\nLoad options: (no-load-res-h)\nSave options: (idc-static)(compress)(sep-lang)(no-res-folder)(lang-macro)(less-comments)(wrap-manifest)(begin-end)(utf-16)(bom)(backup)(ms-msgtbl)"
-    IDS_NOSELECTION "沒有選擇。"
-    IDS_TRANSLATORS "[譯者]\r\n英語: 片山博文MZ\r\n芬蘭語: Veikko Muurikainen\r\n印尼語: Mas Ahmad Muhammad\r\n義大利語: R.B.\r\n日文: 片山博文MZ\r\n韓語: VenusGirl (비너스걸)\r\n波蘭語: Piotr Hetnarowicz\r\n葡萄牙語（巴西）: JNylson\r\n葡萄牙語（葡萄牙）: Luis Neves\r\n俄文: Dmitry Yerokhin\r\n簡體中文: 林鴻湘\r\n西班牙語: Cristobal Prieto\r\n土耳其語: OnurGVNGL\r\n烏克蘭語（烏克蘭）: Volodymyr Paliy"
-    IDS_EXPORTFILTER "RC 文件 (*.rc;*.rc2)|*.rc;*.rc2|二進位制資源檔 (*.res)|*.res|"
-    IDS_GENERATEDFROMTEXTINCLUDE "// 從 TEXTINCLUDE %u 生成\r\n"
-    IDS_TEXTINCLUDEREADONLY "該文件受 TEXTINCLUDE 1 寫入保護。 \r\n\r\n您仍要寫入該檔案嗎？"
-    IDS_INCLUDETEXTINCLUDE3 "TEXTINCLUDE 3 包含無法編輯的資源項。 \r\n\r\n是否要將 TEXTINCLUDE 3 中的項包含為可編輯項並重設 TEXTINCLUDE 3？"
-    IDS_MP3RESBINFILTER "MP3聲音 (*.mp3)|*.mp3|資源檔(*.res)|*.res|二進位制文件 (*.bin)|*.bin|所有檔案 (*.*)|*.*|"
-    IDS_MP3SOUND "(MP3聲音)\r\n"
+    IDS_EXTRACTTLB "擷取 TypeLib 資料"
+    IDS_CANTEXTRACTTLB "無法擷取 TypeLib 資料。"
+    IDS_TLBRESBINFILTER "TYPELIB 資料 (*.tlb)|*.tlb|二進位資源檔 (*.res)|*.res|文字檔案 (*.txt)|*.txt|MIDL 檔案 (*.idl)|*.idl|所有檔案 (*.*)|*.*|"
+    IDS_USAGE "用法: RisohEditor [選項 | \"檔案\"]\n\n選項:\n--help  顯示此說明。\n--version  顯示版本資訊。\n--load \"檔案.rc\"  無 GUI 載入檔案\n--save \"檔案.res\"  無 GUI 儲存檔案\n--log-file \"log.txt\"  指定記錄檔。\n--load-options OPTIONS  設定載入選項。\n--save-options OPTIONS  設定儲存選項。\n\n載入選項: (no-load-res-h)\n儲存選項: (idc-static)(compress)(sep-lang)(no-res-folder)(lang-macro)(less-comments)(wrap-manifest)(begin-end)(utf-16)(bom)(backup)(ms-msgtbl)"
+    IDS_NOSELECTION "未選取任何項目。"
+    IDS_TRANSLATORS "[翻譯者]\r\n英文: 片山博文MZ\r\n芬蘭文: Veikko Muurikainen\r\n印尼文: Mas Ahmad Muhammad\r\n義大利文: R.B.\r\n日文: 片山博文MZ\r\n韓文: VenusGirl (비너스걸)\r\n波蘭文: Piotr Hetnarowicz\r\n葡萄牙文（巴西）: JNylson\r\n葡萄牙文（葡萄牙）: Luis Neves\r\n俄文: Dmitry Yerokhin\r\n簡體中文: 林鴻湘\r\n西班牙文: Cristobal Prieto\r\n土耳其文: OnurGVNGL\r\n烏克蘭文: Volodymyr Paliy"
+    IDS_EXPORTFILTER "RC 檔案 (*.rc;*.rc2)|*.rc;*.rc2|二進位資源檔 (*.res)|*.res|"
+    IDS_GENERATEDFROMTEXTINCLUDE "// 由 TEXTINCLUDE %u 產生\r\n"
+    IDS_TEXTINCLUDEREADONLY "此檔案受 TEXTINCLUDE 1 保護，無法寫入。\r\n\r\n仍要寫入嗎？"
+    IDS_INCLUDETEXTINCLUDE3 "TEXTINCLUDE 3 包含無法編輯的項目。\r\n\r\n是否要將其轉為可編輯項目並重設 TEXTINCLUDE 3？"
+    IDS_MP3RESBINFILTER "MP3 音效 (*.mp3)|*.mp3|資源檔 (*.res)|*.res|二進位檔案 (*.bin)|*.bin|所有檔案 (*.*)|*.*|"
+    IDS_MP3SOUND "(MP3 音效)\r\n"
     IDS_CODEPAGE1200 "1200 (UTF-16)"
-    IDS_INVALIDCODEPAGE "無效的代碼頁。"
-    IDS_UNKNOWN_ID "未知ID"
-    IDS_CURSOR_ID "遊標ID"
-    IDS_BITMAP_ID "點陣圖ID"
-    IDS_MENU_ID "選單ID"
-    IDS_DIALOG_ID "對話方塊ID"
-    IDS_STRING_ID "字串ID"
-    IDS_ACCEL_ID "加速ID"
-    IDS_ICON_ID "圖示ID"
-    IDS_ANICURSOR_ID "動畫遊標ID"
-    IDS_ANIICON_ID "動畫圖示ID"
+    IDS_INVALIDCODEPAGE "無效的字碼頁。"
+    IDS_UNKNOWN_ID "未知 ID"
+    IDS_CURSOR_ID "游標 ID"
+    IDS_BITMAP_ID "點陣圖 ID"
+    IDS_MENU_ID "選單 ID"
+    IDS_DIALOG_ID "對話方塊 ID"
+    IDS_STRING_ID "字串 ID"
+    IDS_ACCEL_ID "加速鍵 ID"
+    IDS_ICON_ID "圖示 ID"
+    IDS_ANICURSOR_ID "動畫游標 ID"
+    IDS_ANIICON_ID "動畫圖示 ID"
     IDS_HTML_ID "HTML ID"
-    IDS_HELP_ID "幫助ID"
-    IDS_COMMAND_ID "命令ID"
-    IDS_CONTROL_ID "控制ID"
-    IDS_RESOURCE_ID "資源ID"
-    IDS_MESSAGE_ID "訊息ID"
-    IDS_WINDOW_ID "視窗ID"
-    IDS_NEWCOMMAND_ID "新命令ID"
-    IDS_PROMPT_ID "提示ID"
-    IDS_RCDATA_ID "RC資料ID"
-    IDS_MSGTABLE_ID "訊息表ID"
+    IDS_HELP_ID "說明 ID"
+    IDS_COMMAND_ID "命令 ID"
+    IDS_CONTROL_ID "控制項 ID"
+    IDS_RESOURCE_ID "資源 ID"
+    IDS_MESSAGE_ID "訊息 ID"
+    IDS_WINDOW_ID "視窗 ID"
+    IDS_NEWCOMMAND_ID "新命令 ID"
+    IDS_PROMPT_ID "提示 ID"
+    IDS_RCDATA_ID "RC 資料 ID"
+    IDS_MSGTABLE_ID "訊息表 ID"
     IDS_SEARCHURL "https://duckduckgo.com/?q=%s&t=h_&ia=web"
-    IDS_INVALIDTYPE "資源類型無效。"
-    IDS_CHANGETYPEWARNING "更改資源類型可能會損壞資源資料。 \r\n\r\n您仍然要更改嗎？"
+    IDS_INVALIDTYPE "無效的資源類型。"
+    IDS_CHANGETYPEWARNING "變更資源類型可能會損壞資料。\r\n\r\n仍要變更嗎？"
     IDS_SAMETYPE "資源類型相同。"
 }
 
