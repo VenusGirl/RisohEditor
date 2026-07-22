@@ -27,33 +27,6 @@ struct AutoDeleteFileW
 LONG EntryBaseBase::s_alive_count = 0;
 #endif
 
-BOOL
-Res_IsEntityType(const MIdOrString& type)
-{
-	MStringW name;
-	if (type.m_id)
-	{
-		name = g_db.GetName(L"RESOURCE", type.m_id);
-		if (name.empty())
-			name = mstr_dec_word(type.m_id);
-	}
-	else
-	{
-		name = type.str();
-	}
-
-	auto table = g_db.GetTable(L"NON.ENTITY.RESOURCE.TYPE");
-	for (auto& table_entry : table)
-	{
-		if (table_entry.name == name)
-		{
-			return FALSE;
-		}
-	}
-
-	return TRUE;
-}
-
 MStringW EntryBase::get_name_label() const
 {
 	if (m_name.is_str())
