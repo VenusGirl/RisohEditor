@@ -10,8 +10,7 @@
 
 ConstantsDB::TableType ConstantsDB::GetTable(CategoryType category) const
 {
-	if (category.size())
-		::CharUpperW(&category[0]);
+	mstr_upper(category);
 
 	MapType::const_iterator it = m_map.find(category);
 	if (it == m_map.end())
@@ -24,8 +23,7 @@ ConstantsDB::TableType ConstantsDB::GetTable(CategoryType category) const
 ConstantsDB::TableType
 ConstantsDB::GetTableByPrefix(CategoryType category, NameType prefix) const
 {
-	if (category.size())
-		::CharUpperW(&category[0]);
+	mstr_upper(category);
 
 	TableType table1;
 	MapType::const_iterator found = m_map.find(category);
@@ -371,8 +369,7 @@ bool ConstantsDB::LoadFromFile(LPCWSTR FileName)
 			if (line[line.size() - 1] == L']')
 			{
 				category = line.substr(1, line.size() - 2);
-				if (category.size())
-					::CharUpperW(&category[0]);
+				mstr_upper(category);
 				m_map[category];
 			}
 			continue;
@@ -570,8 +567,7 @@ ConstantsDB::DumpBitFieldOrZero(const CategoryType& cat1, const CategoryType& ca
 ConstantsDB::StringType
 ConstantsDB::DumpValue(CategoryType category, ValueType value, bool is_hex) const
 {
-	if (category.size())
-		::CharUpperW(&category[0]);
+	mstr_upper(category);
 
 	MapType::const_iterator found = m_map.find(category);
 	if (found != m_map.end())
@@ -597,8 +593,7 @@ ConstantsDB::ValueType
 ConstantsDB::ParseBitField(CategoryType category, const StringType& str,
 	                       ValueType default_value) const
 {
-	if (category.size())
-		::CharUpperW(&category[0]);
+	mstr_upper(category);
 
 	std::vector<StringType> values;
 	mstr_split(values, str, L" \t\r\n|+");
@@ -638,8 +633,7 @@ ConstantsDB::_dumpBitField(CategoryType category, ValueType& value, bool bNot) c
 {
 	StringType ret;
 
-	if (category.size())
-		::CharUpperW(&category[0]);
+	mstr_upper(category);
 
 	MapType::const_iterator found = m_map.find(category);
 	if (found == m_map.end())

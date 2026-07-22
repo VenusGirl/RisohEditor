@@ -3,7 +3,7 @@
 ////////////////////////////////////////////////////////////////////////////
 
 #ifndef MZC4_MSTRING_HPP_
-#define MZC4_MSTRING_HPP_       20 /* Version 20 */
+#define MZC4_MSTRING_HPP_       21 /* Version 21 */
 
 // class MString;
 // class MStringA;
@@ -251,6 +251,21 @@ template <typename T_STR_CONTAINER>
 typename T_STR_CONTAINER::value_type
 mstr_join(const T_STR_CONTAINER& container,
 		  const typename T_STR_CONTAINER::value_type& sep);
+
+void mstr_upper(std::string& str);
+void mstr_upper(std::wstring& str);
+void mstr_lower(std::string& str);
+void mstr_lower(std::wstring& str);
+
+template <size_t siz>
+void mstr_upper(char (&str)[siz]);
+template <size_t siz>
+void mstr_lower(char (&str)[siz]);
+
+template <size_t siz>
+void mstr_upper(wchar_t (&str)[siz]);
+template <size_t siz>
+void mstr_lower(wchar_t (&str)[siz]);
 
 ////////////////////////////////////////////////////////////////////////////
 // binary
@@ -969,6 +984,54 @@ template <size_t siz>
 inline void mstr_trim_right(WCHAR (&str)[siz])
 {
 	mstr_trim_right(str, WIDE(" \t\n\r\f\v"));
+}
+
+inline void mstr_upper(std::string& str)
+{
+	if (str.size())
+		_strupr(&str[0]);
+}
+
+inline void mstr_lower(std::string& str)
+{
+	if (str.size())
+		_strlwr(&str[0]);
+}
+
+inline void mstr_upper(std::wstring& str)
+{
+	if (str.size())
+		_wcsupr(&str[0]);
+}
+
+inline void mstr_lower(std::wstring& str)
+{
+	if (str.size())
+		_wcslwr(&str[0]);
+}
+
+template <size_t siz>
+inline void mstr_upper(char (&str)[siz])
+{
+	_strupr(str);
+}
+
+template <size_t siz>
+inline void mstr_lower(char (&str)[siz])
+{
+	_strlwr(str);
+}
+
+template <size_t siz>
+inline void mstr_upper(wchar_t (&str)[siz])
+{
+	_wcsupr(str);
+}
+
+template <size_t siz>
+inline void mstr_lower(wchar_t (&str)[siz])
+{
+	_wcslwr(str);
 }
 
 ////////////////////////////////////////////////////////////////////////////

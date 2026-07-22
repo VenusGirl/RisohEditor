@@ -13,7 +13,7 @@ static bool CheckTextForSearch(ITEM_SEARCH *pSearch, EntryBase *entry, MString t
 {
 	// make the text uppercase to ignore case
 	if (pSearch->bIgnoreCases)
-		CharUpperW(&text[0]);
+		mstr_upper(text);
 
 	// find?
 	if (text.find(pSearch->strText) == MString::npos)
@@ -159,7 +159,7 @@ BOOL MMainWnd::DoItemSearch(ITEM_SEARCH& search)
 	MWaitCursor wait;
 
 	if (search.bIgnoreCases)
-		CharUpperW(&search.strText[0]);
+		mstr_upper(search.strText);
 
 	search_proc(&search);
 
@@ -234,8 +234,8 @@ BOOL MMainWnd::DoInnerSearch(HWND hwnd)
 	MString strTarget = m_search.strText;
 	if (m_search.bIgnoreCases)
 	{
-		CharUpperW(&strText[0]);
-		CharUpperW(&strTarget[0]);
+		mstr_upper(strText);
+		mstr_upper(strTarget);
 	}
 
 	size_t index = MString::npos;
@@ -279,7 +279,7 @@ void MMainWnd::search_worker_thread_inner(HWND hwnd, MItemSearchDlg* pDialog)
 	auto entry = g_res.get_entry();
 
 	if (m_search.bIgnoreCases)
-		CharUpperW(&m_search.strText[0]);
+		mstr_upper(m_search.strText);
 
 	// initialize
 	m_search.bCancelled = FALSE;

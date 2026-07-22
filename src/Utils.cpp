@@ -2529,7 +2529,7 @@ void InitLangListView(HWND hLst1, LPCTSTR pszText)
 	if (pszText)
 	{
 		StringCbCopyW(szText, sizeof(szText), pszText);
-		CharUpperW(szText);
+		mstr_upper(szText);
 	}
 
 	WCHAR sz1[MAX_PATH], sz2[MAX_PATH];
@@ -2545,11 +2545,11 @@ void InitLangListView(HWND hLst1, LPCTSTR pszText)
 		{
 			// filtering by pszText
 			MString str = sz1;
-			CharUpperW(&str[0]);
+			mstr_upper(str);
 			if (str.find(szText) == MString::npos)
 			{
 				str = sz2;
-				CharUpperW(&str[0]);
+				mstr_upper(str);
 				if (str.find(szText) == MString::npos)
 					continue;
 			}
@@ -2812,11 +2812,11 @@ LANGID LangFromText(LPWSTR pszLang)
 		if (lang == BAD_LANG)	 // not found yet?
 		{
 			// ignore case, partial match
-			CharUpperW(&strLang[0]);
+			mstr_upper(strLang);
 			for (auto& entry : g_langs)
 			{
 				MStringW strEntry = entry.str;
-				CharUpperW(&strEntry[0]);
+				mstr_upper(strEntry);
 
 				if (wcsstr(strEntry.c_str(), pszLang) != NULL)
 				{
@@ -2995,8 +2995,7 @@ BOOL CheckTypeComboBox(HWND hCmb1, MIdOrString& type)
 	}
 	else
 	{
-		if (str.size())
-			::CharUpperW(&str[0]);
+		mstr_upper(str);
 		
 		size_t i = str.rfind(L'('); // ')'
 		if (i != MStringW::npos && mchr_is_digit(str[i + 1]))
@@ -3063,8 +3062,7 @@ BOOL CheckNameComboBox(HWND hCmb2, const MIdOrString& type, MIdOrString& name)
 	mstr_trim(str);
 
 	// Make it Uppercase
-	if (str.size())
-		CharUpperW(&str[0]);
+	mstr_upper(str);
 
 	if (type == L"RISOHTEMPLATE")
 	{
@@ -3421,8 +3419,7 @@ MIdOrString GetNameFromText(const WCHAR *pszText)
 			return (WORD)g_db.GetResIDValue(str);
 
 		// Make it Uppercase
-		if (str.size())
-			CharUpperW(&str[0]);
+		mstr_upper(str);
 
 		// Retry
 		if (g_db.HasResID(str))
@@ -3480,8 +3477,7 @@ MIdOrString GetTypeFromText(const WCHAR *pszText)
 			return wID;
 
 		// Make it Uppercase
-		if (str.size())
-			CharUpperW(&str[0]);
+		mstr_upper(str);
 
 		// Retry
 		wID = WORD(g_db.GetValue(L"RESOURCE", str.c_str()));

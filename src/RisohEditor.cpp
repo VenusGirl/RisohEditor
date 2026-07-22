@@ -3203,7 +3203,7 @@ BOOL MMainWnd::DoWriteRC(LPCWSTR pszFileName, LPCWSTR pszResH, const EntrySet& f
 
 				// make uppercase one
 				MString lang_name2 = lang_name1;
-				CharUpperW(&lang_name2[0]);
+				mstr_upper(lang_name2);
 
 				if (bRCFileUTF16)
 				{
