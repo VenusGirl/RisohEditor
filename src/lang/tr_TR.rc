@@ -153,55 +153,7 @@ IDR_POPUPMENUS MENU
 {
     POPUP "Açılır Pencere #0"
     {
-        MENUITEM "Grafik Arayüzü ile &Düzenle...\tCtrl+U", ID_GUIEDIT
-        MENUITEM SEPARATOR
-        POPUP "&Ekle"
-        {
-            MENUITEM "Simge &Ekle...", ID_ADDICON
-            MENUITEM "İmleç &Ekle...", ID_ADDCURSOR
-            MENUITEM "Bitmap &Ekle...", ID_ADDBITMAP
-            MENUITEM "&Diyalog Ekle...", ID_ADDDIALOG
-            MENUITEM "&Menü Ekle...", ID_ADDMENU
-            MENUITEM "Karakter Dizisi &Tablosu Ekle...", ID_ADDSTRINGTABLE
-            MENUITEM "M&esaj Tablosu Ekle...", ID_ADDMESSAGETABLE
-            MENUITEM "&HTML Ekle...", ID_ADDHTML
-            MENUITEM "&Kısayol Tuşları Ekle...", ID_ADDACCEL
-            MENUITEM "Sürüm &Bilgisi Ekle...", ID_ADDVERINFO
-            MENUITEM "Mani&fest Ekle...", ID_ADDMANIFEST
-            MENUITEM "&Araç Çubuğu Ekle", ID_ADDTOOLBAR
-            MENUITEM "&Kaynak Ögesi Ekle...", ID_ADDRES
-        }
-        POPUP "&Değiştir"
-        {
-            MENUITEM "Simgeyi &Değiştir...", ID_REPLACEICON
-            MENUITEM "İmleci &Değiştir...", ID_REPLACECURSOR
-            MENUITEM "Bitmap'i &Değiştir...", ID_REPLACEBITMAP
-            MENUITEM "İkili &Kaynak Ögesini Değiştir...", ID_REPLACEBIN
-        }
-        POPUP "&Çıkart"
-        {
-            MENUITEM "Simgeyi &Çıkart...", ID_EXTRACTICON
-            MENUITEM "İmleci &Çıkart...", ID_EXTRACTCURSOR
-            MENUITEM "Bitmap'i &Çıkart...", ID_EXTRACTBITMAP
-            MENUITEM "RC dosyası olarak &Çıkart...", ID_EXTRACTRC
-            MENUITEM "İkili &Kaynak Ögesini Çıkart...", ID_EXTRACTBIN
-        }
-        MENUITEM SEPARATOR
-        MENUITEM "&Türü/adı/dili değiştir\tF2", ID_EDITLABEL
-        MENUITEM SEPARATOR
-        POPUP "&Klon"
-        {
-            MENUITEM "Yeni &türde klonla...", ID_COPYASNEWTYPE
-            MENUITEM "Yeni &İsimle Klonla...", ID_COPYASNEWNAME
-            MENUITEM "Yeni &Dil ile Klonla...", ID_COPYASNEWLANG
-            MENUITEM "Birden Fazla Dile &Kopyala...", ID_COPYTOMULTILANG
-        }
-        MENUITEM SEPARATOR
-        MENUITEM "&Test Yap", ID_TEST
-        MENUITEM SEPARATOR
-        MENUITEM "&Sil\tDel", ID_DELETERES
-        MENUITEM SEPARATOR
-        MENUITEM "Öğe &Yardımı...\tF1", ID_TREEITEMHELP
+        MENUITEM "(Deleted)", -1
     }
     POPUP "Açılır Pencere #1"
     {

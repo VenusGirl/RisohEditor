@@ -153,55 +153,7 @@ IDR_POPUPMENUS MENU
 {
     POPUP "Popup #0"
     {
-        MENUITEM "Edit by &GUI...\tCtrl+U", ID_GUIEDIT
-        MENUITEM SEPARATOR
-        POPUP "&Add"
-        {
-            MENUITEM "Add &Icon...", ID_ADDICON
-            MENUITEM "Add &Cursor...", ID_ADDCURSOR
-            MENUITEM "Add &Bitmap...", ID_ADDBITMAP
-            MENUITEM "Add &Dialog...", ID_ADDDIALOG
-            MENUITEM "Add &Menu...", ID_ADDMENU
-            MENUITEM "Add &String Table...", ID_ADDSTRINGTABLE
-            MENUITEM "Add M&essage Table...", ID_ADDMESSAGETABLE
-            MENUITEM "Add &HTML...", ID_ADDHTML
-            MENUITEM "Add &Accelerators...", ID_ADDACCEL
-            MENUITEM "Add &Version Info...", ID_ADDVERINFO
-            MENUITEM "Add Mani&fest...", ID_ADDMANIFEST
-            MENUITEM "Add &Toolbar", ID_ADDTOOLBAR
-            MENUITEM "Add &Resource Item...", ID_ADDRES
-        }
-        POPUP "&Replace"
-        {
-            MENUITEM "Replace &Icon...", ID_REPLACEICON
-            MENUITEM "Replace &Cursor...", ID_REPLACECURSOR
-            MENUITEM "Replace &Bitmap...", ID_REPLACEBITMAP
-            MENUITEM "Replace Binary &Resource Item...", ID_REPLACEBIN
-        }
-        POPUP "&Extract"
-        {
-            MENUITEM "Extract &Icon...", ID_EXTRACTICON
-            MENUITEM "Extract &Cursor...", ID_EXTRACTCURSOR
-            MENUITEM "Extract &Bitmap...", ID_EXTRACTBITMAP
-            MENUITEM "Extract &as RC file...", ID_EXTRACTRC
-            MENUITEM "Extract Binary &Resource Item...", ID_EXTRACTBIN
-        }
-        MENUITEM SEPARATOR
-        MENUITEM "&Change Type/Name/Language\tF2", ID_EDITLABEL
-        MENUITEM SEPARATOR
-        POPUP "&Clone"
-        {
-            MENUITEM "Clone in new &type...", ID_COPYASNEWTYPE
-            MENUITEM "Clone in new &name...", ID_COPYASNEWNAME
-            MENUITEM "Clone in new &language...", ID_COPYASNEWLANG
-            MENUITEM "Copy to multiple languages...", ID_COPYTOMULTILANG
-        }
-        MENUITEM SEPARATOR
-        MENUITEM "Do &Test", ID_TEST
-        MENUITEM SEPARATOR
-        MENUITEM "&Delete\tDel", ID_DELETERES
-        MENUITEM SEPARATOR
-        MENUITEM "&Item Help...\tF1", ID_TREEITEMHELP
+        MENUITEM "(Deleted)", -1
     }
     POPUP "Popup #1"
     {

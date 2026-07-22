@@ -156,55 +156,7 @@ IDR_POPUPMENUS MENU
 {
     POPUP "ポップアップ #0"
     {
-        MENUITEM "&GUI編集...\tCtrl+U", ID_GUIEDIT
-        MENUITEM SEPARATOR
-        POPUP "追加(&A)"
-        {
-            MENUITEM "アイコンを追加(&I)...", ID_ADDICON
-            MENUITEM "カーソルを追加(&C)...", ID_ADDCURSOR
-            MENUITEM "ビットマップを追加(&B)...", ID_ADDBITMAP
-            MENUITEM "ダイアログを追加(&D)...", ID_ADDDIALOG
-            MENUITEM "メニューを追加(&M)...", ID_ADDMENU
-            MENUITEM "文字列テーブルを追加(&S)...", ID_ADDSTRINGTABLE
-            MENUITEM "メッセージ テーブルを追加(&E)...", ID_ADDMESSAGETABLE
-            MENUITEM "&HTMLを追加...", ID_ADDHTML
-            MENUITEM "アクセラレータを追加(&A)...", ID_ADDACCEL
-            MENUITEM "バージョン情報を追加(&V)...", ID_ADDVERINFO
-            MENUITEM "マニフェストを追加(&F)...", ID_ADDMANIFEST
-            MENUITEM "ツールバーを追加(&T)...", ID_ADDTOOLBAR
-            MENUITEM "リソース項目を追加(&R)...", ID_ADDRES
-        }
-        POPUP "置き換え(&R)"
-        {
-            MENUITEM "アイコンを置き換え(&I)...", ID_REPLACEICON
-            MENUITEM "カーソルを置き換え(&C)...", ID_REPLACECURSOR
-            MENUITEM "ビットマップを置き換え(&B)...", ID_REPLACEBITMAP
-            MENUITEM "バイナリ リソース項目を置き換え(&R)...", ID_REPLACEBIN
-        }
-        POPUP "抽出(&E)"
-        {
-            MENUITEM "アイコンを抽出(&I)...", ID_EXTRACTICON
-            MENUITEM "カーソルを抽出(&C)...", ID_EXTRACTCURSOR
-            MENUITEM "ビットマップを抽出(&B)...", ID_EXTRACTBITMAP
-            MENUITEM "RC ファイルとして抽出(&A)...", ID_EXTRACTRC
-            MENUITEM "バイナリ リソース項目を抽出(&R)...", ID_EXTRACTBIN
-        }
-        MENUITEM SEPARATOR
-        MENUITEM "種類/名前/言語を変更(&H)\tF2", ID_EDITLABEL
-        MENUITEM SEPARATOR
-        POPUP "複製(&C)"
-        {
-            MENUITEM "別の種類で複製(&T)...", ID_COPYASNEWTYPE
-            MENUITEM "別の名前で複製(&N)...", ID_COPYASNEWNAME
-            MENUITEM "別の言語で複製(&L)...", ID_COPYASNEWLANG
-            MENUITEM "複数の言語へ複製...", ID_COPYTOMULTILANG
-        }
-        MENUITEM SEPARATOR
-        MENUITEM "テストする(&T)", ID_TEST
-        MENUITEM SEPARATOR
-        MENUITEM "削除(&D)\tDel", ID_DELETERES
-        MENUITEM SEPARATOR
-        MENUITEM "項目のヘルプ(&I)...\tF1", ID_TREEITEMHELP
+        MENUITEM "(Deleted)", -1
     }
     POPUP "ポップアップ #1"
     {

@@ -153,55 +153,7 @@ IDR_POPUPMENUS MENU
 {
     POPUP "Menu contextuel #0"
     {
-        MENUITEM "Modifier par &GUI...\tCtrl+U", ID_GUIEDIT
-        MENUITEM SEPARATOR
-        POPUP "&Ajouter"
-        {
-            MENUITEM "Ajouter une &icône...", ID_ADDICON
-            MENUITEM "Ajouter un &curseur...", ID_ADDCURSOR
-            MENUITEM "Ajouter un &bitmap...", ID_ADDBITMAP
-            MENUITEM "Ajouter une &boîte de dialogue...", ID_ADDDIALOG
-            MENUITEM "Ajouter un &menu...", ID_ADDMENU
-            MENUITEM "Ajouter une table de &chaînes...", ID_ADDSTRINGTABLE
-            MENUITEM "Ajouter une table de &messages...", ID_ADDMESSAGETABLE
-            MENUITEM "Ajouter du &HTML...", ID_ADDHTML
-            MENUITEM "Ajouter des &accélérateurs...", ID_ADDACCEL
-            MENUITEM "Ajouter les informations de &version...", ID_ADDVERINFO
-            MENUITEM "Ajouter un &manifeste...", ID_ADDMANIFEST
-            MENUITEM "Ajouter une barre d'&outils...", ID_ADDTOOLBAR
-            MENUITEM "Ajouter un &élément de ressource...", ID_ADDRES
-        }
-        POPUP "&Remplacer"
-        {
-            MENUITEM "Remplacer l'&icône...", ID_REPLACEICON
-            MENUITEM "Remplacer le &curseur...", ID_REPLACECURSOR
-            MENUITEM "Remplacer le &bitmap...", ID_REPLACEBITMAP
-            MENUITEM "Remplacer un élément &binaire...", ID_REPLACEBIN
-        }
-        POPUP "&Extraire"
-        {
-            MENUITEM "Extraire l'&icône...", ID_EXTRACTICON
-            MENUITEM "Extraire le &curseur...", ID_EXTRACTCURSOR
-            MENUITEM "Extraire le &bitmap...", ID_EXTRACTBITMAP
-            MENUITEM "Extraire en tant que &fichier RC...", ID_EXTRACTRC
-            MENUITEM "Extraire un élément &binaire...", ID_EXTRACTBIN
-        }
-        MENUITEM SEPARATOR
-        MENUITEM "Modifier le &type/nom/langue...\tF2", ID_EDITLABEL
-        MENUITEM SEPARATOR
-        POPUP "&Dupliquer"
-        {
-            MENUITEM "Dupliquer dans un nouveau &type...", ID_COPYASNEWTYPE
-            MENUITEM "Dupliquer sous un nouveau &nom...", ID_COPYASNEWNAME
-            MENUITEM "Dupliquer dans une nouvelle &langue...", ID_COPYASNEWLANG
-            MENUITEM "Dupliquer dans plusieurs &langues...", ID_COPYTOMULTILANG
-        }
-        MENUITEM SEPARATOR
-        MENUITEM "&Tester", ID_TEST
-        MENUITEM SEPARATOR
-        MENUITEM "&Supprimer\tDel", ID_DELETERES
-        MENUITEM SEPARATOR
-        MENUITEM "Aide sur l'&élément...\tF1", ID_TREEITEMHELP
+        MENUITEM "(Deleted)", -1
     }
     POPUP "Menu contextuel #1"
     {
