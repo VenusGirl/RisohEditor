@@ -193,6 +193,7 @@ public:
 		{
 			HANDLE_MSG(hwnd, WM_INITDIALOG, OnInitDialog);
 			HANDLE_MSG(hwnd, WM_COMMAND, OnCommand);
+			HANDLE_MSG(hwnd, WM_DESTROY, OnDestroy);
 		}
 		return 0;
 	}
