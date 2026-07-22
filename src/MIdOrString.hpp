@@ -239,18 +239,18 @@ struct MIdOrString
 		}
 	}
 
-    mutable MString s_strTmp;
+    mutable MString m_strTmp; // FIXME: Delete this dangling pointer (#416)
 
 	const TCHAR *c_str() const
 	{
-		s_strTmp = str();
-		return s_strTmp.c_str();
+		m_strTmp = str();
+		return m_strTmp.c_str();
 	}
 
 	const TCHAR *c_str_or_empty() const
 	{
-		s_strTmp = str_or_empty();
-		return s_strTmp.c_str();
+		m_strTmp = str_or_empty();
+		return m_strTmp.c_str();
 	}
 
 	MString quoted_wstr() const
