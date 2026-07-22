@@ -37,23 +37,14 @@ public:
 		switch (uMsg)
 		{
 		case WM_SETFOCUS:
-			{
-				LRESULT ret = ::CallWindowProcW(pThis->m_fnOldEdt2WndProc, hwnd, uMsg, wParam, lParam);
-				PostMessageW(hwnd, EM_SETSEL, 0, -1); // Select all
-				return ret;
-			}
-			break;
 		case WM_LBUTTONUP:
-			{
-				LRESULT ret = ::CallWindowProcW(pThis->m_fnOldEdt2WndProc, hwnd, uMsg, wParam, lParam);
-				PostMessageW(hwnd, EM_SETSEL, 0, -1); // Select all
-				return ret;
-			}
-			break;
 		case WM_COPY:
 			{
 				LRESULT ret = ::CallWindowProcW(pThis->m_fnOldEdt2WndProc, hwnd, uMsg, wParam, lParam);
-				PostMessageW(hwnd, EM_SETSEL, -1, -1); // Select none
+				if (uMsg == WM_COPY)
+					PostMessageW(hwnd, EM_SETSEL, -1, -1); // Select none
+				else
+					PostMessageW(hwnd, EM_SETSEL, 0, -1); // Select all
 				return ret;
 			}
 			break;
@@ -67,23 +58,14 @@ public:
 		switch (uMsg)
 		{
 		case WM_SETFOCUS:
-			{
-				LRESULT ret = ::CallWindowProcW(pThis->m_fnOldEdt2WndProc, hwnd, uMsg, wParam, lParam);
-				PostMessageW(hwnd, EM_SETSEL, 0, -1); // Select all
-				return ret;
-			}
-			break;
 		case WM_LBUTTONUP:
-			{
-				LRESULT ret = ::CallWindowProcW(pThis->m_fnOldEdt2WndProc, hwnd, uMsg, wParam, lParam);
-				PostMessageW(hwnd, EM_SETSEL, 0, -1); // Select all
-				return ret;
-			}
-			break;
 		case WM_COPY:
 			{
 				LRESULT ret = ::CallWindowProcW(pThis->m_fnOldEdt2WndProc, hwnd, uMsg, wParam, lParam);
-				PostMessageW(hwnd, EM_SETSEL, -1, -1); // Select none
+				if (uMsg == WM_COPY)
+					PostMessageW(hwnd, EM_SETSEL, -1, -1); // Select none
+				else
+					PostMessageW(hwnd, EM_SETSEL, 0, -1); // Select all
 				return ret;
 			}
 			break;
