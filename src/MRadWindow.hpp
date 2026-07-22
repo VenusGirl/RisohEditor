@@ -143,8 +143,8 @@ public:
 	static void DoRangeSelect(HWND hwndParent, const RECT *prc, BOOL bCtrlDown);
 
 	// the window procedure of MRadCtrl
-	virtual LRESULT CALLBACK
-	WindowProcDx(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
+	LRESULT CALLBACK
+	WindowProcDx(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) override;
 
 	struct MYHITTEST
 	{
@@ -226,8 +226,8 @@ public:
 	static HWND GetLastCtrl(HWND hwndParent);
 
 	// the dialog procedure of MRadDialog
-	virtual INT_PTR CALLBACK
-	DialogProcDx(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
+	INT_PTR CALLBACK
+	DialogProcDx(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) override;
 
 	LRESULT DoSendMessage(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 
@@ -239,8 +239,8 @@ public:
 	void DrawDragSelect(HWND hwnd);
 
 	// the window procedure of MRadDialog
-	virtual LRESULT CALLBACK
-	WindowProcDx(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
+	LRESULT CALLBACK
+	WindowProcDx(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) override;
 
 	// NOTE: We have to do subclassing all the children controls and their descendants
 	//       to modify the hittesting.
@@ -330,9 +330,9 @@ public:
 	void FitToRadDialog();
 
 	// the window class name
-	virtual LPCTSTR GetWndClassNameDx() const;
+	LPCTSTR GetWndClassNameDx() const override;
 
-	virtual void ModifyWndClassDx(WNDCLASSEX& wcx);
+	void ModifyWndClassDx(WNDCLASSEX& wcx) override;
 
 	LRESULT DoSendMessage(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 
@@ -343,8 +343,8 @@ public:
 	void update_maps();
 
 	// the window procedure of MRadWindow
-	virtual LRESULT CALLBACK
-	WindowProcDx(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
+	LRESULT CALLBACK
+	WindowProcDx(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) override;
 
 	// update the resource
 	void UpdateRes();
