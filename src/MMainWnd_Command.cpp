@@ -62,7 +62,7 @@ void MMainWnd::OnCommand(HWND hwnd, int id, HWND hwndCtl, UINT codeNotify)
 	{
 		// the source EDIT control was modified.
 		// change the toolbar
-		UpdateOurToolBarButtons(2);
+		UpdateOurToolBarButtons(TOOLBAR_STATE_COMPILE_AND_CANCEL_EDIT);
 
 		// show "ready" status
 		ChangeStatusText(IDS_READY);

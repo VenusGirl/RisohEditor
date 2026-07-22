@@ -41,6 +41,15 @@ enum IMPORT_RESULT
 	NOT_IMPORTABLE
 };
 
+enum TOOLBAR_STATE
+{
+	TOOLBAR_STATE_GUIEDIT_AND_TEST = 0,
+	TOOLBAR_STATE_TEST = 1,
+	TOOLBAR_STATE_COMPILE_AND_CANCEL_EDIT = 2,
+	TOOLBAR_STATE_NORMAL = 3,
+	TOOLBAR_STATE_GUIEDIT = 4,
+};
+
 class MMainWnd : public MWindowBase
 {
 protected:
@@ -220,7 +229,7 @@ public:
 	BOOL ReCompileOnSelChange(BOOL bReopen = FALSE);
 	void SelectString(void);
 	BOOL CreateOurToolBar(HWND hwndParent, HIMAGELIST himlTools);
-	void UpdateOurToolBarButtons(INT iType);
+	void UpdateOurToolBarButtons(TOOLBAR_STATE iType);
 	void UpdateToolBarStatus();
 	bool IsEntryTextEditable(const EntryBase *entry);
 

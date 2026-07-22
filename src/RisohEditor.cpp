@@ -247,7 +247,7 @@ LRESULT MMainWnd::OnCheckTreeView(HWND hwnd, WPARAM wParam, LPARAM lParam)
 	{
 		HidePreview();
 		Edit_SetReadOnly(m_hCodeEditor, TRUE);
-		UpdateOurToolBarButtons(3);
+		UpdateOurToolBarButtons(TOOLBAR_STATE_NORMAL);
 	}
 	return 0;
 }
@@ -810,7 +810,7 @@ void MMainWnd::SelectTV(EntryBase *entry, BOOL bDoubleClick, STV stv)
 
 	if (!entry)     // not selected
 	{
-		UpdateOurToolBarButtons(3);
+		UpdateOurToolBarButtons(TOOLBAR_STATE_NORMAL);
 		return;
 	}
 
@@ -882,19 +882,19 @@ void MMainWnd::SelectTV(EntryBase *entry, BOOL bDoubleClick, STV stv)
 		// update the toolbar
 		if (Edit_GetModify(m_hCodeEditor))
 		{
-			UpdateOurToolBarButtons(2);
+			UpdateOurToolBarButtons(TOOLBAR_STATE_COMPILE_AND_CANCEL_EDIT);
 		}
 		else if (entry->is_testable())
 		{
-			UpdateOurToolBarButtons(0);
+			UpdateOurToolBarButtons(TOOLBAR_STATE_GUIEDIT_AND_TEST);
 		}
 		else if (entry->can_gui_edit())
 		{
-			UpdateOurToolBarButtons(4);
+			UpdateOurToolBarButtons(TOOLBAR_STATE_GUIEDIT);
 		}
 		else
 		{
-			UpdateOurToolBarButtons(3);
+			UpdateOurToolBarButtons(TOOLBAR_STATE_NORMAL);
 		}
 	}
 	else
@@ -903,7 +903,7 @@ void MMainWnd::SelectTV(EntryBase *entry, BOOL bDoubleClick, STV stv)
 		Edit_SetReadOnly(m_hCodeEditor, TRUE);
 
 		// update the toolbar
-		UpdateOurToolBarButtons(3);
+		UpdateOurToolBarButtons(TOOLBAR_STATE_NORMAL);
 	}
 
 	// update show
@@ -6254,7 +6254,7 @@ void MMainWnd::DoAddRes(HWND hwnd, MAddResDlg& dialog)
 		{
 			// failure
 			m_nStatusStringID = IDS_RECOMPILEFAILED;
-			UpdateOurToolBarButtons(2);
+			UpdateOurToolBarButtons(TOOLBAR_STATE_COMPILE_AND_CANCEL_EDIT);
 
 			// set the error message
 			SetErrorMessage(strOutput);

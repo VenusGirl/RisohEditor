@@ -23,7 +23,7 @@ static VOID ToolBar_StoreStrings(HWND hwnd, INT nCount, TBBUTTON *pButtons)
 	}
 }
 
-// buttons info #0
+// buttons info #0 (GUI edit and test)
 TBBUTTON g_buttons0[] =
 {
 	{ 11, ID_GUIEDIT, TBSTATE_ENABLED, BTNS_BUTTON, {0}, 0, IDS_TOOL_GUIEDIT },
@@ -45,7 +45,7 @@ TBBUTTON g_buttons0[] =
 	{ 14, ID_EXPORTRES, TBSTATE_ENABLED, BTNS_BUTTON, {0}, 0, IDS_TOOL_EXPORT },
 };
 
-// buttons info #1
+// buttons info #1 (test)
 TBBUTTON g_buttons1[] =
 {
 	{ 12, ID_TEST, TBSTATE_ENABLED, BTNS_BUTTON, {0}, 0, IDS_TEST },
@@ -66,7 +66,7 @@ TBBUTTON g_buttons1[] =
 	{ 14, ID_EXPORTRES, TBSTATE_ENABLED, BTNS_BUTTON, {0}, 0, IDS_TOOL_EXPORT },
 };
 
-// buttons info #2
+// buttons info #2 (compile and cancel edit)
 TBBUTTON g_buttons2[] =
 {
 	{ 9, ID_COMPILE, TBSTATE_ENABLED, BTNS_BUTTON, {0}, 0, IDS_TOOL_RECOMPILE },
@@ -88,7 +88,7 @@ TBBUTTON g_buttons2[] =
 	{ 14, ID_EXPORTRES, TBSTATE_ENABLED, BTNS_BUTTON, {0}, 0, IDS_TOOL_EXPORT },
 };
 
-// buttons info #3
+// buttons info #3 (normal)
 TBBUTTON g_buttons3[] =
 {
 	{ 0, ID_NEW, TBSTATE_ENABLED, BTNS_BUTTON, {0}, 0, IDS_TOOL_NEW },
@@ -107,7 +107,7 @@ TBBUTTON g_buttons3[] =
 	{ 14, ID_EXPORTRES, TBSTATE_ENABLED, BTNS_BUTTON, {0}, 0, IDS_TOOL_EXPORT },
 };
 
-// buttons info #4
+// buttons info #4 (gui edit)
 TBBUTTON g_buttons4[] =
 {
 	{ 11, ID_GUIEDIT, TBSTATE_ENABLED, BTNS_BUTTON, {0}, 0, IDS_TOOL_GUIEDIT },
@@ -151,7 +151,7 @@ BOOL MMainWnd::CreateOurToolBar(HWND hwndParent, HIMAGELIST himlTools)
 	ToolBar_StoreStrings(hwndTB, _countof(g_buttons4), g_buttons4);
 
 	m_hToolBar = hwndTB;
-	UpdateOurToolBarButtons(3);
+	UpdateOurToolBarButtons(TOOLBAR_STATE_NORMAL);
 
 	return TRUE;
 }
@@ -273,7 +273,7 @@ void MMainWnd::UpdateToolBarStatus()
 }
 
 // update the toolbar buttons
-void MMainWnd::UpdateOurToolBarButtons(INT iType)
+void MMainWnd::UpdateOurToolBarButtons(TOOLBAR_STATE iType)
 {
 	// Stop redrawing
 	::SendMessageW(m_hToolBar, WM_SETREDRAW, FALSE, 0);
@@ -285,19 +285,19 @@ void MMainWnd::UpdateOurToolBarButtons(INT iType)
 	// add the buttons
 	switch (iType)
 	{
-	case 0:
+	case TOOLBAR_STATE_GUIEDIT_AND_TEST:
 		SendMessageW(m_hToolBar, TB_ADDBUTTONS, _countof(g_buttons0), (LPARAM)g_buttons0);
 		break;
-	case 1:
+	case TOOLBAR_STATE_TEST:
 		SendMessageW(m_hToolBar, TB_ADDBUTTONS, _countof(g_buttons1), (LPARAM)g_buttons1);
 		break;
-	case 2:
+	case TOOLBAR_STATE_COMPILE_AND_CANCEL_EDIT:
 		SendMessageW(m_hToolBar, TB_ADDBUTTONS, _countof(g_buttons2), (LPARAM)g_buttons2);
 		break;
-	case 3:
+	case TOOLBAR_STATE_NORMAL:
 		SendMessageW(m_hToolBar, TB_ADDBUTTONS, _countof(g_buttons3), (LPARAM)g_buttons3);
 		break;
-	case 4:
+	case TOOLBAR_STATE_GUIEDIT:
 		SendMessageW(m_hToolBar, TB_ADDBUTTONS, _countof(g_buttons4), (LPARAM)g_buttons4);
 		break;
 	}
