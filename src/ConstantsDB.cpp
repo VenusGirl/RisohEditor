@@ -7,11 +7,11 @@
 #include "ConstantsDB.hpp"
 #include <cctype>
 #include <cstdio>
-#include <iostream>
 
 ConstantsDB::TableType ConstantsDB::GetTable(CategoryType category) const
 {
-	::CharUpperW(&category[0]);
+	if (category.size())
+		::CharUpperW(&category[0]);
 
 	MapType::const_iterator it = m_map.find(category);
 	if (it == m_map.end())
@@ -24,7 +24,8 @@ ConstantsDB::TableType ConstantsDB::GetTable(CategoryType category) const
 ConstantsDB::TableType
 ConstantsDB::GetTableByPrefix(CategoryType category, NameType prefix) const
 {
-	::CharUpperW(&category[0]);
+	if (category.size())
+		::CharUpperW(&category[0]);
 
 	TableType table1;
 	MapType::const_iterator found = m_map.find(category);
@@ -250,7 +251,7 @@ ConstantsDB::GetNameOfResID(IDTYPE_ nIDTYPE_1, IDTYPE_ nIDTYPE_2, ValueType valu
 	                        bool unsign) const
 {
 	StringType ret = GetNameOfResID(nIDTYPE_1, value, unsign);
-	if (mchr_is_digit(ret[0]) || ret[0] == L'-')
+	if (ret.size() && (mchr_is_digit(ret[0]) || ret[0] == L'-'))
 		ret = GetNameOfResID(nIDTYPE_2, value, unsign);
 	return ret;
 }
@@ -370,7 +371,8 @@ bool ConstantsDB::LoadFromFile(LPCWSTR FileName)
 			if (line[line.size() - 1] == L']')
 			{
 				category = line.substr(1, line.size() - 2);
-				::CharUpperW(&category[0]);
+				if (category.size())
+					::CharUpperW(&category[0]);
 				m_map[category];
 			}
 			continue;
@@ -399,8 +401,6 @@ bool ConstantsDB::LoadFromFile(LPCWSTR FileName)
 
 		NameType name = pch0;
 		mstr_trim(name);
-		//if (name.empty())
-		//    continue;
 
 		StringType value_str = pch1;
 		mstr_trim(value_str);
@@ -419,7 +419,7 @@ bool ConstantsDB::LoadFromFile(LPCWSTR FileName)
 		mstr_trim(mask_str);
 
 		ValueType value;
-		if (iswdigit(value_str[0]))
+		if (value_str.size() && iswdigit(value_str[0]))
 		{
 			value = mstr_parse_int(value_str.c_str(), false);
 		}
@@ -429,7 +429,7 @@ bool ConstantsDB::LoadFromFile(LPCWSTR FileName)
 		}
 
 		ValueType mask;
-		if (iswdigit(mask_str[0]))
+		if (mask_str.size() && iswdigit(mask_str[0]))
 		{
 			mask = mstr_parse_int(mask_str.c_str(), false);
 		}
@@ -568,7 +568,8 @@ ConstantsDB::DumpBitFieldOrZero(const CategoryType& cat1, const CategoryType& ca
 ConstantsDB::StringType
 ConstantsDB::DumpValue(CategoryType category, ValueType value, bool is_hex) const
 {
-	::CharUpperW(&category[0]);
+	if (category.size())
+		::CharUpperW(&category[0]);
 
 	MapType::const_iterator found = m_map.find(category);
 	if (found != m_map.end())
@@ -594,7 +595,8 @@ ConstantsDB::ValueType
 ConstantsDB::ParseBitField(CategoryType category, const StringType& str,
 	                       ValueType default_value) const
 {
-	::CharUpperW(&category[0]);
+	if (category.size())
+		::CharUpperW(&category[0]);
 
 	std::vector<StringType> values;
 	mstr_split(values, str, L" \t\r\n|+");
@@ -634,7 +636,8 @@ ConstantsDB::_dumpBitField(CategoryType category, ValueType& value, bool bNot) c
 {
 	StringType ret;
 
-	::CharUpperW(&category[0]);
+	if (category.size())
+		::CharUpperW(&category[0]);
 
 	MapType::const_iterator found = m_map.find(category);
 	if (found == m_map.end())
