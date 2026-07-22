@@ -628,7 +628,7 @@ void DialogItem::FixupForRad(bool bRevert)
 			m_style |= SS_GRAYRECT;
 		}
 		if (m_class.m_id == 0x0080 ||
-			lstrcmpiW(m_class.str().c_str(), L"BUTTON") == 0)
+			lstrcmpiW(m_class.c_str(), L"BUTTON") == 0)
 		{
 			if ((m_style & BS_TYPEMASK) == BS_OWNERDRAW)
 			{
@@ -637,7 +637,7 @@ void DialogItem::FixupForRad(bool bRevert)
 			}
 		}
 		if (m_class.m_id == 0x0082 ||
-			lstrcmpiW(m_class.str().c_str(), L"STATIC") == 0)
+			lstrcmpiW(m_class.c_str(), L"STATIC") == 0)
 		{
 			if ((m_style & SS_TYPEMASK) == SS_OWNERDRAW)
 			{
@@ -646,7 +646,7 @@ void DialogItem::FixupForRad(bool bRevert)
 			}
 		}
 		if (m_class.m_id == 0x0083 ||
-			lstrcmpiW(m_class.str().c_str(), L"LISTBOX") == 0)
+			lstrcmpiW(m_class.c_str(), L"LISTBOX") == 0)
 		{
 			if (m_style & (LBS_OWNERDRAWFIXED | LBS_OWNERDRAWVARIABLE))
 			{
@@ -654,8 +654,8 @@ void DialogItem::FixupForRad(bool bRevert)
 			}
 		}
 		if (m_class.m_id == 0x0085 ||
-			lstrcmpiW(m_class.str().c_str(), L"COMBOBOX") == 0 ||
-			lstrcmpiW(m_class.str().c_str(), WC_COMBOBOXEX) == 0)
+			lstrcmpiW(m_class.c_str(), L"COMBOBOX") == 0 ||
+			lstrcmpiW(m_class.c_str(), WC_COMBOBOXEX) == 0)
 		{
 			if (m_style & (CBS_OWNERDRAWFIXED | CBS_OWNERDRAWVARIABLE))
 			{
