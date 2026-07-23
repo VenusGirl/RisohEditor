@@ -9191,21 +9191,8 @@ void MMainWnd::OnCommand(HWND hwnd, int id, HWND hwndCtl, UINT codeNotify)
 	if (!::IsWindowEnabled(hwnd) && id != ID_EGAFINISH)
 		return;
 
-	if (m_hCodeEditor == hwndCtl &&
-		(codeNotify == EN_VSCROLL || codeNotify == EN_HSCROLL))
-	{
-		// The multiline EDIT control sends EN_VSCROLL/EN_HSCROLL via
-		// WM_COMMAND not only when the scrollbar is clicked, but also on
-		// every mouse-wheel scroll. These are not real "commands" -- id
-		// here is just the control ID, so it won't match anything useful
-		// in the switch below anyway -- but the code that used to run
-		// unconditionally after the switch (g_res.delete_invalid(),
-		// UpdateToolBarStatus() with its dozen+ SendMessage calls) still
-		// fired on every one of them, and the MWaitCursor below made that
-		// visible as a hourglass flash on every wheel tick. Bail out
-		// before any of that (and before the wait cursor) runs.
+	if (m_hCodeEditor == hwndCtl)
 		return;
-	}
 
 	MWaitCursor wait;
 
