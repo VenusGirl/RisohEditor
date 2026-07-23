@@ -3358,9 +3358,20 @@ void MMainWnd::OnContextMenu(HWND hwnd, HWND hwndContext, UINT xPos, UINT yPos)
 		hItem = TreeView_GetSelection(hwndContext);
 
 		RECT rc;
-		TreeView_GetItemRect(hwndContext, hItem, &rc, FALSE);
-		pt.x = (rc.left + rc.right) / 2;
-		pt.y = (rc.top + rc.bottom) / 2;
+		if (hItem)
+		{
+			TreeView_GetItemRect(hwndContext, hItem, &rc, FALSE);
+			pt.x = (rc.left + rc.right) / 2;
+			pt.y = (rc.top + rc.bottom) / 2;
+		}
+		else
+		{
+			GetWindowRect(hwndContext, &rc);
+			pt.x = rc.left;
+			pt.y = rc.top;
+
+			ScreenToClient(hwndContext, &pt);
+		}
 	}
 	else
 	{
