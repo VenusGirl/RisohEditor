@@ -343,7 +343,7 @@ BOOL MMainWnd::PreviewDlgInit(HWND hwnd, const EntryBase& entry)
 	ResToText res2text;
 	MString str = res2text.DumpEntry(entry);
 	SetWindowTextW(m_hCodeEditor, str.c_str());
-	return str.size();
+	return !str.empty();
 }
 
 // preview the dialog template resource
