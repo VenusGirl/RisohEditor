@@ -7,6 +7,7 @@ add_library(libRisohEditor STATIC
     EgaBridge.cpp
     IconRes.cpp
     MBitmapDx.cpp
+    MCtrlPropDlg.cpp
     MEditMenuDlg.cpp
     MEgaDlg.cpp
     MIDListDlg.cpp
