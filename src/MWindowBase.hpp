@@ -1121,7 +1121,7 @@ PopupMenuDx(HWND hwnd, HWND hContext, UINT nMenuID, INT iSubMenu, INT x, INT y)
 	HMENU hMenu = LoadMenu(GetModuleHandle(NULL), MAKEINTRESOURCE(nMenuID));
 	HMENU hSubMenu = GetSubMenu(hMenu, iSubMenu);
 
-	if (x == 0xFFFF && y == 0xFFFF)
+	if ((x == 0xFFFF && y == 0xFFFF) || (x == -1 && y == -1))
 	{
 		RECT rc;
 		GetWindowRect(hContext, &rc);
