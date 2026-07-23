@@ -3,6 +3,7 @@
 - v.6.0.7 (2026-XX-YY)
     - Memperbaiki masalah lambatnya respons gulir roda pada tampilan sumber.
     - Memperbaiki pembuangan (dumping) gaya DIALOG.
+    - Peningkatan pembuangan (dumping) RT_VERSION.
 - v.6.0.5 (2026-07-17)
     - Mengaktifkan fitur pengubahan nama sumber daya melalui tanda panah pada *treeview*. 
     - Memperbaiki dukungan EGA. Menambahkan beberapa program EGA. 

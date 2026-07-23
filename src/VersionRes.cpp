@@ -108,6 +108,26 @@ VersionRes::DumpValue(WORD wType, const Var& value, int depth) const
 	return ret;
 }
 
+static inline BOOL is_8digit_hex(const MStringW& str)
+{
+	if (str.size() != 8)
+		return FALSE;
+	for (auto& ch : str)
+	{
+		if (!mchr_is_xdigit(ch))
+			return FALSE;
+	}
+	return TRUE;
+}
+
+static inline PCWSTR GetCharSet2String(WORD wCharSet)
+{
+#define DEFINE_CODEPAGE2(index, value, name) if (wCharSet == value) return name;
+#include "codepages2.h"
+#undef DEFINE_CODEPAGE2
+	return L"(Unknown codepage)";
+}
+
 MStringW
 VersionRes::DumpBlock(const Var& var, int depth) const
 {
@@ -116,7 +136,24 @@ VersionRes::DumpBlock(const Var& var, int depth) const
 	ret += MStringW(depth * 4, L' ');
 	ret += L"BLOCK \"";
 	ret += var.key;
-	ret += L"\"\r\n";
+#ifndef NO_CONSTANTS_DB
+	if (is_8digit_hex(var.key))
+	{
+		ret += L"\" // ";
+		LANGID wLangID = (LANGID)std::wcstoul(var.key.substr(0, 4).c_str(), nullptr, 16);
+		WORD wCharSet = (WORD)std::wcstoul(var.key.substr(4, 4).c_str(), nullptr, 16);
+
+		MString lang_name = g_db.GetLangName(wLangID);
+		ret += lang_name;
+		ret += L", ";
+		ret += GetCharSet2String(wCharSet);
+		ret += L"\r\n";
+	}
+	else
+#endif
+	{
+		ret += L"\"\r\n";
+	}
 	ret += MStringW(depth * 4, L' ');
 	if (g_settings.bUseBeginEnd)
 		ret += L"BEGIN\r\n";
@@ -151,7 +188,11 @@ VersionRes::Dump(const MIdOrString& name) const
 	WCHAR line[MAX_PATH];
 	DWORD dwValue;
 
-	ret += name.str();
+	if (name.is_str())
+		ret += name.quoted_wstr();
+	else
+		ret += name.str();
+
 	ret += L" VERSIONINFO\r\n";
 
 	StringCchPrintfW(line, _countof(line),
