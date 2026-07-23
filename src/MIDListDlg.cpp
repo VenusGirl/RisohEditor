@@ -702,7 +702,7 @@ void MIDListDlg::OnCommand(HWND hwnd, int id, HWND hwndCtl, UINT codeNotify)
 
 			ListView_GetItemText(m_hLst1, iItem, 0, szText, _countof(szText));
 			MString str1 = szText;
-			if (str1.size() && mchr_is_digit(str1[0]))
+			if (str1.size() && (mchr_is_digit(str1[0]) || str1[0] == L'"' || str1[0] == L'-'))
 				break;
 
 			MStringA astr1 = MTextToAnsi(CP_ACP, szText).c_str();
