@@ -15,7 +15,7 @@ endif()
 enable_testing()
 
 # project name, version, and languages
-project(RisohEditor VERSION 6.0.5 LANGUAGES CXX RC)
+project(RisohEditor VERSION 6.0.7 LANGUAGES CXX RC)
 
 # PROJECT_VERSION macro
 add_definitions(-DPROJECT_VERSION=\"${PROJECT_VERSION}\")
@@ -24,6 +24,9 @@ add_definitions(-DPROJECT_VERSION=\"${PROJECT_VERSION}\")
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/build)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/build)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/build)
+
+# define RISOHEDITOR
+add_definitions(-DRISOHEDITOR)
 
 # statically link
 if (WIN32)
