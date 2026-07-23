@@ -1,6 +1,7 @@
 ﻿## HISTORIA
 
 - v.6.0.7 (2026-XX-YY)
+    - Se ha corregido la lentitud del desplazamiento con la rueda en la vista de código fuente.
 - v.6.0.5 (2026-07-17)
     - Enabled the treeview arrow to change the resource name.
     - Fixed EGA. Added some EGA programs.
