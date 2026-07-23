@@ -1003,9 +1003,18 @@ void MMainWnd::OnContextMenu(HWND hwnd, HWND hwndContext, UINT xPos, UINT yPos)
 		hItem = TreeView_GetSelection(hwndContext);
 
 		RECT rc;
-		TreeView_GetItemRect(hwndContext, hItem, &rc, FALSE);
-		pt.x = (rc.left + rc.right) / 2;
-		pt.y = (rc.top + rc.bottom) / 2;
+		if (TreeView_GetItemRect(hwndContext, hItem, &rc, FALSE))
+		{
+			pt.x = (rc.left + rc.right) / 2;
+			pt.y = (rc.top + rc.bottom) / 2;
+		}
+		else
+		{
+			::GetWindowRect(hwndContext, &rc);
+			::MapWindowPoints(nullptr, hwndContext, (PPOINT)&rc, 2);
+			pt.x = rc.left;
+			pt.y = rc.top;
+		}
 	}
 	else
 	{
