@@ -554,6 +554,6 @@ public:
 			HANDLE_MSG(hwnd, WM_INITDIALOG, OnInitDialog);
 			HANDLE_MSG(hwnd, WM_COMMAND, OnCommand);
 		}
-		return DefaultProcDx();
+		return 0;
 	}
 };

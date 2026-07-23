@@ -694,7 +694,7 @@ MEgaDlg::DialogProcDx(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		EgaBridge::ExecuteUITask((void*)lParam);
 		break;
 	default:
-		return DefaultProcDx();
+		break;
 	}
 	return 0;
 }

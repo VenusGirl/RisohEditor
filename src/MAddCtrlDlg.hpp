@@ -712,6 +712,6 @@ public:
 			HANDLE_MSG(hwnd, WM_COMMAND, OnCommand);
 			HANDLE_MSG(hwnd, WM_NOTIFY, OnNotify);
 		}
-		return DefaultProcDx();
+		return 0;
 	}
 };
