@@ -35,7 +35,6 @@
 #define IDD_EDITMENU                        117
 #define IDD_DLGPROP                         118
 #define IDD_CTRLPROP                        119
-#define IDD_ADDCTRL                         120
 #define IDD_IDASSOC                         121
 #define IDD_MODIFYASSOC                     122
 #define IDD_IDLIST                          123
@@ -378,6 +377,7 @@
 #define IDS_PROMPT_ID                       376
 #define IDS_RCDATA_ID                       377
 #define IDS_MSGTABLE_ID                     378
+#define IDS_ADDCTRL                         379
 
 #define ID_NEW                              100
 #define ID_OPEN                             101
