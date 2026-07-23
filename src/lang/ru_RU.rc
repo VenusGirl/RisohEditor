@@ -149,51 +149,7 @@ IDR_POPUPMENUS MENU
 {
     POPUP "Popup #0"
     {
-        MENUITEM "Редактировать в &графическом интерфейсе...\tCtrl+U", ID_GUIEDIT
-        MENUITEM SEPARATOR
-        POPUP "&Добавить"
-        {
-            MENUITEM "&Значок...", ID_ADDICON
-            MENUITEM "&Курсор...", ID_ADDCURSOR
-            MENUITEM "К&артинку...", ID_ADDBITMAP
-            MENUITEM "&Диалог...", ID_ADDDIALOG
-            MENUITEM "&Меню...", ID_ADDMENU
-            MENUITEM "&Таблицу строк...", ID_ADDSTRINGTABLE
-            MENUITEM "Та&блицу сообщений...", ID_ADDMESSAGETABLE
-            MENUITEM "HTML-&ресурс...", ID_ADDHTML
-            MENUITEM "Акс&елераторы...", ID_ADDACCEL
-            MENUITEM "&Информацию о версии...", ID_ADDVERINFO
-            MENUITEM "Ма&нифест...", ID_ADDMANIFEST
-            MENUITEM "&Панель инструментов...", ID_ADDTOOLBAR
-            MENUITEM "Ресурсный &элемент...", ID_ADDRES
-        }
-        POPUP "&Заменить"
-        {
-            MENUITEM "&Значок...", ID_REPLACEICON
-            MENUITEM "&Курсор...", ID_REPLACECURSOR
-            MENUITEM "К&артинку...", ID_REPLACEBITMAP
-            MENUITEM "&Двоичный ресурсный элемент...", ID_REPLACEBIN
-        }
-        POPUP "&Извлечь"
-        {
-            MENUITEM "&Значок...", ID_EXTRACTICON
-            MENUITEM "&Курсор...", ID_EXTRACTCURSOR
-            MENUITEM "К&артинку...", ID_EXTRACTBITMAP
-            MENUITEM "Извлечь &как RC файл...", ID_EXTRACTRC
-            MENUITEM "&Двоичный ресурсный элемент...", ID_EXTRACTBIN
-        }
-        MENUITEM SEPARATOR
-        MENUITEM "И&зменить имя/язык\tF2", ID_EDITLABEL
-        MENUITEM SEPARATOR
-        MENUITEM "Клонировать с новым &именем...", ID_COPYASNEWNAME
-        MENUITEM "Клонировать с новым &языком...", ID_COPYASNEWLANG
-        MENUITEM "Копировать на несколько языков ......", ID_COPYTOMULTILANG
-        MENUITEM SEPARATOR
-        MENUITEM "Про&тестировать", ID_TEST
-        MENUITEM SEPARATOR
-        MENUITEM "&Удалить\tDel", ID_DELETERES
-        MENUITEM SEPARATOR
-        MENUITEM "П&омощь по этому товару...\tF1", ID_TREEITEMHELP
+        MENUITEM "(Deleted)", -1
     }
     POPUP "Popup #1"
     {

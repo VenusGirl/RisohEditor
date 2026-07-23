@@ -3379,15 +3379,15 @@ void MMainWnd::OnContextMenu(HWND hwnd, HWND hwndContext, UINT xPos, UINT yPos)
 	TreeView_SelectItem(hwndContext, hItem);
 
 	// load the menu
-	HMENU hMenu = LoadMenuW(m_hInst, MAKEINTRESOURCEW(IDR_POPUPMENUS));
+	HMENU hMenu = LoadMenuW(m_hInst, MAKEINTRESOURCEW(IDR_MAINMENU));
 	OnInitMenu(hwnd, hMenu);
-	HMENU hSubMenu = ::GetSubMenu(hMenu, 0);
+	HMENU hSubMenu = ::GetSubMenu(hMenu, 1);
 	if (hMenu == NULL || hSubMenu == NULL)
 		return;
 
-	EntryBase *entry = g_res.get_entry();
-	if (!entry || !GetTreeItemHelp(entry))
-		::EnableMenuItem(hSubMenu, ID_TREEITEMHELP, MF_GRAYED);
+	UINT iItem = GetMenuPosFromID(hSubMenu, ID_DELETERES);
+	while (DeleteMenu(hSubMenu, iItem + 1, MF_BYPOSITION))
+		;
 
 	// convert the client coordinates to the screen coordinates
 	ClientToScreen(hwndContext, &pt);

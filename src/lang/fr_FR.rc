@@ -148,51 +148,7 @@ IDR_POPUPMENUS MENU
 {
     POPUP "Apparaitre #0"
     {
-        MENUITEM "Modifier par &GUI...\tCtrl+U", ID_GUIEDIT
-        MENUITEM SEPARATOR
-        POPUP "&Ajouter"
-        {
-            MENUITEM "Ajouter une icône...", ID_ADDICON
-            MENUITEM "Ajouter un curseur...", ID_ADDCURSOR
-            MENUITEM "Ajouter un bitmap...", ID_ADDBITMAP
-            MENUITEM "Ajouter une boîte de dialogue...", ID_ADDDIALOG
-            MENUITEM "Ajouter un menu...", ID_ADDMENU
-            MENUITEM "Ajouter une table de chaînes...", ID_ADDSTRINGTABLE
-            MENUITEM "Ajouter une table de messages...", ID_ADDMESSAGETABLE
-            MENUITEM "Ajouter du HTML...", ID_ADDHTML
-            MENUITEM "Ajouter des accélérateurs...", ID_ADDACCEL
-            MENUITEM "Ajouter des informations sur la version...", ID_ADDVERINFO
-            MENUITEM "Ajouter un manifeste...", ID_ADDMANIFEST
-            MENUITEM "Ajouter une barre d'ou&tils...", ID_ADDTOOLBAR
-            MENUITEM "Ajouter un élément de ressource...", ID_ADDRES
-        }
-        POPUP "&Remplacer"
-        {
-            MENUITEM "Remplacer l'icône...", ID_REPLACEICON
-            MENUITEM "Remplacer le curseur...", ID_REPLACECURSOR
-            MENUITEM "Remplacer le bitmap...", ID_REPLACEBITMAP
-            MENUITEM "Remplacer l'élément de ressource binaire...", ID_REPLACEBIN
-        }
-        POPUP "&Extrait"
-        {
-            MENUITEM "Extraire l'icône...", ID_EXTRACTICON
-            MENUITEM "Extraire le curseur...", ID_EXTRACTCURSOR
-            MENUITEM "Extraire le bitmap...", ID_EXTRACTBITMAP
-            MENUITEM "Extraire en tant que fichier RC...", ID_EXTRACTRC
-            MENUITEM "Extraire l'élément de ressource binaire...", ID_EXTRACTBIN
-        }
-        MENUITEM SEPARATOR
-        MENUITEM "Changer le nom / la langue\tF2", ID_EDITLABEL
-        MENUITEM SEPARATOR
-        MENUITEM "Cloner sous un nouveau nom...", ID_COPYASNEWNAME
-        MENUITEM "Cloner dans une nouvelle langue...", ID_COPYASNEWLANG
-        MENUITEM "Copier dans plusieurs langues...", ID_COPYTOMULTILANG
-        MENUITEM SEPARATOR
-        MENUITEM "Faire un test", ID_TEST
-        MENUITEM SEPARATOR
-        MENUITEM "&Supprimer\tDel", ID_DELETERES
-        MENUITEM SEPARATOR
-        MENUITEM "Aide &sur l'article...\tF1", ID_TREEITEMHELP
+        MENUITEM "(Deleted)", -1
     }
     POPUP "Apparaitre #1"
     {

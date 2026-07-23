@@ -149,51 +149,7 @@ IDR_POPUPMENUS MENU
 {
     POPUP "Popup #0"
     {
-        MENUITEM "GUI로 편집(&G)...\tCtrl+U", ID_GUIEDIT
-        MENUITEM SEPARATOR
-        POPUP "추가(&A)"
-        {
-            MENUITEM "아이콘 추가(&I)...", ID_ADDICON
-            MENUITEM "커서 추가(&C)...", ID_ADDCURSOR
-            MENUITEM "비트맵 추가(&B)...", ID_ADDBITMAP
-            MENUITEM "대화상자 추가(&D)...", ID_ADDDIALOG
-            MENUITEM "메뉴 추가(&M)...", ID_ADDMENU
-            MENUITEM "문자열 테이블 추가(&S)...", ID_ADDSTRINGTABLE
-            MENUITEM "메시지 테이블 추가(&E)...", ID_ADDMESSAGETABLE
-            MENUITEM "HTML 추가(&H)...", ID_ADDHTML
-            MENUITEM "액세스 키 추가(&A)...", ID_ADDACCEL
-            MENUITEM "버전 정보 추가(&V)...", ID_ADDVERINFO
-            MENUITEM "메니페스트 추가(&F)...", ID_ADDMANIFEST
-            MENUITEM "도구모음 추가(&T)...", ID_ADDTOOLBAR
-            MENUITEM "리소스 항목 추가(&R)...", ID_ADDRES
-        }
-        POPUP "바꾸기(&R)"
-        {
-            MENUITEM "아이콘 바꾸기(&)...", ID_REPLACEICON
-            MENUITEM "커서 바꾸기(&C)...", ID_REPLACECURSOR
-            MENUITEM "비트맵 바꾸기(&B)...", ID_REPLACEBITMAP
-            MENUITEM "바이너리 리소스 항목 바꾸기(&R)...", ID_REPLACEBIN
-        }
-        POPUP "추출(&E)"
-        {
-            MENUITEM "아이콘 추출(&I)...", ID_EXTRACTICON
-            MENUITEM "커서 추출(&C)...", ID_EXTRACTCURSOR
-            MENUITEM "비트맵 추출(&B)...", ID_EXTRACTBITMAP
-            MENUITEM "RC 파일로 추출(&A)...", ID_EXTRACTRC
-            MENUITEM "바이너리 리소스 항목 추출(&R)...", ID_EXTRACTBIN
-        }
-        MENUITEM SEPARATOR
-        MENUITEM "이름/언어 변경(&H)\tF2", ID_EDITLABEL
-        MENUITEM SEPARATOR
-        MENUITEM "새 이름으로 복제(&N)", ID_COPYASNEWNAME
-        MENUITEM "새 언어로 복제(&L)...", ID_COPYASNEWLANG
-        MENUITEM "여러 언어로 복사...", ID_COPYTOMULTILANG
-        MENUITEM SEPARATOR
-        MENUITEM "테스트(&T)", ID_TEST
-        MENUITEM SEPARATOR
-        MENUITEM "삭제(&D)\tDel", ID_DELETERES
-        MENUITEM SEPARATOR
-        MENUITEM "항목 도움말(&I)...\tF1", ID_TREEITEMHELP
+        MENUITEM "(Deleted)", -1
     }
     POPUP "Popup #1"
     {

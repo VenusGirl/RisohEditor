@@ -148,51 +148,7 @@ IDR_POPUPMENUS MENU
 {
     POPUP "Popup #0"
     {
-        MENUITEM "Muokkaa &GUI:ssa...\tCtrl+U", ID_GUIEDIT
-        MENUITEM SEPARATOR
-        POPUP "&Lisää"
-        {
-            MENUITEM "Lisää &kuvake...", ID_ADDICON
-            MENUITEM "Lisää &kursori...", ID_ADDCURSOR
-            MENUITEM "Lisää &bittikartta...", ID_ADDBITMAP
-            MENUITEM "Lisää &dialogi...", ID_ADDDIALOG
-            MENUITEM "Lisää &dialogi...", ID_ADDMENU
-            MENUITEM "Lisää &merkkijonotaulukko...", ID_ADDSTRINGTABLE
-            MENUITEM "Lisää vi&estitaulukko...", ID_ADDMESSAGETABLE
-            MENUITEM "Lisää &HTML...", ID_ADDHTML
-            MENUITEM "Lisää &pikatoimintoja...", ID_ADDACCEL
-            MENUITEM "Lisää &versiotiedot...", ID_ADDVERINFO
-            MENUITEM "Lisää mani&festi...", ID_ADDMANIFEST
-            MENUITEM "Lisää &työkalupalkki...", ID_ADDTOOLBAR
-            MENUITEM "Lisää &resurssikohde...", ID_ADDRES
-        }
-        POPUP "&Korvaus"
-        {
-            MENUITEM "Korvaa &kuvake...", ID_REPLACEICON
-            MENUITEM "Korvaa &kursori...", ID_REPLACECURSOR
-            MENUITEM "Korvaa &bittikartta...", ID_REPLACEBITMAP
-            MENUITEM "Korvaa &binaarinen resurssinimike...", ID_REPLACEBIN
-        }
-        POPUP "&Poiminta"
-        {
-            MENUITEM "Poimi &kuvake...", ID_EXTRACTICON
-            MENUITEM "Poimi &kursori...", ID_EXTRACTCURSOR
-            MENUITEM "Poimi &bittikartta...", ID_EXTRACTBITMAP
-            MENUITEM "Poimi &RC tiedostoon...", ID_EXTRACTRC
-            MENUITEM "Poimi &binaarinen resurssinimike...", ID_EXTRACTBIN
-        }
-        MENUITEM SEPARATOR
-        MENUITEM "Vai&hda nimi/kieli\tF2", ID_EDITLABEL
-        MENUITEM SEPARATOR
-        MENUITEM "Klooni uudessa &nimessä...", ID_COPYASNEWNAME
-        MENUITEM "Klooni uudessa kie&lessä...", ID_COPYASNEWLANG
-        MENUITEM "Kopioi useille kielille...", ID_COPYTOMULTILANG
-        MENUITEM SEPARATOR
-        MENUITEM "&Testaa", ID_TEST
-        MENUITEM SEPARATOR
-        MENUITEM "&Poista\tDel", ID_DELETERES
-        MENUITEM SEPARATOR
-        MENUITEM "&Esineapu...\tF1", ID_TREEITEMHELP
+        MENUITEM "(Deleted)", -1
     }
     POPUP "Popup #1"
     {

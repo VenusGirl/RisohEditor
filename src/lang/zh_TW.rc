@@ -150,51 +150,7 @@ IDR_POPUPMENUS MENU
 {
     POPUP "Popup #0"
     {
-        MENUITEM "&GUI模式...\tCtrl+U", ID_GUIEDIT
-        MENUITEM SEPARATOR
-        POPUP "新增(&A)"
-        {
-            MENUITEM "新增圖示(&I)...", ID_ADDICON
-            MENUITEM "新增游標(&C)...", ID_ADDCURSOR
-            MENUITEM "新增點陣圖(&B)...", ID_ADDBITMAP
-            MENUITEM "新增對話(&D)...", ID_ADDDIALOG
-            MENUITEM "新增選單(&M)...", ID_ADDMENU
-            MENUITEM "新增字串表(&S)...", ID_ADDSTRINGTABLE
-            MENUITEM "新增訊息表(&E)...", ID_ADDMESSAGETABLE
-            MENUITEM "新增&HTML...", ID_ADDHTML
-            MENUITEM "新增加速器(&A)...", ID_ADDACCEL
-            MENUITEM "新增版本資訊(&V)...", ID_ADDVERINFO
-            MENUITEM "新增清單(&F)...", ID_ADDMANIFEST
-            MENUITEM "新增工具欄(&T)...", ID_ADDTOOLBAR
-            MENUITEM "新增資源項目(&R)...", ID_ADDRES
-        }
-        POPUP "替換(&R)"
-        {
-            MENUITEM "替換圖示(&I)...", ID_REPLACEICON
-            MENUITEM "替換游標(&C)...", ID_REPLACECURSOR
-            MENUITEM "替換點陣圖文件(&B)...", ID_REPLACEBITMAP
-            MENUITEM "替換二進位制資源項目(&R)...", ID_REPLACEBIN
-        }
-        POPUP "導出(&E)"
-        {
-            MENUITEM "導出圖示(&I)...", ID_EXTRACTICON
-            MENUITEM "導出游標(&C)...", ID_EXTRACTCURSOR
-            MENUITEM "導出點陣圖文件(&B)...", ID_EXTRACTBITMAP
-            MENUITEM "導出 RC 文件(&A)...", ID_EXTRACTRC
-            MENUITEM "導出二進位制資源檔(&R)...", ID_EXTRACTBIN
-        }
-        MENUITEM SEPARATOR
-        MENUITEM "更改名稱/語言(&H)\tF2", ID_EDITLABEL
-        MENUITEM SEPARATOR
-        MENUITEM "複製為其他名稱(&N)...", ID_COPYASNEWNAME
-        MENUITEM "複製為其他語言(&L)...", ID_COPYASNEWLANG
-        MENUITEM "複製到多種語言...", ID_COPYTOMULTILANG
-        MENUITEM SEPARATOR
-        MENUITEM "效果測試(&T)", ID_TEST
-        MENUITEM SEPARATOR
-        MENUITEM "刪除(&D)\tDel", ID_DELETERES
-        MENUITEM SEPARATOR
-        MENUITEM "關於此項目的幫助(&I)...\tF1", ID_TREEITEMHELP
+        MENUITEM "(Deleted)", -1
     }
     POPUP "Popup #1"
     {
