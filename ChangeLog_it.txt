@@ -2,6 +2,7 @@
 
 - v.6.0.7 (2026-XX-YY)
     - Risolto il problema di lentezza dello scorrimento della rotellina di visualizzazione della sorgente.
+    - Corretto il dumping in stile DIALOG.
 - v.6.0.5 (17.07.2026)
     - Abilitata la freccia della visualizzazione struttura per modificare il nome risorsa.
     - Corretto EGA. Aggiunti alcuni programmi EGA.
