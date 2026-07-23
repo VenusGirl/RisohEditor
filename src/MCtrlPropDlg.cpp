@@ -10,6 +10,7 @@
 #include "MCtrlDataDlg.hpp"
 #include "MStringListDlg.hpp"
 #include "Res.hpp"
+#include <oledlg.h>
 #include "resource.h"
 
 MCtrlPropDlg::MCtrlPropDlg(DialogRes& dialog_res, const std::unordered_set<INT>& indeces)

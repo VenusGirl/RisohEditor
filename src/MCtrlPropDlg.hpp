@@ -13,9 +13,7 @@
 #include "DialogRes.hpp"
 #include "MString.hpp"
 #include "Common.hpp"
-
 #include <unordered_set>     // for std::unordered_set
-#include <oledlg.h>
 
 //////////////////////////////////////////////////////////////////////////////
 
