@@ -1,6 +1,6 @@
 ﻿## HISTORIA
 
-- v.6.0.6 (2026-XX-YY)
+- v.6.0.6 (2026-07-23)
     - Se añadió historial a la consola EGA (teclas Arriba/Abajo).
     - Se mejoró la ayuda sobre palabras clave.
     - Se añadieron las funciones `localtime` y `gmtime` a EGA.

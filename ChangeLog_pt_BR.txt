@@ -1,6 +1,6 @@
 ﻿## HISTÓRICO
 
-- v.6.0.6 (2026-XX-YY)
+- v.6.0.6 (2026-07-23)
     - Adicionado histórico ao Console EGA (teclas Cima/Baixo).
     - Aprimorada a ajuda de palavras-chave.
     - Adicionadas as funções `localtime` e `gmtime` ao EGA.

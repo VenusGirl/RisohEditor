@@ -1,6 +1,6 @@
 ## CRONOLOGIA VERSIONI PROGRAMMA
 
-- v.6.0.6 (2026-XX-YY)
+- v.6.0.6 (23.07.2026)
     - Aggiunta cronologia EGA Console (tasti Su/Giù).
     - Migliorata guida parole chiave.
     - Aggiunte funzioni EGA localtime e gmtime.
