@@ -6,7 +6,6 @@
 
 #pragma once
 
-#include "resource.h"
 #include "MToolBarCtrl.hpp"
 #include "RisohSettings.hpp"
 #include "ConstantsDB.hpp"
