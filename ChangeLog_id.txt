@@ -1,6 +1,7 @@
 ﻿## SEJARAH
 
 - v.6.0.8 (2026-XX-YY)
+    - MConstantDlg telah disempurnakan.
 - v.6.0.7 (2026-07-24)
     - Memperbaiki masalah lambatnya respons gulir roda pada tampilan sumber.
     - Memperbaiki pembuangan (dumping) gaya DIALOG.

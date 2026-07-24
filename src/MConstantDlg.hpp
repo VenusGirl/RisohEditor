@@ -23,10 +23,54 @@ class MConstantDlg : public MDialogBase
 public:
 	MComboBoxAutoComplete m_cmb1;
 	MStringW m_str;
+	WNDPROC m_fnOldEdt2WndProc = nullptr;
+	WNDPROC m_fnOldEdt3WndProc = nullptr;
 
 	MConstantDlg(PCWSTR text = L"") : MDialogBase(IDD_CONSTANT)
 	{
 		m_str = text;
+	}
+
+	static LRESULT CALLBACK Edt2WndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
+	{
+		auto pThis = (MConstantDlg*)GetWindowLongPtrW(hwnd, GWLP_USERDATA);
+		switch (uMsg)
+		{
+		case WM_SETFOCUS:
+		case WM_LBUTTONUP:
+		case WM_COPY:
+			{
+				LRESULT ret = ::CallWindowProcW(pThis->m_fnOldEdt2WndProc, hwnd, uMsg, wParam, lParam);
+				if (uMsg == WM_COPY)
+					PostMessageW(hwnd, EM_SETSEL, -1, -1); // Select none
+				else
+					PostMessageW(hwnd, EM_SETSEL, 0, -1); // Select all
+				return ret;
+			}
+			break;
+		}
+		return ::CallWindowProcW(pThis->m_fnOldEdt2WndProc, hwnd, uMsg, wParam, lParam);
+	}
+
+	static LRESULT CALLBACK Edt3WndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
+	{
+		auto pThis = (MConstantDlg*)GetWindowLongPtrW(hwnd, GWLP_USERDATA);
+		switch (uMsg)
+		{
+		case WM_SETFOCUS:
+		case WM_LBUTTONUP:
+		case WM_COPY:
+			{
+				LRESULT ret = ::CallWindowProcW(pThis->m_fnOldEdt2WndProc, hwnd, uMsg, wParam, lParam);
+				if (uMsg == WM_COPY)
+					PostMessageW(hwnd, EM_SETSEL, -1, -1); // Select none
+				else
+					PostMessageW(hwnd, EM_SETSEL, 0, -1); // Select all
+				return ret;
+			}
+			break;
+		}
+		return ::CallWindowProcW(pThis->m_fnOldEdt3WndProc, hwnd, uMsg, wParam, lParam);
 	}
 
 	BOOL OnInitDialog(HWND hwnd, HWND hwndFocus, LPARAM lParam)
@@ -41,8 +85,25 @@ public:
 			m_cmb1.OnEditChange();
 		}
 
+		// Subclassing
+		HWND hEdt2 = GetDlgItem(hwnd, edt2);
+		HWND hEdt3 = GetDlgItem(hwnd, edt3);
+		m_fnOldEdt2WndProc = (WNDPROC)SetWindowLongPtrW(hEdt2, GWLP_WNDPROC, (LONG_PTR)Edt2WndProc);
+		m_fnOldEdt3WndProc = (WNDPROC)SetWindowLongPtrW(hEdt3, GWLP_WNDPROC, (LONG_PTR)Edt2WndProc);
+		SetWindowLongPtrW(hEdt2, GWLP_USERDATA, (LONG_PTR)this);
+		SetWindowLongPtrW(hEdt3, GWLP_USERDATA, (LONG_PTR)this);
+
 		CenterWindowDx();
 		return TRUE;
+	}
+
+	void OnDestroy(HWND hwnd)
+	{
+		// Un-subclassing
+		HWND hEdt2 = GetDlgItem(hwnd, edt2);
+		HWND hEdt3 = GetDlgItem(hwnd, edt3);
+		SetWindowLongPtrW(hEdt2, GWLP_WNDPROC, (LONG_PTR)m_fnOldEdt2WndProc);
+		SetWindowLongPtrW(hEdt3, GWLP_WNDPROC, (LONG_PTR)m_fnOldEdt3WndProc);
 	}
 
 	void OnCommand(HWND hwnd, int id, HWND hwndCtl, UINT codeNotify)
@@ -94,7 +155,7 @@ public:
 					SetDlgItemInt(hwnd, edt2, value, FALSE);
 
 					WCHAR szText[MAX_PATH];
-					StringCbPrintfW(szText, sizeof(szText), L"0x%08lX", value);
+					StringCbPrintfW(szText, sizeof(szText), L"0x%lX", value);
 					SetDlgItemText(hwnd, edt3, szText);
 				}
 				else
@@ -107,13 +168,14 @@ public:
 		}
 	}
 
-	virtual INT_PTR CALLBACK
-	DialogProcDx(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
+	INT_PTR CALLBACK
+	DialogProcDx(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) override
 	{
 		switch (uMsg)
 		{
 			HANDLE_MSG(hwnd, WM_INITDIALOG, OnInitDialog);
 			HANDLE_MSG(hwnd, WM_COMMAND, OnCommand);
+			HANDLE_MSG(hwnd, WM_DESTROY, OnDestroy);
 		}
 		return 0;
 	}

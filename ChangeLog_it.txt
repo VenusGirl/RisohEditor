@@ -1,6 +1,7 @@
 ## CRONOLOGIA VERSIONI PROGRAMMA
 
 - v.6.0.8 (2026-XX-YY)
+    - Migliorata MConstantDlg.
 - v.6.0.7 (24.07.2026)
     - Risolto il problema di lentezza dello scorrimento della rotellina di visualizzazione della sorgente.
     - Corretto il dumping in stile DIALOG.
