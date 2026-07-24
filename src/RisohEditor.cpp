@@ -9192,9 +9192,17 @@ void MMainWnd::OnCommand(HWND hwnd, int id, HWND hwndCtl, UINT codeNotify)
 		return;
 
 	if (m_hCodeEditor == hwndCtl)
-		return;
-
-	MWaitCursor wait;
+	{
+		switch (codeNotify)
+		{
+		case EN_HSCROLL:
+		case EN_VSCROLL:
+		case EN_UPDATE:
+		case EN_SETFOCUS:
+		case EN_KILLFOCUS:
+			return;
+		}
+	}
 
 	if (codeNotify == EN_CHANGE && m_hCodeEditor == hwndCtl)
 	{
@@ -9206,6 +9214,8 @@ void MMainWnd::OnCommand(HWND hwnd, int id, HWND hwndCtl, UINT codeNotify)
 		ChangeStatusText(IDS_READY);
 		return;
 	}
+
+	MWaitCursor wait;
 
 	// show "executing command..." status
 	if (!::IsWindow(m_rad_window) && id >= 100)
