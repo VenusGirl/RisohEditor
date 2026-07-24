@@ -2,6 +2,7 @@
 
 - v.6.0.8 (2026-XX-YY)
     - MConstantDlg を改良。
+    - MAddCtrlDlg、MCtrlPropDlg、およびMDlgPropDlgを改良。
 - v.6.0.7 (2026-07-24)
     - ソースビューでホイールスクロールの遅いのを修正。
     - DIALOGのスタイルのダンプを修正。

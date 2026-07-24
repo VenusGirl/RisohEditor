@@ -208,7 +208,7 @@ public:
 
 		InitTables(NULL);
 
-		TCHAR szText[MAX_PATH];
+		WCHAR szText[MAX_PATH];
 
 		HWND hLst1 = GetDlgItem(hwnd, lst1);
 		m_dwStyle = WS_VISIBLE | WS_CHILD;
@@ -217,8 +217,8 @@ public:
 		ApplySelection(hLst1, m_style_table, m_style_selection, m_dwStyle);
 
 		m_bUpdating = TRUE;
-		StringCchPrintf(szText, _countof(szText), TEXT("%08lX"), m_dwStyle);
-		SetDlgItemText(hwnd, edt6, szText);
+		StringCchPrintfW(szText, _countof(szText), L"0x%lX", m_dwStyle);
+		SetDlgItemTextW(hwnd, edt6, szText);
 		m_bUpdating = FALSE;
 
 		HWND hLst2 = GetDlgItem(hwnd, lst2);
@@ -228,8 +228,8 @@ public:
 		ApplySelection(hLst2, m_exstyle_table, m_exstyle_selection, m_dwExStyle);
 
 		m_bUpdating = TRUE;
-		StringCchPrintf(szText, _countof(szText), TEXT("%08lX"), m_dwExStyle);
-		SetDlgItemText(hwnd, edt7, szText);
+		StringCchPrintfW(szText, _countof(szText), L"0x%lX", m_dwExStyle);
+		SetDlgItemTextW(hwnd, edt7, szText);
 		m_bUpdating = FALSE;
 
 		if (!m_dialog_res.IsExtended())
@@ -311,11 +311,11 @@ public:
 		MString strStyle = GetDlgItemText(edt6);
 		ReplaceFullWithHalf(strStyle);
 		mstr_trim(strStyle);
-		DWORD style = mstr_parse_int(strStyle.c_str(), false, 16);
+		DWORD style = mstr_parse_int(strStyle.c_str(), false, 0);
 
 		MString strExStyle = GetDlgItemText(edt7);
 		mstr_trim(strExStyle);
-		DWORD exstyle = mstr_parse_int(strExStyle.c_str(), false, 16);
+		DWORD exstyle = mstr_parse_int(strExStyle.c_str(), false, 0);
 
 		DialogItem item;
 		item.m_help_id = help;
@@ -365,9 +365,9 @@ public:
 		ApplySelection(hLst1, m_style_table, m_style_selection, m_dwStyle);
 
 		m_bUpdating = TRUE;
-		TCHAR szText[MAX_PATH];
-		StringCchPrintf(szText, _countof(szText), TEXT("%08lX"), m_dwStyle);
-		SetDlgItemText(hwnd, edt6, szText);
+		WCHAR szText[MAX_PATH];
+		StringCchPrintfW(szText, _countof(szText), L"0x%lX", m_dwStyle);
+		SetDlgItemTextW(hwnd, edt6, szText);
 		m_bUpdating = FALSE;
 	}
 
@@ -386,9 +386,9 @@ public:
 		ApplySelection(hLst2, m_exstyle_table, m_exstyle_selection, m_dwExStyle);
 
 		m_bUpdating = TRUE;
-		TCHAR szText[MAX_PATH];
-		StringCchPrintf(szText, _countof(szText), TEXT("%08lX"), m_dwExStyle);
-		SetDlgItemText(hwnd, edt7, szText);
+		WCHAR szText[MAX_PATH];
+		StringCchPrintfW(szText, _countof(szText), L"0x%lX", m_dwExStyle);
+		SetDlgItemTextW(hwnd, edt7, szText);
 		m_bUpdating = FALSE;
 	}
 
@@ -399,7 +399,7 @@ public:
 
 		MString text = GetDlgItemText(hwnd, edt6);
 		mstr_trim(text);
-		DWORD dwStyle = mstr_parse_int(text.c_str(), false, 16);
+		DWORD dwStyle = mstr_parse_int(text.c_str(), false, 0);
 
 		GetStyleSelect(m_style_selection, m_style_table, dwStyle);
 
@@ -415,7 +415,7 @@ public:
 
 		MString text = GetDlgItemText(hwnd, edt7);
 		mstr_trim(text);
-		DWORD dwExStyle = mstr_parse_int(text.c_str(), false, 16);
+		DWORD dwExStyle = mstr_parse_int(text.c_str(), false, 0);
 
 		GetStyleSelect(m_exstyle_selection, m_exstyle_table, dwExStyle);
 
@@ -454,9 +454,9 @@ public:
 		ApplySelection(hLst1, m_style_table, m_style_selection, m_dwStyle);
 
 		m_bUpdating = TRUE;
-		TCHAR szText[MAX_PATH];
-		StringCchPrintf(szText, _countof(szText), TEXT("%08lX"), m_dwStyle);
-		SetDlgItemText(hwnd, edt6, szText);
+		WCHAR szText[MAX_PATH];
+		StringCchPrintfW(szText, _countof(szText), L"0x%lX", m_dwStyle);
+		SetDlgItemTextW(hwnd, edt6, szText);
 		m_bUpdating = FALSE;
 
 		ListBox_SetTopIndex(hLst1, 0);

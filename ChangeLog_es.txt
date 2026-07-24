@@ -2,6 +2,7 @@
 
 - v.6.0.8 (2026-XX-YY)
     - Se ha mejorado MConstantDlg.
+    - Se han mejorado MAddCtrlDlg, MCtrlPropDlg y MDlgPropDlg.
 - v.6.0.7 (2026-07-24)
     - Se ha corregido la lentitud del desplazamiento con la rueda en la vista de código fuente.
     - Se ha corregido el volcado de estilo DIALOG.
