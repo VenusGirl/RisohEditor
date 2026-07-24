@@ -1,6 +1,6 @@
 ## CRONOLOGIA VERSIONI PROGRAMMA
 
-- v.6.0.7 (2026-XX-YY)
+- v.6.0.7 (24.07.2026)
     - Risolto il problema di lentezza dello scorrimento della rotellina di visualizzazione della sorgente.
     - Corretto il dumping in stile DIALOG.
     - Migliorato il dump di RT_VERSION.
