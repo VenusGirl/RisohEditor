@@ -1605,6 +1605,7 @@ STRINGTABLE
     IDS_RCDATA_ID, "RCデータID"
     IDS_MSGTABLE_ID, "メッセージ テーブルID"
     IDS_ADDCTRL, "コントロールの追加"
+    IDS_SEARCHURL, "https://duckduckgo.com/?q=%s&t=h_&ia=web"
 }
 
 //////////////////////////////////////////////////////////////////////////////

@@ -1580,6 +1580,7 @@ STRINGTABLE
     IDS_MP3SOUND, "(Áudio MP3)\r\n"
     IDS_CODEPAGE1200, "1200 (UTF-16)"
     IDS_ADDCTRL, "Adicionar controlo"
+    IDS_SEARCHURL, "https://duckduckgo.com/?q=%s&t=h_&ia=web"
 }
 
 //////////////////////////////////////////////////////////////////////////////

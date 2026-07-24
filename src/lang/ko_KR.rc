@@ -1602,6 +1602,7 @@ STRINGTABLE
     IDS_RCDATA_ID, "RCData ID"
     IDS_MSGTABLE_ID, "메시지 테이블 ID"
     IDS_ADDCTRL, "제어 추가"
+    IDS_SEARCHURL, "https://duckduckgo.com/?q=%s&t=h_&ia=web"
 }
 
 //////////////////////////////////////////////////////////////////////////////

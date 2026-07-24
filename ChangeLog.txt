@@ -6,6 +6,7 @@
     - Improved RT_VERSION dumping.
     - Fixed RT_VERSION data.
     - Fixed BUTTON and RICHEDIT styles.
+    - Improved keyword help.
 - v.6.0.5 (2026-07-17)
     - Enabled the treeview arrow to change the resource name.
     - Fixed EGA. Added some EGA programs.

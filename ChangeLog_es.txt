@@ -6,6 +6,7 @@
     - Volcado de RT_VERSION mejorado.
     - Se corrigieron los datos de RT_VERSION.
     - Se corrigieron los estilos BUTTON y RICHEDIT.
+    - Ayuda sobre palabras clave mejorada.
 - v.6.0.5 (2026-07-17)
     - Se habilitó la flecha de la vista de árbol para cambiar el nombre del recurso. 
     - Se corrigió EGA. Se añadieron algunos programas EGA. 

@@ -1601,6 +1601,7 @@ STRINGTABLE
     IDS_RCDATA_ID, "RCData-ID"
     IDS_MSGTABLE_ID, "Nachrichtentabellen-ID"
     IDS_ADDCTRL, "Kontrolle hinzufügen"
+    IDS_SEARCHURL, "https://duckduckgo.com/?q=%s&t=h_&ia=web"
 }
 
 //////////////////////////////////////////////////////////////////////////////

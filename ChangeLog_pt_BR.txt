@@ -6,6 +6,7 @@
     - Dump de RT_VERSION aprimorado.
     - Corrigidos os dados RT_VERSION.
     - Corrigidos os estilos BUTTON e RICHEDIT.
+    - Ajuda sobre palavras-chave aprimorada.
 - v.6.0.5 (2026-07-17)
     - Habilitada a seta da *treeview* para alterar o nome do recurso. 
     - Corrigido o suporte a EGA. Adicionados alguns programas EGA. 

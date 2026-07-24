@@ -1602,6 +1602,7 @@ STRINGTABLE
     IDS_RCDATA_ID, "ID RCData"
     IDS_MSGTABLE_ID, "ID tabella messaggi"
     IDS_ADDCTRL, "Aggiungi controllo"
+    IDS_SEARCHURL, "https://duckduckgo.com/?q=%s&t=h_&ia=web"
 }
 
 //////////////////////////////////////////////////////////////////////////////

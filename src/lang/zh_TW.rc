@@ -1601,6 +1601,7 @@ STRINGTABLE
     IDS_RCDATA_ID, "RC資料ID"
     IDS_MSGTABLE_ID, "訊息表ID"
     IDS_ADDCTRL, "增加控制項"
+    IDS_SEARCHURL, "https://duckduckgo.com/?q=%s&t=h_&ia=web"
 }
 
 //////////////////////////////////////////////////////////////////////////////

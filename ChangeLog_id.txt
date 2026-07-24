@@ -6,6 +6,7 @@
     - Peningkatan pembuangan (dumping) RT_VERSION.
     - Memperbaiki data RT_VERSION.
     - Memperbaiki gaya BUTTON dan RICHEDIT.
+    - Bantuan kata kunci yang ditingkatkan.
 - v.6.0.5 (2026-07-17)
     - Mengaktifkan fitur pengubahan nama sumber daya melalui tanda panah pada *treeview*. 
     - Memperbaiki dukungan EGA. Menambahkan beberapa program EGA. 
