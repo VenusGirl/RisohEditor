@@ -1,5 +1,6 @@
 ﻿## HISTÓRICO
 
+- v.6.0.8 (2026-XX-YY)
 - v.6.0.7 (2026-07-24)
     - Corrigida a lentidão da rolagem do mouse na visualização do código-fonte.
     - Corrigido o dump do estilo DIALOG.

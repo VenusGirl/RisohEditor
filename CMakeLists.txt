@@ -15,7 +15,7 @@ endif()
 enable_testing()
 
 # project name, version, and languages
-project(RisohEditor VERSION 6.0.7 LANGUAGES CXX RC)
+project(RisohEditor VERSION 6.0.8 LANGUAGES CXX RC)
 
 # PROJECT_VERSION macro
 add_definitions(-DPROJECT_VERSION=\"${PROJECT_VERSION}\")
@@ -30,17 +30,17 @@ add_definitions(-DRISOHEDITOR)
 
 # statically link
 if (WIN32)
-    if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
-        # using Clang
-        set(CMAKE_C_FLAGS "-static -W -Wno-missing-field-initializers")
-        set(CMAKE_CXX_FLAGS "-static -W -Wno-missing-field-initializers")
-    elseif (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-        # using GCC
-        set(CMAKE_C_FLAGS "-static -W -Wno-missing-field-initializers")
-        set(CMAKE_CXX_FLAGS "-static -W -Wno-missing-field-initializers")
-    elseif (MSVC)
-        # use explicit runtime library settings (/MTd in Debug, /MT in others)
-        if(POLICY CMP0091)
+	if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+		# using Clang
+		set(CMAKE_C_FLAGS "-static -W -Wno-missing-field-initializers")
+		set(CMAKE_CXX_FLAGS "-static -W -Wno-missing-field-initializers")
+	elseif (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+		# using GCC
+		set(CMAKE_C_FLAGS "-static -W -Wno-missing-field-initializers")
+		set(CMAKE_CXX_FLAGS "-static -W -Wno-missing-field-initializers")
+	elseif (MSVC)
+		# use explicit runtime library settings (/MTd in Debug, /MT in others)
+		if(POLICY CMP0091)
 			set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
 		else()
 			# fallback for older CMake versions
@@ -59,7 +59,7 @@ if (WIN32)
 				string(REPLACE "/MD" "/MT" ${CompilerFlags} "${${CompilerFlags}}")
 			endforeach()
 		endif()
-    endif()
+	endif()
 endif()
 
 ##############################################################################
