@@ -4,6 +4,7 @@
     - Corrigida a lentidão da rolagem do mouse na visualização do código-fonte.
     - Corrigido o dump do estilo DIALOG.
     - Dump de RT_VERSION aprimorado.
+    - Corrigidos os dados RT_VERSION.
 - v.6.0.5 (2026-07-17)
     - Habilitada a seta da *treeview* para alterar o nome do recurso. 
     - Corrigido o suporte a EGA. Adicionados alguns programas EGA. 

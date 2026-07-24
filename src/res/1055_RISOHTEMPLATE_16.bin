@@ -6,7 +6,7 @@ FILETYPE        VFT_APP
 {
     BLOCK "StringFileInfo"
     {
-        BLOCK "041F04E4"
+        BLOCK "041F04E6" // tr_TR, Turkish
         {
             VALUE "CompanyName", "Şirketim"
             VALUE "FileDescription", "Başvurum"

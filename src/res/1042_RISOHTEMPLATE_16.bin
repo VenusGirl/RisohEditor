@@ -6,7 +6,7 @@ FILETYPE        VFT_APP
 {
     BLOCK "StringFileInfo"
     {
-        BLOCK "041203B5"
+        BLOCK "041203B5" // ko_KR, Korea (KS C 5601)
         {
             VALUE "CompanyName", "우리 회사"
             VALUE "FileDescription", "내 지원서"

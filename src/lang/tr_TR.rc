@@ -1296,7 +1296,7 @@ FILETYPE        VFT_APP
 {
     BLOCK "StringFileInfo"
     {
-        BLOCK "041F04E6"
+        BLOCK "041F04E6" // tr_TR, Turkish
         {
             VALUE "CompanyName", "Katayama Hirofumi MZ"
             VALUE "FileDescription", "RisohEditor"

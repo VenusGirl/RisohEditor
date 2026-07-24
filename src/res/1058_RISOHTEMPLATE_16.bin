@@ -6,7 +6,7 @@ FILETYPE        VFT_APP
 {
     BLOCK "StringFileInfo"
     {
-        BLOCK "042204E3"
+        BLOCK "042204E3" // uk_UA, Cyrillic
         {
             VALUE "CompanyName", "Моя компанія"
             VALUE "FileDescription", "Моя заявка"

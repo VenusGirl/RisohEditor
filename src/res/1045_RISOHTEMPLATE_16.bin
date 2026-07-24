@@ -6,7 +6,7 @@ FILETYPE        VFT_APP
 {
     BLOCK "StringFileInfo"
     {
-        BLOCK "041504E4"
+        BLOCK "041504E4" // pl_PL, Multilingual
         {
             VALUE "CompanyName", "Moja Firma"
             VALUE "FileDescription", "Moja Aplikacja"

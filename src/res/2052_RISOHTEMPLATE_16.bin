@@ -6,7 +6,7 @@ FILETYPE        VFT_APP
 {
     BLOCK "StringFileInfo"
     {
-        BLOCK "080404B0"
+        BLOCK "080403A8" // zh_CN, Chinese (GB2312)
         {
             VALUE "CompanyName", "我的公司"
             VALUE "FileDescription", "我的軟件"
@@ -18,6 +18,6 @@ FILETYPE        VFT_APP
     }
     BLOCK "VarFileInfo"
     {
-        VALUE "Translation", 0x0804, 0x04B0
+        VALUE "Translation", 0x0804, 0x03A8
     }
 }

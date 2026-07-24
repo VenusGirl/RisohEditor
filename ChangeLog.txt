@@ -4,6 +4,7 @@
     - Fixed source view wheel scroll slowness.
     - Fixed DIALOG style dumping.
     - Improved RT_VERSION dumping.
+    - Fixed RT_VERSION data.
 - v.6.0.5 (2026-07-17)
     - Enabled the treeview arrow to change the resource name.
     - Fixed EGA. Added some EGA programs.

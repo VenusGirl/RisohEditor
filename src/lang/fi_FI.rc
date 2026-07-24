@@ -1295,7 +1295,7 @@ FILETYPE        VFT_APP
 {
     BLOCK "StringFileInfo"
     {
-        BLOCK "040B04E4"
+        BLOCK "040B04E4" // fi_FI, Multilingual
         {
             VALUE "CompanyName", "Katayama Hirofumi MZ"
             VALUE "FileDescription", "RisohEditor"

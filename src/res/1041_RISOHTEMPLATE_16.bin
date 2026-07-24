@@ -6,7 +6,7 @@ FILETYPE        VFT_APP
 {
     BLOCK "StringFileInfo"
     {
-        BLOCK "041103A4"
+        BLOCK "041103A4" // ja_JP, Japan (Shift_JIS)
         {
             VALUE "CompanyName", "私の会社"
             VALUE "FileDescription", "私のアプリ"

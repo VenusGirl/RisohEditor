@@ -6,7 +6,7 @@ FILETYPE        VFT_APP
 {
     BLOCK "StringFileInfo"
     {
-        BLOCK "042104B0"
+        BLOCK "042104E4" // id_ID, Multilingual
         {
             VALUE "CompanyName", "Perusahaan Saya"
             VALUE "FileDescription", "Aplikasi Saya"
@@ -18,6 +18,6 @@ FILETYPE        VFT_APP
     }
     BLOCK "VarFileInfo"
     {
-        VALUE "Translation", 0x0421, 0x04B0
+        VALUE "Translation", 0x0421, 0x04E4
     }
 }
