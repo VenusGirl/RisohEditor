@@ -18,8 +18,8 @@ IDR_MAINMENU MENU
         MENUITEM "覆寫(&S)...\tCtrl+S", ID_SAVE
         MENUITEM "另存為(&A)...\tShift+Ctrl+S", ID_SAVEAS
         MENUITEM SEPARATOR
-        MENUITEM "導入(&I)...\tCtrl+I", ID_IMPORT
-        MENUITEM "導出(&E)...\tCtrl+P", ID_EXPORT
+        MENUITEM "匯入(&I)...\tCtrl+I", ID_IMPORT
+        MENUITEM "匯出(&E)...\tCtrl+P", ID_EXPORT
         MENUITEM SEPARATOR
         MENUITEM "重新載入 &resource.h...\tCtrl+R", ID_LOADRESH
         MENUITEM "保存 resource.h(&H)...", ID_UPDATERESHBANG
@@ -62,13 +62,13 @@ IDR_MAINMENU MENU
             MENUITEM "替換點陣圖檔案(&B)...", ID_REPLACEBITMAP
             MENUITEM "替換二進位制資源項目(&Y)...", ID_REPLACEBIN
         }
-        POPUP "導出(&E)"
+        POPUP "匯出(&E)"
         {
-            MENUITEM "導出圖示(&I)...", ID_EXTRACTICON
-            MENUITEM "導出游標(&C)...", ID_EXTRACTCURSOR
-            MENUITEM "導出點陣圖檔案(&B)...", ID_EXTRACTBITMAP
-            MENUITEM "導出 RC 檔案(&A)...", ID_EXTRACTRC
-            MENUITEM "導出二進位制資源檔(&Y)...", ID_EXTRACTBIN
+            MENUITEM "匯出圖示(&I)...", ID_EXTRACTICON
+            MENUITEM "匯出游標(&C)...", ID_EXTRACTCURSOR
+            MENUITEM "匯出點陣圖檔案(&B)...", ID_EXTRACTBITMAP
+            MENUITEM "匯出 RC 檔案(&A)...", ID_EXTRACTRC
+            MENUITEM "匯出二進位制資源檔(&Y)...", ID_EXTRACTBIN
         }
         MENUITEM SEPARATOR
         MENUITEM "更改類型/名稱/語言(&H)\tF2", ID_EDITLABEL
@@ -83,7 +83,7 @@ IDR_MAINMENU MENU
         MENUITEM "&UI Language Select (UI语言选择)...", ID_CHOOSEUILANG
         MENUITEM SEPARATOR
         MENUITEM "設定(&C)...\tAlt+Enter", ID_CONFIG
-        MENUITEM "重置配置", ID_RESETSETTINGS
+        MENUITEM "重置設定", ID_RESETSETTINGS
     }
     POPUP "搜索(&S)"
     {
@@ -147,7 +147,7 @@ IDR_POPUPMENUS MENU
     {
         MENUITEM "增加控制項(&A)...", ID_ADDCTRL
         MENUITEM SEPARATOR
-        MENUITEM "剪切(&T)\tCtrl+X", ID_CUT
+        MENUITEM "剪下(&T)\tCtrl+X", ID_CUT
         MENUITEM "複製(&C)\tCtrl+C", ID_COPY
         MENUITEM "貼上(&P)\tCtrl+V", ID_PASTE
         MENUITEM "刪除(&D)\tDel", ID_DELCTRL
@@ -191,7 +191,7 @@ IDR_POPUPMENUS MENU
         MENUITEM SEPARATOR
         MENUITEM "複製名稱(&N)", ID_COPYRESIDNAME
         MENUITEM "複製值(&V)", ID_COPYRESIDVALUE
-        MENUITEM "複制定義(&F)\tCtrl+C", ID_COPYIDDEF
+        MENUITEM "複製定義(&F)\tCtrl+C", ID_COPYIDDEF
         MENUITEM SEPARATOR
         MENUITEM "刪除ID(&D) \tDel", ID_DELETERESID
         MENUITEM SEPARATOR
@@ -670,7 +670,7 @@ FONT 9, "宋體", 0, 0, 136 // CHINESEBIG5_CHARSET
     LISTBOX lst2, 120, 167, 110, 120, LBS_DISABLENOSCROLL | LBS_NOINTEGRALHEIGHT | LBS_HASSTRINGS | LBS_MULTIPLESEL | WS_VSCROLL | WS_HSCROLL | WS_TABSTOP
     DEFPUSHBUTTON "OK", IDOK, 170, 293, 60, 14
     PUSHBUTTON "取消", IDCANCEL, 170, 309, 60, 14
-    PUSHBUTTON "數據(&D)...", psh1, 5, 293, 90, 14
+    PUSHBUTTON "資料(&D)...", psh1, 5, 293, 90, 14
     PUSHBUTTON "字串列表(&I)...", psh3, 5, 309, 90, 14
 }
 
@@ -709,7 +709,7 @@ FONT 9, "宋體", 0, 0, 136 // CHINESEBIG5_CHARSET
 }
 
 IDD_CONFIG DIALOGEX 0, 0, 230, 265
-CAPTION "配置"
+CAPTION "設定"
 STYLE DS_MODALFRAME | WS_POPUPWINDOW | WS_CAPTION
 FONT 9, "宋體", 0, 0, 136 // CHINESEBIG5_CHARSET
 {
@@ -936,13 +936,13 @@ FONT 9, "宋體", 0, 0, 136 // CHINESEBIG5_CHARSET
 }
 
 IDD_CTRLDATA DIALOGEX 0, 0, 190, 130
-CAPTION "編輯控制項數據"
+CAPTION "編輯控制項資料"
 STYLE DS_MODALFRAME | WS_POPUPWINDOW | WS_CAPTION
 FONT 9, "宋體", 0, 0, 136 // CHINESEBIG5_CHARSET
 {
-    LTEXT "二進位制數據(&B):", -1, 5, 2, 87, 12
+    LTEXT "二進位制資料(&B):", -1, 5, 2, 87, 12
     EDITTEXT edt1, 5, 15, 180, 60, ES_AUTOVSCROLL | ES_MULTILINE | WS_VSCROLL
-    LTEXT "您可以透過空格分隔的16位整數來設定控制項數據。", -1, 5, 80, 180, 25
+    LTEXT "您可以透過空格分隔的16位整數來設定控制項資料。", -1, 5, 80, 180, 25
     DEFPUSHBUTTON "OK", IDOK, 60, 110, 60, 14
     PUSHBUTTON "取消", IDCANCEL, 125, 110, 60, 14
 }
@@ -971,12 +971,12 @@ FONT 9, "宋體", 0, 0, 136 // CHINESEBIG5_CHARSET
 }
 
 IDD_EXP_OPTIONS DIALOGEX 0, 0, 250, 225
-CAPTION "導出選項"
+CAPTION "匯出選項"
 STYLE DS_MODALFRAME | WS_POPUPWINDOW | WS_CAPTION
 FONT 9, "宋體", 0, 0, 136 // CHINESEBIG5_CHARSET
 {
     ICON IDI_MAIN, -1, 5, 10, 0, 0
-    LTEXT "導出RC檔案將生成一些相關檔案。您可以選擇以下選項:", -1, 35, 5, 210, 29
+    LTEXT "匯出RC檔案將生成一些相關檔案。您可以選擇以下選項:", -1, 35, 5, 210, 29
     AUTOCHECKBOX "按語言分開資源檔(&L)", chx1, 5, 60, 240, 14
     AUTOCHECKBOX "使用 BEGIN/END 關鍵字(&E)", chx2, 5, 80, 240, 14
     AUTOCHECKBOX "通過 LANGUAGE_ * 巨集使語言可選(&M)", chx3, 5, 100, 240, 14
@@ -1030,7 +1030,7 @@ FONT 9, "宋體", 0, 0, 136 // CHINESEBIG5_CHARSET
 }
 
 IDD_ADDDLGINIT DIALOGEX 0, 0, 184, 137
-CAPTION "新增DLGINIT數據"
+CAPTION "新增DLGINIT資料"
 STYLE DS_MODALFRAME | WS_POPUPWINDOW | WS_CAPTION
 FONT 9, "宋體", 0, 0, 136 // CHINESEBIG5_CHARSET
 {
@@ -1045,7 +1045,7 @@ FONT 9, "宋體", 0, 0, 136 // CHINESEBIG5_CHARSET
 }
 
 IDD_MODIFYDLGINIT DIALOGEX 0, 0, 184, 137
-CAPTION "編輯DLGINIT數據"
+CAPTION "編輯DLGINIT資料"
 STYLE DS_MODALFRAME | WS_POPUPWINDOW | WS_CAPTION
 FONT 9, "宋體", 0, 0, 136 // CHINESEBIG5_CHARSET
 {
@@ -1292,7 +1292,7 @@ FONT 9, "宋體", 0, 0, 136 // CHINESEBIG5_CHARSET
     EDITTEXT edt1, 85, 60, 160, 15
     RTEXT "鹽(&S):", -1, 5, 80, 70, 10
     EDITTEXT edt2, 85, 80, 160, 15
-    PUSHBUTTON "自動生成(&G)", psh1, 5, 125, 90, 15
+    PUSHBUTTON "自動產生(&G)", psh1, 5, 125, 90, 15
     DEFPUSHBUTTON "OK", IDOK, 130, 125, 60, 15
     PUSHBUTTON "取消", IDCANCEL, 190, 125, 60, 15
 }
@@ -1354,7 +1354,7 @@ STRINGTABLE
 {
     IDS_TITLE "RisohEditor 6.2.0 by 片山博文MZ"
     IDS_TITLEWITHFILE "RisohEditor 6.2.0 - 檔案: %s"
-    IDS_EXTRACTRES "導出資源"
+    IDS_EXTRACTRES "匯出資源"
     IDS_RESBINFILTER "二進位制資源檔 (*.res)|*.res|二進位制檔案 (*.bin)|*.bin|所有檔案 (*.*)|*.*|"
     IDS_CANNOTSAVE "無法保存。"
     IDS_REPLACERES "替換資源"
@@ -1364,7 +1364,7 @@ STRINGTABLE
     IDS_ENTERLANG "請輸入資源語言類型。"
     IDS_FILENOTFOUND "未找到檔案。"
     IDS_CANNOTREPLACE "替換失敗。"
-    IDS_EXERESFILTER "資源配置檔案 (*.exe;*.dll;*.ocx;*.cpl;*.scr;*.mui;*.ime;*.msstyles)|*.exe;*.dll;*.ocx;*.cpl;*.scr;*.mui;*.ime;*.msstyles|RC 檔案 (*.rc;*.rc2)|*.rc;*.rc2|二進位制資源檔 (*.res)|*.res|所有檔案 (*.*)|*.*|"
+    IDS_EXERESFILTER "資源設定檔案 (*.exe;*.dll;*.ocx;*.cpl;*.scr;*.mui;*.ime;*.msstyles)|*.exe;*.dll;*.ocx;*.cpl;*.scr;*.mui;*.ime;*.msstyles|RC 檔案 (*.rc;*.rc2)|*.rc;*.rc2|二進位制資源檔 (*.res)|*.res|所有檔案 (*.*)|*.*|"
     IDS_SAVEAS "另存為"
     IDS_CANNOTADDICON "載入圖示失敗。"
     IDS_ADDICON "加圖示"
@@ -1382,21 +1382,21 @@ STRINGTABLE
     IDS_ADDRES "增加資源"
     IDS_CANNOTADDRES "新增資源失敗。"
     IDS_CANTADDBMP "新增點陣圖失敗。"
-    IDS_EXTRACTBMP "導出點陣圖"
-    IDS_CANTEXTRACTBMP "不能導出點陣圖。"
-    IDS_CANTREPLACECUR "不能導出游標。"
+    IDS_EXTRACTBMP "匯出點陣圖"
+    IDS_CANTEXTRACTBMP "不能匯出點陣圖。"
+    IDS_CANTREPLACECUR "不能匯出游標。"
     IDS_CANNOTADDCUR "不能新增游標。"
     IDS_CURFILTER "游標檔案(*.cur)|*.cur|動態游標 (*.ani)|*.ani|所有檔案 (*.*)|*.*|"
     IDS_ADDCUR "增加游標"
     IDS_REPLACECUR "替換游標"
-    IDS_EXTRACTICO "導出圖示"
-    IDS_CANTEXTRACTICO "導出圖示失敗。"
-    IDS_EXTRACTCUR "導出游標"
-    IDS_CANTEXTRACTCUR "導出游標失敗。"
+    IDS_EXTRACTICO "匯出圖示"
+    IDS_CANTEXTRACTICO "匯出圖示失敗。"
+    IDS_EXTRACTCUR "匯出游標"
+    IDS_CANTEXTRACTCUR "匯出游標失敗。"
     IDS_RESFILTER "二進位制資源 (*.res)|*.res|所有檔案 (*.*)|*.*|"
     IDS_NEUTRAL "無指定"
-    IDS_IMPORTRES "導入"
-    IDS_CANNOTIMPORT "導入資源失敗。"
+    IDS_IMPORTRES "匯入"
+    IDS_CANNOTIMPORT "匯入資源失敗。"
     IDS_CANNOTSTARTUP "編譯器啟動失敗。"
     IDS_RESMISMATCH "資源類型不匹配。"
     IDS_ALREADYEXISTS "已存在。"
@@ -1410,7 +1410,7 @@ STRINGTABLE
     IDS_CAPTION "標題"
     IDS_HELPID "幫助 ID"
     IDS_INDENT "» "
-    IDS_DATAISEMPTY "數據為空。"
+    IDS_DATAISEMPTY "資料為空。"
     IDS_TEST "測試一下效果"
     IDS_SEPARATOR "---"
     IDS_COMPILENOW "檔案已經改變，編譯?"
@@ -1420,7 +1420,7 @@ STRINGTABLE
     IDS_IMAGECOUNT "圖片數量: %u\r\n"
     IDS_ICONINFO "圖片 #%u: 寬度 %u, 高度 %u, bit像素點 %u, ID %u\r\n"
     IDS_READY "準備"
-    IDS_EXECUTINGCMD "導出命令..."
+    IDS_EXECUTINGCMD "匯出命令..."
     IDS_EDITINGBYGUI "正由GUI編輯..."
     IDS_COORD "%d, %d, %d, %d"
     IDS_STARTING "開始..."
@@ -1448,21 +1448,21 @@ STRINGTABLE
     IDS_LOADWCLIB "載入Window類資源"
     IDS_AVIMOVIE "(AVI 影片)\r\n"
     IDS_NOMOREITEM "沒有更多的項目了。"
-    IDS_INVALIDDATA "(無效數據)\r\n"
+    IDS_INVALIDDATA "(無效資料)\r\n"
     IDS_UPDATERESH "確定更新 ""resource.h"" 嗎?"
     IDS_CANTWRITERESH "無法寫入 ""resource.h""。"
     IDS_SAVERESH "保存 ""resource.h"" 檔案"
     IDS_DLLFILTER "DLL 檔案 (*.dll;*.ocx;*.mui)|*.dll;*.ocx;*.mui|所有檔案 (*.*)|*.*|"
-    IDS_EXERESRCFILTER "可讀檔案 (*.exe;*.dll;*.ocx;*.cpl;*.scr;*.mui;*.ime;*.msstyles;*.res;*.rc;*.rc2)|*.exe;*.dll;*.ocx;*.cpl;*.scr;*.mui;*.ime;*.msstyles;*.res;*.rc;*.rc2|資源配置檔案 (*.exe;*.dll;*.ocx;*.cpl;*.scr;*.mui;*.ime;*.msstyles)|*.exe;*.dll;*.ocx;*.cpl;*.scr;*.mui;*.ime;*.msstyles|二進位制檔案 (*.res)|*.res|資源檔 (*.rc;*.rc2)|*.rc;*.rc2|所有檔案 (*.*)|*.*|"
+    IDS_EXERESRCFILTER "可讀檔案 (*.exe;*.dll;*.ocx;*.cpl;*.scr;*.mui;*.ime;*.msstyles;*.res;*.rc;*.rc2)|*.exe;*.dll;*.ocx;*.cpl;*.scr;*.mui;*.ime;*.msstyles;*.res;*.rc;*.rc2|資源設定檔案 (*.exe;*.dll;*.ocx;*.cpl;*.scr;*.mui;*.ime;*.msstyles)|*.exe;*.dll;*.ocx;*.cpl;*.scr;*.mui;*.ime;*.msstyles|二進位制檔案 (*.res)|*.res|資源檔 (*.rc;*.rc2)|*.rc;*.rc2|所有檔案 (*.*)|*.*|"
     IDS_CANTTESTCLASSDLG "由於對話被分類, 所以不能被測試。"
     IDS_FILEISUPXED "檔案\r\n\r\n'%s'\r\n\r\n被UPX壓縮. 你想使用臨時檔案解壓縮嗎?\r\n\r\n如果你沒有擴展它, 閱讀可能會失敗。"
     IDS_CANTUPXEXTRACT "無法由UPX提取。"
     IDS_MESSAGEID "訊息 ID"
     IDS_MESSAGEVALUE "訊息值"
     IDS_RCFILTER "RC 檔案 (*.rc;*.rc2)|*.rc;*.rc2|"
-    IDS_EXPORT "導出"
-    IDS_CANTEXPORT "導出失敗。"
-    IDS_MUSTBEEMPTYDIR "如果有任何外部檔案，則導出目標必須是空資料夾。"
+    IDS_EXPORT "匯出"
+    IDS_CANTEXPORT "匯出失敗。"
+    IDS_MUSTBEEMPTYDIR "如果有任何外部檔案，則匯出目標必須是空資料夾。"
     IDS_MACRONAME "巨集名稱"
     IDS_MACROVALUE "巨集值"
     IDS_OPTIONAL "(可選的)"
@@ -1471,9 +1471,9 @@ STRINGTABLE
     IDS_WINDRESEXE "windres.exe|windres.exe|"
     IDS_CPPEXE "cpp.exe|cpp.exe|"
     IDS_INVALIDPATH "該路徑無效。"
-    IDS_DATATOOLONG "數據太長。"
+    IDS_DATATOOLONG "資料太長。"
     IDS_ALL "(所有)"
-    IDS_UNKNOWNFORMAT "(未知的數據格式)\r\n"
+    IDS_UNKNOWNFORMAT "(未知的資料格式)\r\n"
     IDS_LANGUAGE "語言"
     IDS_INTVALUE "整數值"
     IDS_PARENTWND "父測試視窗"
@@ -1481,8 +1481,8 @@ STRINGTABLE
     IDS_CONTROL "控制"
     IDS_MESSAGE "資訊"
     IDS_STRING "字串"
-    IDS_DATAISINVALID "數據無效。"
-    IDS_DLGINIT1 "您可以透過在與對話框同名的RT_DLGINIT資源數據中設定初始化數據來指定組合框和列表框的初始化。"
+    IDS_DATAISINVALID "資料無效。"
+    IDS_DLGINIT1 "您可以透過在與對話框同名的RT_DLGINIT資源資料中設定初始化資料來指定組合框和列表框的初始化。"
     IDS_DLGINIT2 "當WM_INITDIALOG訊息到達時, 您可以透過調用附加檔案“DlgInit/DlgInit.h”的ExecuteDlgInitDx函數來初始化對話框。\r\n\r\n"
     IDS_DLGINIT3 "請指定用換行符分隔的RT_DLGINIT字串列表。"
     IDS_SAMELANG "這是相同的語言。"
@@ -1494,7 +1494,7 @@ STRINGTABLE
     IDS_RUSSIA "俄國"
     IDS_RUSSIAN "俄語"
     IDS_WANNAGENRESH "你想生成檔案 'resource.h' 嗎?"
-    IDS_EXEFILTER "資源配置檔案 (*.exe;*.dll;*.ocx;*.cpl;*.scr;*.mui;*.ime;*.msstyles)|*.exe;*.dll;*.ocx;*.cpl;*.scr;*.mui;*.ime;*.msstyles|所有檔案 (*.*)|*.*|"
+    IDS_EXEFILTER "資源設定檔案 (*.exe;*.dll;*.ocx;*.cpl;*.scr;*.mui;*.ime;*.msstyles)|*.exe;*.dll;*.ocx;*.cpl;*.scr;*.mui;*.ime;*.msstyles|所有檔案 (*.*)|*.*|"
     IDS_SAVEASCOMPRESS "另存壓縮"
     IDS_TOOL_NEW "新建"
     IDS_TOOL_OPEN "開啟..."
@@ -1507,8 +1507,8 @@ STRINGTABLE
     IDS_TOOL_CLONE "複製..."
     IDS_TOOL_RECOMPILE "重新編譯"
     IDS_TOOL_CANCELEDIT "取消修改"
-    IDS_TOOL_IMPORT "導入..."
-    IDS_TOOL_EXTRACT "導出..."
+    IDS_TOOL_IMPORT "匯入..."
+    IDS_TOOL_EXTRACT "匯出..."
     IDS_TOOL_GUIEDIT "GUI編輯"
     IDS_UNITEDKINGDOM "英國"
     IDS_GREATBRITAIN "大不列顛"
@@ -1529,7 +1529,7 @@ STRINGTABLE
     IDS_COMMENT_SEP "//////////////////////////////////////////////////////////////////////////////\r\n"
     IDS_NOTICE "// 此檔案由 RisohEditor 6.2.0 自動產生。\r\n"
     IDS_DAGGER "// † <-- 這個匕首符號有助於偵測 UTF-8 編碼。\r\n"
-    IDS_IMPORTFILTER "可導入檔案|*.rc;*.res;*.dfm;*.html;*.htm;*.manifest;*.ico;*.cur;*.ani;*.wav;*.mp3;*.bmp;*.dib;*.png;*.gif;*.jpg;*.jpeg;*.jpe;*.jfif;*.tif;*.tiff;*.avi;*.wmf;*.emf|RC 檔案 (*.rc;*.rc2)|*.rc;*.rc2|二進位制資源檔 (*.res)|*.res|圖片檔案|*.bmp;*.dib;*.png;*.gif;*.jpg;*.jpeg;*.jpe;*.jfif;*.tif;*.tiff;*.wmf;*.emf;*.tlb|游標檔案(*.cur;*.ani)|*.cur;*.ani|圖示檔案 (*.ico)|*.ico|WAVE聲音 (*.wav)|*.wav|MP3聲音 (*.mp3)|*.mp3|HTML檔案 (*.html;*.htm)|*.html;*.htm|清單檔案 (*.manifest)|*.manifest|Delphi DFM Files (*.dfm)|*.dfm|Delphi DFM 檔案 (*.dfm)|*.dfm|TYPELIB Files (*.tlb)|*.tlb|所有檔案 (*.*)|*.*|"
+    IDS_IMPORTFILTER "可匯入檔案|*.rc;*.res;*.dfm;*.html;*.htm;*.manifest;*.ico;*.cur;*.ani;*.wav;*.mp3;*.bmp;*.dib;*.png;*.gif;*.jpg;*.jpeg;*.jpe;*.jfif;*.tif;*.tiff;*.avi;*.wmf;*.emf|RC 檔案 (*.rc;*.rc2)|*.rc;*.rc2|二進位制資源檔 (*.res)|*.res|圖片檔案|*.bmp;*.dib;*.png;*.gif;*.jpg;*.jpeg;*.jpe;*.jfif;*.tif;*.tiff;*.wmf;*.emf;*.tlb|游標檔案(*.cur;*.ani)|*.cur;*.ani|圖示檔案 (*.ico)|*.ico|WAVE聲音 (*.wav)|*.wav|MP3聲音 (*.mp3)|*.mp3|HTML檔案 (*.html;*.htm)|*.html;*.htm|清單檔案 (*.manifest)|*.manifest|Delphi DFM Files (*.dfm)|*.dfm|Delphi DFM 檔案 (*.dfm)|*.dfm|TYPELIB Files (*.tlb)|*.tlb|所有檔案 (*.*)|*.*|"
     IDS_CANTWRITEBYLOCK "無法寫入檔案, 因為以下檔案已被鎖定。\r\n\r\n%s"
     IDS_ANSI "ANSI"
     IDS_WIDE "Unicode"
@@ -1542,14 +1542,14 @@ STRINGTABLE
     IDS_EGAFILTER "EGA 計劃 (*.ega)|*.ega|所有檔案 (*.*)|*.*|"
     IDS_QUERYSAVECHANGE "該檔案已被修改. 您要立即保存更改嗎？"
     IDS_DFMFILTER "DFM 檔案 (*.dfm)|*.dfm|文字檔案 (*.txt)|*.txt|所有檔案 (*.*)|*.*|"
-    IDS_CANTEXTRACTDFM "無法提取DFM數據。"
-    IDS_EXTRACTDFM "提取DFM數據"
+    IDS_CANTEXTRACTDFM "無法提取DFM資料。"
+    IDS_EXTRACTDFM "提取DFM資料"
     IDS_ENTERNONZEROTYPE "請輸入不為零的資源類型名稱。"
     IDS_HOMEPAGE "https://katahiromz.web.fc2.com/re/ch/"
     IDS_FILESAVED "檔案保存確定。"
     IDS_RECOMPILEOK "重新編譯。"
     IDS_RECOMPILEFAILED "重新編譯失敗 (語法錯誤)。"
-    IDS_TOOL_EXPORT "導出..."
+    IDS_TOOL_EXPORT "匯出..."
     IDS_CODEEDITOR "代碼編輯器"
     IDS_HEXVIEWER "十六進位制檢視器"
     IDS_INTEGERORIDENTIFIER "(請輸入整數或識別碼)"
@@ -1572,7 +1572,7 @@ STRINGTABLE
     IDS_CODEPAGE950 "950 (繁體中文)"
     IDS_CODEPAGE65001 "65001 (UTF-8)"
     IDS_EXTRACTTLB "TypeLib 資料提取"
-    IDS_CANTEXTRACTTLB "無法提取 TypeLib數據。"
+    IDS_CANTEXTRACTTLB "無法提取 TypeLib資料。"
     IDS_TLBRESBINFILTER "TYPELIB data (*.tlb)|*.tlb|二進位制資源檔 (*.res)|*.res|Text 檔案 (*.txt)|*.txt|MIDL 檔案 (*.idl)|*.idl|所有檔案 (*.*)|*.*|"
     IDS_USAGE "Usage: RisohEditor [options | ""file""]\n\nOptions:\n--help  Show this message.\n--version  Show version info.\n--load ""your-file.rc""  Load the file (without GUI)\n--save ""your-file.res""  Save the file (without GUI)\n--log-file ""log-file.txt""  Specify the log file.\n--load-options OPTIONS  Set load options.\n--save-options OPTIONS  Set save options.\n\nLoad options: (no-load-res-h)\nSave options: (idc-static)(compress)(sep-lang)(no-res-folder)(lang-macro)(less-comments)(wrap-manifest)(begin-end)(utf-16)(bom)(backup)(ms-msgtbl)"
     IDS_NOSELECTION "沒有選擇。"
@@ -1623,7 +1623,7 @@ STRINGTABLE
     IDS_CRYPTTARGETEMPTY "待加密的資源類型為空。這樣可以嗎？"
     IDS_GENERAL "一般"
     IDS_MACROS "宏"
-    IDS_CONFIG "配置"
+    IDS_CONFIG "設定"
     IDS_PATHS "設定PATH"
     IDS_FONTS "字體"
     IDS_DFMSETTINGS "Delphi DFM"
@@ -1633,7 +1633,7 @@ STRINGTABLE
     IDS_FORCEOPENCRYPTOWARN "指定的檔案很可能已使用 WonRes 加密。即使您未輸入密碼就開啟了該檔案，部分或全部資料也可能無法存取。"
     IDS_WARNRESETSETTINGS "您的應用程式設定將被清除。可以嗎？"
     IDS_WARNMENUITEMEXHELPID "一個或多個選單項目具有幫助 ID，但幫助 ID 僅適用於 MENUEX 格式的子選單（彈出式）項目。非子選單項目的幫助 ID 將在儲存時被丟棄。"
-    IDS_WARNMENUHELPIDNOTSUPPORTED "標準菜單不支援幫助 ID。"
+    IDS_WARNMENUHELPIDNOTSUPPORTED "標準選單不支援幫助 ID。"
     IDS_CONFIRMDELETE "您要刪除此資源項目嗎？"
     IDS_DONTUSEZEROFORMENUITEM "對於既不是分隔符也不是彈出視窗的選單項，不能指定指令 ID 為零。"
     IDS_ENTERCOMMAND "請輸入命令ID。"
