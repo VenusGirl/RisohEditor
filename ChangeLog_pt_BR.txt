@@ -12,6 +12,7 @@
     - Corrigido MPathsDlg.
     - Tradução aprimorada.
     - Corrigido o cursor em forma de ampulheta.
+    - Corrigido o encerramento anormal em controles ICON/BITMAP/STATIC.
 - v.6.1.9 (2026-09-02)
     - Corrigida a resposta do cursor nas bordas da janela principal.
     - Corrigido um erro em que itens do tipo ET_TYPE sem filhos não desapareciam na função EGA RES_delete.

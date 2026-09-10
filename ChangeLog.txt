@@ -12,6 +12,7 @@
     - Fixed MPathsDlg.
     - Improved translation.
     - Fixed the hourglass cursor.
+    - Fixed abnormal termination on ICON/BITMAP/STATIC controls.
 - v.6.1.9 (2026-09-02)
     - Fixed cursor response at the edges of the main window.
     - Fixed a bug where ET_TYPE items with no children would not disappear in EGA RES_delete function.

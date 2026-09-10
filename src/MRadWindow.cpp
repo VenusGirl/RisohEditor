@@ -75,16 +75,20 @@ void MRadCtrl::PostSubclass()
 		if ((style & SS_TYPEMASK) == SS_ICON)
 		{
 			m_nImageType = 1;   // icon
+			m_bLocking = TRUE;
 			HICON hIcon = Icon();
 			SendMessage(m_hwnd, STM_SETIMAGE, IMAGE_ICON, (LPARAM)hIcon);
 			SetWindowPosDx(m_hwnd, NULL, &siz);
+			m_bLocking = FALSE;
 		}
 		else if ((style & SS_TYPEMASK) == SS_BITMAP)
 		{
 			m_nImageType = 2;   // bitmap
+			m_bLocking = TRUE;
 			HBITMAP hbm = Bitmap();
 			SendMessage(m_hwnd, STM_SETIMAGE, IMAGE_BITMAP, (LPARAM)hbm);
 			SetWindowPosDx(m_hwnd, NULL, &siz);
+			m_bLocking = FALSE;
 		}
 		return;
 	}
@@ -716,8 +720,13 @@ void MRadCtrl::OnSize(HWND hwnd, UINT state, int cx, int cy)
 	// default processing
 	DefaultProcDx(hwnd, WM_SIZE, state, MAKELPARAM(cx, cy));
 
-	if (!m_bTopCtrl)
-		return;     // not a top control
+	if (!m_bTopCtrl || m_bLocking)
+		return;
+
+	if (m_bSizing)
+		return;
+
+	m_bSizing = TRUE;
 
 	// is it not locked
 	if (!m_bLocking)
@@ -748,6 +757,8 @@ void MRadCtrl::OnSize(HWND hwnd, UINT state, int cx, int cy)
 		// redraw
 		InvalidateRect(hwnd, NULL, FALSE);
 	}
+
+	m_bSizing = FALSE;
 }
 
 // MRadCtrl WM_KEYDOWN/WM_KEYUP
@@ -854,8 +865,12 @@ void MRadCtrl::OnNCLButtonDown(HWND hwnd, BOOL fDoubleClick, int x, int y, UINT 
 		InflateRect(&rc, 4, 4);
 		HWND hwndParent = GetParent(hwnd);
 		MapWindowRect(NULL, hwndParent, &rc);
+#if 1
+		::PostMessage(hwndParent, MYWM_REDRAW, 0, 0);
+#else
 		RedrawWindow(hwndParent, &rc, NULL,
 			RDW_INVALIDATE | RDW_UPDATENOW | RDW_ALLCHILDREN | RDW_ERASE);
+#endif
 
 		// re-overwrite the index labels so the first painted frame
 		// already has them on top of the control/band we just raised
