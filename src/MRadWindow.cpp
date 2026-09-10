@@ -2123,6 +2123,8 @@ BOOL MRadWindow::ReCreateRadDialog(HWND hwnd, INT nSelectStartIndex)
 	SetForegroundWindow(hwnd);
 
 	// update the mappings
+	clear_maps();
+	create_maps(m_dialog_res.m_lang);
 	update_maps();
 
 	// unlock after the window is up
