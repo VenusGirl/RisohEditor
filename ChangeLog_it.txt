@@ -1,6 +1,6 @@
 ## CRONOLOGIA VERSIONI PROGRAMMA
 
-- v.6.2.0 (2026-XX-YY)
+- v.6.2.0 (10.09.2026)
     - Aggiunto supporto per il tipo di risorsa "TEXTFILE". 
     - Aggiunto supporto per le codifiche "UTF-16 (con BOM)" e "UTF-16 (senza BOM)".
     - Aggiunto supporto per i tipi di risorsa "XML", "XSLT", "SCHEMA", "REGINST" e "REGISTRY".
